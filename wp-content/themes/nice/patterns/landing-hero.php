@@ -32,14 +32,16 @@ $nice_landing_images = array(
 		'height' => 325,
 	),
 );
-$nice_logo_url = esc_url( get_theme_file_uri( '/assets/images/nice-logo.png' ) );
+$nice_logo_url    = esc_url( get_theme_file_uri( '/assets/images/nice-logo.png' ) );
+$nice_events_url  = esc_url( home_url( '/events/' ) );
+$nice_studio_url  = esc_url( home_url( '/studio/' ) );
 $nice_image_index = 0;
 ?>
 <!-- wp:html -->
 <section class="nice-landing-hero" id="top" aria-labelledby="nice-landing-title">
 	<div class="nice-landing-hero__mosaic" aria-hidden="true">
 		<?php foreach ( $nice_landing_images as $nice_image ) : ?>
-			<img src="<?php echo $nice_image['mobile']; ?>" srcset="<?php echo $nice_image['mobile']; ?> 480w, <?php echo $nice_image['src']; ?> <?php echo esc_attr( $nice_image['width'] ); ?>w" sizes="50vw" width="<?php echo esc_attr( $nice_image['width'] ); ?>" height="<?php echo esc_attr( $nice_image['height'] ); ?>" alt="" decoding="async"<?php echo 0 === $nice_image_index ? ' fetchpriority="high"' : ''; ?>>
+			<img src="<?php echo $nice_image['mobile']; ?>" srcset="<?php echo $nice_image['mobile']; ?> 480w, <?php echo $nice_image['src']; ?> <?php echo esc_attr( $nice_image['width'] ); ?>w" sizes="(min-width: 768px) 25vw, 50vw" width="<?php echo esc_attr( $nice_image['width'] ); ?>" height="<?php echo esc_attr( $nice_image['height'] ); ?>" alt="" decoding="async" fetchpriority="<?php echo 0 === $nice_image_index ? 'high' : 'low'; ?>">
 			<?php $nice_image_index++; ?>
 		<?php endforeach; ?>
 	</div>
@@ -53,8 +55,8 @@ $nice_image_index = 0;
 			<h1 id="nice-landing-title"><span>Brief.</span><span>Idea.</span><span>Solution.</span></h1>
 		</div>
 		<div class="nice-landing-hero__routes" aria-label="<?php esc_attr_e( 'Choose a NICE division', 'nice' ); ?>" data-nice-reveal>
-			<a href="#choose-path"><span>Events</span><span aria-hidden="true">&darr;</span></a>
-			<a href="#choose-path"><span>Studio</span><span aria-hidden="true">&darr;</span></a>
+			<a href="<?php echo $nice_events_url; ?>"><span>Events</span><span aria-hidden="true">&rarr;</span></a>
+			<a href="<?php echo $nice_studio_url; ?>"><span>Studio</span><span aria-hidden="true">&rarr;</span></a>
 		</div>
 	</div>
 </section>

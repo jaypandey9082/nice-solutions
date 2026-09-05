@@ -6,7 +6,7 @@
  * Description: Quiet text-only credibility preview using verified client names.
  */
 
-$nice_clients = array( 'Voltas', 'Zoetis', 'Airtel', 'Bajaj', 'Mahindra', 'CRISIL' );
+$nice_clients = nice_get_landing_client_previews();
 ?>
 <!-- wp:html -->
 <section class="nice-landing-clients nice-section" id="clients" aria-labelledby="nice-clients-title">

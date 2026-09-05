@@ -1,12 +1,12 @@
 # NICE Solutions Website
 
-Architecture, design system, and Phase 3 landing page for Nucleus Integrated
+Architecture, design system, and Phase 3.1 landing page for Nucleus Integrated
 Communication & Entertainment Pvt. Ltd. (N.I.C.E.).
 
 ## Phase Status
 
-Phase 1 architecture, the Phase 2 custom block-theme foundation, and the Phase 3
-landing page are implemented. The repository includes global design tokens,
+Phase 1 architecture, the Phase 2 custom block-theme foundation, and the Phase
+3.1 landing-page cleanup are implemented. The repository includes design tokens,
 reusable UI patterns, responsive navigation, source-approved NICE imagery, and
 browser previews. Division pages, the NICE Core plugin, and Phase 4 work have not
 started.
@@ -522,7 +522,7 @@ only after NICE explicitly approves that repository access model.
 
 ### Required Development Tools
 
-- Git and a private GitHub repository.
+- Git and the configured GitHub repository.
 - Node.js/npm for editor scripts and asset validation.
 - `@wordpress/scripts` as the only planned JavaScript build dependency when the
   custom blocks are scaffolded.
@@ -541,7 +541,7 @@ Checked on 2026-09-05.
 
 | Requirement | Status | Evidence / action |
 | --- | --- | --- |
-| Project Git repository | Ready locally | Initialized on `main`; no remote or commit has been created yet |
+| Project Git repository | Ready | Local `main` tracks `origin/main` at `jaypandey9082/nice-solutions` |
 | LocalWP | Ready | Local 10.1.2 is installed and running |
 | NICE LocalWP site | Ready | `nice-solutions.local` is running with Nginx |
 | WordPress | Ready | WordPress 7.1 is running and the NICE theme is active |
@@ -549,7 +549,7 @@ Checked on 2026-09-05.
 | MySQL | Ready | Local has MySQL 8.4.0, which meets the proposed baseline |
 | WP-CLI | Ready | LocalWP's bundled WP-CLI activated and verified the NICE theme |
 | Git | Ready | Apple Git 2.50.1 |
-| GitHub CLI | Re-authentication required | GitHub CLI 2.92.0 is installed, but both saved account tokens are invalid; run `gh auth login -h github.com` |
+| GitHub CLI | Ready | Authenticated to GitHub as `jaypandey9082` |
 | Node.js | Ready | Node.js 24.20.0 |
 | npm | Ready | npm 11.19.0 |
 | Code editor | Ready | Cursor and CotEditor are installed; VS Code and its `code` command were not found |
@@ -560,41 +560,35 @@ runtimes for this project.
 
 ## Remaining Implementation Order
 
-1. Re-authenticate GitHub CLI, create/confirm a private GitHub repository, and
-   connect the local `main` branch to that remote.
-2. Trust the LocalWP certificate when trusted local HTTPS is needed.
-3. Review and approve the Phase 3 landing page in LocalWP.
-4. Build and test NICE Core content types, taxonomies, validation, contact
+1. Trust the LocalWP certificate when trusted local HTTPS is needed.
+2. Review and approve the Phase 3.1 landing page in LocalWP.
+3. Build and test NICE Core content types, taxonomies, validation, contact
    settings, and permalink rules.
-5. Enter a small set of approved representative content and validate the editing
+4. Enter a small set of approved representative content and validate the editing
    workflow with NICE.
-6. Start division-page implementation only after explicit Phase 4 approval.
-7. Complete responsive, accessibility, performance, SEO, browser, and content
+5. Start division-page implementation only after explicit Phase 4 approval.
+6. Complete responsive, accessibility, performance, SEO, browser, and content
    QA before staging deployment.
 
 ## Decisions and Blockers
 
 Approval is needed for these items before implementation:
 
-1. Confirm the recommended canonical path strategy, or state that true Events
-   and Studio subdomains are mandatory.
-2. Provide original NICE logo files and an approved brand guide or exact color
+1. Provide original NICE logo files and an approved brand guide or exact color
    and typography values.
-3. Confirm which three case studies belong to each of the six service categories.
+2. Confirm which three case studies belong to each of the six service categories.
    The profile does not provide three clearly classifiable Films & Entertainment
    examples, and Activations & Promotions also needs an explicit shortlist.
-4. Decide whether Design, brand identity, UI design, social media design,
+3. Decide whether Design, brand identity, UI design, social media design,
    Meetings/MICE, Shows & Concerts, Technology Integration, and NICE-owned event
    properties should be capabilities under the six services, future services,
    or excluded from the launch.
-5. Supply approved original project images/videos, captions, alt-text context,
+4. Supply approved original project images/videos, captions, alt-text context,
    and publication rights. PDF images are references, not web-ready masters.
-6. Confirm which team biographies, portraits, client logos, phone numbers,
+5. Confirm which team biographies, portraits, client logos, phone numbers,
    WhatsApp number, email addresses, physical address, and social accounts may
    be published.
-7. Provide or approve the private GitHub repository and select the GitHub account
-   to reconnect.
-8. Confirm the target host before implementation so subdomain, SSL, caching,
+6. Confirm the target host before implementation so SSL, caching,
    video, backup, and deployment assumptions can be validated early.
 
 ## Phase 1 Completion
@@ -626,3 +620,29 @@ including mobile-menu keyboard behavior, sticky navigation, reduced motion,
 image loading, route targets, horizontal overflow, and browser console errors.
 Contact actions remain visibly marked as pending publication approval. No Events,
 Studio, Team, service, case-study, or contact page was created in this phase.
+
+## Phase 3.1 Completion
+
+The landing hero and pathway choices now route directly to `/events/` and
+`/studio/`. Global navigation retains only landing anchors and division gateways;
+the contradictory `/team/` route has been removed. WordPress-aware `home_url()`
+links keep the navigation portable to future environments.
+
+Contact actions use the centralized `nice_contact_settings` adapter. Until NICE
+Core supplies approved values, WhatsApp and Email resolve to the visible
+publication-pending notice. The schema is ready for an HTTPS WhatsApp URL, email
+address, approved phone URL, and social URL list without hard-coded personal
+details.
+
+Only the first hero image receives high fetch priority. Hero `sizes` now match
+the mobile two-column and desktop four-column mosaic, pathway images are lazy,
+and meaningful image descriptions avoid repeating adjacent project titles.
+Temporary project and client previews are isolated behind filters so NICE Core
+can replace them with CMS queries later. No Phase 4 page or content model was
+implemented.
+
+Live browser validation covers 320, 360, 390, 430, 768, 900, 1024, 1200, and
+1440px widths. It checks overflow, mosaic columns, mobile source selection,
+intrinsic media dimensions, cumulative layout shift, image loading, navigation,
+contact placeholders, keyboard focus, sticky states, reduced motion, failed
+requests, and console errors.

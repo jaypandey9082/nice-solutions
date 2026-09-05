@@ -12,6 +12,8 @@ const requiredFiles = [
 	'style.css',
 	'theme.json',
 	'functions.php',
+	'inc/contact.php',
+	'inc/landing-data.php',
 	'assets/css/site.css',
 	'assets/css/landing.css',
 	'assets/css/editor.css',
@@ -103,6 +105,10 @@ const css = [
 	readFileSync(resolve(themeDirectory, 'assets/css/landing.css'), 'utf8'),
 ].join('\n');
 const header = readFileSync(resolve(themeDirectory, 'patterns/site-header.php'), 'utf8');
+const footer = readFileSync(resolve(themeDirectory, 'patterns/site-footer.php'), 'utf8');
+const hero = readFileSync(resolve(themeDirectory, 'patterns/landing-hero.php'), 'utf8');
+const pathways = readFileSync(resolve(themeDirectory, 'patterns/landing-pathways.php'), 'utf8');
+const contact = readFileSync(resolve(themeDirectory, 'inc/contact.php'), 'utf8');
 const frontPage = readFileSync(resolve(themeDirectory, 'templates/front-page.html'), 'utf8');
 
 if (/linear-gradient|radial-gradient/i.test(css)) {
@@ -125,6 +131,30 @@ for (const requiredPattern of [
 
 if (!header.includes('assets/images/nice-logo.png')) {
 	fail('Global header must use the supplied NICE logo asset.');
+}
+
+if ([header, footer].some((markup) => markup.includes('/team/'))) {
+	fail('Team must remain division-specific and cannot be exposed as a global route.');
+}
+
+for (const destination of ["home_url( '/events/' )", "home_url( '/studio/' )"]) {
+	if (!hero.includes(destination)) {
+		fail(`Hero is missing direct division route: ${destination}`);
+	}
+}
+
+if (hero.includes('href="#choose-path"')) {
+	fail('Hero division choices must not point to the pathway section.');
+}
+
+if (/loading="eager"/.test(pathways)) {
+	fail('Below-the-fold pathway images must not load eagerly.');
+}
+
+for (const setting of ['whatsapp_url', 'email_address', 'phone_url', 'social_urls']) {
+	if (!contact.includes(`'${setting}'`)) {
+		fail(`Contact adapter is missing future setting: ${setting}`);
+	}
 }
 
 if (/transition\s*:\s*all/i.test(css)) {

@@ -6,35 +6,7 @@
  * Description: Asymmetric preview of three projects verified in the NICE profile.
  */
 
-$nice_projects = array(
-	array(
-		'class'  => 'nice-landing-project--feature',
-		'image'  => 'voltas-fam-tastic',
-		'width'  => 650,
-		'height' => 378,
-		'alt'    => 'Voltas Fam-Tastic Fiesta production team and event setup',
-		'title'  => 'Voltas Fam-Tastic Fiesta',
-		'client' => 'Voltas Limited',
-	),
-	array(
-		'class'  => 'nice-landing-project--secondary',
-		'image'  => 'gca-2025',
-		'width'  => 569,
-		'height' => 293,
-		'alt'    => 'Conference hall prepared for GCA 2025',
-		'title'  => 'GCA 2025',
-		'client' => 'Institute of Actuaries of India',
-	),
-	array(
-		'class'  => 'nice-landing-project--compact',
-		'image'  => 'zoetis-engagement',
-		'width'  => 543,
-		'height' => 305,
-		'alt'    => 'Guests at the Zoetis Employee Engagement Day',
-		'title'  => 'Zoetis Employee Engagement Day',
-		'client' => 'Zoetis',
-	),
-);
+$nice_projects = nice_get_landing_project_previews();
 ?>
 <!-- wp:html -->
 <section class="nice-landing-work nice-section" id="work" aria-labelledby="nice-work-title">
@@ -54,7 +26,7 @@ $nice_projects = array(
 					</div>
 					<div class="nice-landing-project__meta">
 						<p><span>Client</span><?php echo esc_html( $nice_project['client'] ); ?></p>
-						<p><span>Division</span>Events</p>
+						<p><span>Division</span><?php echo esc_html( $nice_project['division'] ); ?></p>
 					</div>
 					<h3><?php echo esc_html( $nice_project['title'] ); ?></h3>
 				</article>

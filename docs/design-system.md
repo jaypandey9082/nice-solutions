@@ -1,8 +1,9 @@
 # NICE Design System
 
-Phase 2 defines the reusable visual and interaction foundation. Phase 3 applies
-that system to the landing page without adding division pages, case studies, team
-entries, or production contact values.
+Phase 2 defines the reusable visual and interaction foundation. Phase 3.1 applies
+targeted navigation, contact, accessibility, and loading corrections to the
+landing page without adding division pages, case studies, team entries, or
+production contact values.
 
 ## Color Tokens
 
@@ -131,6 +132,22 @@ selected work, capabilities, clients, direct-contact band, and global footer.
 The visual assets and copy are derived from the supplied NICE company profile.
 Contact actions intentionally point to an on-page pending-approval notice until
 publication-safe phone, WhatsApp, and email values are confirmed.
+
+### Contact Adapter
+
+`nice_get_contact_settings()` defines empty `whatsapp_url`, `email_address`,
+`phone_url`, and `social_urls` values. Future NICE Core code should supply the
+approved values through the `nice_contact_settings` filter. The theme turns the
+email value into a `mailto:` action and accepts a direct HTTPS WhatsApp URL; it
+does not own or persist business contact data.
+
+### Temporary Landing Data
+
+The three source-approved project previews and six selected client names live in
+`inc/landing-data.php`, outside their presentation patterns. The
+`nice_landing_project_previews` and `nice_landing_client_previews` filters are a
+temporary integration boundary only. NICE Core Case Study and Client queries
+should replace them when the CMS models are built.
 
 ## Dependencies
 
