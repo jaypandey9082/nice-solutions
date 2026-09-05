@@ -1,9 +1,8 @@
 # NICE Design System
 
 Phase 2 defines the reusable visual and interaction foundation. Phase 3.1 applies
-targeted navigation, contact, accessibility, and loading corrections to the
-landing page without adding division pages, case studies, team entries, or
-production contact values.
+it to the landing page, and Phase 4 extends it to the Events home without adding
+case-study, service-detail, team, client, contact, or Studio pages.
 
 ## Color Tokens
 
@@ -148,6 +147,29 @@ The three source-approved project previews and six selected client names live in
 `nice_landing_project_previews` and `nice_landing_client_previews` filters are a
 temporary integration boundary only. NICE Core Case Study and Client queries
 should replace them when the CMS models are built.
+
+## Events Home Application
+
+The Events template composes the global header, Events hero, services, selected
+work, process, proof, clients, direct-contact band, and global footer. Its
+full-bleed single-image hero is intentionally distinct from the landing mosaic,
+while typography, color, spacing, controls, navigation, and motion continue to
+use the same tokens and shared components.
+
+Events service rows and project previews use unframed editorial layouts instead
+of card grids. The process band uses the dark surface, project-level proof uses
+plain divided columns, and the client section uses a restrained text list. The
+layout changes at the existing 768px and 1200px design-system breakpoints, with
+desktop navigation continuing to switch at 900px.
+
+### Temporary Events Data
+
+The three approved service previews, four project previews, and six selected
+client names live in `inc/events-data.php`. The `nice_events_services`,
+`nice_events_project_previews`, and `nice_events_clients` filters are temporary
+integration boundaries for future NICE Core Service, Case Study, and Client
+queries. Project proof remains in its presentation pattern because each number
+is explicitly paired with its source project and is not a company-wide metric.
 
 ## Dependencies
 

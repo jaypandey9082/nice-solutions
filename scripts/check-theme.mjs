@@ -13,8 +13,10 @@ const requiredFiles = [
 	'theme.json',
 	'functions.php',
 	'inc/contact.php',
+	'inc/events-data.php',
 	'inc/landing-data.php',
 	'assets/css/site.css',
+	'assets/css/events.css',
 	'assets/css/landing.css',
 	'assets/css/editor.css',
 	'assets/js/navigation.js',
@@ -22,10 +24,19 @@ const requiredFiles = [
 	'assets/js/media.js',
 	'assets/images/nice-logo.png',
 	'assets/images/nice-site-icon.png',
+	'assets/images/exhibition-stall.webp',
+	'assets/images/exhibition-stall-480.webp',
+	'assets/images/power-champs.webp',
+	'assets/images/power-champs-480.webp',
+	'assets/images/run-for-equity.webp',
+	'assets/images/run-for-equity-360.webp',
+	'assets/images/vision-to-victory.webp',
+	'assets/images/vision-to-victory-360.webp',
 	'parts/header.html',
 	'parts/footer.html',
 	'templates/index.html',
 	'templates/front-page.html',
+	'templates/page-events.html',
 	'templates/page.html',
 	'templates/single.html',
 	'templates/archive.html',
@@ -42,6 +53,13 @@ const requiredFiles = [
 	'patterns/landing-work.php',
 	'patterns/landing-capabilities.php',
 	'patterns/landing-clients.php',
+	'patterns/events-hero.php',
+	'patterns/events-services.php',
+	'patterns/events-work.php',
+	'patterns/events-process.php',
+	'patterns/events-proof.php',
+	'patterns/events-clients.php',
+	'patterns/events-contact.php',
 	'preview/index.html',
 	'preview/landing.html',
 	'preview/tokens.css',
@@ -103,6 +121,7 @@ for (const slug of requiredFontSizes) {
 const css = [
 	readFileSync(resolve(themeDirectory, 'assets/css/site.css'), 'utf8'),
 	readFileSync(resolve(themeDirectory, 'assets/css/landing.css'), 'utf8'),
+	readFileSync(resolve(themeDirectory, 'assets/css/events.css'), 'utf8'),
 ].join('\n');
 const header = readFileSync(resolve(themeDirectory, 'patterns/site-header.php'), 'utf8');
 const footer = readFileSync(resolve(themeDirectory, 'patterns/site-footer.php'), 'utf8');
@@ -110,6 +129,12 @@ const hero = readFileSync(resolve(themeDirectory, 'patterns/landing-hero.php'), 
 const pathways = readFileSync(resolve(themeDirectory, 'patterns/landing-pathways.php'), 'utf8');
 const contact = readFileSync(resolve(themeDirectory, 'inc/contact.php'), 'utf8');
 const frontPage = readFileSync(resolve(themeDirectory, 'templates/front-page.html'), 'utf8');
+const eventsPage = readFileSync(resolve(themeDirectory, 'templates/page-events.html'), 'utf8');
+const eventsData = readFileSync(resolve(themeDirectory, 'inc/events-data.php'), 'utf8');
+const eventsHero = readFileSync(resolve(themeDirectory, 'patterns/events-hero.php'), 'utf8');
+const eventsServices = readFileSync(resolve(themeDirectory, 'patterns/events-services.php'), 'utf8');
+const eventsWork = readFileSync(resolve(themeDirectory, 'patterns/events-work.php'), 'utf8');
+const eventsContact = readFileSync(resolve(themeDirectory, 'patterns/events-contact.php'), 'utf8');
 
 if (/linear-gradient|radial-gradient/i.test(css)) {
 	fail('Gradient usage is not allowed in the Phase 2 foundation.');
@@ -127,6 +152,57 @@ for (const requiredPattern of [
 	if (!frontPage.includes(requiredPattern)) {
 		fail(`Front page is missing required pattern: ${requiredPattern}`);
 	}
+}
+
+for (const requiredPattern of [
+	'nice/events-hero',
+	'nice/events-services',
+	'nice/events-work',
+	'nice/events-process',
+	'nice/events-proof',
+	'nice/events-clients',
+	'nice/events-contact',
+]) {
+	if (!eventsPage.includes(requiredPattern)) {
+		fail(`Events page is missing required pattern: ${requiredPattern}`);
+	}
+}
+
+for (const service of [
+	'Corporate Events',
+	'Exhibitions & Conferences',
+	'Activations & Promotions',
+]) {
+	if (!eventsData.includes(service)) {
+		fail(`Events data is missing approved service: ${service}`);
+	}
+}
+
+for (const route of [
+	'/events/services/',
+	'/events/case-studies/',
+	'/events/clients/',
+	'/events/contact/',
+]) {
+	if (![eventsHero, eventsServices, eventsWork, eventsContact].some((markup) => markup.includes(route))) {
+		fail(`Events home is missing approved future route: ${route}`);
+	}
+}
+
+if (existsSync(resolve(themeDirectory, 'templates/page-studio.html'))) {
+	fail('Phase 4 must not add a Studio page template.');
+}
+
+if ((eventsHero.match(/fetchpriority="high"/g) ?? []).length !== 1) {
+	fail('Events hero must prioritize exactly one LCP image.');
+}
+
+if (!eventsServices.includes('loading="lazy"') || !eventsWork.includes('loading="lazy"')) {
+	fail('Below-the-fold Events imagery must load lazily.');
+}
+
+if (!eventsContact.includes("nice_get_contact_action( 'whatsapp'") || !eventsContact.includes("nice_get_contact_action( 'email'")) {
+	fail('Events contact must use the centralized contact adapter.');
 }
 
 if (!header.includes('assets/images/nice-logo.png')) {

@@ -33,13 +33,14 @@ function nice_get_contact_settings() {
 /**
  * Resolve a rendered contact action, falling back to the approval notice.
  *
- * @param string $channel Supported channel name.
+ * @param string $channel         Supported channel name.
+ * @param string $placeholder_url Optional page-specific approval notice URL.
  * @return array{url: string, placeholder: bool}
  */
-function nice_get_contact_action( $channel ) {
+function nice_get_contact_action( $channel, $placeholder_url = '' ) {
 	$settings = nice_get_contact_settings();
 	$action   = array(
-		'url'         => home_url( '/#contact-details-pending' ),
+		'url'         => $placeholder_url ? $placeholder_url : home_url( '/#contact-details-pending' ),
 		'placeholder' => true,
 	);
 

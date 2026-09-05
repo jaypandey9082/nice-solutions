@@ -18,13 +18,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 function nice_theme_asset_version( $relative_path ) {
 	$file_path = get_theme_file_path( $relative_path );
 
-	return file_exists( $file_path ) ? (string) filemtime( $file_path ) : '0.3.1';
+	return file_exists( $file_path ) ? (string) filemtime( $file_path ) : '0.4.0';
 }
 
 /**
  * Load the small shared stylesheet and progressive enhancement scripts.
  */
 function nice_theme_enqueue_assets() {
+	$nice_is_events_page = is_page( 'events' );
+
 	wp_enqueue_style(
 		'nice-site',
 		get_theme_file_uri( '/assets/css/site.css' ),
@@ -61,9 +63,20 @@ function nice_theme_enqueue_assets() {
 			array( 'nice-site' ),
 			nice_theme_asset_version( '/assets/css/landing.css' )
 		);
+	}
 
+	if ( $nice_is_events_page ) {
+		wp_enqueue_style(
+			'nice-events',
+			get_theme_file_uri( '/assets/css/events.css' ),
+			array( 'nice-site' ),
+			nice_theme_asset_version( '/assets/css/events.css' )
+		);
+	}
+
+	if ( is_front_page() || $nice_is_events_page ) {
 		wp_enqueue_script(
-			'nice-landing',
+			'nice-reveal',
 			get_theme_file_uri( '/assets/js/landing.js' ),
 			array(),
 			nice_theme_asset_version( '/assets/js/landing.js' ),

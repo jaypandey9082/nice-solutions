@@ -1,15 +1,15 @@
 # NICE Solutions Website
 
-Architecture, design system, and Phase 3.1 landing page for Nucleus Integrated
-Communication & Entertainment Pvt. Ltd. (N.I.C.E.).
+Architecture, design system, landing page, and Phase 4 Events home for Nucleus
+Integrated Communication & Entertainment Pvt. Ltd. (N.I.C.E.).
 
 ## Phase Status
 
-Phase 1 architecture, the Phase 2 custom block-theme foundation, and the Phase
-3.1 landing-page cleanup are implemented. The repository includes design tokens,
-reusable UI patterns, responsive navigation, source-approved NICE imagery, and
-browser previews. Division pages, the NICE Core plugin, and Phase 4 work have not
-started.
+Phase 1 architecture, the Phase 2 custom block-theme foundation, the Phase 3.1
+landing-page cleanup, and the Phase 4 Events home are implemented. The repository
+includes design tokens, reusable UI patterns, responsive navigation,
+source-approved NICE imagery, and real-browser validation. Studio, deeper Events
+pages, and the NICE Core plugin have not started.
 
 The theme is linked into the running NICE Solutions LocalWP site and is active at
 `http://nice-solutions.local/`. Local HTTPS is available after trusting the site
@@ -561,12 +561,13 @@ runtimes for this project.
 ## Remaining Implementation Order
 
 1. Trust the LocalWP certificate when trusted local HTTPS is needed.
-2. Review and approve the Phase 3.1 landing page in LocalWP.
+2. Review and approve the Phase 4 Events home in LocalWP.
 3. Build and test NICE Core content types, taxonomies, validation, contact
    settings, and permalink rules.
 4. Enter a small set of approved representative content and validate the editing
    workflow with NICE.
-5. Start division-page implementation only after explicit Phase 4 approval.
+5. Start the next approved division or Events detail-page phase only after an
+   explicit brief.
 6. Complete responsive, accessibility, performance, SEO, browser, and content
    QA before staging deployment.
 
@@ -646,3 +647,31 @@ Live browser validation covers 320, 360, 390, 430, 768, 900, 1024, 1200, and
 intrinsic media dimensions, cumulative layout shift, image loading, navigation,
 contact placeholders, keyboard focus, sticky states, reduced motion, failed
 requests, and console errors.
+
+## Phase 4 Completion
+
+The Events home is published locally at `/events/` using the dedicated
+`templates/page-events.html` template. It composes Events hero, three-service
+introduction, selected work, Brief/Idea/Solution process, project-specific proof,
+clients, direct contact, and the existing global footer in that order.
+
+Seven Events patterns and `assets/css/events.css` provide the page-specific
+presentation. Service, project, and client preview data lives in
+`inc/events-data.php` behind filters so future NICE Core content queries can
+replace it without changing the page structure. The page uses only projects,
+clients, descriptions, and metrics supported by the supplied profile.
+
+Only `/events/` was created. Links to `/events/services/`, individual service
+routes, `/events/case-studies/`, `/events/clients/`, `/events/team/`, and
+`/events/contact/` are intentional future destinations; no child page or Studio
+page was added. WhatsApp and email actions continue to use centralized contact
+settings and resolve to a visible Events-specific placeholder until approved
+details are supplied.
+
+Live browser validation covers 320, 360, 390, 430, 768, 900, 1024, 1200, and
+1440px widths. It verifies overflow, hero separation, image dimensions and source
+selection, lazy loading, layout shift, section and route integrity, mobile-menu
+keyboard behavior, sticky header states, reduced motion, landing-to-Events
+routing, failed requests, and console errors. The supplied PDF image exports are
+sufficient for local review; original high-resolution, publication-approved
+masters remain required before production.

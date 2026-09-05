@@ -29,6 +29,7 @@ function nice_theme_setup() {
 		array(
 			'assets/css/site.css',
 			'assets/css/landing.css',
+			'assets/css/events.css',
 			'assets/css/editor.css',
 		)
 	);
@@ -46,6 +47,10 @@ function nice_theme_body_classes( $classes ) {
 
 	if ( is_front_page() ) {
 		$classes[] = 'nice-is-front-page';
+	}
+
+	if ( is_page( 'events' ) ) {
+		$classes[] = 'nice-is-events-page';
 	}
 
 	return $classes;
