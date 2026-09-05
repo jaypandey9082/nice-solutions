@@ -1,0 +1,500 @@
+@layer components {
+	.home .nice-site-header,
+	.nice-is-front-page .nice-site-header {
+		position: fixed;
+	}
+
+	.nice-landing-hero {
+		background: var(--wp--preset--color--warm);
+		isolation: isolate;
+		min-height: calc(100svh - 3rem);
+		overflow: hidden;
+		position: relative;
+	}
+
+	.nice-landing-hero__mosaic {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		inset: 0;
+		position: absolute;
+		z-index: -2;
+	}
+
+	.nice-landing-hero__mosaic img {
+		height: 100%;
+		min-width: 0;
+		object-fit: cover;
+		width: 100%;
+	}
+
+	.nice-landing-hero__veil {
+		background: color-mix(in srgb, var(--wp--preset--color--warm) 82%, transparent);
+		inset: 0;
+		position: absolute;
+		z-index: -1;
+	}
+
+	.nice-landing-hero__inner {
+		display: grid;
+		gap: var(--wp--preset--spacing--xl);
+		grid-template-rows: auto 1fr auto;
+		min-height: calc(100svh - 3rem);
+		padding-bottom: var(--wp--preset--spacing--xl);
+		padding-top: 7.5rem;
+	}
+
+	.nice-landing-hero__brand {
+		display: grid;
+		gap: var(--wp--preset--spacing--sm);
+		justify-items: start;
+	}
+
+	.nice-logo--hero {
+		width: min(68vw, 22rem);
+	}
+
+	.nice-landing-hero__brand p {
+		font-size: var(--wp--preset--font-size--small);
+		font-weight: 600;
+		max-width: 22rem;
+	}
+
+	.nice-landing-hero__statement {
+		align-self: center;
+	}
+
+	.nice-landing-hero__statement h1 {
+		font-size: 3.5rem;
+		line-height: 0.92;
+		max-width: 8ch;
+	}
+
+	.nice-landing-hero__statement h1 span {
+		display: block;
+	}
+
+	.nice-landing-hero__routes {
+		border-top: 1px solid color-mix(in srgb, var(--wp--preset--color--text) 25%, transparent);
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.nice-landing-hero__routes a {
+		align-items: center;
+		display: flex;
+		font-size: var(--wp--preset--font-size--body-large);
+		font-weight: 700;
+		justify-content: space-between;
+		min-height: 3.75rem;
+		padding-inline: 0.75rem;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.nice-landing-hero__routes a + a {
+		border-left: 1px solid color-mix(in srgb, var(--wp--preset--color--text) 25%, transparent);
+	}
+
+	.nice-landing-pathways__heading,
+	.nice-landing-work__heading,
+	.nice-landing-clients__heading {
+		margin-bottom: var(--wp--preset--spacing--xl);
+	}
+
+	.nice-pathways-grid {
+		display: grid;
+		gap: var(--wp--preset--spacing--md);
+	}
+
+	.nice-pathway {
+		background: var(--wp--preset--color--text);
+		color: var(--wp--preset--color--surface) !important;
+		display: block;
+		isolation: isolate;
+		min-height: 26rem;
+		overflow: hidden;
+		position: relative;
+		text-decoration: none;
+	}
+
+	.nice-pathway img,
+	.nice-pathway__shade {
+		inset: 0;
+		position: absolute;
+	}
+
+	.nice-pathway img {
+		height: 100%;
+		object-fit: cover;
+		transition: transform var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing);
+		width: 100%;
+		z-index: -2;
+	}
+
+	.nice-pathway__shade {
+		background: color-mix(in srgb, var(--wp--preset--color--text) 48%, transparent);
+		z-index: -1;
+	}
+
+	.nice-pathway__content {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		grid-template-rows: 1fr auto;
+		height: 100%;
+		padding: var(--wp--preset--spacing--lg);
+	}
+
+	.nice-pathway__label {
+		font-size: 3rem;
+		font-weight: 600;
+		letter-spacing: 0;
+		line-height: 1;
+	}
+
+	.nice-pathway__detail {
+		align-self: end;
+		font-size: var(--wp--preset--font-size--small);
+		font-weight: 600;
+		line-height: 1.45;
+		max-width: 22rem;
+	}
+
+	.nice-pathway__arrow {
+		align-self: end;
+		font-size: 2rem;
+		grid-column: 2;
+		grid-row: 1 / span 2;
+		transition: transform var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
+	}
+
+	.nice-pathway:hover img,
+	.nice-pathway:focus-visible img {
+		transform: scale(1.025);
+	}
+
+	.nice-pathway:hover .nice-pathway__arrow,
+	.nice-pathway:focus-visible .nice-pathway__arrow {
+		transform: translateX(0.35rem);
+	}
+
+	.nice-landing-philosophy {
+		display: grid;
+		min-height: 72svh;
+		place-items: center;
+	}
+
+	.nice-landing-philosophy__inner {
+		display: grid;
+		gap: var(--wp--preset--spacing--xl);
+		padding-block: var(--nice-section-space);
+	}
+
+	.nice-landing-philosophy h2 {
+		font-size: 2.75rem;
+		line-height: 1.02;
+		max-width: 15ch;
+	}
+
+	.nice-landing-philosophy h2 span {
+		display: block;
+	}
+
+	.nice-landing-philosophy h2 span + span {
+		color: var(--wp--preset--color--muted);
+	}
+
+	.nice-landing-work__grid {
+		display: grid;
+		gap: var(--wp--preset--spacing--2-xl);
+	}
+
+	.nice-landing-project {
+		display: grid;
+		gap: var(--wp--preset--spacing--md);
+	}
+
+	.nice-landing-project__media {
+		background: var(--wp--preset--color--media-neutral);
+		overflow: hidden;
+	}
+
+	.nice-landing-project__media img {
+		height: 100%;
+		object-fit: cover;
+		transition: transform var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing);
+		width: 100%;
+	}
+
+	.nice-landing-project:hover .nice-landing-project__media img {
+		transform: scale(1.018);
+	}
+
+	.nice-landing-project--feature .nice-landing-project__media {
+		aspect-ratio: 16 / 9;
+	}
+
+	.nice-landing-project--secondary .nice-landing-project__media {
+		aspect-ratio: 4 / 3;
+	}
+
+	.nice-landing-project--compact .nice-landing-project__media {
+		aspect-ratio: 4 / 5;
+	}
+
+	.nice-landing-project__meta {
+		display: flex;
+		flex-wrap: wrap;
+		font-size: var(--wp--preset--font-size--small);
+		gap: var(--wp--preset--spacing--sm) var(--wp--preset--spacing--xl);
+	}
+
+	.nice-landing-project__meta p {
+		display: grid;
+		gap: 0.15rem;
+	}
+
+	.nice-landing-project__meta span {
+		color: var(--wp--preset--color--muted);
+		font-size: var(--wp--preset--font-size--label);
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.nice-landing-project h3 {
+		font-size: 1.75rem;
+	}
+
+	.nice-landing-capabilities {
+		background: var(--wp--preset--color--text);
+		color: var(--wp--preset--color--surface);
+	}
+
+	.nice-landing-capabilities__inner {
+		display: grid;
+		gap: var(--wp--preset--spacing--2-xl);
+		padding-block: var(--nice-section-space);
+	}
+
+	.nice-landing-capabilities h2 {
+		font-size: 3rem;
+	}
+
+	.nice-capability-groups {
+		display: grid;
+		gap: var(--wp--preset--spacing--2-xl);
+	}
+
+	.nice-capability-group h3 {
+		color: var(--wp--preset--color--brand-red);
+		font-size: var(--wp--preset--font-size--label);
+		margin-bottom: var(--wp--preset--spacing--lg);
+		text-transform: uppercase;
+	}
+
+	.nice-capability-group ol {
+		border-top: 1px solid color-mix(in srgb, var(--wp--preset--color--surface) 24%, transparent);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.nice-capability-group li {
+		align-items: baseline;
+		border-bottom: 1px solid color-mix(in srgb, var(--wp--preset--color--surface) 24%, transparent);
+		display: grid;
+		font-size: 1.35rem;
+		font-weight: 600;
+		gap: var(--wp--preset--spacing--lg);
+		grid-template-columns: 2rem minmax(0, 1fr);
+		padding-block: var(--wp--preset--spacing--lg);
+	}
+
+	.nice-capability-group li span {
+		color: var(--wp--preset--color--brand-red);
+		font-size: var(--wp--preset--font-size--label);
+	}
+
+	.nice-landing-clients__heading {
+		display: grid;
+		gap: var(--wp--preset--spacing--md);
+	}
+
+	.nice-client-names {
+		border-top: 1px solid var(--wp--preset--color--border);
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.nice-client-names li {
+		border-bottom: 1px solid var(--wp--preset--color--border);
+		font-size: 1.35rem;
+		font-weight: 600;
+		padding-block: var(--wp--preset--spacing--lg);
+	}
+
+	.nice-client-names li:nth-child(even) {
+		padding-left: var(--wp--preset--spacing--md);
+	}
+
+	.nice-contact-band__action-group {
+		display: grid;
+		gap: var(--wp--preset--spacing--sm);
+	}
+
+	.nice-contact-status {
+		color: color-mix(in srgb, var(--wp--preset--color--surface) 65%, transparent);
+		font-size: var(--wp--preset--font-size--small);
+	}
+
+	.nice-footer-brand {
+		align-content: start;
+	}
+
+	@media (min-width: 48rem) {
+		.nice-landing-hero__mosaic {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+
+		.nice-landing-hero__veil {
+			background: color-mix(in srgb, var(--wp--preset--color--warm) 76%, transparent);
+		}
+
+		.nice-landing-hero__inner {
+			grid-template-columns: minmax(14rem, 0.5fr) minmax(0, 1fr);
+			grid-template-rows: auto 1fr auto;
+			padding-bottom: var(--wp--preset--spacing--2-xl);
+			padding-top: 9rem;
+		}
+
+		.nice-landing-hero__brand {
+			grid-column: 1;
+		}
+
+		.nice-logo--hero {
+			width: min(36vw, 27rem);
+		}
+
+		.nice-landing-hero__statement {
+			align-self: end;
+			grid-column: 2;
+			grid-row: 1 / span 2;
+			justify-self: end;
+		}
+
+		.nice-landing-hero__statement h1 {
+			font-size: 6rem;
+		}
+
+		.nice-landing-hero__routes {
+			grid-column: 1 / -1;
+		}
+
+		.nice-landing-hero__routes a {
+			font-size: 1.5rem;
+			min-height: 4.5rem;
+			padding-inline: var(--wp--preset--spacing--lg);
+		}
+
+		.nice-pathways-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.nice-pathway {
+			min-height: 38rem;
+		}
+
+		.nice-pathway__content {
+			padding: var(--wp--preset--spacing--xl);
+		}
+
+		.nice-pathway__label {
+			font-size: 4.5rem;
+		}
+
+		.nice-landing-philosophy h2 {
+			font-size: 4.5rem;
+		}
+
+		.nice-landing-work__grid {
+			align-items: start;
+			gap: var(--wp--preset--spacing--2-xl) var(--wp--preset--spacing--xl);
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+		}
+
+		.nice-landing-project--feature {
+			grid-column: 1 / 10;
+		}
+
+		.nice-landing-project--secondary {
+			grid-column: 6 / 13;
+		}
+
+		.nice-landing-project--compact {
+			grid-column: 1 / 5;
+			grid-row: 2;
+		}
+
+		.nice-capability-groups {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.nice-client-names {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.nice-client-names li {
+			font-size: 1.75rem;
+		}
+
+		.nice-client-names li:nth-child(even) {
+			padding-left: 0;
+		}
+
+		.nice-client-names li:not(:nth-child(3n + 1)) {
+			padding-left: var(--wp--preset--spacing--lg);
+		}
+	}
+
+	@media (min-width: 75rem) {
+		.nice-landing-hero__statement h1 {
+			font-size: 8rem;
+		}
+
+		.nice-pathway__label {
+			font-size: 5.5rem;
+		}
+
+		.nice-landing-philosophy h2 {
+			font-size: 5.5rem;
+		}
+
+		.nice-landing-capabilities h2 {
+			font-size: 4rem;
+		}
+	}
+}
+
+@layer motion {
+	.nice-has-reveal [data-nice-reveal] {
+		opacity: 0;
+		transform: translateY(1rem);
+		transition:
+			opacity var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing),
+			transform var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing);
+	}
+
+	.nice-has-reveal [data-nice-reveal].is-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.nice-has-reveal [data-nice-reveal] {
+			opacity: 1;
+			transform: none;
+		}
+	}
+}

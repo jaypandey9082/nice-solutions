@@ -1,0 +1,71 @@
+# macOS and editor files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.local
+auth.json
+
+# Logs, caches, and test output
+*.log
+.cache/
+.phpunit.result.cache
+.phpcs-cache
+coverage/
+playwright-report/
+test-results/
+.playwright-cli/
+
+# JavaScript dependencies and generated assets
+node_modules/
+build/
+dist/
+*.map
+
+# PHP dependencies when development tooling is added
+vendor/
+
+# WordPress core and local runtime files
+wp-admin/
+wp-includes/
+wp-config.php
+wp-config-local.php
+.htaccess
+web.config
+
+# WordPress generated and environment-specific content
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/backups/
+wp-content/ai1wm-backups/
+wp-content/languages/
+wp-content/debug.log
+
+# Database exports and archives
+*.sql
+*.sql.gz
+*.tar
+*.tar.gz
+*.zip
+
+# LocalWP project state
+Local Sites/
+app/sql/
+conf/
+logs/
+
+# Internal source documents stay local unless a private-repo decision approves them
+reference/*.pdf
+reference/*.docx
+reference/*.pptx

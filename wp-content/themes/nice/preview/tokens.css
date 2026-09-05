@@ -1,0 +1,41 @@
+/* Generated from ../theme.json by scripts/build-preview-tokens.mjs. */
+:root {
+	--wp--preset--color--background: #FFFFFF;
+	--wp--preset--color--warm: #F7F6F2;
+	--wp--preset--color--surface: #FFFFFF;
+	--wp--preset--color--text: #111111;
+	--wp--preset--color--muted: #5F6268;
+	--wp--preset--color--brand-red: #EF233C;
+	--wp--preset--color--action-red: #D7193F;
+	--wp--preset--color--brand-blue: #095584;
+	--wp--preset--color--border: #D9DADC;
+	--wp--preset--color--media-neutral: #DCE6EC;
+	--wp--preset--font-family--sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+	--wp--preset--font-size--label: 0.75rem;
+	--wp--preset--font-size--small: 0.875rem;
+	--wp--preset--font-size--body: 1rem;
+	--wp--preset--font-size--body-large: 1.1875rem;
+	--wp--preset--font-size--heading-3: 1.5rem;
+	--wp--preset--font-size--heading-2: 2.25rem;
+	--wp--preset--font-size--heading-1: 3rem;
+	--wp--preset--font-size--display: 4rem;
+	--wp--preset--spacing--xs: 0.5rem;
+	--wp--preset--spacing--sm: 0.75rem;
+	--wp--preset--spacing--md: 1rem;
+	--wp--preset--spacing--lg: 1.5rem;
+	--wp--preset--spacing--xl: 2.25rem;
+	--wp--preset--spacing--2-xl: 3.5rem;
+	--wp--preset--spacing--section: 5rem;
+	--wp--custom--layout--page-gutter: 1.25rem;
+	--wp--custom--layout--content-width: 45rem;
+	--wp--custom--layout--wide-width: 77.5rem;
+	--wp--custom--layout--header-offset: 1rem;
+	--wp--custom--radius--small: 4px;
+	--wp--custom--radius--medium: 8px;
+	--wp--custom--radius--large: 16px;
+	--wp--custom--radius--pill: 999px;
+	--wp--custom--motion--duration-fast: 140ms;
+	--wp--custom--motion--duration-normal: 220ms;
+	--wp--custom--motion--duration-slow: 360ms;
+	--wp--custom--motion--easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+}

@@ -1,0 +1,279 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "color": {
+      "custom": false,
+      "customDuotone": false,
+      "customGradient": false,
+      "defaultDuotone": false,
+      "defaultGradients": false,
+      "defaultPalette": false,
+      "palette": [
+        {
+          "slug": "background",
+          "name": "Background",
+          "color": "#FFFFFF"
+        },
+        {
+          "slug": "warm",
+          "name": "Warm Background",
+          "color": "#F7F6F2"
+        },
+        {
+          "slug": "surface",
+          "name": "Surface",
+          "color": "#FFFFFF"
+        },
+        {
+          "slug": "text",
+          "name": "Text",
+          "color": "#111111"
+        },
+        {
+          "slug": "muted",
+          "name": "Muted Text",
+          "color": "#5F6268"
+        },
+        {
+          "slug": "brand-red",
+          "name": "NICE Red",
+          "color": "#EF233C"
+        },
+        {
+          "slug": "action-red",
+          "name": "Accessible Action Red",
+          "color": "#D7193F"
+        },
+        {
+          "slug": "brand-blue",
+          "name": "NICE Blue",
+          "color": "#095584"
+        },
+        {
+          "slug": "border",
+          "name": "Border",
+          "color": "#D9DADC"
+        },
+        {
+          "slug": "media-neutral",
+          "name": "Media Neutral",
+          "color": "#DCE6EC"
+        }
+      ]
+    },
+    "layout": {
+      "contentSize": "45rem",
+      "wideSize": "77.5rem"
+    },
+    "shadow": {
+      "defaultPresets": false,
+      "presets": []
+    },
+    "spacing": {
+      "blockGap": true,
+      "customSpacingSize": false,
+      "defaultSpacingSizes": false,
+      "spacingSizes": [
+        {
+          "slug": "xs",
+          "name": "Extra Small",
+          "size": "0.5rem"
+        },
+        {
+          "slug": "sm",
+          "name": "Small",
+          "size": "0.75rem"
+        },
+        {
+          "slug": "md",
+          "name": "Medium",
+          "size": "1rem"
+        },
+        {
+          "slug": "lg",
+          "name": "Large",
+          "size": "1.5rem"
+        },
+        {
+          "slug": "xl",
+          "name": "Extra Large",
+          "size": "2.25rem"
+        },
+        {
+          "slug": "2-xl",
+          "name": "Two Extra Large",
+          "size": "3.5rem"
+        },
+        {
+          "slug": "section",
+          "name": "Section",
+          "size": "5rem"
+        }
+      ],
+      "units": [
+        "px",
+        "rem",
+        "%",
+        "vh",
+        "vw"
+      ]
+    },
+    "typography": {
+      "customFontSize": false,
+      "defaultFontSizes": false,
+      "dropCap": false,
+      "fluid": false,
+      "fontFamilies": [
+        {
+          "slug": "sans",
+          "name": "NICE Sans",
+          "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif"
+        }
+      ],
+      "fontSizes": [
+        {
+          "slug": "label",
+          "name": "Label",
+          "size": "0.75rem"
+        },
+        {
+          "slug": "small",
+          "name": "Small",
+          "size": "0.875rem"
+        },
+        {
+          "slug": "body",
+          "name": "Body",
+          "size": "1rem"
+        },
+        {
+          "slug": "body-large",
+          "name": "Body Large",
+          "size": "1.1875rem"
+        },
+        {
+          "slug": "heading-3",
+          "name": "Heading 3",
+          "size": "1.5rem"
+        },
+        {
+          "slug": "heading-2",
+          "name": "Heading 2",
+          "size": "2.25rem"
+        },
+        {
+          "slug": "heading-1",
+          "name": "Heading 1",
+          "size": "3rem"
+        },
+        {
+          "slug": "display",
+          "name": "Display",
+          "size": "4rem"
+        }
+      ]
+    },
+    "custom": {
+      "layout": {
+        "page-gutter": "1.25rem",
+        "content-width": "45rem",
+        "wide-width": "77.5rem",
+        "header-offset": "1rem"
+      },
+      "radius": {
+        "small": "4px",
+        "medium": "8px",
+        "large": "16px",
+        "pill": "999px"
+      },
+      "motion": {
+        "duration-fast": "140ms",
+        "duration-normal": "220ms",
+        "duration-slow": "360ms",
+        "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)"
+      }
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "var:preset|color|background",
+      "text": "var:preset|color|text"
+    },
+    "spacing": {
+      "blockGap": "var:preset|spacing|md"
+    },
+    "typography": {
+      "fontFamily": "var:preset|font-family|sans",
+      "fontSize": "var:preset|font-size|body",
+      "fontWeight": "400",
+      "letterSpacing": "0",
+      "lineHeight": "1.625"
+    },
+    "elements": {
+      "button": {
+        "border": {
+          "radius": "999px"
+        },
+        "color": {
+          "background": "var:preset|color|action-red",
+          "text": "var:preset|color|surface"
+        },
+        "typography": {
+          "fontSize": "var:preset|font-size|small",
+          "fontWeight": "600",
+          "letterSpacing": "0"
+        }
+      },
+      "heading": {
+        "typography": {
+          "fontFamily": "var:preset|font-family|sans",
+          "fontWeight": "600",
+          "letterSpacing": "0",
+          "lineHeight": "1.08"
+        }
+      },
+      "h1": {
+        "typography": {
+          "fontSize": "var:preset|font-size|heading-1"
+        }
+      },
+      "h2": {
+        "typography": {
+          "fontSize": "var:preset|font-size|heading-2"
+        }
+      },
+      "h3": {
+        "typography": {
+          "fontSize": "var:preset|font-size|heading-3"
+        }
+      },
+      "link": {
+        "color": {
+          "text": "var:preset|color|text"
+        },
+        "typography": {
+          "textDecoration": "none"
+        },
+        ":hover": {
+          "color": {
+            "text": "var:preset|color|action-red"
+          }
+        }
+      }
+    }
+  },
+  "templateParts": [
+    {
+      "name": "header",
+      "title": "Header",
+      "area": "header"
+    },
+    {
+      "name": "footer",
+      "title": "Footer",
+      "area": "footer"
+    }
+  ]
+}

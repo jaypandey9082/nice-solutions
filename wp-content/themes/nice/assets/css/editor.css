@@ -1,0 +1,24 @@
+.editor-styles-wrapper {
+	background: var(--wp--preset--color--background);
+	color: var(--wp--preset--color--text);
+	padding-inline: var(--wp--custom--layout--page-gutter);
+}
+
+.editor-styles-wrapper .nice-site-header,
+.editor-styles-wrapper .nice-mobile-menu {
+	position: relative;
+}
+
+.editor-styles-wrapper .nice-mobile-menu {
+	display: none;
+}
+
+.editor-styles-wrapper .nice-media-placeholder {
+	align-items: center;
+	background: var(--wp--preset--color--warm);
+	border: 1px solid var(--wp--preset--color--border);
+	display: flex;
+	justify-content: center;
+	min-height: 14rem;
+}
+

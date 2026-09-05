@@ -1,0 +1,117 @@
+.nice-preview-hero {
+	align-items: end;
+	display: grid;
+	min-height: 34rem;
+	padding-bottom: var(--wp--preset--spacing--2-xl);
+	padding-top: var(--wp--preset--spacing--section);
+}
+
+.nice-preview-hero__inner {
+	display: grid;
+	gap: var(--wp--preset--spacing--xl);
+}
+
+.nice-preview-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--wp--preset--spacing--sm);
+}
+
+.nice-media-placeholder {
+	align-items: flex-end;
+	background: var(--wp--preset--color--media-neutral);
+	display: flex;
+	isolation: isolate;
+	justify-content: flex-start;
+	position: relative;
+}
+
+.nice-media-placeholder::before,
+.nice-media-placeholder::after {
+	content: "";
+	position: absolute;
+	z-index: -1;
+}
+
+.nice-media-placeholder::before {
+	background: var(--wp--preset--color--brand-blue);
+	bottom: 0;
+	height: 42%;
+	left: 0;
+	width: 68%;
+}
+
+.nice-media-placeholder::after {
+	background: var(--wp--preset--color--brand-red);
+	height: 44%;
+	right: 8%;
+	top: 10%;
+	width: 24%;
+}
+
+.nice-media-placeholder--warm {
+	background: var(--wp--preset--color--warm);
+}
+
+.nice-media-placeholder--warm::before {
+	background: var(--wp--preset--color--text);
+	bottom: 10%;
+	height: 68%;
+	left: 8%;
+	width: 36%;
+}
+
+.nice-media-placeholder--warm::after {
+	background: var(--wp--preset--color--action-red);
+	bottom: 10%;
+	height: 20%;
+	right: 8%;
+	top: auto;
+	width: 40%;
+}
+
+.nice-preview-video-label {
+	color: var(--wp--preset--color--surface);
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 600;
+	left: 1rem;
+	position: absolute;
+	top: 1rem;
+	z-index: 2;
+}
+
+.nice-preview-video-button {
+	align-items: center;
+	background: var(--wp--preset--color--surface);
+	border: 0;
+	border-radius: 50%;
+	color: var(--wp--preset--color--text);
+	display: flex;
+	height: 3.5rem;
+	justify-content: center;
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 3.5rem;
+	z-index: 2;
+}
+
+.nice-preview-video-button::before {
+	border-bottom: 0.4rem solid transparent;
+	border-left: 0.65rem solid currentColor;
+	border-top: 0.4rem solid transparent;
+	content: "";
+	margin-left: 0.15rem;
+}
+
+@media (min-width: 48rem) {
+	.nice-preview-hero {
+		min-height: 42rem;
+	}
+
+	.nice-preview-hero__inner {
+		align-items: end;
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+}

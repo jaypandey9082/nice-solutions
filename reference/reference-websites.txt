@@ -1,0 +1,43 @@
+RREFERENCE WEBSITES
+
+1. https://www.polar.agency/
+   Reference for:
+   - premium creative agency feel
+   - typography
+   - whitespace
+   - editorial layouts
+   - project presentation
+   - subtle interactions
+   - visual storytelling
+
+2. https://www.neoniche.com/
+   Reference for:
+   - experiential/event agency structure
+   - services
+   - case studies
+   - client presentation
+
+3. https://midasnext.in/
+   Reference for:
+   - corporate/event agency positioning
+   - proof/numbers
+   - service structure
+   - credibility
+
+4. https://weeventsco.com/
+   Reference for:
+   - event agency navigation
+   - services
+   - portfolio structure
+   - clean presentation
+
+5. https://yellowcanvasevents.com/
+   Reference for:
+   - experiential/event presentation
+   - project storytelling
+   - visual hierarchy
+
+IMPORTANT:
+These websites are references only.
+Do NOT copy their design, layout, text, assets, branding, code, or identity.
+Use them only to understand design patterns and UX direction.

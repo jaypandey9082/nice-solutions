@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="color-scheme" content="light">
+	<title>NICE Design System Preview</title>
+	<link rel="icon" href="data:,">
+	<link rel="stylesheet" href="tokens.css">
+	<link rel="stylesheet" href="../assets/css/site.css">
+	<link rel="stylesheet" href="preview.css">
+</head>
+<body class="nice-theme">
+	<a class="nice-skip-link" href="#main-content">Skip to content</a>
+	<header class="nice-site-header" data-nice-header>
+		<nav class="nice-nav-shell" aria-label="Primary navigation">
+			<a class="nice-wordmark" href="#top" aria-label="NICE preview home">NICE<span class="nice-wordmark__accent">.</span></a>
+			<div class="nice-desktop-nav">
+				<a href="#top">NICE</a>
+				<a href="#work">Work</a>
+				<a href="#services">Services</a>
+				<a href="#events">Events</a>
+				<a href="#studio">Studio</a>
+				<a href="#clients">Clients</a>
+			</div>
+			<a class="nice-button nice-button--primary nice-nav-cta" href="#contact">Contact</a>
+			<button class="nice-menu-toggle" type="button" aria-expanded="false" aria-controls="nice-mobile-menu" aria-label="Open menu" data-nice-menu-open>
+				<span class="nice-menu-icon" aria-hidden="true"></span>
+			</button>
+		</nav>
+		<div class="nice-mobile-menu" id="nice-mobile-menu" data-state="closed" data-nice-mobile-menu aria-hidden="true" inert>
+			<div class="nice-mobile-menu__top">
+				<a class="nice-wordmark" href="#top" aria-label="NICE preview home">NICE<span class="nice-wordmark__accent">.</span></a>
+				<button class="nice-menu-close" type="button" aria-label="Close menu" data-nice-menu-close></button>
+			</div>
+			<div class="nice-mobile-menu__links">
+				<a href="#events">Events</a>
+				<a href="#studio">Studio</a>
+				<a href="#work">Work</a>
+				<a href="#services">Services</a>
+				<a href="#clients">Clients</a>
+				<a href="#team">Team</a>
+				<a href="#contact">Contact</a>
+			</div>
+			<div class="nice-mobile-menu__actions" aria-label="Contact options">
+				<a class="nice-button nice-button--primary" href="#contact">WhatsApp</a>
+				<a class="nice-button nice-button--secondary" href="#contact">Email</a>
+			</div>
+		</div>
+	</header>
+
+	<main id="main-content" class="nice-main">
+		<section class="nice-preview-hero nice-surface-warm" id="top">
+			<div class="nice-wide nice-preview-hero__inner">
+				<div class="nice-stack">
+					<p class="nice-eyebrow">NICE visual foundation</p>
+					<h1 class="nice-display">Clear ideas. Strong experiences.</h1>
+					<p class="nice-body-large nice-muted">A restrained system for Events and Studio, built around typography, space, and media.</p>
+				</div>
+				<div class="nice-preview-actions">
+					<a class="nice-button nice-button--primary" href="#work">View work</a>
+					<a class="nice-button nice-button--secondary" href="#services">Services</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="nice-section" id="work">
+			<div class="nice-wide nice-stack">
+				<header class="nice-section-heading">
+					<p class="nice-eyebrow">Selected work</p>
+					<div class="nice-section-heading__row">
+						<h2>Work that speaks for itself.</h2>
+						<p class="nice-section-heading__copy">Project components can move from a single featured story to compact editorial pairs.</p>
+					</div>
+				</header>
+				<div class="nice-grid nice-grid--projects">
+					<article class="nice-project-card nice-project-card--featured">
+						<a class="nice-project-card__link" href="#project-one">
+							<div class="nice-project-card__media nice-media-placeholder" role="img" aria-label="Neutral media placeholder"></div>
+							<div class="nice-project-card__content">
+								<div class="nice-project-card__meta"><span>Client</span><span>Category</span><span>20XX</span></div>
+								<h3 class="nice-project-card__title" id="project-one">Featured project title</h3>
+								<p class="nice-project-card__description">A short, factual descriptor will sit here when approved project content is entered.</p>
+							</div>
+						</a>
+					</article>
+					<article class="nice-project-card">
+						<a class="nice-project-card__link" href="#project-two">
+							<div class="nice-project-card__media nice-media-placeholder nice-media-placeholder--warm" role="img" aria-label="Neutral media placeholder"></div>
+							<div class="nice-project-card__content">
+								<div class="nice-project-card__meta"><span>Client</span><span>Category</span><span>20XX</span></div>
+								<h3 class="nice-project-card__title" id="project-two">Standard project title</h3>
+							</div>
+						</a>
+					</article>
+					<article class="nice-project-card nice-project-card--compact">
+						<a class="nice-project-card__link" href="#project-three">
+							<div class="nice-project-card__media nice-media-placeholder" role="img" aria-label="Neutral media placeholder"></div>
+							<div class="nice-project-card__content">
+								<div class="nice-project-card__meta"><span>Client</span><span>Category</span></div>
+								<h3 class="nice-project-card__title" id="project-three">Compact project title</h3>
+							</div>
+						</a>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section class="nice-section nice-surface-warm" id="services">
+			<div class="nice-wide nice-stack">
+				<header class="nice-section-heading">
+					<p class="nice-eyebrow">Services</p>
+					<div class="nice-section-heading__row">
+						<h2>Focused capabilities.</h2>
+						<p class="nice-section-heading__copy">Service rows stay simple, direct, and easy to scan across every viewport.</p>
+					</div>
+				</header>
+				<div class="nice-service-list">
+					<article class="nice-service-card" id="events">
+						<span class="nice-service-card__number">01</span>
+						<h3 class="nice-service-card__title">Corporate Events</h3>
+						<p class="nice-service-card__copy">Source-approved service copy will be added during content implementation.</p>
+						<a class="nice-link nice-service-card__action" href="#events">Explore <span class="nice-link__arrow" aria-hidden="true">-&gt;</span></a>
+					</article>
+					<article class="nice-service-card" id="studio">
+						<span class="nice-service-card__number">02</span>
+						<h3 class="nice-service-card__title">Corporate Videos</h3>
+						<p class="nice-service-card__copy">The same component supports Studio services without creating a separate visual system.</p>
+						<a class="nice-link nice-service-card__action" href="#studio">Explore <span class="nice-link__arrow" aria-hidden="true">-&gt;</span></a>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section class="nice-section" id="media">
+			<div class="nice-wide nice-grid nice-grid--asymmetric">
+				<div class="nice-video">
+					<span class="nice-preview-video-label">Responsive video / poster</span>
+					<button class="nice-preview-video-button" type="button" aria-label="Play preview video"></button>
+				</div>
+				<div class="nice-stack">
+					<p class="nice-eyebrow">Media system</p>
+					<h2>Built for motion, without the weight.</h2>
+					<p class="nice-muted">Video sources can remain unloaded until they approach the viewport, with a stable poster and responsive frame.</p>
+					<a class="nice-link" href="#contact">View media pattern <span class="nice-link__arrow" aria-hidden="true">-&gt;</span></a>
+				</div>
+			</div>
+		</section>
+
+		<section class="nice-contact-band" id="contact">
+			<div class="nice-wide nice-contact-band__inner">
+				<div class="nice-stack">
+					<p class="nice-eyebrow">Let's create something</p>
+					<h2>Have a project in mind?</h2>
+				</div>
+				<div class="nice-contact-band__actions">
+					<a class="nice-button nice-button--primary" href="#contact">WhatsApp</a>
+					<a class="nice-button nice-button--secondary" href="#contact">Email</a>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="nice-site-footer" id="clients">
+		<div class="nice-wide">
+			<div class="nice-footer-grid">
+				<div class="nice-stack">
+					<a class="nice-wordmark" href="#top" aria-label="NICE preview home">NICE<span class="nice-wordmark__accent">.</span></a>
+					<p class="nice-muted">Nucleus Integrated Communication &amp; Entertainment Pvt. Ltd.</p>
+				</div>
+				<nav class="nice-footer-nav" aria-label="Preview explore links">
+					<span class="nice-eyebrow">Explore</span>
+					<a href="#events">Events</a>
+					<a href="#studio">Studio</a>
+					<a href="#work">Work</a>
+					<a href="#services">Services</a>
+				</nav>
+				<nav class="nice-footer-nav" aria-label="Preview information links">
+					<span class="nice-eyebrow">Connect</span>
+					<a href="#clients">Clients</a>
+					<a href="#team" id="team">Team</a>
+					<a href="#contact">Contact</a>
+				</nav>
+			</div>
+			<div class="nice-footer-meta">
+				<span>&copy; NICE Solutions</span>
+				<span>Events / Studio</span>
+			</div>
+		</div>
+	</footer>
+
+	<script src="../assets/js/navigation.js"></script>
+	<script src="../assets/js/media.js"></script>
+</body>
+</html>
