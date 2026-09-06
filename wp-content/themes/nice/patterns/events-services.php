@@ -6,7 +6,7 @@
  * Description: Editorial introduction to the three approved Events services.
  */
 
-$nice_events_services     = nice_get_events_services();
+$nice_events_services     = nice_get_events_service_previews();
 $nice_all_services_url    = esc_url( home_url( '/events/services/' ) );
 $nice_service_sizes       = '(min-width: 1320px) 612px, (min-width: 768px) calc(50vw - 40px), calc(100vw - 40px)';
 ?>
@@ -28,7 +28,11 @@ $nice_service_sizes       = '(min-width: 1320px) 612px, (min-width: 768px) calc(
 			?>
 				<article class="nice-events-service<?php echo 1 === $nice_index ? ' nice-events-service--reverse' : ''; ?>" data-nice-reveal>
 					<div class="nice-events-service__media">
-						<img src="<?php echo $nice_service_image_mobile; ?>" srcset="<?php echo $nice_service_image_mobile; ?> 480w, <?php echo $nice_service_image; ?> <?php echo esc_attr( $nice_service['width'] ); ?>w" sizes="<?php echo esc_attr( $nice_service_sizes ); ?>" width="<?php echo esc_attr( $nice_service['width'] ); ?>" height="<?php echo esc_attr( $nice_service['height'] ); ?>" alt="<?php echo esc_attr( $nice_service['alt'] ); ?>" loading="lazy" decoding="async">
+						<?php if ( ! empty( $nice_service['attachment_id'] ) ) : ?>
+							<?php echo wp_get_attachment_image( $nice_service['attachment_id'], 'full', false, array( 'alt' => $nice_service['alt'], 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => $nice_service_sizes ) ); ?>
+						<?php else : ?>
+							<img src="<?php echo $nice_service_image_mobile; ?>" srcset="<?php echo $nice_service_image_mobile; ?> 480w, <?php echo $nice_service_image; ?> <?php echo esc_attr( $nice_service['width'] ); ?>w" sizes="<?php echo esc_attr( $nice_service_sizes ); ?>" width="<?php echo esc_attr( $nice_service['width'] ); ?>" height="<?php echo esc_attr( $nice_service['height'] ); ?>" alt="<?php echo esc_attr( $nice_service['alt'] ); ?>" loading="lazy" decoding="async">
+						<?php endif; ?>
 					</div>
 					<div class="nice-events-service__content">
 						<span class="nice-events-service__index"><?php echo esc_html( sprintf( '%02d', $nice_index + 1 ) ); ?></span>

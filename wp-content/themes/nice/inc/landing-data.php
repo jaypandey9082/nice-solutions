@@ -1,10 +1,6 @@
 <?php
 /**
- * Temporary source-approved landing-page preview data.
- *
- * These filters form a narrow bridge to future NICE Core queries. They are not
- * the Case Study or Client content models and should be replaced when those
- * models are implemented.
+ * Landing-page presentation adapters with safe source-approved fallbacks.
  *
  * @package Nice
  */
@@ -14,13 +10,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Return the curated landing-page project preview.
+ * Return the curated landing project fallback.
  *
  * @return array<int, array<string, mixed>>
  */
-function nice_get_landing_project_previews() {
-	$projects = array(
+function nice_get_landing_project_previews_fallback() {
+	return array(
 		array(
+			'slug'     => 'voltas-fam-tastic-fiesta',
 			'class'    => 'nice-landing-project--feature',
 			'image'    => 'voltas-fam-tastic',
 			'width'    => 650,
@@ -31,6 +28,7 @@ function nice_get_landing_project_previews() {
 			'division' => 'Events',
 		),
 		array(
+			'slug'     => 'gca-2025',
 			'class'    => 'nice-landing-project--secondary',
 			'image'    => 'gca-2025',
 			'width'    => 569,
@@ -41,6 +39,7 @@ function nice_get_landing_project_previews() {
 			'division' => 'Events',
 		),
 		array(
+			'slug'     => 'zoetis-employee-engagement-day',
 			'class'    => 'nice-landing-project--compact',
 			'image'    => 'zoetis-engagement',
 			'width'    => 543,
@@ -51,17 +50,60 @@ function nice_get_landing_project_previews() {
 			'division' => 'Events',
 		),
 	);
-
-	return apply_filters( 'nice_landing_project_previews', $projects );
 }
 
 /**
- * Return the curated landing-page client preview.
+ * Return landing projects from NICE Core or the complete fallback set.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function nice_get_landing_project_previews() {
+	$fallback = nice_get_landing_project_previews_fallback();
+
+	if ( function_exists( 'nice_get_case_study_by_slug' ) ) {
+		$previews = array();
+
+		foreach ( $fallback as $item ) {
+			$case_study = nice_get_case_study_by_slug( $item['slug'] );
+
+			if ( ! $case_study ) {
+				return apply_filters( 'nice_landing_project_previews', $fallback );
+			}
+
+			$item['title']         = $case_study->post_title;
+			$item['client']        = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $case_study->ID ) : $item['client'];
+			$item['attachment_id'] = get_post_thumbnail_id( $case_study );
+			$previews[]            = $item;
+		}
+
+		return apply_filters( 'nice_landing_project_previews', $previews );
+	}
+
+	return apply_filters( 'nice_landing_project_previews', $fallback );
+}
+
+/**
+ * Return the landing client display list after verifying CMS records exist.
  *
  * @return string[]
  */
 function nice_get_landing_client_previews() {
-	$clients = array( 'Voltas', 'Zoetis', 'Airtel', 'Bajaj', 'Mahindra', 'CRISIL' );
+	$fallback = array(
+		'voltas-limited' => 'Voltas',
+		'zoetis'         => 'Zoetis',
+		'airtel'         => 'Airtel',
+		'bajaj'          => 'Bajaj',
+		'mahindra'       => 'Mahindra',
+		'crisil'         => 'CRISIL',
+	);
 
-	return apply_filters( 'nice_landing_client_previews', $clients );
+	if ( function_exists( 'nice_get_client_by_slug' ) ) {
+		foreach ( $fallback as $slug => $display_name ) {
+			if ( ! nice_get_client_by_slug( $slug ) ) {
+				return apply_filters( 'nice_landing_client_previews', array_values( $fallback ) );
+			}
+		}
+	}
+
+	return apply_filters( 'nice_landing_client_previews', array_values( $fallback ) );
 }

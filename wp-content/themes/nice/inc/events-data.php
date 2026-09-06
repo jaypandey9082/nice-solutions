@@ -1,9 +1,10 @@
 <?php
 /**
- * Source-approved Events home preview data.
+ * Events presentation adapters with a safe pre-migration fallback.
  *
- * These filters are a temporary bridge to future NICE Core Service, Case Study,
- * and Client queries. They do not implement those content models.
+ * NICE Core owns migrated business content. This file retains source-approved
+ * presentation metadata and fallback records so Events remains usable when the
+ * plugin is unavailable or only partially populated.
  *
  * @package Nice
  */
@@ -13,12 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Return the three approved Events services.
+ * Return the source-approved Events service fallback.
  *
  * @return array<int, array<string, mixed>>
  */
-function nice_get_events_services() {
-	$services = array(
+function nice_get_events_services_fallback() {
+	return array(
 		array(
 			'slug'         => 'corporate-events',
 			'name'         => 'Corporate Events',
@@ -50,18 +51,57 @@ function nice_get_events_services() {
 			'alt'          => 'Students presenting during a POWER CHAMPS awareness programme',
 		),
 	);
-
-	return apply_filters( 'nice_events_services', $services );
 }
 
 /**
- * Return the curated Events project preview.
+ * Return the three Events service previews from NICE Core or fallback data.
  *
  * @return array<int, array<string, mixed>>
  */
-function nice_get_events_project_previews() {
-	$projects = array(
+function nice_get_events_service_previews() {
+	$fallback = nice_get_events_services_fallback();
+
+	if ( function_exists( 'nice_get_events_services' ) ) {
+		$services = nice_get_events_services();
+		$by_slug  = array();
+
+		foreach ( $services as $service ) {
+			if ( $service instanceof WP_Post ) {
+				$by_slug[ $service->post_name ] = $service;
+			}
+		}
+
+		if ( count( $by_slug ) >= count( $fallback ) ) {
+			$previews = array();
+
+			foreach ( $fallback as $item ) {
+				if ( ! isset( $by_slug[ $item['slug'] ] ) ) {
+					return apply_filters( 'nice_events_service_previews', $fallback );
+				}
+
+				$service              = $by_slug[ $item['slug'] ];
+				$item['name']          = $service->post_title;
+				$item['description']   = $service->post_excerpt ?: wp_trim_words( wp_strip_all_tags( $service->post_content ), 28 );
+				$item['attachment_id'] = get_post_thumbnail_id( $service );
+				$previews[]            = $item;
+			}
+
+			return apply_filters( 'nice_events_service_previews', $previews );
+		}
+	}
+
+	return apply_filters( 'nice_events_service_previews', $fallback );
+}
+
+/**
+ * Return the source-approved Events project fallback.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function nice_get_events_project_previews_fallback() {
+	return array(
 		array(
+			'slug'         => 'voltas-fam-tastic-fiesta',
 			'class'        => 'nice-events-project--feature',
 			'image'        => 'voltas-fam-tastic',
 			'image_mobile' => 'voltas-fam-tastic-480',
@@ -73,6 +113,7 @@ function nice_get_events_project_previews() {
 			'description'  => 'An employee family fiesta for Voltas Limited at The Parsi Gymkhana, Mumbai.',
 		),
 		array(
+			'slug'         => 'gca-2025',
 			'class'        => 'nice-events-project--secondary',
 			'image'        => 'gca-2025',
 			'image_mobile' => 'gca-2025-480',
@@ -84,6 +125,7 @@ function nice_get_events_project_previews() {
 			'description'  => 'The three-day 24th Global Conference of Actuaries for the Institute of Actuaries of India.',
 		),
 		array(
+			'slug'         => 'vision-to-victory',
 			'class'        => 'nice-events-project--compact',
 			'image'        => 'vision-to-victory',
 			'image_mobile' => 'vision-to-victory-360',
@@ -95,6 +137,7 @@ function nice_get_events_project_previews() {
 			'description'  => 'A book launch for Ajay Thakur at Hotel Sahara Star, Mumbai.',
 		),
 		array(
+			'slug'         => 'run-for-equity',
 			'class'        => 'nice-events-project--final',
 			'image'        => 'run-for-equity',
 			'image_mobile' => 'run-for-equity-360',
@@ -106,24 +149,69 @@ function nice_get_events_project_previews() {
 			'description'  => 'A social marathon conceived as a NICE intellectual event property.',
 		),
 	);
-
-	return apply_filters( 'nice_events_project_previews', $projects );
 }
 
 /**
- * Return source-supported Events client names.
+ * Return Events project previews from NICE Core or fallback data.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function nice_get_events_project_previews() {
+	$fallback = nice_get_events_project_previews_fallback();
+
+	if ( function_exists( 'nice_get_case_study_by_slug' ) ) {
+		$previews = array();
+
+		foreach ( $fallback as $item ) {
+			$case_study = nice_get_case_study_by_slug( $item['slug'] );
+
+			if ( ! $case_study ) {
+				return apply_filters( 'nice_events_project_previews', $fallback );
+			}
+
+			$item['title']         = $case_study->post_title;
+			$item['description']   = $case_study->post_excerpt ?: wp_trim_words( wp_strip_all_tags( $case_study->post_content ), 30 );
+			$item['client']        = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $case_study->ID ) : $item['client'];
+			$item['attachment_id'] = get_post_thumbnail_id( $case_study );
+			$previews[]            = $item;
+		}
+
+		return apply_filters( 'nice_events_project_previews', $previews );
+	}
+
+	return apply_filters( 'nice_events_project_previews', $fallback );
+}
+
+/**
+ * Return source-supported Events client names from NICE Core or fallback data.
  *
  * @return string[]
  */
 function nice_get_events_clients() {
-	$clients = array(
-		'Voltas Limited',
-		'Zoetis',
-		'Institute of Actuaries of India',
-		'Franchise India',
-		'Airtel',
-		'FICCI',
+	$fallback = array(
+		'voltas-limited'                  => 'Voltas Limited',
+		'zoetis'                          => 'Zoetis',
+		'institute-of-actuaries-of-india' => 'Institute of Actuaries of India',
+		'franchise-india'                 => 'Franchise India',
+		'airtel'                          => 'Airtel',
+		'ficci'                           => 'FICCI',
 	);
 
-	return apply_filters( 'nice_events_clients', $clients );
+	if ( function_exists( 'nice_get_client_by_slug' ) ) {
+		$clients = array();
+
+		foreach ( $fallback as $slug => $name ) {
+			$client = nice_get_client_by_slug( $slug );
+
+			if ( ! $client ) {
+				return apply_filters( 'nice_events_clients', array_values( $fallback ) );
+			}
+
+			$clients[] = $client->post_title;
+		}
+
+		return apply_filters( 'nice_events_clients', $clients );
+	}
+
+	return apply_filters( 'nice_events_clients', array_values( $fallback ) );
 }

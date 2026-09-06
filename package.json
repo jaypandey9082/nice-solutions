@@ -5,8 +5,9 @@
   "description": "Validation and preview scripts for the NICE WordPress block theme.",
   "scripts": {
     "build:preview": "node scripts/build-preview-tokens.mjs",
+    "check:plugin": "node scripts/check-plugin.mjs",
     "check:theme": "node scripts/check-theme.mjs",
-		"check:js": "node --check wp-content/themes/nice/assets/js/navigation.js && node --check wp-content/themes/nice/assets/js/media.js && node --check wp-content/themes/nice/assets/js/landing.js && node --check scripts/playwright-phase2-check.js && node --check scripts/playwright-phase3-check.js && node --check scripts/playwright-phase4-check.js",
-    "check": "npm run build:preview && npm run check:theme && npm run check:js"
+    "check:js": "node --check wp-content/themes/nice/assets/js/navigation.js && node --check wp-content/themes/nice/assets/js/media.js && node --check scripts/playwright-phase2-check.js && node --check scripts/playwright-phase3-check.js && node --check scripts/playwright-phase4-check.js",
+    "check": "npm run build:preview && npm run check:theme && npm run check:plugin && npm run check:js"
   }
 }

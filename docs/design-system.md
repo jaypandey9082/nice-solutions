@@ -134,19 +134,15 @@ publication-safe phone, WhatsApp, and email values are confirmed.
 
 ### Contact Adapter
 
-`nice_get_contact_settings()` defines empty `whatsapp_url`, `email_address`,
-`phone_url`, and `social_urls` values. Future NICE Core code should supply the
-approved values through the `nice_contact_settings` filter. The theme turns the
-email value into a `mailto:` action and accepts a direct HTTPS WhatsApp URL; it
-does not own or persist business contact data.
+NICE Core owns the `nice_contact_settings` option and the public contact helper
+API. The theme owns only link presentation and its visible empty-value fallback.
+The settings remain empty until publication-safe values are approved.
 
 ### Temporary Landing Data
 
-The three source-approved project previews and six selected client names live in
-`inc/landing-data.php`, outside their presentation patterns. The
-`nice_landing_project_previews` and `nice_landing_client_previews` filters are a
-temporary integration boundary only. NICE Core Case Study and Client queries
-should replace them when the CMS models are built.
+The landing adapters read migrated Case Study, Client, and attachment records
+from NICE Core. `inc/landing-data.php` retains its complete approved array only
+as an atomic fallback when NICE Core is inactive or incompletely migrated.
 
 ## Events Home Application
 
@@ -164,18 +160,17 @@ desktop navigation continuing to switch at 900px.
 
 ### Temporary Events Data
 
-The three approved service previews, four project previews, and six selected
-client names live in `inc/events-data.php`. The `nice_events_services`,
-`nice_events_project_previews`, and `nice_events_clients` filters are temporary
-integration boundaries for future NICE Core Service, Case Study, and Client
-queries. Project proof remains in its presentation pattern because each number
-is explicitly paired with its source project and is not a company-wide metric.
+The three Services, four displayed Case Studies, six displayed Clients, and
+featured images are read from NICE Core. `inc/events-data.php` retains approved
+layout classes, image descriptions, and fallback records. Project proof remains
+in its presentation pattern because each number is explicitly paired with its
+source project and is not a company-wide metric.
 
 ## Dependencies
 
-No third-party dependency was added. The Node scripts use built-in modules only
-to generate preview variables from `theme.json` and validate required files and
-tokens.
+No third-party dependency was added. NICE Core loads no frontend CSS or
+JavaScript. The Node scripts use built-in modules only to validate the theme,
+plugin, required files, and tokens.
 
 ## Known Validation Boundary
 

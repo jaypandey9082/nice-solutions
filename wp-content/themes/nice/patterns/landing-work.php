@@ -22,7 +22,11 @@ $nice_projects = nice_get_landing_project_previews();
 			?>
 				<article class="nice-landing-project <?php echo esc_attr( $nice_project['class'] ); ?>" data-nice-reveal>
 					<div class="nice-landing-project__media">
-						<img src="<?php echo $nice_image_mobile_url; ?>" srcset="<?php echo $nice_image_mobile_url; ?> 480w, <?php echo $nice_image_url; ?> <?php echo esc_attr( $nice_project['width'] ); ?>w" sizes="(max-width: 767px) 100vw, 70vw" width="<?php echo esc_attr( $nice_project['width'] ); ?>" height="<?php echo esc_attr( $nice_project['height'] ); ?>" alt="<?php echo esc_attr( $nice_project['alt'] ); ?>" loading="lazy" decoding="async">
+						<?php if ( ! empty( $nice_project['attachment_id'] ) ) : ?>
+							<?php echo wp_get_attachment_image( $nice_project['attachment_id'], 'full', false, array( 'alt' => $nice_project['alt'], 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(max-width: 767px) 100vw, 70vw' ) ); ?>
+						<?php else : ?>
+							<img src="<?php echo $nice_image_mobile_url; ?>" srcset="<?php echo $nice_image_mobile_url; ?> 480w, <?php echo $nice_image_url; ?> <?php echo esc_attr( $nice_project['width'] ); ?>w" sizes="(max-width: 767px) 100vw, 70vw" width="<?php echo esc_attr( $nice_project['width'] ); ?>" height="<?php echo esc_attr( $nice_project['height'] ); ?>" alt="<?php echo esc_attr( $nice_project['alt'] ); ?>" loading="lazy" decoding="async">
+						<?php endif; ?>
 					</div>
 					<div class="nice-landing-project__meta">
 						<p><span>Client</span><?php echo esc_html( $nice_project['client'] ); ?></p>

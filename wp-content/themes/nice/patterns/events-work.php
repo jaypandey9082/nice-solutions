@@ -26,7 +26,11 @@ $nice_events_work_url = esc_url( home_url( '/events/case-studies/' ) );
 			?>
 				<article class="nice-events-project <?php echo esc_attr( $nice_project['class'] ); ?>" data-nice-reveal>
 					<div class="nice-events-project__media">
-						<img src="<?php echo $nice_project_image_mobile; ?>" srcset="<?php echo $nice_project_image_mobile; ?> <?php echo esc_attr( str_contains( $nice_project['image_mobile'], '-360' ) ? '360w' : '480w' ); ?>, <?php echo $nice_project_image; ?> <?php echo esc_attr( $nice_project['width'] ); ?>w" sizes="(min-width: 1320px) 760px, (min-width: 768px) 58vw, calc(100vw - 40px)" width="<?php echo esc_attr( $nice_project['width'] ); ?>" height="<?php echo esc_attr( $nice_project['height'] ); ?>" alt="<?php echo esc_attr( $nice_project['alt'] ); ?>" loading="lazy" decoding="async">
+						<?php if ( ! empty( $nice_project['attachment_id'] ) ) : ?>
+							<?php echo wp_get_attachment_image( $nice_project['attachment_id'], 'full', false, array( 'alt' => $nice_project['alt'], 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(min-width: 1320px) 760px, (min-width: 768px) 58vw, calc(100vw - 40px)' ) ); ?>
+						<?php else : ?>
+							<img src="<?php echo $nice_project_image_mobile; ?>" srcset="<?php echo $nice_project_image_mobile; ?> <?php echo esc_attr( str_contains( $nice_project['image_mobile'], '-360' ) ? '360w' : '480w' ); ?>, <?php echo $nice_project_image; ?> <?php echo esc_attr( $nice_project['width'] ); ?>w" sizes="(min-width: 1320px) 760px, (min-width: 768px) 58vw, calc(100vw - 40px)" width="<?php echo esc_attr( $nice_project['width'] ); ?>" height="<?php echo esc_attr( $nice_project['height'] ); ?>" alt="<?php echo esc_attr( $nice_project['alt'] ); ?>" loading="lazy" decoding="async">
+						<?php endif; ?>
 					</div>
 					<p class="nice-events-project__client"><?php echo esc_html( $nice_project['client'] ); ?></p>
 					<h3><?php echo esc_html( $nice_project['title'] ); ?></h3>

@@ -17,17 +17,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return array<string, mixed>
  */
-function nice_get_contact_settings() {
-	$defaults = array(
-		'whatsapp_url' => '',
-		'email_address' => '',
-		'phone_url'     => '',
-		'social_urls'   => array(),
-	);
+if ( ! function_exists( 'nice_get_contact_settings' ) ) {
+	function nice_get_contact_settings() {
+		$defaults = array(
+			'whatsapp_url' => '',
+			'email_address' => '',
+			'phone_url'     => '',
+			'social_urls'   => array(),
+		);
 
-	$settings = apply_filters( 'nice_contact_settings', $defaults );
+		$settings = apply_filters( 'nice_contact_settings', $defaults );
 
-	return is_array( $settings ) ? wp_parse_args( $settings, $defaults ) : $defaults;
+		return is_array( $settings ) ? wp_parse_args( $settings, $defaults ) : $defaults;
+	}
 }
 
 /**
