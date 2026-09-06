@@ -34,7 +34,7 @@ require_once NICE_CORE_DIR . 'includes/activation.php';
 add_action( 'init', 'nice_register_post_types', 5 );
 add_action( 'init', 'nice_register_taxonomies', 6 );
 add_action( 'init', 'nice_register_content_meta', 7 );
-add_action( 'init', 'nice_register_events_rewrite_rules', 8 );
+add_action( 'init', 'nice_register_content_rewrite_rules', 8 );
 
 register_activation_hook( NICE_CORE_FILE, 'nice_core_activate' );
 register_deactivation_hook( NICE_CORE_FILE, 'nice_core_deactivate' );

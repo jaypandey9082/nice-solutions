@@ -22,6 +22,13 @@ function nice_register_content_rewrite_rules() {
 }
 
 /**
+ * Backward-compatible wrapper for registering content rewrite rules.
+ */
+function nice_register_events_rewrite_rules() {
+	nice_register_content_rewrite_rules();
+}
+
+/**
  * Determine the division a post belongs to.
  *
  * @param int|WP_Post $post Post ID or object.
