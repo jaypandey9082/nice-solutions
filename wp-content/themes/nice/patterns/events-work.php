@@ -17,7 +17,7 @@ $nice_events_work_url = esc_url( home_url( '/events/case-studies/' ) );
 				<p class="nice-eyebrow">Selected Events work</p>
 				<h2 id="nice-events-work-title">Made for the moment.</h2>
 			</div>
-			<a class="nice-link" href="<?php echo $nice_events_work_url; ?>" data-nice-future-route="true">All case studies <span aria-hidden="true">-&gt;</span></a>
+			<a class="nice-link" href="<?php echo $nice_events_work_url; ?>">All case studies <span aria-hidden="true">-&gt;</span></a>
 		</header>
 		<div class="nice-events-work__grid">
 			<?php foreach ( $nice_events_projects as $nice_project ) :
@@ -25,16 +25,17 @@ $nice_events_work_url = esc_url( home_url( '/events/case-studies/' ) );
 				$nice_project_image_mobile = esc_url( get_theme_file_uri( '/assets/images/' . $nice_project['image_mobile'] . '.webp' ) );
 			?>
 				<article class="nice-events-project <?php echo esc_attr( $nice_project['class'] ); ?>" data-nice-reveal>
-					<div class="nice-events-project__media">
+					<?php if ( ! empty( $nice_project['attachment_id'] ) || ! empty( $nice_project['image'] ) ) : ?><div class="nice-events-project__media">
 						<?php if ( ! empty( $nice_project['attachment_id'] ) ) : ?>
 							<?php echo wp_get_attachment_image( $nice_project['attachment_id'], 'full', false, array( 'alt' => $nice_project['alt'], 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(min-width: 1320px) 760px, (min-width: 768px) 58vw, calc(100vw - 40px)' ) ); ?>
 						<?php else : ?>
 							<img src="<?php echo $nice_project_image_mobile; ?>" srcset="<?php echo $nice_project_image_mobile; ?> <?php echo esc_attr( str_contains( $nice_project['image_mobile'], '-360' ) ? '360w' : '480w' ); ?>, <?php echo $nice_project_image; ?> <?php echo esc_attr( $nice_project['width'] ); ?>w" sizes="(min-width: 1320px) 760px, (min-width: 768px) 58vw, calc(100vw - 40px)" width="<?php echo esc_attr( $nice_project['width'] ); ?>" height="<?php echo esc_attr( $nice_project['height'] ); ?>" alt="<?php echo esc_attr( $nice_project['alt'] ); ?>" loading="lazy" decoding="async">
 						<?php endif; ?>
-					</div>
+					</div><?php endif; ?>
 					<p class="nice-events-project__client"><?php echo esc_html( $nice_project['client'] ); ?></p>
 					<h3><?php echo esc_html( $nice_project['title'] ); ?></h3>
 					<p><?php echo esc_html( $nice_project['description'] ); ?></p>
+					<?php if ( ! empty( $nice_project['url'] ) ) : ?><a class="nice-link" href="<?php echo esc_url( $nice_project['url'] ); ?>">View case study <span aria-hidden="true">-&gt;</span></a><?php endif; ?>
 				</article>
 			<?php endforeach; ?>
 		</div>

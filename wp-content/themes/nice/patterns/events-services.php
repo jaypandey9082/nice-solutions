@@ -18,7 +18,7 @@ $nice_service_sizes       = '(min-width: 1320px) 612px, (min-width: 768px) calc(
 				<p class="nice-eyebrow">Events services</p>
 				<h2 id="nice-events-services-title">Built around the experience.</h2>
 			</div>
-			<a class="nice-link" href="<?php echo $nice_all_services_url; ?>" data-nice-future-route="true">All services <span aria-hidden="true">-&gt;</span></a>
+			<a class="nice-link" href="<?php echo $nice_all_services_url; ?>">All services <span aria-hidden="true">-&gt;</span></a>
 		</header>
 		<div class="nice-events-services__list">
 			<?php foreach ( $nice_events_services as $nice_index => $nice_service ) :
@@ -38,7 +38,7 @@ $nice_service_sizes       = '(min-width: 1320px) 612px, (min-width: 768px) calc(
 						<span class="nice-events-service__index"><?php echo esc_html( sprintf( '%02d', $nice_index + 1 ) ); ?></span>
 						<h3><?php echo esc_html( $nice_service['name'] ); ?></h3>
 						<p><?php echo esc_html( $nice_service['description'] ); ?></p>
-						<a class="nice-link" href="<?php echo $nice_service_url; ?>" data-nice-future-route="true">Explore service <span aria-hidden="true">-&gt;</span></a>
+						<a class="nice-link" href="<?php echo $nice_service_url; ?>">Explore service <span aria-hidden="true">-&gt;</span></a>
 					</div>
 				</article>
 			<?php endforeach; ?>

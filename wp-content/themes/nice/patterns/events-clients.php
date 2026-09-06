@@ -17,7 +17,7 @@ $nice_events_clients_url = esc_url( home_url( '/events/clients/' ) );
 				<p class="nice-eyebrow">Events clients</p>
 				<h2 id="nice-events-clients-title">Selected collaborations.</h2>
 			</div>
-			<a class="nice-link" href="<?php echo $nice_events_clients_url; ?>" data-nice-future-route="true">Client list <span aria-hidden="true">-&gt;</span></a>
+			<a class="nice-link" href="<?php echo $nice_events_clients_url; ?>">Client list <span aria-hidden="true">-&gt;</span></a>
 		</header>
 		<ul class="nice-events-clients__list" aria-label="Selected NICE Events clients" data-nice-reveal>
 			<?php foreach ( $nice_events_clients as $nice_client ) : ?>

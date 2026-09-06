@@ -30,6 +30,7 @@ function nice_theme_setup() {
 			'assets/css/site.css',
 			'assets/css/landing.css',
 			'assets/css/events.css',
+			'assets/css/events-inner.css',
 			'assets/css/editor.css',
 		)
 	);
@@ -51,6 +52,14 @@ function nice_theme_body_classes( $classes ) {
 
 	if ( is_page( 'events' ) ) {
 		$classes[] = 'nice-is-events-page';
+	}
+
+	if ( function_exists( 'nice_theme_is_events_context' ) && nice_theme_is_events_context() ) {
+		$classes[] = 'nice-is-events-context';
+	}
+
+	if ( function_exists( 'nice_theme_is_events_inner_page' ) && nice_theme_is_events_inner_page() ) {
+		$classes[] = 'nice-is-events-inner';
 	}
 
 	return $classes;

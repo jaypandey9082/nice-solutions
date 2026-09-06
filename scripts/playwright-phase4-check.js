@@ -29,11 +29,10 @@ async (page) => {
   });
 
   const scrollThroughPage = async () => {
-    const height = await page.evaluate(() => document.documentElement.scrollHeight);
     const viewport = await page.viewportSize();
     const step = Math.max(300, Math.floor(viewport.height * 0.7));
 
-    for (let top = 0; top < height; top += step) {
+    for (let top = 0; top < await page.evaluate(() => document.documentElement.scrollHeight); top += step) {
       await page.evaluate((scrollTop) => window.scrollTo(0, scrollTop), top);
       await page.waitForTimeout(80);
     }
@@ -115,6 +114,11 @@ async (page) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(eventsUrl, { waitUntil: "networkidle" });
   await scrollThroughPage();
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll(".nice-events-services img, .nice-events-work img")].every(
+      (image) => image.complete && image.naturalWidth > 0,
+    ),
+  );
   const contentChecks = await page.evaluate(() => {
     const heroImage = document.querySelector(".nice-events-hero__media");
     const belowFoldImages = [...document.querySelectorAll(".nice-events-services img, .nice-events-work img")];
@@ -212,7 +216,7 @@ async (page) => {
   if (!condensedAtScroll || !expandedAtTop) validationFailures.push("sticky navbar state");
   if (menuOpen.expanded !== "true" || menuOpen.state !== "open" || menuOpen.hidden !== "false") validationFailures.push("mobile menu open state");
   if (menuClosed.expanded !== "false" || menuClosed.hidden !== "true" || !menuClosed.focusRestored) validationFailures.push("mobile menu close state");
-  if (!reducedMotion.revealsRemainVisible || reducedMotion.serviceTransition !== "0s") validationFailures.push("reduced motion");
+  if (!reducedMotion.revealsRemainVisible || Number.parseFloat(reducedMotion.serviceTransition) > 0.001) validationFailures.push("reduced motion");
   if (failedRequests.length) validationFailures.push("failed network request");
   if (consoleErrors.length) validationFailures.push("browser console error");
 

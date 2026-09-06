@@ -1,8 +1,9 @@
 # NICE Design System
 
 Phase 2 defines the reusable visual and interaction foundation. Phase 3.1 applies
-it to the landing page, and Phase 4 extends it to the Events home without adding
-case-study, service-detail, team, client, contact, or Studio pages.
+it to the landing page, Phase 4 extends it to the Events home, and Phase 6 carries
+the same system through the Events service, case-study, client, team, and contact
+pages. Studio remains outside the implemented scope.
 
 ## Color Tokens
 
@@ -117,11 +118,11 @@ overflow. Buttons and menu controls have a minimum 44px touch target.
 
 ## WordPress Editing
 
-The theme uses normal blocks and patterns rather than custom blocks for this
-phase. Registered block styles cover buttons, section groups, and image ratios.
-The reusable patterns provide section-heading, project, service, and direct
-contact foundations. Production URLs and contact values will be connected only
-after the NICE Core plugin and approved content exist.
+The theme uses normal blocks and patterns for stable editorial composition.
+Registered block styles cover buttons, section groups, and image ratios. The
+Events inner templates use server-rendered theme blocks so each request reflects
+the current NICE Core records, relations, ordering, and empty states without
+copying database content into template markup.
 
 ## Landing Page Application
 
@@ -158,13 +159,27 @@ plain divided columns, and the client section uses a restrained text list. The
 layout changes at the existing 768px and 1200px design-system breakpoints, with
 desktop navigation continuing to switch at 900px.
 
-### Temporary Events Data
+### Events Content Adapter
 
-The three Services, four displayed Case Studies, six displayed Clients, and
-featured images are read from NICE Core. `inc/events-data.php` retains approved
-layout classes, image descriptions, and fallback records. Project proof remains
-in its presentation pattern because each number is explicitly paired with its
-source project and is not a company-wide metric.
+The three Services, featured Case Studies, Clients, and featured images are read
+from NICE Core. `inc/events-data.php` retains approved layout classes, image
+descriptions, and fallback records for the Events home only. Project proof is
+stored on the source Case Study and is always displayed with that project rather
+than as a company-wide metric.
+
+## Events Inner Pages
+
+The Events sub-navigation is shared by every inner page and wraps into two rows
+on narrow screens. Service and Case Study indexes use unframed editorial rows;
+detail pages pair source-backed narratives with controlled metadata and related
+content. The client directory uses text when no approved logo exists. Team and
+Contact render explicit publication-pending states while their CMS records and
+approved contact channels remain empty.
+
+Hero images are eager and high priority. Content images keep intrinsic dimensions
+and load lazily as they approach the viewport. The inner-page stylesheet follows
+the established 768px, 900px, and 1200px breakpoints and removes non-essential
+transitions when reduced motion is requested.
 
 ## Dependencies
 
@@ -174,7 +189,8 @@ plugin, required files, and tokens.
 
 ## Known Validation Boundary
 
-The theme is active in the running `nice-solutions.local` LocalWP site and its
-landing page has been checked in a real browser. The supplied PDF images are
-appropriate for this local implementation, but original web-ready masters and
-publication rights should still be confirmed before production deployment.
+The theme is active in the running `nice-solutions.local` LocalWP site. The
+landing page, Events home, and all Events inner routes have been checked in a
+real browser from 320px through 1440px. The supplied PDF images are appropriate
+for this local implementation, but original web-ready masters and publication
+rights should still be confirmed before production deployment.

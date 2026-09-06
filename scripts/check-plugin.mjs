@@ -14,6 +14,7 @@ const requiredFiles = [
 	'includes/meta.php',
 	'includes/settings.php',
 	'includes/queries.php',
+	'includes/routes.php',
 	'includes/helpers.php',
 	'includes/admin.php',
 	'includes/migration.php',
@@ -40,6 +41,7 @@ const rootPlugin = readFileSync(resolve(pluginDirectory, 'nice-core.php'), 'utf8
 const postTypes = readFileSync(resolve(pluginDirectory, 'includes/post-types.php'), 'utf8');
 const taxonomies = readFileSync(resolve(pluginDirectory, 'includes/taxonomies.php'), 'utf8');
 const queries = readFileSync(resolve(pluginDirectory, 'includes/queries.php'), 'utf8');
+const routes = readFileSync(resolve(pluginDirectory, 'includes/routes.php'), 'utf8');
 const settings = readFileSync(resolve(pluginDirectory, 'includes/settings.php'), 'utf8');
 const admin = readFileSync(resolve(pluginDirectory, 'includes/admin.php'), 'utf8');
 const migration = readFileSync(resolve(pluginDirectory, 'includes/migration.php'), 'utf8');
@@ -47,8 +49,8 @@ const themeStyle = readFileSync(resolve(themeDirectory, 'style.css'), 'utf8');
 const eventsData = readFileSync(resolve(themeDirectory, 'inc/events-data.php'), 'utf8');
 const landingData = readFileSync(resolve(themeDirectory, 'inc/landing-data.php'), 'utf8');
 
-if (!/Version:\s*1\.0\.0/.test(rootPlugin) || !rootPlugin.includes("define( 'NICE_CORE_VERSION', '1.0.0' )")) {
-	fail('NICE Core must declare version 1.0.0 consistently.');
+if (!/Version:\s*1\.1\.0/.test(rootPlugin) || !rootPlugin.includes("define( 'NICE_CORE_VERSION', '1.1.0' )")) {
+	fail('NICE Core must declare version 1.1.0 consistently.');
 }
 
 for (const postType of ['nice_service', 'nice_case_study', 'nice_client', 'nice_team_member']) {
@@ -118,6 +120,20 @@ if (!migration.includes("WP_CLI::add_command( 'nice migrate-content'")) {
 	fail('The idempotent NICE content migration command is missing.');
 }
 
+for (const route of ['^events/services/([^/]+)/?$', '^events/case-studies/([^/]+)/?$']) {
+	if (!routes.includes(route)) {
+		fail(`Missing controlled Events route: ${route}`);
+	}
+}
+
+if (!routes.includes('nice_get_events_content_url') || !routes.includes('nice_enforce_content_routes')) {
+	fail('Events content routes must publish canonical URLs and reject raw routes.');
+}
+
+if (!migration.includes('nice_provision_events_pages') || !migration.includes('page-events-contact')) {
+	fail('The migration must provision the five approved Events Pages.');
+}
+
 if (/\b(dbDelta|CREATE\s+TABLE|ALTER\s+TABLE|DROP\s+TABLE)\b/i.test(source)) {
 	fail('NICE Core must not create or alter custom database tables.');
 }
@@ -134,8 +150,8 @@ if (!eventsData.includes("function_exists( 'nice_get_events_services' )") || !la
 	fail('Theme adapters must detect NICE Core and preserve fallbacks.');
 }
 
-if (!/Version:\s*0\.4\.0/.test(themeStyle)) {
-	fail('Phase 5 must not bump the NICE theme version.');
+if (!/Version:\s*0\.5\.0/.test(themeStyle)) {
+	fail('The NICE theme must declare Phase 6 version 0.5.0.');
 }
 
-console.log(`Validated NICE Core 1.0.0 structure, ${requiredFiles.length} files, CMS boundaries, and theme fallbacks.`);
+console.log(`Validated NICE Core 1.1.0 structure, ${requiredFiles.length} files, CMS boundaries, routes, and theme fallbacks.`);

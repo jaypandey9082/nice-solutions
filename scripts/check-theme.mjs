@@ -14,9 +14,11 @@ const requiredFiles = [
 	'functions.php',
 	'inc/contact.php',
 	'inc/events-data.php',
+	'inc/events-pages.php',
 	'inc/landing-data.php',
 	'assets/css/site.css',
 	'assets/css/events.css',
+	'assets/css/events-inner.css',
 	'assets/css/landing.css',
 	'assets/css/editor.css',
 	'assets/js/navigation.js',
@@ -37,6 +39,13 @@ const requiredFiles = [
 	'templates/index.html',
 	'templates/front-page.html',
 	'templates/page-events.html',
+	'templates/page-events-services.html',
+	'templates/page-events-case-studies.html',
+	'templates/page-events-clients.html',
+	'templates/page-events-team.html',
+	'templates/page-events-contact.html',
+	'templates/single-nice_service.html',
+	'templates/single-nice_case_study.html',
 	'templates/page.html',
 	'templates/single.html',
 	'templates/archive.html',
@@ -122,6 +131,7 @@ const css = [
 	readFileSync(resolve(themeDirectory, 'assets/css/site.css'), 'utf8'),
 	readFileSync(resolve(themeDirectory, 'assets/css/landing.css'), 'utf8'),
 	readFileSync(resolve(themeDirectory, 'assets/css/events.css'), 'utf8'),
+	readFileSync(resolve(themeDirectory, 'assets/css/events-inner.css'), 'utf8'),
 ].join('\n');
 const header = readFileSync(resolve(themeDirectory, 'patterns/site-header.php'), 'utf8');
 const footer = readFileSync(resolve(themeDirectory, 'patterns/site-footer.php'), 'utf8');
@@ -135,6 +145,7 @@ const eventsHero = readFileSync(resolve(themeDirectory, 'patterns/events-hero.ph
 const eventsServices = readFileSync(resolve(themeDirectory, 'patterns/events-services.php'), 'utf8');
 const eventsWork = readFileSync(resolve(themeDirectory, 'patterns/events-work.php'), 'utf8');
 const eventsContact = readFileSync(resolve(themeDirectory, 'patterns/events-contact.php'), 'utf8');
+const eventsPages = readFileSync(resolve(themeDirectory, 'inc/events-pages.php'), 'utf8');
 
 if (/linear-gradient|radial-gradient/i.test(css)) {
 	fail('Gradient usage is not allowed in the Phase 2 foundation.');
@@ -190,7 +201,26 @@ for (const route of [
 }
 
 if (existsSync(resolve(themeDirectory, 'templates/page-studio.html'))) {
-	fail('Phase 4 must not add a Studio page template.');
+	fail('Phase 6 must not add a Studio page template.');
+}
+
+for (const block of [
+	'nice/events-section-navigation',
+	'nice/events-services-index',
+	'nice/events-service-detail',
+	'nice/events-case-studies-index',
+	'nice/events-case-study-detail',
+	'nice/events-clients-index',
+	'nice/events-team-index',
+	'nice/events-contact-page',
+]) {
+	if (!eventsPages.includes(`'${block}'`)) {
+		fail(`Missing server-rendered Events block: ${block}`);
+	}
+}
+
+if (/\/nice_(service|case_study)\//.test(eventsPages)) {
+	fail('Events pages must not expose raw CPT URL paths.');
 }
 
 if ((eventsHero.match(/fetchpriority="high"/g) ?? []).length !== 1) {

@@ -33,6 +33,7 @@ function nice_get_content_migration_manifest() {
 				'slug'         => 'corporate-events',
 				'title'        => 'Corporate Events',
 				'description'  => 'Employee gatherings, family celebrations and launches shaped from concept through on-ground execution.',
+				'content'      => '<p>An integral part of brand communication, Events is where our heart is. NICE brings thoughtful planning and execution to corporate and audience experiences.</p><h2>What NICE delivers</h2><ul><li>Corporate Events</li><li>Shows &amp; Concerts</li><li>Technology Integration</li></ul>',
 				'service_type' => 'corporate-events',
 				'image'        => 'zoetis-engagement.webp',
 				'alt'          => 'Attendee posing with costumed characters at an employee event',
@@ -41,6 +42,7 @@ function nice_get_content_migration_manifest() {
 				'slug'         => 'exhibitions-conferences',
 				'title'        => 'Exhibitions & Conferences',
 				'description'  => 'Conference environments, exhibition stalls and technical setups coordinated across venue, production and delivery.',
+				'content'      => '<p>Thoughtful planning and execution shape NICE work across corporate and trade conferences, exhibition stall design and fabrication.</p><h2>What NICE delivers</h2><ul><li>Trade Meets &amp; Conferences</li><li>Venue Construction / Hanger Installations</li><li>Custom Stall Design &amp; Fabrication</li><li>Interactive &amp; Engaging Displays</li><li>Seminar Set-ups in Exhibitions</li><li>End-to-End Project Management</li></ul>',
 				'service_type' => 'exhibitions-conferences',
 				'image'        => 'exhibition-stall.webp',
 				'alt'          => 'Custom exhibition stall installed inside an exhibition hall',
@@ -49,6 +51,7 @@ function nice_get_content_migration_manifest() {
 				'slug'         => 'activations-promotions',
 				'title'        => 'Activations & Promotions',
 				'description'  => 'Audience-facing programmes and awareness initiatives designed to bring people into the experience.',
+				'content'      => '<p>NICE plans promotions and activations designed to bring people into the experience through focused, audience-facing execution.</p><h2>What NICE delivers</h2><ul><li>Promotions &amp; Activations</li></ul>',
 				'service_type' => 'activations-promotions',
 				'image'        => 'power-champs.webp',
 				'alt'          => 'Students presenting during a POWER CHAMPS awareness programme',
@@ -59,6 +62,7 @@ function nice_get_content_migration_manifest() {
 				'slug'         => 'voltas-fam-tastic-fiesta',
 				'title'        => 'Voltas Fam-Tastic Fiesta',
 				'description'  => 'An employee family fiesta for Voltas Limited at The Parsi Gymkhana, Mumbai.',
+				'content'      => '<p>The Voltas Fam-Tastic Fiesta brought more than 2,000 people together for an employee family celebration at The Parsi Gymkhana in Mumbai. NICE planned and executed the event around shared moments, participation and celebration.</p>',
 				'service_type' => 'corporate-events',
 				'client_slug'  => 'voltas-limited',
 				'location'     => 'The Parsi Gymkhana, Mumbai',
@@ -67,11 +71,14 @@ function nice_get_content_migration_manifest() {
 				'order'        => 10,
 				'image'        => 'voltas-fam-tastic.webp',
 				'alt'          => 'NICE and Voltas team members standing on the event stage',
+				'proof_value'  => '2,000+',
+				'proof_label'  => 'attendees at the Voltas Fam-Tastic Fiesta',
 			),
 			array(
 				'slug'         => 'gca-2025',
 				'title'        => 'GCA 2025',
 				'description'  => 'The three-day 24th Global Conference of Actuaries for the Institute of Actuaries of India.',
+				'content'      => '<p>NICE executed the three-day 24th Global Conference of Actuaries for the Institute of Actuaries of India. The programme brought together performances, awards and panel discussions in an event shaped around learning, energy and exchange.</p>',
 				'service_type' => 'exhibitions-conferences',
 				'client_slug'  => 'institute-of-actuaries-of-india',
 				'location'     => 'The Westin Mumbai Powai Lake, Mumbai',
@@ -85,9 +92,10 @@ function nice_get_content_migration_manifest() {
 				'slug'         => 'zoetis-employee-engagement-day',
 				'title'        => 'Zoetis Employee Engagement Day',
 				'description'  => 'An employee engagement event for 200 Zoetis team members.',
+				'content'      => '<p>A power-packed engagement day for 200 Zoetis team members, built around connection and celebration from start to finish.</p>',
 				'service_type' => 'corporate-events',
 				'client_slug'  => 'zoetis',
-				'location'     => '',
+				'location'     => 'Zoetis Campus, Navi Mumbai',
 				'year'         => 0,
 				'featured'     => true,
 				'order'        => 30,
@@ -98,6 +106,7 @@ function nice_get_content_migration_manifest() {
 				'slug'         => 'vision-to-victory',
 				'title'        => 'Vision to Victory',
 				'description'  => 'A book launch for Ajay Thakur at Hotel Sahara Star, Mumbai.',
+				'content'      => '<p>NICE partnered with Ajay Thakur, former Head of SME and Startups at BSE, for the launch of his book <em>Vision to Victory</em>. From concept through celebration, the event reflected his journey in India\'s SME ecosystem.</p>',
 				'service_type' => 'corporate-events',
 				'client_slug'  => 'ajay-thakur',
 				'location'     => 'Hotel Sahara Star, Mumbai',
@@ -111,6 +120,7 @@ function nice_get_content_migration_manifest() {
 				'slug'         => 'run-for-equity',
 				'title'        => 'RunForEquity',
 				'description'  => 'A social marathon conceived as a NICE intellectual event property.',
+				'content'      => '<p>RunForEquity was conceived in 2017 as a social run and a tribute to Dr. Babasaheb Ambedkar. Its second edition brought together more than 5,000 runners and was rated among India\'s top runs through participant ratings.</p>',
 				'service_type' => 'activations-promotions',
 				'client_name'  => 'NICE Intellectual Property',
 				'location'     => '',
@@ -119,9 +129,88 @@ function nice_get_content_migration_manifest() {
 				'order'        => 50,
 				'image'        => 'run-for-equity.webp',
 				'alt'          => 'Participants running together during RunForEquity',
+				'proof_value'  => '5,000+',
+				'proof_label'  => 'runners in the second edition of RunForEquity',
 			),
 		),
 	);
+}
+
+/**
+ * Return the approved Events section Page manifest.
+ *
+ * @return array<int, array{slug: string, title: string, template: string}>
+ */
+function nice_get_events_page_manifest() {
+	return array(
+		array( 'slug' => 'services', 'title' => 'Events Services', 'template' => 'page-events-services' ),
+		array( 'slug' => 'case-studies', 'title' => 'Events Case Studies', 'template' => 'page-events-case-studies' ),
+		array( 'slug' => 'clients', 'title' => 'Events Clients', 'template' => 'page-events-clients' ),
+		array( 'slug' => 'team', 'title' => 'Events Team', 'template' => 'page-events-team' ),
+		array( 'slug' => 'contact', 'title' => 'Events Contact', 'template' => 'page-events-contact' ),
+	);
+}
+
+/**
+ * Provision only the approved structural Events Pages.
+ *
+ * Existing page content and titles are preserved.
+ *
+ * @return array{created: int, skipped: int, errors: string[]}
+ */
+function nice_provision_events_pages() {
+	$summary = array( 'created' => 0, 'skipped' => 0, 'errors' => array() );
+	$events  = get_page_by_path( 'events', OBJECT, 'page' );
+
+	if ( ! $events instanceof WP_Post ) {
+		$events_id = wp_insert_post(
+			array(
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+				'post_name'   => 'events',
+				'post_title'  => 'Events',
+			),
+			true
+		);
+
+		if ( is_wp_error( $events_id ) ) {
+			$summary['errors'][] = $events_id->get_error_message();
+			return $summary;
+		}
+
+		$events = get_post( $events_id );
+	}
+
+	foreach ( nice_get_events_page_manifest() as $record ) {
+		$page = get_page_by_path( 'events/' . $record['slug'], OBJECT, 'page' );
+
+		if ( $page instanceof WP_Post ) {
+			++$summary['skipped'];
+		} else {
+			$page_id = wp_insert_post(
+				array(
+					'post_type'   => 'page',
+					'post_status' => 'publish',
+					'post_parent' => $events->ID,
+					'post_name'   => $record['slug'],
+					'post_title'  => $record['title'],
+				),
+				true
+			);
+
+			if ( is_wp_error( $page_id ) ) {
+				$summary['errors'][] = $page_id->get_error_message();
+				continue;
+			}
+
+			$page = get_post( $page_id );
+			++$summary['created'];
+		}
+
+		update_post_meta( $page->ID, '_wp_page_template', $record['template'] );
+	}
+
+	return $summary;
 }
 
 /**
@@ -224,7 +313,7 @@ function nice_migrate_content_post( $post_type, $record ) {
 			'post_name'    => sanitize_title( $record['slug'] ),
 			'post_title'   => sanitize_text_field( $record['title'] ),
 			'post_excerpt' => sanitize_textarea_field( $record['description'] ?? '' ),
-			'post_content' => wp_kses_post( $record['description'] ?? '' ),
+			'post_content' => wp_kses_post( $record['content'] ?? $record['description'] ?? '' ),
 		),
 		true
 	);
@@ -237,6 +326,48 @@ function nice_migrate_content_post( $post_type, $record ) {
 }
 
 /**
+ * Enrich untouched Phase 5 records with source-approved Phase 6 editor content.
+ *
+ * Editorial changes are never overwritten.
+ *
+ * @param string               $post_type Post type.
+ * @param array<string, mixed> $record    Migration record.
+ * @return int Number of updated fields.
+ */
+function nice_enrich_migrated_content( $post_type, $record ) {
+	$post = nice_find_migrated_post( $record['slug'], $post_type );
+
+	if ( ! $post instanceof WP_Post ) {
+		return 0;
+	}
+
+	$updates        = 0;
+	$legacy_content = trim( (string) ( $record['description'] ?? '' ) );
+	$new_content    = trim( (string) ( $record['content'] ?? '' ) );
+
+	if ( $new_content && trim( $post->post_content ) === $legacy_content ) {
+		wp_update_post(
+			array(
+				'ID'           => $post->ID,
+				'post_content' => wp_kses_post( $new_content ),
+			)
+		);
+		++$updates;
+	}
+
+	if ( 'nice_case_study' === $post_type ) {
+		foreach ( array( '_nice_location' => 'location', '_nice_proof_value' => 'proof_value', '_nice_proof_label' => 'proof_label' ) as $meta_key => $record_key ) {
+			if ( ! get_post_meta( $post->ID, $meta_key, true ) && ! empty( $record[ $record_key ] ) ) {
+				update_post_meta( $post->ID, $meta_key, sanitize_text_field( $record[ $record_key ] ) );
+				++$updates;
+			}
+		}
+	}
+
+	return $updates;
+}
+
+/**
  * Run the complete approved content migration.
  *
  * @return array<string, mixed>|WP_Error
@@ -245,14 +376,19 @@ function nice_run_content_migration() {
 	$manifest = nice_get_content_migration_manifest();
 	$summary  = array(
 		'terms'        => nice_ensure_default_terms(),
+		'pages'        => nice_provision_events_pages(),
 		'clients'      => array( 'created' => 0, 'skipped' => 0 ),
 		'services'     => array( 'created' => 0, 'skipped' => 0 ),
 		'case_studies' => array( 'created' => 0, 'skipped' => 0 ),
 		'media'        => array( 'linked' => 0, 'errors' => array() ),
+		'enriched'     => 0,
 	);
 
 	if ( ! empty( $summary['terms']['errors'] ) ) {
 		return new WP_Error( 'nice_term_migration_failed', implode( ' ', $summary['terms']['errors'] ) );
+	}
+	if ( ! empty( $summary['pages']['errors'] ) ) {
+		return new WP_Error( 'nice_page_migration_failed', implode( ' ', $summary['pages']['errors'] ) );
 	}
 
 	$client_ids = array();
@@ -288,6 +424,8 @@ function nice_run_content_migration() {
 				++$summary['media']['linked'];
 			}
 		}
+
+		$summary['enriched'] += nice_enrich_migrated_content( 'nice_service', $record );
 	}
 
 	foreach ( $manifest['case_studies'] as $record ) {
@@ -307,6 +445,8 @@ function nice_run_content_migration() {
 			update_post_meta( $post_id, '_nice_year', nice_sanitize_year( $record['year'] ) );
 			update_post_meta( $post_id, '_nice_featured', $record['featured'] ? 1 : 0 );
 			update_post_meta( $post_id, '_nice_display_order', (int) $record['order'] );
+			update_post_meta( $post_id, '_nice_proof_value', sanitize_text_field( $record['proof_value'] ?? '' ) );
+			update_post_meta( $post_id, '_nice_proof_label', sanitize_text_field( $record['proof_label'] ?? '' ) );
 			$attachment_id = nice_migrate_media_attachment( $record['image'], $record['alt'] );
 			if ( is_wp_error( $attachment_id ) ) {
 				$summary['media']['errors'][] = $attachment_id->get_error_message();
@@ -315,9 +455,15 @@ function nice_run_content_migration() {
 				++$summary['media']['linked'];
 			}
 		}
+
+		$summary['enriched'] += nice_enrich_migrated_content( 'nice_case_study', $record );
 	}
 
 	update_option( 'nice_core_content_migration_version', NICE_CORE_VERSION, false );
+
+	if ( $summary['pages']['created'] ) {
+		flush_rewrite_rules( false );
+	}
 
 	return $summary;
 }
@@ -344,6 +490,8 @@ function nice_cli_migrate_content() {
 	}
 
 	WP_CLI::log( sprintf( 'Terms: %d created, %d existing', $result['terms']['created'], $result['terms']['existing'] ) );
+	WP_CLI::log( sprintf( 'Events pages: %d created, %d existing', $result['pages']['created'], $result['pages']['skipped'] ) );
+	WP_CLI::log( sprintf( 'Source-backed fields enriched: %d', $result['enriched'] ) );
 	WP_CLI::log( sprintf( 'Media linked: %d', $result['media']['linked'] ) );
 
 	if ( $result['media']['errors'] ) {

@@ -1,6 +1,6 @@
 # NICE Core Content Model
 
-NICE Core `1.0.0` owns reusable NICE business content. The NICE block theme owns
+NICE Core `1.1.0` owns reusable NICE business content. The NICE block theme owns
 templates, patterns, CSS, JavaScript, layout, and presentation. The plugin uses
 only WordPress posts, post meta, terms, options, and attachments.
 
@@ -17,6 +17,7 @@ wp-content/plugins/nice-core/
     |-- meta.php
     |-- settings.php
     |-- queries.php
+    |-- routes.php
     |-- helpers.php
     |-- admin.php
     |-- migration.php
@@ -39,9 +40,10 @@ The post types declare custom-field support because WordPress requires it for
 registered REST meta. The raw Custom Fields panel is removed; editors use only
 the named NICE panels.
 
-Archives and pretty rewrites are deliberately disabled in Phase 5. Future
-division-aware templates will own the approved `/events/...` and `/studio/...`
-routes without exposing internal post-type slugs.
+Native CPT archives and rewrites remain disabled. NICE Core registers only the
+controlled Events detail routes and filters post permalinks to their canonical
+paths. Raw CPT paths return `404`; raw query requests redirect to the matching
+canonical Events URL. Studio routing remains unimplemented.
 
 ## Taxonomies
 
@@ -85,6 +87,8 @@ keeps each Service/Case Study on one Service Type and its matching Division.
 | `_nice_featured` | boolean | Editorial featured control |
 | `_nice_display_order` | integer | Stable editorial ordering |
 | `_nice_reference_url` | HTTPS string | Optional approved external reference |
+| `_nice_proof_value` | string | Optional project-specific source-approved metric |
+| `_nice_proof_label` | string | Context that keeps the metric attached to its project |
 
 ### Clients
 
@@ -146,6 +150,8 @@ nice_get_contact_whatsapp_url()
 nice_get_contact_email()
 nice_get_contact_phone_url()
 nice_get_social_links()
+nice_get_events_content_url()
+nice_is_events_content()
 ```
 
 Content query helpers return arrays of `WP_Post` objects; singular helpers return
@@ -160,10 +166,12 @@ Run the migration after plugin activation:
 wp nice migrate-content
 ```
 
-The command creates missing approved terms, then Clients, Services, Case
-Studies, and media attachments. It identifies records by post type and slug and
-attachments by `_nice_source_asset`, so repeated runs skip existing data. It
-never runs during a frontend request and never overwrites existing records.
+The command creates missing approved terms, Clients, Services, Case Studies,
+media attachments, and the five approved child Pages below `/events/`. It
+identifies records by post type and slug and attachments by
+`_nice_source_asset`, so repeated runs skip existing data. Phase 6 enriches only
+untouched Phase 5 editor content and empty source-backed fields; later editorial
+changes are never overwritten.
 
 The Phase 5 import contains:
 
@@ -173,6 +181,7 @@ The Phase 5 import contains:
   Engagement Day, Vision to Victory, and RunForEquity.
 - 7 unique WordPress attachments reused across Service and Case Study featured
   images.
+- 5 structural Events Pages with their assigned block-theme templates.
 - 0 Studio Service records and 0 Team Member records.
 
 Theme source images remain in place as fallback media. Publication-approved
@@ -181,22 +190,23 @@ or data relationships.
 
 ## Theme Consumption
 
-The landing and Events adapters check for NICE Core helper functions and require
-their complete expected record sets before switching to CMS output. When records
-are complete, patterns render WordPress titles, excerpts, client relationships,
-and attachment images. If the plugin is inactive or migration is partial, the
-entire section uses its existing approved fallback rather than mixing sources.
+The landing and Events Home adapters check for NICE Core helper functions before
+switching to CMS output. Events inner pages use server-rendered theme blocks and
+NICE Core queries directly. Services use editor content for capabilities; Case
+Studies use editor narratives, relationships, taxonomies, metadata, and featured
+images. The existing approved Events Home fallback remains intact.
 
-Project-level proof numbers remain presentation copy because they are explicitly
-paired with named projects and are not reusable company-wide statistics.
+Project-level proof lives on the related Case Study record and renders only when
+both value and context exist. It is never presented as a company-wide statistic.
 
 ## Lifecycle and Safety
 
-Activation registers the structures, creates only the approved taxonomy terms,
-and flushes rewrites once. Deactivation flushes rewrites and preserves content.
-Uninstall also preserves content and options pending a separate, explicitly
-approved removal plan.
+Activation registers the structures and controlled Events routes, creates only
+the approved taxonomy terms, and flushes rewrites once. The explicit migration
+also flushes once when it creates structural Pages. Deactivation flushes
+rewrites and preserves content. Uninstall preserves content and options pending
+a separate, explicitly approved removal plan.
 
 NICE Core adds no custom tables, frontend assets, custom REST namespace,
-third-party dependency, form, page builder, or frontend route. Admin saves use
-capability checks, nonces, sanitization, and registered predictable meta types.
+third-party dependency, form, or page builder. Admin saves use capability
+checks, nonces, sanitization, and registered predictable meta types.

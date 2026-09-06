@@ -18,7 +18,7 @@ $nice_events_contact_url     = esc_url( home_url( '/events/contact/' ) );
 		<div class="nice-stack" data-nice-reveal>
 			<p class="nice-eyebrow">Start a conversation</p>
 			<h2 id="nice-events-contact-title">Planning an event?<br>Let's make it NICE.</h2>
-			<a class="nice-link nice-events-contact__route" href="<?php echo $nice_events_contact_url; ?>" data-nice-future-route="true">Events contact <span aria-hidden="true">-&gt;</span></a>
+			<a class="nice-link nice-events-contact__route" href="<?php echo $nice_events_contact_url; ?>">Events contact <span aria-hidden="true">-&gt;</span></a>
 		</div>
 		<div class="nice-contact-band__action-group" data-nice-reveal>
 			<div class="nice-contact-band__actions">

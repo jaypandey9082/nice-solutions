@@ -64,5 +64,14 @@ function nice_get_contact_action( $channel, $placeholder_url = '' ) {
 		}
 	}
 
+	if ( 'phone' === $channel && ! empty( $settings['phone_url'] ) ) {
+		$url = esc_url_raw( $settings['phone_url'], array( 'tel' ) );
+
+		if ( $url ) {
+			$action['url']         = $url;
+			$action['placeholder'] = false;
+		}
+	}
+
 	return $action;
 }

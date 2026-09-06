@@ -25,7 +25,9 @@ function nice_theme_asset_version( $relative_path ) {
  * Load the small shared stylesheet and progressive enhancement scripts.
  */
 function nice_theme_enqueue_assets() {
-	$nice_is_events_page = is_page( 'events' );
+	$nice_is_events_page    = is_page( 'events' );
+	$nice_is_events_context = function_exists( 'nice_theme_is_events_context' ) && nice_theme_is_events_context();
+	$nice_is_events_inner   = function_exists( 'nice_theme_is_events_inner_page' ) && nice_theme_is_events_inner_page();
 
 	wp_enqueue_style(
 		'nice-site',
@@ -65,7 +67,7 @@ function nice_theme_enqueue_assets() {
 		);
 	}
 
-	if ( $nice_is_events_page ) {
+	if ( $nice_is_events_context ) {
 		wp_enqueue_style(
 			'nice-events',
 			get_theme_file_uri( '/assets/css/events.css' ),
@@ -74,7 +76,16 @@ function nice_theme_enqueue_assets() {
 		);
 	}
 
-	if ( is_front_page() || $nice_is_events_page ) {
+	if ( $nice_is_events_inner ) {
+		wp_enqueue_style(
+			'nice-events-inner',
+			get_theme_file_uri( '/assets/css/events-inner.css' ),
+			array( 'nice-site', 'nice-events' ),
+			nice_theme_asset_version( '/assets/css/events-inner.css' )
+		);
+	}
+
+	if ( is_front_page() || $nice_is_events_context ) {
 		wp_enqueue_script(
 			'nice-reveal',
 			get_theme_file_uri( '/assets/js/landing.js' ),

@@ -22,7 +22,7 @@ $nice_email_action    = nice_get_contact_action( 'email' );
 <header class="nice-site-header" data-nice-header>
 	<nav class="nice-nav-shell" aria-label="<?php esc_attr_e( 'Primary navigation', 'nice' ); ?>">
 		<a class="nice-brand-link" href="<?php echo $nice_home_url; ?>" aria-label="<?php esc_attr_e( 'NICE home', 'nice' ); ?>">
-			<img class="nice-logo nice-logo--nav" src="<?php echo $nice_logo_url; ?>" width="1080" height="369" alt="NICE">
+			<img class="nice-logo nice-logo--nav" src="<?php echo $nice_logo_url; ?>" width="1080" height="369" alt="NICE" fetchpriority="auto">
 		</a>
 		<div class="nice-desktop-nav">
 			<a href="<?php echo $nice_home_url; ?>">NICE</a>

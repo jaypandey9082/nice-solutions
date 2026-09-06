@@ -159,6 +159,8 @@ function nice_render_portfolio_controls_meta_box( $post ) {
 	nice_render_content_meta_nonce();
 	$featured     = rest_sanitize_boolean( get_post_meta( $post->ID, '_nice_featured', true ) );
 	$display_order = (int) get_post_meta( $post->ID, '_nice_display_order', true );
+	$proof_value   = get_post_meta( $post->ID, '_nice_proof_value', true );
+	$proof_label   = get_post_meta( $post->ID, '_nice_proof_label', true );
 	?>
 	<p>
 		<label><input type="checkbox" name="nice_featured" value="1" <?php checked( $featured ); ?>> <?php esc_html_e( 'Featured', 'nice-core' ); ?></label>
@@ -167,6 +169,16 @@ function nice_render_portfolio_controls_meta_box( $post ) {
 		<label for="nice-display-order"><strong><?php esc_html_e( 'Display Order', 'nice-core' ); ?></strong></label><br>
 		<input class="small-text" type="number" id="nice-display-order" name="nice_display_order" value="<?php echo esc_attr( $display_order ); ?>">
 	</p>
+	<hr>
+	<p>
+		<label for="nice-proof-value"><strong><?php esc_html_e( 'Project Proof Value', 'nice-core' ); ?></strong></label><br>
+		<input class="widefat" type="text" id="nice-proof-value" name="nice_proof_value" value="<?php echo esc_attr( $proof_value ); ?>" placeholder="2000+">
+	</p>
+	<p>
+		<label for="nice-proof-label"><strong><?php esc_html_e( 'Project Proof Context', 'nice-core' ); ?></strong></label><br>
+		<textarea class="widefat" rows="3" id="nice-proof-label" name="nice_proof_label"><?php echo esc_textarea( $proof_label ); ?></textarea>
+	</p>
+	<p class="description"><?php esc_html_e( 'Use only a source-approved metric specific to this project.', 'nice-core' ); ?></p>
 	<?php
 }
 
@@ -279,11 +291,15 @@ function nice_save_content_meta( $post_id, $post ) {
 		$location     = sanitize_text_field( wp_unslash( $_POST['nice_location'] ?? '' ) );
 		$year         = nice_sanitize_year( wp_unslash( $_POST['nice_year'] ?? 0 ) );
 		$reference_url = nice_sanitize_https_url( wp_unslash( $_POST['nice_reference_url'] ?? '' ) );
+		$proof_value   = sanitize_text_field( wp_unslash( $_POST['nice_proof_value'] ?? '' ) );
+		$proof_label   = sanitize_text_field( wp_unslash( $_POST['nice_proof_label'] ?? '' ) );
 
 		nice_save_or_delete_meta( $post_id, '_nice_client_id', $client_id ?: '' );
 		nice_save_or_delete_meta( $post_id, '_nice_location', $location );
 		nice_save_or_delete_meta( $post_id, '_nice_year', $year ?: '' );
 		nice_save_or_delete_meta( $post_id, '_nice_reference_url', $reference_url );
+		nice_save_or_delete_meta( $post_id, '_nice_proof_value', $proof_value );
+		nice_save_or_delete_meta( $post_id, '_nice_proof_label', $proof_label );
 		update_post_meta( $post_id, '_nice_featured', empty( $_POST['nice_featured'] ) ? 0 : 1 );
 		update_post_meta( $post_id, '_nice_display_order', nice_sanitize_integer( wp_unslash( $_POST['nice_display_order'] ?? 0 ) ) );
 	}

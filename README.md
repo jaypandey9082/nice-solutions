@@ -1,14 +1,14 @@
 # NICE Solutions Website
 
-Architecture, design system, NICE Core CMS, landing page, and Events home for
+Architecture, design system, NICE Core CMS, landing page, and Events website for
 Nucleus Integrated Communication & Entertainment Pvt. Ltd. (N.I.C.E.).
 
 ## Phase Status
 
-Phases 1 through 5 are implemented. The repository includes the lightweight NICE
-block theme, the NICE Core content plugin, source-approved migrated content,
-responsive navigation, and real-browser validation. Studio and the deeper Events
-pages have not started.
+Phases 1 through 6 are implemented. The repository includes the lightweight NICE
+block theme, the NICE Core content plugin, source-approved migrated content, the
+complete Events journey, responsive navigation, and real-browser validation.
+Studio has not started.
 
 The theme is linked into the running NICE Solutions LocalWP site and is active at
 `http://nice-solutions.local/`. Local HTTPS is available after trusting the site
@@ -523,7 +523,7 @@ Checked on 2026-09-05.
 | PHP | Ready | The LocalWP site is running PHP 8.2.30 |
 | MySQL | Ready | Local has MySQL 8.4.0, which meets the proposed baseline |
 | WP-CLI | Ready | LocalWP's bundled WP-CLI activated and verified the NICE theme |
-| NICE Core | Ready | Version 1.0.0 is active; runtime, REST, lifecycle, and migration checks pass |
+| NICE Core | Ready | Version 1.1.0 is active; runtime, REST, routes, lifecycle, and migration checks pass |
 | Git | Ready | Apple Git 2.50.1 |
 | GitHub CLI | Ready | Authenticated to GitHub as `jaypandey9082` |
 | Node.js | Ready | Node.js 24.20.0 |
@@ -537,11 +537,11 @@ runtimes for this project.
 ## Remaining Implementation Order
 
 1. Trust the LocalWP certificate when trusted local HTTPS is needed.
-2. Review and approve the Phase 5 CMS fields and migrated Events content in
+2. Review and approve the Phase 6 Events pages and migrated Events content in
    LocalWP.
 3. Supply approved contact details, team content, client logos, and replacement
    media masters before those records are published.
-4. Start the next approved division or Events detail-page phase only after an
+4. Start the next approved phase only after an
    explicit brief.
 5. Complete responsive, accessibility, performance, SEO, browser, and content
    QA before staging deployment.
@@ -637,12 +637,10 @@ presentation metadata and a complete fallback without owning the primary CMS
 records. The page uses only projects, clients, descriptions, and metrics
 supported by the supplied profile.
 
-Only `/events/` was created. Links to `/events/services/`, individual service
-routes, `/events/case-studies/`, `/events/clients/`, `/events/team/`, and
-`/events/contact/` are intentional future destinations; no child page or Studio
-page was added. WhatsApp and email actions continue to use centralized contact
-settings and resolve to a visible Events-specific placeholder until approved
-details are supplied.
+At the end of Phase 4 only `/events/` existed. Its inner-page links are now live
+through Phase 6; no Studio page was added. WhatsApp and email actions continue to
+use centralized contact settings and resolve to a visible Events-specific
+placeholder until approved details are supplied.
 
 Live browser validation covers 320, 360, 390, 430, 768, 900, 1024, 1200, and
 1440px widths. It verifies overflow, hero separation, image dimensions and source
@@ -654,7 +652,7 @@ masters remain required before production.
 
 ## Phase 5 Completion
 
-NICE Core `1.0.0` is active in LocalWP. It registers Services, Case Studies,
+NICE Core began at `1.0.0` in Phase 5. It registers Services, Case Studies,
 Clients, and Team Members using normal WordPress posts and post meta. Division
 and Service Type use locked, REST-enabled taxonomies containing only the two
 approved divisions and six sitemap service types.
@@ -670,8 +668,28 @@ Clients, three Events Services, five Events Case Studies, and seven unique media
 attachments. A second run created no records and skipped all 18 content records.
 No Studio Service or Team Member records were invented.
 
-Theme adapters now use complete NICE Core datasets and WordPress attachment IDs,
-then fall back atomically to the Phase 3/4 arrays if the plugin or migration is
-unavailable. `/` and `/events/` remain the only implemented frontend journeys;
-future archive, detail, Team, Client, Contact, and Studio routes remain deferred.
-See `docs/content-model.md` for the complete field and helper reference.
+Theme adapters use NICE Core datasets and WordPress attachment IDs, then retain
+the approved Phase 3/4 fallback if the plugin is unavailable. See
+`docs/content-model.md` for the complete field and helper reference.
+
+## Phase 6 Completion
+
+The NICE theme is now `0.5.0` and NICE Core is `1.1.0`. Five approved WordPress
+Pages provide the Events Services, Case Studies, Clients, Team, and Contact
+indexes. Controlled NICE Core rewrites provide reusable Service and Case Study
+detail URLs without enabling raw CPT archives or paths.
+
+Seven block-theme templates use eight server-rendered theme blocks for the shared
+Events navigation and CMS-driven page bodies. Services render their editor-owned
+capabilities and related work. Case Studies render editor narratives, Client
+relationships, location/year metadata, classification, project-specific proof,
+related work, and next/previous navigation. The shared Client dataset renders ten
+records; Team and Contact render intentional publication-pending states.
+
+The migration provisions the five structural Pages and enriches only untouched
+source-backed fields. A second run created zero Pages, content records, media, or
+field updates. Browser validation covered all 13 approved inner routes at 320,
+360, 390, 430, 768, 900, 1024, 1200, and 1440px, plus canonical URLs, intentional
+404s, keyboard navigation, reduced motion, responsive media, failed requests,
+and console errors. Full route and maintenance details are in
+`docs/events-pages.md`.

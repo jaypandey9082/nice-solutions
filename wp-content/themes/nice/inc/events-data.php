@@ -159,20 +159,49 @@ function nice_get_events_project_previews_fallback() {
 function nice_get_events_project_previews() {
 	$fallback = nice_get_events_project_previews_fallback();
 
-	if ( function_exists( 'nice_get_case_study_by_slug' ) ) {
+	if ( function_exists( 'nice_get_featured_case_studies' ) ) {
+		$case_studies = nice_get_featured_case_studies(
+			array(
+				'division'       => 'events',
+				'posts_per_page' => 4,
+			)
+		);
+
+		if ( ! $case_studies ) {
+			return apply_filters( 'nice_events_project_previews', $fallback );
+		}
+
+		$fallback_by_slug = array_column( $fallback, null, 'slug' );
+		$classes          = array(
+			'nice-events-project--feature',
+			'nice-events-project--secondary',
+			'nice-events-project--compact',
+			'nice-events-project--final',
+		);
 		$previews = array();
 
-		foreach ( $fallback as $item ) {
-			$case_study = nice_get_case_study_by_slug( $item['slug'] );
+		foreach ( $case_studies as $index => $case_study ) {
+			$item = wp_parse_args(
+				$fallback_by_slug[ $case_study->post_name ] ?? array(),
+				array(
+					'slug'         => $case_study->post_name,
+					'image'        => '',
+					'image_mobile' => '',
+					'width'        => 1,
+					'height'       => 1,
+					'alt'          => '',
+				)
+			);
 
-			if ( ! $case_study ) {
-				return apply_filters( 'nice_events_project_previews', $fallback );
-			}
-
+			$item['class']         = $classes[ $index ] ?? 'nice-events-project--secondary';
 			$item['title']         = $case_study->post_title;
 			$item['description']   = $case_study->post_excerpt ?: wp_trim_words( wp_strip_all_tags( $case_study->post_content ), 30 );
-			$item['client']        = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $case_study->ID ) : $item['client'];
+			$item['client']        = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $case_study->ID ) : '';
 			$item['attachment_id'] = get_post_thumbnail_id( $case_study );
+			if ( $item['attachment_id'] && ! $item['alt'] ) {
+				$item['alt'] = get_post_meta( $item['attachment_id'], '_wp_attachment_image_alt', true );
+			}
+			$item['url']           = function_exists( 'nice_get_events_content_url' ) ? nice_get_events_content_url( $case_study ) : '';
 			$previews[]            = $item;
 		}
 
@@ -197,20 +226,12 @@ function nice_get_events_clients() {
 		'ficci'                           => 'FICCI',
 	);
 
-	if ( function_exists( 'nice_get_client_by_slug' ) ) {
-		$clients = array();
+	if ( function_exists( 'nice_get_featured_clients' ) ) {
+		$clients = nice_get_featured_clients( array( 'posts_per_page' => 6 ) );
 
-		foreach ( $fallback as $slug => $name ) {
-			$client = nice_get_client_by_slug( $slug );
-
-			if ( ! $client ) {
-				return apply_filters( 'nice_events_clients', array_values( $fallback ) );
-			}
-
-			$clients[] = $client->post_title;
+		if ( $clients ) {
+			return apply_filters( 'nice_events_clients', wp_list_pluck( $clients, 'post_title' ) );
 		}
-
-		return apply_filters( 'nice_events_clients', $clients );
 	}
 
 	return apply_filters( 'nice_events_clients', array_values( $fallback ) );

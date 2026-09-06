@@ -16,6 +16,7 @@ function nice_core_activate() {
 	nice_register_post_types();
 	nice_register_taxonomies();
 	nice_register_content_meta();
+	nice_register_events_rewrite_rules();
 	nice_ensure_default_terms();
 	flush_rewrite_rules();
 }

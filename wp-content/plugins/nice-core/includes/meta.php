@@ -49,6 +49,8 @@ function nice_register_content_meta() {
 	nice_register_post_meta_field( 'nice_case_study', '_nice_featured', 'boolean', 'rest_sanitize_boolean', false );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_display_order', 'integer', 'nice_sanitize_integer', 0 );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_reference_url', 'string', 'nice_sanitize_https_url', '' );
+	nice_register_post_meta_field( 'nice_case_study', '_nice_proof_value', 'string', 'sanitize_text_field', '' );
+	nice_register_post_meta_field( 'nice_case_study', '_nice_proof_label', 'string', 'sanitize_text_field', '' );
 
 	nice_register_post_meta_field( 'nice_client', '_nice_client_url', 'string', 'nice_sanitize_https_url', '' );
 	nice_register_post_meta_field( 'nice_client', '_nice_display_order', 'integer', 'nice_sanitize_integer', 0 );

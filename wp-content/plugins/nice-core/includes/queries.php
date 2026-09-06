@@ -153,9 +153,10 @@ function nice_get_services_by_service_type( $service_type, $args = array() ) {
  */
 function nice_get_case_studies( $args = array() ) {
 	$use_default_order = ! array_key_exists( 'orderby', $args );
-	$division     = sanitize_title( $args['division'] ?? '' );
-	$service_type = sanitize_title( $args['service_type'] ?? '' );
-	$featured     = array_key_exists( 'featured', $args ) ? rest_sanitize_boolean( $args['featured'] ) : null;
+	$requested_limit   = isset( $args['posts_per_page'] ) ? (int) $args['posts_per_page'] : -1;
+	$division          = sanitize_title( $args['division'] ?? '' );
+	$service_type      = sanitize_title( $args['service_type'] ?? '' );
+	$featured          = array_key_exists( 'featured', $args ) ? rest_sanitize_boolean( $args['featured'] ) : null;
 	unset( $args['division'], $args['service_type'], $args['featured'] );
 
 	$tax_query = array();
@@ -187,6 +188,9 @@ function nice_get_case_studies( $args = array() ) {
 	if ( $tax_query ) {
 		$query_args['tax_query'] = $tax_query;
 	}
+	if ( $use_default_order && $requested_limit > 0 ) {
+		$query_args['posts_per_page'] = -1;
+	}
 	if ( null !== $featured ) {
 		$query_args['meta_query'] = array(
 			array(
@@ -198,7 +202,13 @@ function nice_get_case_studies( $args = array() ) {
 
 	$posts = get_posts( $query_args );
 
-	return $use_default_order ? nice_sort_posts_by_display_order( $posts ) : $posts;
+	if ( $use_default_order ) {
+		$posts = nice_sort_posts_by_display_order( $posts );
+
+		return $requested_limit > 0 ? array_slice( $posts, 0, $requested_limit ) : $posts;
+	}
+
+	return $posts;
 }
 
 /** @return WP_Post[] */
@@ -235,7 +245,8 @@ function nice_get_case_study_by_slug( $slug ) {
  */
 function nice_get_clients( $args = array() ) {
 	$use_default_order = ! array_key_exists( 'orderby', $args );
-	$query_args = wp_parse_args(
+	$requested_limit   = isset( $args['posts_per_page'] ) ? (int) $args['posts_per_page'] : -1;
+	$query_args        = wp_parse_args(
 		$args,
 		array(
 			'post_type'      => 'nice_client',
@@ -246,10 +257,19 @@ function nice_get_clients( $args = array() ) {
 			'no_found_rows'  => true,
 		)
 	);
+	if ( $use_default_order && $requested_limit > 0 ) {
+		$query_args['posts_per_page'] = -1;
+	}
 
 	$posts = get_posts( $query_args );
 
-	return $use_default_order ? nice_sort_posts_by_display_order( $posts ) : $posts;
+	if ( $use_default_order ) {
+		$posts = nice_sort_posts_by_display_order( $posts );
+
+		return $requested_limit > 0 ? array_slice( $posts, 0, $requested_limit ) : $posts;
+	}
+
+	return $posts;
 }
 
 /** @return WP_Post[] */
@@ -286,7 +306,8 @@ function nice_get_client_by_slug( $slug ) {
  */
 function nice_get_team_members( $args = array() ) {
 	$use_default_order = ! array_key_exists( 'orderby', $args );
-	$division = sanitize_title( $args['division'] ?? '' );
+	$requested_limit   = isset( $args['posts_per_page'] ) ? (int) $args['posts_per_page'] : -1;
+	$division          = sanitize_title( $args['division'] ?? '' );
 	unset( $args['division'] );
 
 	$query_args = wp_parse_args(
@@ -310,10 +331,19 @@ function nice_get_team_members( $args = array() ) {
 			),
 		);
 	}
+	if ( $use_default_order && $requested_limit > 0 ) {
+		$query_args['posts_per_page'] = -1;
+	}
 
 	$posts = get_posts( $query_args );
 
-	return $use_default_order ? nice_sort_posts_by_display_order( $posts ) : $posts;
+	if ( $use_default_order ) {
+		$posts = nice_sort_posts_by_display_order( $posts );
+
+		return $requested_limit > 0 ? array_slice( $posts, 0, $requested_limit ) : $posts;
+	}
+
+	return $posts;
 }
 
 /** @return WP_Post[] */

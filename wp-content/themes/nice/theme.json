@@ -1,6 +1,33 @@
 {
   "$schema": "https://schemas.wp.org/trunk/theme.json",
   "version": 3,
+  "customTemplates": [
+    {
+      "name": "page-events-services",
+      "title": "Events Services",
+      "postTypes": ["page"]
+    },
+    {
+      "name": "page-events-case-studies",
+      "title": "Events Case Studies",
+      "postTypes": ["page"]
+    },
+    {
+      "name": "page-events-clients",
+      "title": "Events Clients",
+      "postTypes": ["page"]
+    },
+    {
+      "name": "page-events-team",
+      "title": "Events Team",
+      "postTypes": ["page"]
+    },
+    {
+      "name": "page-events-contact",
+      "title": "Events Contact",
+      "postTypes": ["page"]
+    }
+  ],
   "settings": {
     "appearanceTools": true,
     "color": {
