@@ -42,7 +42,7 @@
 		background: var(--wp--preset--color--text);
 		color: var(--wp--preset--color--surface);
 		isolation: isolate;
-		min-height: 68svh;
+		min-height: 80svh;
 		overflow: hidden;
 		position: relative;
 	}
@@ -66,14 +66,14 @@
 	}
 
 	.nice-studio-hero__veil {
-		background: color-mix(in srgb, var(--wp--preset--color--text) 67%, transparent);
+		background: color-mix(in srgb, var(--wp--preset--color--text) 55%, transparent);
 		z-index: -1;
 	}
 
 	.nice-studio-hero__inner {
 		display: grid;
 		gap: var(--wp--preset--spacing--2-xl);
-		min-height: 68svh;
+		min-height: 80svh;
 		padding-block: var(--wp--preset--spacing--2-xl);
 	}
 
@@ -101,10 +101,10 @@
 	}
 
 	.nice-studio-hero__statement > p {
-		font-size: 2.6rem;
-		font-weight: 600;
-		line-height: 0.98;
-		max-width: 12ch;
+		font-size: 2.8rem;
+		font-weight: 400;
+		line-height: 1.02;
+		max-width: 13ch;
 		text-wrap: balance;
 	}
 
@@ -158,8 +158,13 @@
 	}
 
 	.nice-studio-service:hover .nice-studio-service__media img,
-	.nice-studio-project:hover .nice-studio-project__media img {
-		transform: scale(1.018);
+	.nice-studio-service:focus-within .nice-studio-service__media img {
+		transform: scale(1.03);
+	}
+
+	.nice-studio-project:hover .nice-studio-project__media img,
+	.nice-studio-project:focus-within .nice-studio-project__media img {
+		transform: scale(1.04);
 	}
 
 	.nice-studio-service__body {
@@ -283,7 +288,7 @@
 	}
 
 	.nice-studio-story {
-		background: var(--wp--preset--color--brand-blue);
+		background: var(--wp--preset--color--text);
 		color: var(--wp--preset--color--surface);
 	}
 
@@ -543,7 +548,11 @@
 		}
 
 		.nice-studio-contact h2 {
-			font-size: 3.5rem;
+			font-size: var(--nice-type-editorial-display);
+		}
+
+		.nice-studio-section {
+			padding-block: 7rem;
 		}
 	}
 
@@ -553,7 +562,7 @@
 		}
 
 		.nice-studio-hero__statement > p {
-			font-size: 5rem;
+			font-size: 6rem;
 		}
 
 		.nice-studio-service h3 {
@@ -562,6 +571,14 @@
 
 		.nice-studio-story h2 {
 			font-size: 4rem;
+		}
+
+		.nice-studio-contact h2 {
+			font-size: var(--nice-type-editorial-display);
+		}
+
+		.nice-studio-section {
+			padding-block: 9rem;
 		}
 	}
 }

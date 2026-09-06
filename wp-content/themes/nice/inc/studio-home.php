@@ -94,10 +94,10 @@ function nice_render_studio_home() {
 		<div class="nice-wide nice-studio-hero__inner">
 			<div class="nice-studio-hero__identity" data-nice-reveal>
 				<p class="nice-eyebrow">NICE / Studio</p>
-				<h1 id="nice-studio-title">Studio</h1>
+				<h1 id="nice-studio-title" class="nice-editorial">Studio</h1>
 			</div>
 			<div class="nice-studio-hero__statement" data-nice-reveal>
-				<p>Stories shaped<br>for every screen.</p>
+				<p class="nice-editorial" data-nice-editorial-reveal>Stories shaped<br>for every screen.</p>
 				<span>Film, television and digital storytelling brought together through creative production, design and content strategy.</span>
 			</div>
 		</div>
@@ -238,7 +238,7 @@ function nice_render_studio_home() {
 		<div class="nice-wide nice-studio-contact__inner">
 			<div data-nice-reveal>
 				<p class="nice-eyebrow">Start a conversation</p>
-				<h2 id="nice-studio-contact-title">Have a story to tell?<br>Bring it to the screen.</h2>
+				<h2 id="nice-studio-contact-title" class="nice-editorial" data-nice-editorial-reveal>Have a story to tell?<br>Bring it to the screen.</h2>
 			</div>
 			<?php if ( $actions ) : ?>
 				<div class="nice-studio-contact__actions" aria-label="Approved contact options" data-nice-reveal>

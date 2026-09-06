@@ -6,10 +6,11 @@ Nucleus Integrated Communication & Entertainment Pvt. Ltd. (N.I.C.E.).
 
 ## Phase Status
 
-Phases 1 through 7 are implemented. The repository includes the lightweight NICE
+Phases 1 through 7.1 are implemented. The repository includes the lightweight NICE
 block theme, the NICE Core content plugin, source-approved migrated content, the
-complete Events journey, the Studio Home gateway, responsive navigation, and
-real-browser validation. Studio inner pages remain reserved for Phase 8.
+complete Events journey, the Studio Home gateway, responsive navigation, editorial
+typography and reveal motion, navigation continuity, and real-browser validation.
+Studio inner pages remain reserved for Phase 8.
 
 The theme is linked into the running NICE Solutions LocalWP site and is active at
 `http://nice-solutions.local/`. Local HTTPS is available after trusting the site
@@ -715,3 +716,38 @@ and contact URLs remain real `404` responses without redirecting to unrelated
 Events content. Live browser validation covers 320, 360, 390, 430, 768, 900,
 1024, 1200, and 1440px, plus landing and Events regressions. Full implementation
 and content details are in `docs/studio-home.md`.
+
+## Phase 7.1 Completion
+
+Phase 7.1 introduces editorial typography, motion, and journey refinements across
+both Events and Studio without rebuilding existing architecture:
+
+1. **Editorial Typography System**: Registered `fontFamilies` entry `editorial`
+   with local serif stack (`Georgia, "Times New Roman", serif`), avoiding CDN
+   requests while providing a font-swappable CSS token architecture via
+   `--nice-type-editorial` and `--nice-type-editorial-display`.
+2. **Editorial Reveal Motion**: Extended `landing.js` and `landing.css` with
+   word-by-word reveal masks (`[data-nice-editorial-reveal]`) powered by lightweight
+   IntersectionObserver with 80ms word stagger, screen reader preservation via
+   `.nice-sr-only`, zero layout shift, and immediate reduced-motion fallback.
+3. **Navigation Continuity**: Global header and footer now detect division context
+   (`nice_theme_is_events_context()`, `nice_theme_is_studio_home()`). When inside Events,
+   "Work" points to `/events/case-studies/` and "Services" to `/events/services/`.
+   When inside Studio, "Work" points to `/studio/#studio-work` and "Services" to
+   `/studio/#studio-services`.
+4. **Standardized CTA System**: Refactored `nice_render_events_inner_contact_cta()`
+   with customizable parameters, editorial display typography, word reveals, and
+   populated WhatsApp/Email direct actions.
+5. **Case Study Storytelling & Hierarchy**: Reordered case study templates to
+   support quotes, project overview infobar, front-loaded proof metrics, and rich
+   thumbnail navigation cards. Replaced uniform card grid with featured, large, and
+   secondary editorial visual scale.
+6. **Studio Differentiation**: Studio hero enlarged to 80svh with serif statement
+   and adjusted veil opacity. Studio Story section styled with dark container for
+   cinematic light-dark-light rhythm. Media hover states polished (1.03-1.04 scale).
+7. **Polymorphic Routing & CMS Meta**: Registered `_nice_hero_video_url`,
+   `_nice_quote_text`, and `_nice_quote_author` post meta for Case Studies.
+   Refactored `routes.php` with `nice_get_content_division()` and `nice_get_content_url()`
+   supporting both divisions while ensuring Studio inner routes continue to 404
+   until Phase 8.
+

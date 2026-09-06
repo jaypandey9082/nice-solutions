@@ -8,18 +8,35 @@
 
 $nice_logo_url        = esc_url( get_theme_file_uri( '/assets/images/nice-logo.png' ) );
 $nice_home_url        = esc_url( home_url( '/' ) );
-$nice_work_url        = esc_url( home_url( '/#work' ) );
-$nice_services_url    = esc_url( home_url( '/#capabilities' ) );
 $nice_events_url      = esc_url( home_url( '/events/' ) );
 $nice_studio_url      = esc_url( home_url( '/studio/' ) );
 $nice_clients_url     = esc_url( home_url( '/#clients' ) );
-$nice_contact_url     = esc_url( home_url( '/#contact' ) );
 $nice_whatsapp_action = nice_get_contact_action( 'whatsapp' );
 $nice_email_action    = nice_get_contact_action( 'email' );
+
+$nice_is_events = function_exists( 'nice_theme_is_events_context' ) && nice_theme_is_events_context();
+$nice_is_studio = function_exists( 'nice_theme_is_studio_home' ) && nice_theme_is_studio_home();
+
+$nice_division = 'global';
+if ( $nice_is_events ) {
+	$nice_division     = 'events';
+	$nice_work_url     = esc_url( home_url( '/events/case-studies/' ) );
+	$nice_services_url = esc_url( home_url( '/events/services/' ) );
+	$nice_contact_url  = esc_url( home_url( '/events/contact/' ) );
+} elseif ( $nice_is_studio ) {
+	$nice_division     = 'studio';
+	$nice_work_url     = esc_url( home_url( '/studio/#studio-work' ) );
+	$nice_services_url = esc_url( home_url( '/studio/#studio-services' ) );
+	$nice_contact_url  = esc_url( home_url( '/studio/#studio-contact' ) );
+} else {
+	$nice_work_url     = esc_url( home_url( '/#work' ) );
+	$nice_services_url = esc_url( home_url( '/#capabilities' ) );
+	$nice_contact_url  = esc_url( home_url( '/#contact' ) );
+}
 ?>
 <!-- wp:html -->
 <a class="nice-skip-link" href="#main-content"><?php esc_html_e( 'Skip to content', 'nice' ); ?></a>
-<header class="nice-site-header" data-nice-header>
+<header class="nice-site-header" data-nice-header data-nice-division="<?php echo esc_attr( $nice_division ); ?>">
 	<nav class="nice-nav-shell" aria-label="<?php esc_attr_e( 'Primary navigation', 'nice' ); ?>">
 		<a class="nice-brand-link" href="<?php echo $nice_home_url; ?>" aria-label="<?php esc_attr_e( 'NICE home', 'nice' ); ?>">
 			<img class="nice-logo nice-logo--nav" src="<?php echo $nice_logo_url; ?>" width="1080" height="369" alt="NICE" fetchpriority="auto">

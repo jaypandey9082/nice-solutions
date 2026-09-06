@@ -44,6 +44,10 @@ function nice_theme_is_events_inner_page() {
  * @return string
  */
 function nice_theme_get_events_content_url( $post ) {
+	if ( function_exists( 'nice_get_content_url' ) ) {
+		return nice_get_content_url( $post );
+	}
+
 	if ( function_exists( 'nice_get_events_content_url' ) ) {
 		return nice_get_events_content_url( $post );
 	}
@@ -204,16 +208,32 @@ function nice_render_case_study_preview( $case_study, $class_name = '' ) {
 
 /**
  * Render the reusable Events contact transition.
+ *
+ * @param array<string, string> $args Optional custom CTA settings.
  */
-function nice_render_events_inner_contact_cta() {
+function nice_render_events_inner_contact_cta( $args = array() ) {
+	$eyebrow         = ! empty( $args['eyebrow'] ) ? $args['eyebrow'] : 'Start a conversation';
+	$heading         = ! empty( $args['heading'] ) ? $args['heading'] : 'Have an Events brief?';
+	$cta_label       = ! empty( $args['cta_label'] ) ? $args['cta_label'] : "Let's make it NICE";
+	$cta_url         = ! empty( $args['cta_url'] ) ? $args['cta_url'] : home_url( '/events/contact/' );
+	$whatsapp_action = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'whatsapp' ) : null;
+	$email_action    = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'email' ) : null;
 	?>
 	<section class="nice-events-inner-cta" aria-labelledby="nice-events-inner-cta-title">
 		<div class="nice-wide nice-events-inner-cta__content" data-nice-reveal>
-			<div>
-				<p class="nice-eyebrow">Start a conversation</p>
-				<h2 id="nice-events-inner-cta-title">Have an Events brief?</h2>
+			<div class="nice-events-inner-cta__lead">
+				<p class="nice-eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
+				<h2 id="nice-events-inner-cta-title" class="nice-editorial" data-nice-editorial-reveal><?php echo esc_html( $heading ); ?></h2>
 			</div>
-			<a class="nice-button nice-button--primary" href="<?php echo esc_url( home_url( '/events/contact/' ) ); ?>">Let's make it NICE</a>
+			<div class="nice-events-inner-cta__actions">
+				<a class="nice-button nice-button--primary" href="<?php echo esc_url( $cta_url ); ?>"><?php echo esc_html( $cta_label ); ?> <span aria-hidden="true">-&gt;</span></a>
+				<?php if ( $whatsapp_action && ! $whatsapp_action['placeholder'] ) : ?>
+					<a class="nice-button nice-button--secondary" href="<?php echo esc_url( $whatsapp_action['url'] ); ?>" data-nice-contact-channel="whatsapp">WhatsApp</a>
+				<?php endif; ?>
+				<?php if ( $email_action && ! $email_action['placeholder'] ) : ?>
+					<a class="nice-button nice-button--secondary" href="<?php echo esc_url( $email_action['url'] ); ?>" data-nice-contact-channel="email">Email</a>
+				<?php endif; ?>
+			</div>
 		</div>
 	</section>
 	<?php
@@ -374,7 +394,17 @@ function nice_render_events_case_studies_index() {
 					</header>
 					<?php if ( $case_studies ) : ?>
 						<div class="nice-events-case-list">
-							<?php foreach ( $case_studies as $case_study ) : nice_render_case_study_preview( $case_study ); endforeach; ?>
+							<?php
+							$hierarchy_classes = array(
+								0 => 'nice-events-case-preview--featured',
+								1 => 'nice-events-case-preview--large',
+								2 => 'nice-events-case-preview--secondary',
+							);
+							foreach ( $case_studies as $idx => $case_study ) :
+								$variant_class = $hierarchy_classes[ $idx ] ?? 'nice-events-case-preview--secondary';
+								nice_render_case_study_preview( $case_study, $variant_class );
+							endforeach;
+							?>
 						</div>
 					<?php else : ?>
 						<div class="nice-events-empty-state" data-nice-reveal><p>Approved case studies in this service are being prepared for publication.</p></div>
@@ -406,6 +436,8 @@ function nice_render_events_case_study_detail() {
 	$year         = (int) get_post_meta( $case_study->ID, '_nice_year', true );
 	$proof_value  = get_post_meta( $case_study->ID, '_nice_proof_value', true );
 	$proof_label  = get_post_meta( $case_study->ID, '_nice_proof_label', true );
+	$quote_text   = get_post_meta( $case_study->ID, '_nice_quote_text', true );
+	$quote_author = get_post_meta( $case_study->ID, '_nice_quote_author', true );
 	$service_type = nice_theme_get_primary_term( $case_study->ID, 'nice_service_type' );
 	$division     = nice_theme_get_primary_term( $case_study->ID, 'nice_division' );
 	$related      = $service_type && function_exists( 'nice_get_case_studies_by_service' )
@@ -425,12 +457,21 @@ function nice_render_events_case_study_detail() {
 	ob_start();
 	nice_render_events_inner_hero( $client ?: 'Events case study', $case_study->post_title, $case_study->post_excerpt, $case_study->ID );
 	?>
-	<section class="nice-events-case-intro nice-events-inner-section">
-		<div class="nice-wide nice-events-case-intro__grid">
-			<div class="nice-events-editor-content" data-nice-reveal>
-				<?php echo wp_kses_post( apply_filters( 'the_content', $case_study->post_content ) ); ?>
+	<?php if ( $quote_text ) : ?>
+		<section class="nice-events-case-quote nice-events-inner-section" aria-label="<?php esc_attr_e( 'Client quote', 'nice' ); ?>">
+			<div class="nice-wide" data-nice-reveal>
+				<blockquote class="nice-case-quote">
+					<p class="nice-editorial" data-nice-editorial-reveal>&ldquo;<?php echo esc_html( $quote_text ); ?>&rdquo;</p>
+					<?php if ( $quote_author ) : ?>
+						<cite>&mdash; <?php echo esc_html( $quote_author ); ?></cite>
+					<?php endif; ?>
+				</blockquote>
 			</div>
-			<dl class="nice-events-case-meta" data-nice-reveal>
+		</section>
+	<?php endif; ?>
+	<section class="nice-events-case-infobar" aria-label="<?php esc_attr_e( 'Project overview', 'nice' ); ?>">
+		<div class="nice-wide">
+			<dl class="nice-events-case-meta-bar" data-nice-reveal>
 				<?php if ( $client ) : ?><div><dt>Client</dt><dd><?php echo esc_html( $client ); ?></dd></div><?php endif; ?>
 				<?php if ( $location ) : ?><div><dt>Location</dt><dd><?php echo esc_html( $location ); ?></dd></div><?php endif; ?>
 				<?php if ( $year ) : ?><div><dt>Year</dt><dd><?php echo esc_html( $year ); ?></dd></div><?php endif; ?>
@@ -447,18 +488,60 @@ function nice_render_events_case_study_detail() {
 			</div>
 		</section>
 	<?php endif; ?>
+	<section class="nice-events-case-intro nice-events-inner-section">
+		<div class="nice-wide nice-events-case-intro__grid">
+			<div class="nice-events-editor-content" data-nice-reveal>
+				<?php echo wp_kses_post( apply_filters( 'the_content', $case_study->post_content ) ); ?>
+			</div>
+		</div>
+	</section>
 	<?php if ( $related ) : ?>
 		<section class="nice-events-inner-section nice-events-related-work" aria-labelledby="nice-related-work-title">
 			<div class="nice-wide">
 				<header class="nice-events-inner-heading" data-nice-reveal><p class="nice-eyebrow">Continue exploring</p><h2 id="nice-related-work-title">Related work</h2></header>
-				<div class="nice-events-case-list"><?php foreach ( $related as $item ) : nice_render_case_study_preview( $item ); endforeach; ?></div>
+				<div class="nice-events-case-list">
+					<?php foreach ( $related as $idx => $item ) :
+						$rel_class = 0 === $idx ? 'nice-events-case-preview--featured' : 'nice-events-case-preview--secondary';
+						nice_render_case_study_preview( $item, $rel_class );
+					endforeach; ?>
+				</div>
 			</div>
 		</section>
 	<?php endif; ?>
 	<?php if ( $previous || $next ) : ?>
 		<nav class="nice-events-project-navigation nice-wide" aria-label="<?php esc_attr_e( 'Case study navigation', 'nice' ); ?>">
-			<?php if ( $previous ) : ?><a href="<?php echo esc_url( nice_theme_get_events_content_url( $previous ) ); ?>"><small>Previous project</small><span><?php echo esc_html( $previous->post_title ); ?></span></a><?php else : ?><span></span><?php endif; ?>
-			<?php if ( $next ) : ?><a href="<?php echo esc_url( nice_theme_get_events_content_url( $next ) ); ?>"><small>Next project</small><span><?php echo esc_html( $next->post_title ); ?></span></a><?php endif; ?>
+			<?php if ( $previous ) :
+				$prev_client = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $previous->ID ) : '';
+				$prev_img    = nice_theme_get_featured_image( $previous->ID, '160px' );
+			?>
+				<a class="nice-events-nav-card nice-events-nav-card--prev" href="<?php echo esc_url( nice_theme_get_events_content_url( $previous ) ); ?>">
+					<?php if ( $prev_img ) : ?>
+						<div class="nice-events-nav-card__media"><?php echo $prev_img; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+					<?php endif; ?>
+					<div class="nice-events-nav-card__body">
+						<small>&larr; Previous project</small>
+						<?php if ( $prev_client ) : ?><span class="nice-eyebrow"><?php echo esc_html( $prev_client ); ?></span><?php endif; ?>
+						<span class="nice-events-nav-card__title"><?php echo esc_html( $previous->post_title ); ?></span>
+					</div>
+				</a>
+			<?php else : ?>
+				<span class="nice-events-nav-card-empty"></span>
+			<?php endif; ?>
+			<?php if ( $next ) :
+				$next_client = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $next->ID ) : '';
+				$next_img    = nice_theme_get_featured_image( $next->ID, '160px' );
+			?>
+				<a class="nice-events-nav-card nice-events-nav-card--next" href="<?php echo esc_url( nice_theme_get_events_content_url( $next ) ); ?>">
+					<div class="nice-events-nav-card__body">
+						<small>Next project &rarr;</small>
+						<?php if ( $next_client ) : ?><span class="nice-eyebrow"><?php echo esc_html( $next_client ); ?></span><?php endif; ?>
+						<span class="nice-events-nav-card__title"><?php echo esc_html( $next->post_title ); ?></span>
+					</div>
+					<?php if ( $next_img ) : ?>
+						<div class="nice-events-nav-card__media"><?php echo $next_img; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+					<?php endif; ?>
+				</a>
+			<?php endif; ?>
 		</nav>
 	<?php endif; ?>
 	<?php
