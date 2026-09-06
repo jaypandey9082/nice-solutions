@@ -1,14 +1,15 @@
 # NICE Solutions Website
 
-Architecture, design system, NICE Core CMS, landing page, and Events website for
+Architecture, design system, NICE Core CMS, landing page, Events website, and
+Studio Home for
 Nucleus Integrated Communication & Entertainment Pvt. Ltd. (N.I.C.E.).
 
 ## Phase Status
 
-Phases 1 through 6 are implemented. The repository includes the lightweight NICE
+Phases 1 through 7 are implemented. The repository includes the lightweight NICE
 block theme, the NICE Core content plugin, source-approved migrated content, the
-complete Events journey, responsive navigation, and real-browser validation.
-Studio has not started.
+complete Events journey, the Studio Home gateway, responsive navigation, and
+real-browser validation. Studio inner pages remain reserved for Phase 8.
 
 The theme is linked into the running NICE Solutions LocalWP site and is active at
 `http://nice-solutions.local/`. Local HTTPS is available after trusting the site
@@ -523,7 +524,7 @@ Checked on 2026-09-05.
 | PHP | Ready | The LocalWP site is running PHP 8.2.30 |
 | MySQL | Ready | Local has MySQL 8.4.0, which meets the proposed baseline |
 | WP-CLI | Ready | LocalWP's bundled WP-CLI activated and verified the NICE theme |
-| NICE Core | Ready | Version 1.1.0 is active; runtime, REST, routes, lifecycle, and migration checks pass |
+| NICE Core | Ready | Version 1.2.0 is active; runtime, REST, routes, lifecycle, and migration checks pass |
 | Git | Ready | Apple Git 2.50.1 |
 | GitHub CLI | Ready | Authenticated to GitHub as `jaypandey9082` |
 | Node.js | Ready | Node.js 24.20.0 |
@@ -537,7 +538,7 @@ runtimes for this project.
 ## Remaining Implementation Order
 
 1. Trust the LocalWP certificate when trusted local HTTPS is needed.
-2. Review and approve the Phase 6 Events pages and migrated Events content in
+2. Review and approve the Phase 6 Events pages and Phase 7 Studio Home content in
    LocalWP.
 3. Supply approved contact details, team content, client logos, and replacement
    media masters before those records are published.
@@ -693,3 +694,24 @@ field updates. Browser validation covered all 13 approved inner routes at 320,
 404s, keyboard navigation, reduced motion, responsive media, failed requests,
 and console errors. Full route and maintenance details are in
 `docs/events-pages.md`.
+
+## Phase 7 Completion
+
+The NICE theme is now `0.6.0` and NICE Core is `1.2.0`. `/studio/` is a dedicated,
+cinematic Studio gateway using the shared header, footer, navigation behavior,
+design tokens, and accessibility foundation. Its page flow includes an
+image-led hero, three CMS-driven Services, a compact capability statement, five
+CMS-driven selected projects, Story/Production/Screen storytelling, a curated
+shared Client list, and a direct-contact close.
+
+NICE Core now migrates exactly three sitemap-approved Studio Services and five
+source-supported Studio Case Studies. The Studio Home reads those records,
+shared Clients, contact settings, and social settings through existing query
+helpers. Empty social values omit the social section; empty contact values show
+an explicit publication-pending state without exposing profile contact details.
+
+Only `/studio/` is implemented. Future Studio service, case-study, client, team,
+and contact URLs remain real `404` responses without redirecting to unrelated
+Events content. Live browser validation covers 320, 360, 390, 430, 768, 900,
+1024, 1200, and 1440px, plus landing and Events regressions. Full implementation
+and content details are in `docs/studio-home.md`.

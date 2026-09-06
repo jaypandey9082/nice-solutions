@@ -56,6 +56,33 @@ function nice_get_content_migration_manifest() {
 				'image'        => 'power-champs.webp',
 				'alt'          => 'Students presenting during a POWER CHAMPS awareness programme',
 			),
+			array(
+				'slug'         => 'corporate-videos',
+				'title'        => 'Corporate Videos',
+				'description'  => 'Professionally crafted corporate profiles and product or solution audiovisuals shaped to communicate with clarity and impact.',
+				'content'      => '<p>NICE creates audiovisual communication for organisations across manufacturing, technology, finance and services, bringing brand identity, core values and key offerings to the screen.</p><h2>What NICE delivers</h2><ul><li>Corporate profiles</li><li>Product and solution audiovisuals</li><li>Motion graphics</li><li>Stock-video integration</li><li>Factory and location shoots</li></ul>',
+				'service_type' => 'corporate-videos',
+				'image'        => 'strata-production.webp',
+				'alt'          => 'NICE production crew filming inside the Strata Geosystems factory',
+			),
+			array(
+				'slug'         => 'digital-content-creation',
+				'title'        => 'Digital Content Creation',
+				'description'  => 'Digital videos and platform-aware stories that make products, solutions and ideas clear for audiences across digital channels.',
+				'content'      => '<p>NICE develops digital storytelling for apps, YouTube channels and social platforms, translating products, solutions and educational ideas into clear visual narratives.</p><h2>What NICE delivers</h2><ul><li>Digital videos</li><li>Social and digital storytelling</li><li>Platform-specific content</li><li>Product and solution explainers</li><li>YouTube and digital-channel content</li></ul>',
+				'service_type' => 'digital-content-creation',
+				'image'        => 'studio-krish-e.webp',
+				'alt'          => 'Farmer working in a field in a Krish-e digital content frame',
+			),
+			array(
+				'slug'         => 'films-entertainment',
+				'title'        => 'Films & Entertainment',
+				'description'  => 'Film production and cinematic storytelling carried from creative production through marketing and promotion.',
+				'content'      => '<p>NICE works across film and entertainment production with a focus on meaningful cinema, cinematic storytelling and the path from production to screen.</p><h2>What NICE delivers</h2><ul><li>Film production</li><li>Cinematic storytelling</li><li>Entertainment production</li><li>Film marketing and promotions</li></ul>',
+				'service_type' => 'films-entertainment',
+				'image'        => 'studio-jayanti.webp',
+				'alt'          => 'Jayanti cast and production team gathered outdoors',
+			),
 		),
 		'case_studies' => array(
 			array(
@@ -131,6 +158,76 @@ function nice_get_content_migration_manifest() {
 				'alt'          => 'Participants running together during RunForEquity',
 				'proof_value'  => '5,000+',
 				'proof_label'  => 'runners in the second edition of RunForEquity',
+			),
+			array(
+				'slug'         => 'strata-geosystems-factory-shoot',
+				'title'        => 'Strata Geosystems Factory Shoot',
+				'description'  => 'A factory shoot with drone and FPV presentation for Strata Geosystems India in Gujarat.',
+				'content'      => '<p>NICE produced a factory shoot video for Strata Geosystems, capturing the scale, precision and technology of its Gujarat operations. The finished film presents the company\'s manufacturing capabilities and infrastructure for international audiences.</p>',
+				'service_type' => 'corporate-videos',
+				'client_name'  => 'Strata Geosystems India',
+				'location'     => 'Gujarat',
+				'year'         => 0,
+				'featured'     => true,
+				'order'        => 110,
+				'image'        => 'strata-production.webp',
+				'alt'          => 'NICE production crew filming inside the Strata Geosystems factory',
+			),
+			array(
+				'slug'         => 'career-agents-academy',
+				'title'        => 'Career Agents Academy',
+				'description'  => 'A digital campaign video for the Bajaj Group\'s Career Agents Academy.',
+				'content'      => '<p>NICE partnered with the Bajaj Group to create a digital campaign video for Career Agents Academy, a programme for insurance advisors. The film presents the programme\'s benefits and professional opportunities for digital outreach and recruitment.</p>',
+				'service_type' => 'digital-content-creation',
+				'client_slug'  => 'bajaj',
+				'location'     => 'Mumbai',
+				'year'         => 0,
+				'featured'     => true,
+				'order'        => 120,
+				'image'        => 'studio-career-agents.webp',
+				'alt'          => 'Camera monitor framing a Career Agents Academy production scene',
+			),
+			array(
+				'slug'         => 'krish-e',
+				'title'        => 'Krish-e',
+				'description'  => 'Digital content for the Mahindra Group\'s Krish-e farmer facilitation app and YouTube channel.',
+				'content'      => '<p>NICE partnered with the Mahindra Group to produce digital content for the Krish-e farmer facilitation app and YouTube channel. The videos simplify agri-tech solutions and best practices for rural audiences across digital touchpoints.</p>',
+				'service_type' => 'digital-content-creation',
+				'client_slug'  => 'mahindra',
+				'location'     => '',
+				'year'         => 0,
+				'featured'     => true,
+				'order'        => 130,
+				'image'        => 'studio-krish-e.webp',
+				'alt'          => 'Farmer working in a field in a Krish-e digital content frame',
+			),
+			array(
+				'slug'         => 'crisil-financial-literacy-content',
+				'title'        => 'CRISIL Financial Literacy Content',
+				'description'  => 'Drama-based visual content designed to make financial literacy accessible and engaging.',
+				'content'      => '<p>NICE produced drama-based content for CRISIL Foundation\'s financial literacy initiative. The visual narrative makes financial concepts more accessible while supporting awareness and inclusion through clear, engaging storytelling.</p>',
+				'service_type' => 'digital-content-creation',
+				'client_slug'  => 'crisil',
+				'location'     => '',
+				'year'         => 0,
+				'featured'     => true,
+				'order'        => 140,
+				'image'        => 'studio-crisil-literacy.webp',
+				'alt'          => 'NICE crew filming a financial literacy scene on a village set',
+			),
+			array(
+				'slug'         => 'jayanti',
+				'title'        => 'Jayanti',
+				'description'  => 'NICE\'s film-production involvement as Executive Producers of the Marathi film Jayanti.',
+				'content'      => '<p>NICE entered film production as Executive Producers of the Marathi film <em>Jayanti</em>. Alongside production, the team led marketing, promotions and the film\'s theatrical rollout.</p>',
+				'service_type' => 'films-entertainment',
+				'client_name'  => '',
+				'location'     => '',
+				'year'         => 0,
+				'featured'     => true,
+				'order'        => 150,
+				'image'        => 'studio-jayanti.webp',
+				'alt'          => 'Jayanti cast and production team gathered outdoors',
 			),
 		),
 	);
@@ -209,6 +306,42 @@ function nice_provision_events_pages() {
 
 		update_post_meta( $page->ID, '_wp_page_template', $record['template'] );
 	}
+
+	return $summary;
+}
+
+/**
+ * Provision the approved Studio Home Page without adding Phase 8 routes.
+ *
+ * Existing page content and titles are preserved.
+ *
+ * @return array{created: int, skipped: int, errors: string[]}
+ */
+function nice_provision_studio_page() {
+	$summary = array( 'created' => 0, 'skipped' => 0, 'errors' => array() );
+	$page    = get_page_by_path( 'studio', OBJECT, 'page' );
+
+	if ( $page instanceof WP_Post ) {
+		++$summary['skipped'];
+		return $summary;
+	}
+
+	$page_id = wp_insert_post(
+		array(
+			'post_type'   => 'page',
+			'post_status' => 'publish',
+			'post_name'   => 'studio',
+			'post_title'  => 'Studio',
+		),
+		true
+	);
+
+	if ( is_wp_error( $page_id ) ) {
+		$summary['errors'][] = $page_id->get_error_message();
+		return $summary;
+	}
+
+	++$summary['created'];
 
 	return $summary;
 }
@@ -377,6 +510,7 @@ function nice_run_content_migration() {
 	$summary  = array(
 		'terms'        => nice_ensure_default_terms(),
 		'pages'        => nice_provision_events_pages(),
+		'studio_page'  => nice_provision_studio_page(),
 		'clients'      => array( 'created' => 0, 'skipped' => 0 ),
 		'services'     => array( 'created' => 0, 'skipped' => 0 ),
 		'case_studies' => array( 'created' => 0, 'skipped' => 0 ),
@@ -389,6 +523,9 @@ function nice_run_content_migration() {
 	}
 	if ( ! empty( $summary['pages']['errors'] ) ) {
 		return new WP_Error( 'nice_page_migration_failed', implode( ' ', $summary['pages']['errors'] ) );
+	}
+	if ( ! empty( $summary['studio_page']['errors'] ) ) {
+		return new WP_Error( 'nice_studio_page_migration_failed', implode( ' ', $summary['studio_page']['errors'] ) );
 	}
 
 	$client_ids = array();
@@ -461,7 +598,7 @@ function nice_run_content_migration() {
 
 	update_option( 'nice_core_content_migration_version', NICE_CORE_VERSION, false );
 
-	if ( $summary['pages']['created'] ) {
+	if ( $summary['pages']['created'] || $summary['studio_page']['created'] ) {
 		flush_rewrite_rules( false );
 	}
 
@@ -491,6 +628,7 @@ function nice_cli_migrate_content() {
 
 	WP_CLI::log( sprintf( 'Terms: %d created, %d existing', $result['terms']['created'], $result['terms']['existing'] ) );
 	WP_CLI::log( sprintf( 'Events pages: %d created, %d existing', $result['pages']['created'], $result['pages']['skipped'] ) );
+	WP_CLI::log( sprintf( 'Studio Home: %d created, %d existing', $result['studio_page']['created'], $result['studio_page']['skipped'] ) );
 	WP_CLI::log( sprintf( 'Source-backed fields enriched: %d', $result['enriched'] ) );
 	WP_CLI::log( sprintf( 'Media linked: %d', $result['media']['linked'] ) );
 

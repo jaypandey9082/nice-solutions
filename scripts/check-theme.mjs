@@ -16,10 +16,13 @@ const requiredFiles = [
 	'inc/events-data.php',
 	'inc/events-pages.php',
 	'inc/landing-data.php',
+	'inc/studio-data.php',
+	'inc/studio-home.php',
 	'assets/css/site.css',
 	'assets/css/events.css',
 	'assets/css/events-inner.css',
 	'assets/css/landing.css',
+	'assets/css/studio.css',
 	'assets/css/editor.css',
 	'assets/js/navigation.js',
 	'assets/js/landing.js',
@@ -34,11 +37,16 @@ const requiredFiles = [
 	'assets/images/run-for-equity-360.webp',
 	'assets/images/vision-to-victory.webp',
 	'assets/images/vision-to-victory-360.webp',
+	'assets/images/studio-jayanti.webp',
+	'assets/images/studio-career-agents.webp',
+	'assets/images/studio-krish-e.webp',
+	'assets/images/studio-crisil-literacy.webp',
 	'parts/header.html',
 	'parts/footer.html',
 	'templates/index.html',
 	'templates/front-page.html',
 	'templates/page-events.html',
+	'templates/page-studio.html',
 	'templates/page-events-services.html',
 	'templates/page-events-case-studies.html',
 	'templates/page-events-clients.html',
@@ -132,6 +140,7 @@ const css = [
 	readFileSync(resolve(themeDirectory, 'assets/css/landing.css'), 'utf8'),
 	readFileSync(resolve(themeDirectory, 'assets/css/events.css'), 'utf8'),
 	readFileSync(resolve(themeDirectory, 'assets/css/events-inner.css'), 'utf8'),
+	readFileSync(resolve(themeDirectory, 'assets/css/studio.css'), 'utf8'),
 ].join('\n');
 const header = readFileSync(resolve(themeDirectory, 'patterns/site-header.php'), 'utf8');
 const footer = readFileSync(resolve(themeDirectory, 'patterns/site-footer.php'), 'utf8');
@@ -146,6 +155,9 @@ const eventsServices = readFileSync(resolve(themeDirectory, 'patterns/events-ser
 const eventsWork = readFileSync(resolve(themeDirectory, 'patterns/events-work.php'), 'utf8');
 const eventsContact = readFileSync(resolve(themeDirectory, 'patterns/events-contact.php'), 'utf8');
 const eventsPages = readFileSync(resolve(themeDirectory, 'inc/events-pages.php'), 'utf8');
+const studioPage = readFileSync(resolve(themeDirectory, 'templates/page-studio.html'), 'utf8');
+const studioData = readFileSync(resolve(themeDirectory, 'inc/studio-data.php'), 'utf8');
+const studioHome = readFileSync(resolve(themeDirectory, 'inc/studio-home.php'), 'utf8');
 
 if (/linear-gradient|radial-gradient/i.test(css)) {
 	fail('Gradient usage is not allowed in the Phase 2 foundation.');
@@ -200,8 +212,28 @@ for (const route of [
 	}
 }
 
-if (existsSync(resolve(themeDirectory, 'templates/page-studio.html'))) {
-	fail('Phase 6 must not add a Studio page template.');
+if (!studioPage.includes('nice/studio-home')) {
+	fail('Studio Home must use its server-rendered CMS block.');
+}
+
+for (const helper of ['nice_get_studio_services', 'nice_get_featured_case_studies', 'nice_get_featured_clients']) {
+	if (!studioData.includes(helper)) {
+		fail(`Studio adapter is missing NICE Core helper: ${helper}`);
+	}
+}
+
+for (const service of ['corporate-videos', 'digital-content-creation', 'films-entertainment']) {
+	if (!studioData.includes(service)) {
+		fail(`Studio adapter is missing approved service slug: ${service}`);
+	}
+}
+
+if (!studioHome.includes("register_block_type(\n\t\t'nice/studio-home'") || !studioHome.includes('fetchpriority')) {
+	fail('Studio Home block or hero priority is missing.');
+}
+
+if (/href=["'][^"']*\/studio\/(services|case-studies|clients|team|contact)\//.test(studioHome)) {
+	fail('Phase 7 must not expose unimplemented Studio inner-page links.');
 }
 
 for (const block of [

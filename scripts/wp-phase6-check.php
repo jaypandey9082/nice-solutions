@@ -24,8 +24,8 @@ function nice_phase6_assert( $condition, $message ) {
 $temporary_id = 0;
 
 try {
-	nice_phase6_assert( defined( 'NICE_CORE_VERSION' ) && '1.1.0' === NICE_CORE_VERSION, 'Unexpected NICE Core version.' );
-	nice_phase6_assert( '0.5.0' === wp_get_theme()->get( 'Version' ), 'Unexpected NICE theme version.' );
+	nice_phase6_assert( defined( 'NICE_CORE_VERSION' ) && version_compare( NICE_CORE_VERSION, '1.1.0', '>=' ), 'NICE Core predates Phase 6.' );
+	nice_phase6_assert( version_compare( wp_get_theme()->get( 'Version' ), '0.5.0', '>=' ), 'NICE theme predates Phase 6.' );
 
 	foreach ( array( 'nice_service', 'nice_case_study' ) as $post_type ) {
 		$object = get_post_type_object( $post_type );

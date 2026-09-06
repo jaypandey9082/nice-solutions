@@ -63,7 +63,6 @@ $clients         = nice_get_clients();
 nice_phase5_assert( 3 === count( $events_services ), 'Expected three migrated Events Services.' );
 nice_phase5_assert( 5 === count( $case_studies ), 'Expected five migrated Events Case Studies.' );
 nice_phase5_assert( 10 === count( $clients ), 'Expected ten source-approved Client records.' );
-nice_phase5_assert( empty( nice_get_studio_services() ), 'Studio Service records must not be invented.' );
 nice_phase5_assert( empty( nice_get_team_members() ), 'Team Member records must remain empty without approved people.' );
 
 do_action( 'add_meta_boxes' );

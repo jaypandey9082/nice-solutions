@@ -49,8 +49,8 @@ const themeStyle = readFileSync(resolve(themeDirectory, 'style.css'), 'utf8');
 const eventsData = readFileSync(resolve(themeDirectory, 'inc/events-data.php'), 'utf8');
 const landingData = readFileSync(resolve(themeDirectory, 'inc/landing-data.php'), 'utf8');
 
-if (!/Version:\s*1\.1\.0/.test(rootPlugin) || !rootPlugin.includes("define( 'NICE_CORE_VERSION', '1.1.0' )")) {
-	fail('NICE Core must declare version 1.1.0 consistently.');
+if (!/Version:\s*1\.2\.0/.test(rootPlugin) || !rootPlugin.includes("define( 'NICE_CORE_VERSION', '1.2.0' )")) {
+	fail('NICE Core must declare version 1.2.0 consistently.');
 }
 
 for (const postType of ['nice_service', 'nice_case_study', 'nice_client', 'nice_team_member']) {
@@ -134,6 +134,16 @@ if (!migration.includes('nice_provision_events_pages') || !migration.includes('p
 	fail('The migration must provision the five approved Events Pages.');
 }
 
+if (!migration.includes('nice_provision_studio_page')) {
+	fail('The migration must provision only the Studio Home Page for Phase 7.');
+}
+
+for (const slug of ['corporate-videos', 'digital-content-creation', 'films-entertainment', 'strata-geosystems-factory-shoot', 'career-agents-academy', 'krish-e', 'crisil-financial-literacy-content', 'jayanti']) {
+	if (!migration.includes(`'slug'         => '${slug}'`)) {
+		fail(`Studio migration record is missing: ${slug}`);
+	}
+}
+
 if (/\b(dbDelta|CREATE\s+TABLE|ALTER\s+TABLE|DROP\s+TABLE)\b/i.test(source)) {
 	fail('NICE Core must not create or alter custom database tables.');
 }
@@ -150,8 +160,8 @@ if (!eventsData.includes("function_exists( 'nice_get_events_services' )") || !la
 	fail('Theme adapters must detect NICE Core and preserve fallbacks.');
 }
 
-if (!/Version:\s*0\.5\.0/.test(themeStyle)) {
-	fail('The NICE theme must declare Phase 6 version 0.5.0.');
+if (!/Version:\s*0\.6\.0/.test(themeStyle)) {
+	fail('The NICE theme must declare Phase 7 version 0.6.0.');
 }
 
-console.log(`Validated NICE Core 1.1.0 structure, ${requiredFiles.length} files, CMS boundaries, routes, and theme fallbacks.`);
+console.log(`Validated NICE Core 1.2.0 structure, ${requiredFiles.length} files, CMS boundaries, routes, and theme fallbacks.`);

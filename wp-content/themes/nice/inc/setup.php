@@ -31,6 +31,7 @@ function nice_theme_setup() {
 			'assets/css/landing.css',
 			'assets/css/events.css',
 			'assets/css/events-inner.css',
+			'assets/css/studio.css',
 			'assets/css/editor.css',
 		)
 	);
@@ -60,6 +61,10 @@ function nice_theme_body_classes( $classes ) {
 
 	if ( function_exists( 'nice_theme_is_events_inner_page' ) && nice_theme_is_events_inner_page() ) {
 		$classes[] = 'nice-is-events-inner';
+	}
+
+	if ( function_exists( 'nice_theme_is_studio_home' ) && nice_theme_is_studio_home() ) {
+		$classes[] = 'nice-is-studio-page';
 	}
 
 	return $classes;

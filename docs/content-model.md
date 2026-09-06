@@ -1,6 +1,6 @@
 # NICE Core Content Model
 
-NICE Core `1.1.0` owns reusable NICE business content. The NICE block theme owns
+NICE Core `1.2.0` owns reusable NICE business content. The NICE block theme owns
 templates, patterns, CSS, JavaScript, layout, and presentation. The plugin uses
 only WordPress posts, post meta, terms, options, and attachments.
 
@@ -41,9 +41,11 @@ registered REST meta. The raw Custom Fields panel is removed; editors use only
 the named NICE panels.
 
 Native CPT archives and rewrites remain disabled. NICE Core registers only the
-controlled Events detail routes and filters post permalinks to their canonical
-paths. Raw CPT paths return `404`; raw query requests redirect to the matching
-canonical Events URL. Studio routing remains unimplemented.
+controlled Events detail routes and filters Events post permalinks to their
+canonical paths. Raw CPT paths return `404`; raw query requests redirect to the
+matching canonical Events URL. Phase 7 creates the structural `/studio/` Page
+only. Future Studio inner paths remain unregistered and return `404` without
+being guessed or redirected to Events content.
 
 ## Taxonomies
 
@@ -167,22 +169,28 @@ wp nice migrate-content
 ```
 
 The command creates missing approved terms, Clients, Services, Case Studies,
-media attachments, and the five approved child Pages below `/events/`. It
+media attachments, the five approved child Pages below `/events/`, and the
+Studio Home Page. It
 identifies records by post type and slug and attachments by
 `_nice_source_asset`, so repeated runs skip existing data. Phase 6 enriches only
 untouched Phase 5 editor content and empty source-backed fields; later editorial
 changes are never overwritten.
 
-The Phase 5 import contains:
+The migration now contains:
 
 - 10 source-supported Client records used by the landing and Events adapters.
 - 3 Events Service records.
+- 3 Studio Service records: Corporate Videos, Digital Content Creation, and
+  Films & Entertainment.
 - 5 Events Case Studies: Voltas Fam-Tastic Fiesta, GCA 2025, Zoetis Employee
   Engagement Day, Vision to Victory, and RunForEquity.
-- 7 unique WordPress attachments reused across Service and Case Study featured
+- 5 Studio Case Studies: Strata Geosystems Factory Shoot, Career Agents Academy,
+  Krish-e, CRISIL Financial Literacy Content, and Jayanti.
+- 12 unique WordPress attachments reused across Service and Case Study featured
   images.
 - 5 structural Events Pages with their assigned block-theme templates.
-- 0 Studio Service records and 0 Team Member records.
+- 1 structural Studio Home Page with its assigned block-theme template.
+- 0 Team Member records.
 
 Theme source images remain in place as fallback media. Publication-approved
 masters can replace each featured image in WordPress without changing templates
@@ -190,11 +198,14 @@ or data relationships.
 
 ## Theme Consumption
 
-The landing and Events Home adapters check for NICE Core helper functions before
-switching to CMS output. Events inner pages use server-rendered theme blocks and
-NICE Core queries directly. Services use editor content for capabilities; Case
-Studies use editor narratives, relationships, taxonomies, metadata, and featured
-images. The existing approved Events Home fallback remains intact.
+The landing, Events Home, and Studio Home adapters check for NICE Core helper
+functions before switching to CMS output. Events inner pages and Studio Home use
+server-rendered theme blocks so current CMS records render on every request.
+Services use editor content for capabilities; Case Studies use editor narratives,
+relationships, taxonomies, metadata, and featured images. The existing approved
+landing and Events fallbacks remain intact. Studio uses its source-backed hero
+fallback when NICE Core is unavailable and intentional empty states when a CMS
+section is incomplete; it does not keep a duplicate Studio portfolio in PHP.
 
 Project-level proof lives on the related Case Study record and renders only when
 both value and context exist. It is never presented as a company-wide statistic.
@@ -203,7 +214,9 @@ both value and context exist. It is never presented as a company-wide statistic.
 
 Activation registers the structures and controlled Events routes, creates only
 the approved taxonomy terms, and flushes rewrites once. The explicit migration
-also flushes once when it creates structural Pages. Deactivation flushes
+also flushes once when it creates structural Pages. Canonical guessing is
+disabled below the unimplemented `/studio/*` namespace so future paths cannot
+leak into Events. Deactivation flushes
 rewrites and preserves content. Uninstall preserves content and options pending
 a separate, explicitly approved removal plan.
 

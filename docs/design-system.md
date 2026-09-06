@@ -3,7 +3,8 @@
 Phase 2 defines the reusable visual and interaction foundation. Phase 3.1 applies
 it to the landing page, Phase 4 extends it to the Events home, and Phase 6 carries
 the same system through the Events service, case-study, client, team, and contact
-pages. Studio remains outside the implemented scope.
+pages. Phase 7 adds a distinct Studio Home while preserving the same global
+navigation, tokens, interaction behavior, and accessibility architecture.
 
 ## Color Tokens
 
@@ -181,6 +182,25 @@ and load lazily as they approach the viewport. The inner-page stylesheet follows
 the established 768px, 900px, and 1200px breakpoints and removes non-essential
 transitions when reduced motion is requested.
 
+## Studio Home Application
+
+Studio Home uses an editorial, screen-oriented composition rather than repeating
+the Events layout. A full-bleed cinematic hero opens into an asymmetric
+three-service sequence, a dark capability band, staggered selected work, and a
+blue Story/Production/Screen statement. Shared Clients and the restrained direct
+contact close reconnect the page to the larger NICE system.
+
+The Studio-specific stylesheet uses the established 768px, 900px, and 1200px
+breakpoints, with compact adjustments through 430px. Images retain intrinsic
+dimensions, only the hero receives eager high-priority loading, and below-fold
+service/project media stays lazy. Subtle image motion and reveal transitions
+collapse under reduced-motion preferences.
+
+`nice/studio-home` is a server-rendered block. It consumes three Studio Services,
+featured Studio Case Studies, shared Clients, and approved contact/social settings
+through NICE Core. Future Studio routes appear only as disabled editorial states
+or are omitted until Phase 8, so the interface never offers a false destination.
+
 ## Dependencies
 
 No third-party dependency was added. NICE Core loads no frontend CSS or
@@ -190,7 +210,7 @@ plugin, required files, and tokens.
 ## Known Validation Boundary
 
 The theme is active in the running `nice-solutions.local` LocalWP site. The
-landing page, Events home, and all Events inner routes have been checked in a
-real browser from 320px through 1440px. The supplied PDF images are appropriate
-for this local implementation, but original web-ready masters and publication
-rights should still be confirmed before production deployment.
+landing page, Events home, all Events inner routes, and Studio Home have been
+checked in a real browser from 320px through 1440px. The supplied PDF images are
+appropriate for this local implementation, but original web-ready masters and
+publication rights should still be confirmed before production deployment.

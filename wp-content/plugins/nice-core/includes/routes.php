@@ -124,7 +124,7 @@ add_action( 'template_redirect', 'nice_enforce_content_routes', 1 );
 function nice_filter_unapproved_canonical_guesses( $redirect_url, $requested_url ) {
 	$path = trim( (string) wp_parse_url( $requested_url, PHP_URL_PATH ), '/' );
 
-	if ( 'team' === $path || str_starts_with( $path, 'nice_service/' ) || str_starts_with( $path, 'nice_case_study/' ) ) {
+	if ( 'team' === $path || str_starts_with( $path, 'studio/' ) || str_starts_with( $path, 'nice_service/' ) || str_starts_with( $path, 'nice_case_study/' ) ) {
 		return false;
 	}
 
