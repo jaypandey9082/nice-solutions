@@ -160,8 +160,8 @@ if (!eventsData.includes("function_exists( 'nice_get_events_services' )") || !la
 	fail('Theme adapters must detect NICE Core and preserve fallbacks.');
 }
 
-if (!/Version:\s*0\.6\.0/.test(themeStyle)) {
-	fail('The NICE theme must declare Phase 7 version 0.6.0.');
+if (!/Version:\s*0\.7\.0/.test(themeStyle)) {
+	fail('The NICE theme must declare Phase 7.1 version 0.7.0.');
 }
 
 console.log(`Validated NICE Core 1.2.0 structure, ${requiredFiles.length} files, CMS boundaries, routes, and theme fallbacks.`);

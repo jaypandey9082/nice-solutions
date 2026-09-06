@@ -719,6 +719,8 @@ and content details are in `docs/studio-home.md`.
 
 ## Phase 7.1 Completion
 
+The NICE theme is now `0.7.0` and NICE Core is `1.2.0`.
+
 Phase 7.1 introduces editorial typography, motion, and journey refinements across
 both Events and Studio without rebuilding existing architecture:
 

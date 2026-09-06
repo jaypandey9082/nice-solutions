@@ -22,7 +22,7 @@ function nice_phase7_assert( $condition, $message ) {
 }
 
 nice_phase7_assert( defined( 'NICE_CORE_VERSION' ) && '1.2.0' === NICE_CORE_VERSION, 'Unexpected NICE Core version.' );
-nice_phase7_assert( '0.6.0' === wp_get_theme()->get( 'Version' ), 'Unexpected NICE theme version.' );
+nice_phase7_assert( in_array( wp_get_theme()->get( 'Version' ), array( '0.6.0', '0.7.0' ), true ), 'Unexpected NICE theme version.' );
 
 $studio = get_page_by_path( 'studio', OBJECT, 'page' );
 nice_phase7_assert( $studio instanceof WP_Post && 'publish' === $studio->post_status, 'Studio Home Page is missing.' );

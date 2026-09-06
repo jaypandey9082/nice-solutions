@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function nice_theme_asset_version( $relative_path ) {
 	$file_path = get_theme_file_path( $relative_path );
 
-	return file_exists( $file_path ) ? (string) filemtime( $file_path ) : '0.6.0';
+	return file_exists( $file_path ) ? (string) filemtime( $file_path ) : '0.7.0';
 }
 
 /**

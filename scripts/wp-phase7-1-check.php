@@ -23,7 +23,7 @@ function nice_phase7_1_assert( $condition, $message ) {
 
 // 1. Version checks.
 nice_phase7_1_assert( defined( 'NICE_CORE_VERSION' ) && '1.2.0' === NICE_CORE_VERSION, 'Unexpected NICE Core version.' );
-nice_phase7_1_assert( '0.6.0' === wp_get_theme()->get( 'Version' ), 'Unexpected NICE theme version.' );
+nice_phase7_1_assert( '0.7.0' === wp_get_theme()->get( 'Version' ), 'Unexpected NICE theme version.' );
 
 // 2. Meta registration check.
 $registered_meta = get_registered_meta_keys( 'post', 'nice_case_study' );
