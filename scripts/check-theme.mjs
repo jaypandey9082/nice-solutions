@@ -18,6 +18,7 @@ const requiredFiles = [
 	'inc/landing-data.php',
 	'inc/studio-data.php',
 	'inc/studio-home.php',
+	'inc/studio-pages.php',
 	'assets/css/site.css',
 	'assets/css/events.css',
 	'assets/css/events-inner.css',
@@ -47,6 +48,11 @@ const requiredFiles = [
 	'templates/front-page.html',
 	'templates/page-events.html',
 	'templates/page-studio.html',
+	'templates/page-studio-services.html',
+	'templates/page-studio-case-studies.html',
+	'templates/page-studio-clients.html',
+	'templates/page-studio-team.html',
+	'templates/page-studio-contact.html',
 	'templates/page-events-services.html',
 	'templates/page-events-case-studies.html',
 	'templates/page-events-clients.html',
@@ -158,6 +164,7 @@ const eventsPages = readFileSync(resolve(themeDirectory, 'inc/events-pages.php')
 const studioPage = readFileSync(resolve(themeDirectory, 'templates/page-studio.html'), 'utf8');
 const studioData = readFileSync(resolve(themeDirectory, 'inc/studio-data.php'), 'utf8');
 const studioHome = readFileSync(resolve(themeDirectory, 'inc/studio-home.php'), 'utf8');
+const studioPages = readFileSync(resolve(themeDirectory, 'inc/studio-pages.php'), 'utf8');
 
 if (/linear-gradient|radial-gradient/i.test(css)) {
 	fail('Gradient usage is not allowed in the Phase 2 foundation.');
@@ -253,6 +260,25 @@ for (const block of [
 
 if (/\/nice_(service|case_study)\//.test(eventsPages)) {
 	fail('Events pages must not expose raw CPT URL paths.');
+}
+
+for (const block of [
+	'nice/studio-section-navigation',
+	'nice/studio-services-index',
+	'nice/studio-service-detail',
+	'nice/studio-case-studies-index',
+	'nice/studio-case-study-detail',
+	'nice/studio-clients-index',
+	'nice/studio-team-index',
+	'nice/studio-contact-page',
+]) {
+	if (!studioPages.includes(`'${block}'`)) {
+		fail(`Missing server-rendered Studio block: ${block}`);
+	}
+}
+
+if (/\/nice_(service|case_study)\//.test(studioPages)) {
+	fail('Studio pages must not expose raw CPT URL paths.');
 }
 
 if ((eventsHero.match(/fetchpriority="high"/g) ?? []).length !== 1) {

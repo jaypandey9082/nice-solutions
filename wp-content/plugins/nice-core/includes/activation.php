@@ -18,6 +18,8 @@ function nice_core_activate() {
 	nice_register_content_meta();
 	nice_register_content_rewrite_rules();
 	nice_ensure_default_terms();
+	nice_provision_events_pages();
+	nice_provision_studio_pages();
 	flush_rewrite_rules();
 }
 

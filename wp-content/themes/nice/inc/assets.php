@@ -28,7 +28,7 @@ function nice_theme_enqueue_assets() {
 	$nice_is_events_page    = is_page( 'events' );
 	$nice_is_events_context = function_exists( 'nice_theme_is_events_context' ) && nice_theme_is_events_context();
 	$nice_is_events_inner   = function_exists( 'nice_theme_is_events_inner_page' ) && nice_theme_is_events_inner_page();
-	$nice_is_studio_page    = function_exists( 'nice_theme_is_studio_home' ) && nice_theme_is_studio_home();
+	$nice_is_studio_context = function_exists( 'nice_theme_is_studio_context' ) && nice_theme_is_studio_context();
 
 	wp_enqueue_style(
 		'nice-site',
@@ -86,7 +86,7 @@ function nice_theme_enqueue_assets() {
 		);
 	}
 
-	if ( $nice_is_studio_page ) {
+	if ( $nice_is_studio_context ) {
 		wp_enqueue_style(
 			'nice-studio',
 			get_theme_file_uri( '/assets/css/studio.css' ),
@@ -95,7 +95,7 @@ function nice_theme_enqueue_assets() {
 		);
 	}
 
-	if ( is_front_page() || $nice_is_events_context || $nice_is_studio_page ) {
+	if ( is_front_page() || $nice_is_events_context || $nice_is_studio_context ) {
 		wp_enqueue_script(
 			'nice-reveal',
 			get_theme_file_uri( '/assets/js/landing.js' ),

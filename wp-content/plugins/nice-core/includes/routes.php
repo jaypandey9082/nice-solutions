@@ -139,17 +139,26 @@ function nice_enforce_content_routes() {
 	}
 
 	$post      = get_queried_object();
+	$division  = nice_get_content_division( $post );
 	$canonical = nice_get_content_url( $post );
 
-	if ( ! $canonical ) {
+	if ( ! $division || ! $canonical ) {
 		nice_set_content_request_404();
 		return;
 	}
 
-	$request_path   = trailingslashit( (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ?? '/' ), PHP_URL_PATH ) );
-	$canonical_path = trailingslashit( (string) wp_parse_url( $canonical, PHP_URL_PATH ) );
+	$raw_request_path = (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ?? '/' ), PHP_URL_PATH );
+	$request_path     = trailingslashit( $raw_request_path );
+	$canonical_path   = trailingslashit( (string) wp_parse_url( $canonical, PHP_URL_PATH ) );
 
-	if ( $request_path !== $canonical_path ) {
+	// Disallow raw CPT URLs or cross-division requests (return 404, not 301 redirect).
+	$division_prefix = '/' . $division . '/';
+	if ( ! str_starts_with( $request_path, $division_prefix ) ) {
+		nice_set_content_request_404();
+		return;
+	}
+
+	if ( $raw_request_path !== (string) wp_parse_url( $canonical, PHP_URL_PATH ) ) {
 		wp_safe_redirect( $canonical, 301 );
 		exit;
 	}
@@ -157,17 +166,29 @@ function nice_enforce_content_routes() {
 add_action( 'template_redirect', 'nice_enforce_content_routes', 1 );
 
 /**
- * Prevent WordPress from guessing unapproved global or raw CPT routes.
+ * Prevent WordPress from guessing unapproved global or raw CPT routes, or cross-division redirects.
  *
  * @param string|false $redirect_url  Proposed canonical URL.
  * @param string       $requested_url Requested URL.
  * @return string|false
  */
 function nice_filter_unapproved_canonical_guesses( $redirect_url, $requested_url ) {
+	if ( is_404() ) {
+		return false;
+	}
+
 	$path = trim( (string) wp_parse_url( $requested_url, PHP_URL_PATH ), '/' );
 
 	if ( 'team' === $path || str_starts_with( $path, 'nice_service/' ) || str_starts_with( $path, 'nice_case_study/' ) ) {
 		return false;
+	}
+
+	$post = get_queried_object();
+	if ( $post instanceof WP_Post && in_array( $post->post_type, array( 'nice_service', 'nice_case_study' ), true ) ) {
+		$division = nice_get_content_division( $post );
+		if ( $division && ! str_starts_with( $path, $division . '/' ) ) {
+			return false;
+		}
 	}
 
 	return $redirect_url;

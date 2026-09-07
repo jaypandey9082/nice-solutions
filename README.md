@@ -6,11 +6,11 @@ Nucleus Integrated Communication & Entertainment Pvt. Ltd. (N.I.C.E.).
 
 ## Phase Status
 
-Phases 1 through 7.1 are implemented. The repository includes the lightweight NICE
+Phases 1 through 8 are implemented. The repository includes the lightweight NICE
 block theme, the NICE Core content plugin, source-approved migrated content, the
-complete Events journey, the Studio Home gateway, responsive navigation, editorial
-typography and reveal motion, navigation continuity, and real-browser validation.
-Studio inner pages remain reserved for Phase 8.
+complete Events journey, the Studio Home gateway and complete Studio inner pages,
+responsive navigation, editorial typography and reveal motion, cross-division isolation,
+and real-browser validation.
 
 The theme is linked into the running NICE Solutions LocalWP site and is active at
 `http://nice-solutions.local/`. Local HTTPS is available after trusting the site
@@ -752,4 +752,40 @@ both Events and Studio without rebuilding existing architecture:
    Refactored `routes.php` with `nice_get_content_division()` and `nice_get_content_url()`
    supporting both divisions while ensuring Studio inner routes continue to 404
    until Phase 8.
+
+## Phase 8 Completion
+
+The NICE theme is `0.7.0` and NICE Core is `1.2.0`.
+
+Phase 8 builds the complete, production-grade Studio inner-page experience:
+
+1. **Studio Section Indexes**:
+   - `/studio/services/`: Editorial hero, three approved practices (Corporate Videos, Digital Content Creation, Films & Entertainment), row layout with alternating image alignment, and closing CTA.
+   - `/studio/case-studies/`: Three service categories grouping five approved case studies (Strata Geosystems Factory Shoot, Career Agents Academy, Krish-e, CRISIL Financial Literacy Content, Jayanti) with asymmetric featured/large/secondary hierarchy.
+   - `/studio/clients/`: Shared client directory rendering 10 clients without duplicates.
+   - `/studio/team/`: Division-filtered team directory rendering an intentional publication-pending empty state.
+   - `/studio/contact/`: Form-free contact screen providing direct WhatsApp, Email, and Phone action channels from NICE Core settings.
+
+2. **Studio Detail Pages**:
+   - `/studio/services/{service}/`: Rich narrative, capabilities, relevant work, related services, and contact transition.
+   - `/studio/case-studies/{case-study}/`: Hero with video support (`_nice_hero_video_url`), serif quote block (`_nice_quote_text`), project overview infobar, project-specific proof metric (`_nice_proof_value`), full narrative, related work, and previous/next project navigation cards with thumbnails.
+
+3. **Template & Block Architecture**:
+   - Created five block theme templates (`templates/page-studio-*.html`).
+   - Updated `single-nice_service.html` and `single-nice_case_study.html` to be division-aware without template duplication.
+   - Registered eight server-rendered theme blocks in `inc/studio-pages.php`.
+   - Updated context detection in `setup.php` and asset enqueuing in `assets.php`.
+   - Updated header and footer patterns to route Studio users to `/studio/services/`, `/studio/case-studies/`, and `/studio/contact/`.
+
+4. **Routing & Cross-Division Hardening**:
+   - Strict canonical enforcement: cross-division URLs (Events case studies via Studio paths or Studio case studies via Events paths) strictly return 404.
+   - Raw CPT routes (`/nice_service/`, `/nice_case_study/`) and global `/team/` return 404.
+   - Zero redirects between divisions.
+
+5. **Validation & Testing**:
+   - Full Playwright test suite across 9 viewport widths (320px to 1440px) with 14 full-page screenshots captured.
+   - Automated PHP assertion suite (`scripts/wp-phase8-check.php`) testing versions, page provisioning, canonical routes, and CMS draft creation/cleanup.
+   - Zero console errors, zero failed network requests, and CLS < 0.1.
+   - Events and Landing page verified for zero regression.
+
 

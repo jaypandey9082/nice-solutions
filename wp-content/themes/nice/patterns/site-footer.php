@@ -15,16 +15,16 @@ $nice_whatsapp_action = nice_get_contact_action( 'whatsapp' );
 $nice_email_action    = nice_get_contact_action( 'email' );
 
 $nice_is_events = function_exists( 'nice_theme_is_events_context' ) && nice_theme_is_events_context();
-$nice_is_studio = function_exists( 'nice_theme_is_studio_home' ) && nice_theme_is_studio_home();
+$nice_is_studio = function_exists( 'nice_theme_is_studio_context' ) && nice_theme_is_studio_context();
 
 if ( $nice_is_events ) {
 	$nice_work_url     = esc_url( home_url( '/events/case-studies/' ) );
 	$nice_services_url = esc_url( home_url( '/events/services/' ) );
 	$nice_contact_url  = esc_url( home_url( '/events/contact/' ) );
 } elseif ( $nice_is_studio ) {
-	$nice_work_url     = esc_url( home_url( '/studio/#studio-work' ) );
-	$nice_services_url = esc_url( home_url( '/studio/#studio-services' ) );
-	$nice_contact_url  = esc_url( home_url( '/studio/#studio-contact' ) );
+	$nice_work_url     = esc_url( home_url( '/studio/case-studies/' ) );
+	$nice_services_url = esc_url( home_url( '/studio/services/' ) );
+	$nice_contact_url  = esc_url( home_url( '/studio/contact/' ) );
 } else {
 	$nice_work_url     = esc_url( home_url( '/#work' ) );
 	$nice_services_url = esc_url( home_url( '/#capabilities' ) );

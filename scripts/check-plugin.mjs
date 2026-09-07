@@ -120,9 +120,14 @@ if (!migration.includes("WP_CLI::add_command( 'nice migrate-content'")) {
 	fail('The idempotent NICE content migration command is missing.');
 }
 
-for (const route of ['^events/services/([^/]+)/?$', '^events/case-studies/([^/]+)/?$']) {
+for (const route of [
+	'^events/services/([^/]+)/?$',
+	'^events/case-studies/([^/]+)/?$',
+	'^studio/services/([^/]+)/?$',
+	'^studio/case-studies/([^/]+)/?$',
+]) {
 	if (!routes.includes(route)) {
-		fail(`Missing controlled Events route: ${route}`);
+		fail(`Missing controlled route: ${route}`);
 	}
 }
 
@@ -134,8 +139,8 @@ if (!migration.includes('nice_provision_events_pages') || !migration.includes('p
 	fail('The migration must provision the five approved Events Pages.');
 }
 
-if (!migration.includes('nice_provision_studio_page')) {
-	fail('The migration must provision only the Studio Home Page for Phase 7.');
+if (!migration.includes('nice_provision_studio_pages') || !migration.includes('page-studio-contact')) {
+	fail('The migration must provision the five approved Studio Pages.');
 }
 
 for (const slug of ['corporate-videos', 'digital-content-creation', 'films-entertainment', 'strata-geosystems-factory-shoot', 'career-agents-academy', 'krish-e', 'crisil-financial-literacy-content', 'jayanti']) {

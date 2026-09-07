@@ -67,6 +67,14 @@ function nice_theme_body_classes( $classes ) {
 		$classes[] = 'nice-is-studio-page';
 	}
 
+	if ( function_exists( 'nice_theme_is_studio_context' ) && nice_theme_is_studio_context() ) {
+		$classes[] = 'nice-is-studio-context';
+	}
+
+	if ( function_exists( 'nice_theme_is_studio_inner_page' ) && nice_theme_is_studio_inner_page() ) {
+		$classes[] = 'nice-is-studio-inner';
+	}
+
 	return $classes;
 }
 add_filter( 'body_class', 'nice_theme_body_classes' );

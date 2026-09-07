@@ -311,39 +311,90 @@ function nice_provision_events_pages() {
 }
 
 /**
- * Provision the approved Studio Home Page without adding Phase 8 routes.
+ * Return the approved Studio section Page manifest.
+ *
+ * @return array<int, array{slug: string, title: string, template: string}>
+ */
+function nice_get_studio_page_manifest() {
+	return array(
+		array( 'slug' => 'services', 'title' => 'Studio Services', 'template' => 'page-studio-services' ),
+		array( 'slug' => 'case-studies', 'title' => 'Studio Case Studies', 'template' => 'page-studio-case-studies' ),
+		array( 'slug' => 'clients', 'title' => 'Studio Clients', 'template' => 'page-studio-clients' ),
+		array( 'slug' => 'team', 'title' => 'Studio Team', 'template' => 'page-studio-team' ),
+		array( 'slug' => 'contact', 'title' => 'Studio Contact', 'template' => 'page-studio-contact' ),
+	);
+}
+
+/**
+ * Provision the approved Studio Home Page and inner pages.
  *
  * Existing page content and titles are preserved.
  *
  * @return array{created: int, skipped: int, errors: string[]}
  */
-function nice_provision_studio_page() {
+function nice_provision_studio_pages() {
 	$summary = array( 'created' => 0, 'skipped' => 0, 'errors' => array() );
-	$page    = get_page_by_path( 'studio', OBJECT, 'page' );
+	$studio  = get_page_by_path( 'studio', OBJECT, 'page' );
 
-	if ( $page instanceof WP_Post ) {
-		++$summary['skipped'];
-		return $summary;
+	if ( ! $studio instanceof WP_Post ) {
+		$studio_id = wp_insert_post(
+			array(
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+				'post_name'   => 'studio',
+				'post_title'  => 'Studio',
+			),
+			true
+		);
+
+		if ( is_wp_error( $studio_id ) ) {
+			$summary['errors'][] = $studio_id->get_error_message();
+			return $summary;
+		}
+
+		$studio = get_post( $studio_id );
+		++$summary['created'];
 	}
 
-	$page_id = wp_insert_post(
-		array(
-			'post_type'   => 'page',
-			'post_status' => 'publish',
-			'post_name'   => 'studio',
-			'post_title'  => 'Studio',
-		),
-		true
-	);
+	foreach ( nice_get_studio_page_manifest() as $record ) {
+		$page = get_page_by_path( 'studio/' . $record['slug'], OBJECT, 'page' );
 
-	if ( is_wp_error( $page_id ) ) {
-		$summary['errors'][] = $page_id->get_error_message();
-		return $summary;
+		if ( $page instanceof WP_Post ) {
+			++$summary['skipped'];
+		} else {
+			$page_id = wp_insert_post(
+				array(
+					'post_type'   => 'page',
+					'post_status' => 'publish',
+					'post_parent' => $studio->ID,
+					'post_name'   => $record['slug'],
+					'post_title'  => $record['title'],
+				),
+				true
+			);
+
+			if ( is_wp_error( $page_id ) ) {
+				$summary['errors'][] = $page_id->get_error_message();
+				continue;
+			}
+
+			$page = get_post( $page_id );
+			++$summary['created'];
+		}
+
+		update_post_meta( $page->ID, '_wp_page_template', $record['template'] );
 	}
-
-	++$summary['created'];
 
 	return $summary;
+}
+
+/**
+ * Backward-compatible wrapper for Studio page provisioning.
+ *
+ * @return array{created: int, skipped: int, errors: string[]}
+ */
+function nice_provision_studio_page() {
+	return nice_provision_studio_pages();
 }
 
 /**
