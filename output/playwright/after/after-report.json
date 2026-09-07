@@ -1,0 +1,620 @@
+{
+  "timestamp": "2026-09-07T09:57:00.104Z",
+  "routesTested": 17,
+  "routes": {
+    "landing": {
+      "url": "http://nice-solutions.local/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 1051,
+          "fcp": 464,
+          "cls": 0.0018052763343674985,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/landing-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 636,
+          "fcp": 108,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/landing-mobile-390.png"
+        }
+      }
+    },
+    "events-home": {
+      "url": "http://nice-solutions.local/events/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 624,
+          "fcp": 100,
+          "cls": 0,
+          "h1Font": "-apple-system, \"system-ui\", \"Segoe UI\", Helvetica, Arial, sans-serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-home-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 613,
+          "fcp": 92,
+          "cls": 0,
+          "h1Font": "-apple-system, \"system-ui\", \"Segoe UI\", Helvetica, Arial, sans-serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-home-mobile-390.png"
+        }
+      }
+    },
+    "events-services": {
+      "url": "http://nice-solutions.local/events/services/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 608,
+          "fcp": 84,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-services-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 607,
+          "fcp": 76,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-services-mobile-390.png"
+        }
+      }
+    },
+    "events-service-detail": {
+      "url": "http://nice-solutions.local/events/services/corporate-events/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 610,
+          "fcp": 88,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-service-detail-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 614,
+          "fcp": 80,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-service-detail-mobile-390.png"
+        }
+      }
+    },
+    "events-case-studies": {
+      "url": "http://nice-solutions.local/events/case-studies/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 614,
+          "fcp": 88,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-case-studies-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 610,
+          "fcp": 80,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-case-studies-mobile-390.png"
+        }
+      }
+    },
+    "events-case-study-detail": {
+      "url": "http://nice-solutions.local/events/case-studies/voltas-fam-tastic-fiesta/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 609,
+          "fcp": 92,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-case-study-detail-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 610,
+          "fcp": 84,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-case-study-detail-mobile-390.png"
+        }
+      }
+    },
+    "events-clients": {
+      "url": "http://nice-solutions.local/events/clients/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 602,
+          "fcp": 76,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-clients-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 600,
+          "fcp": 72,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-clients-mobile-390.png"
+        }
+      }
+    },
+    "events-team": {
+      "url": "http://nice-solutions.local/events/team/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 646,
+          "fcp": 100,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-team-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 604,
+          "fcp": 76,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-team-mobile-390.png"
+        }
+      }
+    },
+    "events-contact": {
+      "url": "http://nice-solutions.local/events/contact/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 605,
+          "fcp": 80,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": false,
+          "editorialCount": 0,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-contact-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 596,
+          "fcp": 72,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": false,
+          "editorialCount": 0,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/events-contact-mobile-390.png"
+        }
+      }
+    },
+    "studio-home": {
+      "url": "http://nice-solutions.local/studio/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 611,
+          "fcp": 92,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 3,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-home-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 611,
+          "fcp": 84,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 3,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-home-mobile-390.png"
+        }
+      }
+    },
+    "studio-services": {
+      "url": "http://nice-solutions.local/studio/services/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 614,
+          "fcp": 88,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-services-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 688,
+          "fcp": 96,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-services-mobile-390.png"
+        }
+      }
+    },
+    "studio-service-detail": {
+      "url": "http://nice-solutions.local/studio/services/corporate-videos/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 615,
+          "fcp": 92,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-service-detail-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 607,
+          "fcp": 76,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-service-detail-mobile-390.png"
+        }
+      }
+    },
+    "studio-case-studies": {
+      "url": "http://nice-solutions.local/studio/case-studies/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 614,
+          "fcp": 88,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-case-studies-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 625,
+          "fcp": 96,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-case-studies-mobile-390.png"
+        }
+      }
+    },
+    "studio-case-study-detail": {
+      "url": "http://nice-solutions.local/studio/case-studies/strata-geosystems-factory-shoot/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 623,
+          "fcp": 96,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-case-study-detail-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 606,
+          "fcp": 88,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-case-study-detail-mobile-390.png"
+        }
+      }
+    },
+    "studio-clients": {
+      "url": "http://nice-solutions.local/studio/clients/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 630,
+          "fcp": 100,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-clients-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 600,
+          "fcp": 72,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-clients-mobile-390.png"
+        }
+      }
+    },
+    "studio-team": {
+      "url": "http://nice-solutions.local/studio/team/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 601,
+          "fcp": 80,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-team-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 600,
+          "fcp": 72,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 2,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-team-mobile-390.png"
+        }
+      }
+    },
+    "studio-contact": {
+      "url": "http://nice-solutions.local/studio/contact/",
+      "viewports": {
+        "desktop-1440": {
+          "loadTimeMs": 596,
+          "fcp": 72,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-contact-desktop-1440.png"
+        },
+        "mobile-390": {
+          "loadTimeMs": 594,
+          "fcp": 68,
+          "cls": 0,
+          "h1Font": "Georgia, \"Times New Roman\", serif",
+          "h1FontSize": "48px",
+          "hasEditorialFont": true,
+          "editorialCount": 1,
+          "heroMosaicPresent": false,
+          "heroMosaicVisible": false,
+          "consoleErrors": 0,
+          "failedRequests": 0,
+          "screenshot": "output/playwright/after/studio-contact-mobile-390.png"
+        }
+      }
+    }
+  },
+  "responsiveIntegrity": {
+    "width-320": {
+      "width": 320,
+      "horizontalOverflow": false,
+      "pass": true
+    },
+    "width-360": {
+      "width": 360,
+      "horizontalOverflow": false,
+      "pass": true
+    },
+    "width-390": {
+      "width": 390,
+      "horizontalOverflow": false,
+      "pass": true
+    },
+    "width-430": {
+      "width": 430,
+      "horizontalOverflow": false,
+      "pass": true
+    },
+    "width-768": {
+      "width": 768,
+      "horizontalOverflow": false,
+      "pass": true
+    },
+    "width-900": {
+      "width": 900,
+      "horizontalOverflow": false,
+      "pass": true
+    },
+    "width-1024": {
+      "width": 1024,
+      "horizontalOverflow": false,
+      "pass": true
+    },
+    "width-1200": {
+      "width": 1200,
+      "horizontalOverflow": false,
+      "pass": true
+    },
+    "width-1440": {
+      "width": 1440,
+      "horizontalOverflow": false,
+      "pass": true
+    }
+  },
+  "reducedMotionVerified": true,
+  "typographyVerified": false,
+  "overallSuccess": true,
+  "consoleErrors": [],
+  "failedRequests": [],
+  "baselineComparison": {}
+}

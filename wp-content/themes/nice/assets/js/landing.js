@@ -39,7 +39,7 @@
 
 	/* ── Editorial reveal (word-by-word) ── */
 	const splitIntoWords = (element) => {
-		const text = element.textContent || '';
+		const text = (element.innerText || element.textContent || '').replace(/\s+/g, ' ').trim();
 		const words = text.split(/\s+/).filter(Boolean);
 
 		if (!words.length) {

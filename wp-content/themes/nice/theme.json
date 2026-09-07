@@ -204,6 +204,11 @@
           "slug": "display",
           "name": "Display",
           "size": "4rem"
+        },
+        {
+          "slug": "display-hero",
+          "name": "Display Hero",
+          "size": "5.5rem"
         }
       ]
     },

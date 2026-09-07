@@ -90,7 +90,6 @@ function nice_render_studio_home() {
 				<img src="<?php echo esc_url( get_theme_file_uri( '/assets/images/strata-production.webp' ) ); ?>" width="545" height="305" alt="" decoding="async" fetchpriority="high">
 			</picture>
 		<?php endif; ?>
-		<div class="nice-studio-hero__veil" aria-hidden="true"></div>
 		<div class="nice-wide nice-studio-hero__inner">
 			<div class="nice-studio-hero__identity" data-nice-reveal>
 				<p class="nice-eyebrow">NICE / Studio</p>
