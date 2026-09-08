@@ -1,8 +1,4 @@
 @layer components {
-	.nice-is-events-page .nice-site-header {
-		position: fixed;
-	}
-
 	.nice-events-page {
 		overflow: clip;
 	}

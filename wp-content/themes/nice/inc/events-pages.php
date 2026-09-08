@@ -104,6 +104,10 @@ function nice_theme_get_featured_image( $post_id, $sizes, $attrs = array() ) {
  * @return string
  */
 function nice_render_events_section_navigation() {
+	if ( function_exists( 'nice_theme_is_events_context' ) && ! nice_theme_is_events_context() ) {
+		return '';
+	}
+
 	$section = 'home';
 
 	if ( is_singular( 'nice_service' ) || is_page( 'services' ) ) {

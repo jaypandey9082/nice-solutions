@@ -387,9 +387,9 @@
 		border: 0;
 		box-shadow: none;
 		left: 0;
-		padding-top: 1.25rem;
+		padding-top: max(1.25rem, calc(0.75rem + env(safe-area-inset-top, 0px)));
 		pointer-events: none;
-		position: sticky;
+		position: fixed;
 		right: 0;
 		top: 0;
 		transition: padding var(--wp--custom--motion--duration-normal) var(--wp--custom--motion--easing);
@@ -430,7 +430,7 @@
 	}
 
 	.nice-site-header.is-condensed {
-		padding-top: 0.5rem;
+		padding-top: max(0.5rem, calc(0.25rem + env(safe-area-inset-top, 0px)));
 	}
 
 	.nice-site-header.is-condensed .nice-nav-shell {

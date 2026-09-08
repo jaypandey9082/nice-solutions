@@ -1,18 +1,18 @@
 {
-  "timestamp": "2026-09-07T09:57:00.104Z",
+  "timestamp": "2026-09-08T14:06:49.683Z",
   "routesTested": 17,
   "routes": {
     "landing": {
       "url": "http://nice-solutions.local/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 1051,
-          "fcp": 464,
-          "cls": 0.0018052763343674985,
-          "h1Font": "Georgia, \"Times New Roman\", serif",
-          "h1FontSize": "48px",
+          "loadTimeMs": 166,
+          "fcp": 160,
+          "cls": 0,
+          "h1Font": "Montserrat, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, sans-serif",
+          "h1FontSize": "84px",
           "hasEditorialFont": true,
-          "editorialCount": 2,
+          "editorialCount": 1,
           "heroMosaicPresent": false,
           "heroMosaicVisible": false,
           "consoleErrors": 0,
@@ -20,13 +20,13 @@
           "screenshot": "output/playwright/after/landing-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 636,
-          "fcp": 108,
+          "loadTimeMs": 60,
+          "fcp": 64,
           "cls": 0,
-          "h1Font": "Georgia, \"Times New Roman\", serif",
-          "h1FontSize": "48px",
+          "h1Font": "Montserrat, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, sans-serif",
+          "h1FontSize": "36px",
           "hasEditorialFont": true,
-          "editorialCount": 2,
+          "editorialCount": 1,
           "heroMosaicPresent": false,
           "heroMosaicVisible": false,
           "consoleErrors": 0,
@@ -39,8 +39,8 @@
       "url": "http://nice-solutions.local/events/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 624,
-          "fcp": 100,
+          "loadTimeMs": 114,
+          "fcp": 120,
           "cls": 0,
           "h1Font": "-apple-system, \"system-ui\", \"Segoe UI\", Helvetica, Arial, sans-serif",
           "h1FontSize": "48px",
@@ -53,7 +53,7 @@
           "screenshot": "output/playwright/after/events-home-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 613,
+          "loadTimeMs": 77,
           "fcp": 92,
           "cls": 0,
           "h1Font": "-apple-system, \"system-ui\", \"Segoe UI\", Helvetica, Arial, sans-serif",
@@ -72,8 +72,8 @@
       "url": "http://nice-solutions.local/events/services/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 608,
-          "fcp": 84,
+          "loadTimeMs": 74,
+          "fcp": 80,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -86,8 +86,8 @@
           "screenshot": "output/playwright/after/events-services-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 607,
-          "fcp": 76,
+          "loadTimeMs": 63,
+          "fcp": 68,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -105,8 +105,8 @@
       "url": "http://nice-solutions.local/events/services/corporate-events/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 610,
-          "fcp": 88,
+          "loadTimeMs": 83,
+          "fcp": 92,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -119,8 +119,8 @@
           "screenshot": "output/playwright/after/events-service-detail-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 614,
-          "fcp": 80,
+          "loadTimeMs": 75,
+          "fcp": 76,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -138,8 +138,8 @@
       "url": "http://nice-solutions.local/events/case-studies/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 614,
-          "fcp": 88,
+          "loadTimeMs": 73,
+          "fcp": 84,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -152,8 +152,8 @@
           "screenshot": "output/playwright/after/events-case-studies-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 610,
-          "fcp": 80,
+          "loadTimeMs": 79,
+          "fcp": 88,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -171,8 +171,8 @@
       "url": "http://nice-solutions.local/events/case-studies/voltas-fam-tastic-fiesta/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 609,
-          "fcp": 92,
+          "loadTimeMs": 69,
+          "fcp": 84,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -185,8 +185,8 @@
           "screenshot": "output/playwright/after/events-case-study-detail-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 610,
-          "fcp": 84,
+          "loadTimeMs": 64,
+          "fcp": 72,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -204,8 +204,8 @@
       "url": "http://nice-solutions.local/events/clients/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 602,
-          "fcp": 76,
+          "loadTimeMs": 62,
+          "fcp": 68,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -218,8 +218,8 @@
           "screenshot": "output/playwright/after/events-clients-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 600,
-          "fcp": 72,
+          "loadTimeMs": 57,
+          "fcp": 64,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -237,8 +237,8 @@
       "url": "http://nice-solutions.local/events/team/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 646,
-          "fcp": 100,
+          "loadTimeMs": 69,
+          "fcp": 80,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -251,8 +251,8 @@
           "screenshot": "output/playwright/after/events-team-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 604,
-          "fcp": 76,
+          "loadTimeMs": 61,
+          "fcp": 68,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -270,8 +270,8 @@
       "url": "http://nice-solutions.local/events/contact/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 605,
-          "fcp": 80,
+          "loadTimeMs": 56,
+          "fcp": 64,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -284,8 +284,8 @@
           "screenshot": "output/playwright/after/events-contact-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 596,
-          "fcp": 72,
+          "loadTimeMs": 55,
+          "fcp": 60,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -303,8 +303,8 @@
       "url": "http://nice-solutions.local/studio/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 611,
-          "fcp": 92,
+          "loadTimeMs": 95,
+          "fcp": 108,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -317,8 +317,8 @@
           "screenshot": "output/playwright/after/studio-home-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 611,
-          "fcp": 84,
+          "loadTimeMs": 74,
+          "fcp": 80,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -336,8 +336,8 @@
       "url": "http://nice-solutions.local/studio/services/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 614,
-          "fcp": 88,
+          "loadTimeMs": 70,
+          "fcp": 76,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -350,8 +350,8 @@
           "screenshot": "output/playwright/after/studio-services-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 688,
-          "fcp": 96,
+          "loadTimeMs": 72,
+          "fcp": 76,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -369,8 +369,8 @@
       "url": "http://nice-solutions.local/studio/services/corporate-videos/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 615,
-          "fcp": 92,
+          "loadTimeMs": 74,
+          "fcp": 80,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -383,8 +383,8 @@
           "screenshot": "output/playwright/after/studio-service-detail-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 607,
-          "fcp": 76,
+          "loadTimeMs": 72,
+          "fcp": 72,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -402,8 +402,8 @@
       "url": "http://nice-solutions.local/studio/case-studies/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 614,
-          "fcp": 88,
+          "loadTimeMs": 76,
+          "fcp": 84,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -416,8 +416,8 @@
           "screenshot": "output/playwright/after/studio-case-studies-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 625,
-          "fcp": 96,
+          "loadTimeMs": 69,
+          "fcp": 72,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -435,8 +435,8 @@
       "url": "http://nice-solutions.local/studio/case-studies/strata-geosystems-factory-shoot/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 623,
-          "fcp": 96,
+          "loadTimeMs": 77,
+          "fcp": 92,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -449,8 +449,8 @@
           "screenshot": "output/playwright/after/studio-case-study-detail-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 606,
-          "fcp": 88,
+          "loadTimeMs": 80,
+          "fcp": 84,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -468,8 +468,8 @@
       "url": "http://nice-solutions.local/studio/clients/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 630,
-          "fcp": 100,
+          "loadTimeMs": 64,
+          "fcp": 72,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -482,8 +482,8 @@
           "screenshot": "output/playwright/after/studio-clients-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 600,
-          "fcp": 72,
+          "loadTimeMs": 58,
+          "fcp": 60,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -501,8 +501,8 @@
       "url": "http://nice-solutions.local/studio/team/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 601,
-          "fcp": 80,
+          "loadTimeMs": 63,
+          "fcp": 72,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -515,8 +515,8 @@
           "screenshot": "output/playwright/after/studio-team-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 600,
-          "fcp": 72,
+          "loadTimeMs": 64,
+          "fcp": 68,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -534,8 +534,8 @@
       "url": "http://nice-solutions.local/studio/contact/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 596,
-          "fcp": 72,
+          "loadTimeMs": 65,
+          "fcp": 76,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",
@@ -548,8 +548,8 @@
           "screenshot": "output/playwright/after/studio-contact-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 594,
-          "fcp": 68,
+          "loadTimeMs": 55,
+          "fcp": 64,
           "cls": 0,
           "h1Font": "Georgia, \"Times New Roman\", serif",
           "h1FontSize": "48px",

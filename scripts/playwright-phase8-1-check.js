@@ -99,7 +99,7 @@ const RESPONSIVE_WIDTHS = [320, 360, 390, 430, 768, 900, 1024, 1200, 1440];
       });
 
       const startTime = Date.now();
-      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: "networkidle" });
+      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: "load" });
       const loadTimeMs = Date.now() - startTime;
 
       await page.waitForTimeout(600);

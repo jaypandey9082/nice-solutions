@@ -6,6 +6,7 @@
 	.nice-events-subnav-shell {
 		background: var(--wp--preset--color--surface);
 		border-bottom: 1px solid var(--wp--preset--color--border);
+		padding-top: 6rem;
 	}
 
 	.nice-events-subnav {

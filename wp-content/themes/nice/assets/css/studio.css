@@ -1,8 +1,4 @@
 @layer components {
-	.nice-is-studio-page .nice-site-header {
-		position: fixed;
-	}
-
 	.nice-studio-page {
 		overflow: clip;
 	}
