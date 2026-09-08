@@ -22,20 +22,19 @@
 		border-radius: 0;
 	}
 
-	/* ── Header: Quiet, Minimal, Architectural ── */
+	/* ── Header: Floating Warm-White Pill with Black Circular Hamburger ── */
 	.home .nice-site-header,
 	.nice-is-front-page .nice-site-header {
-		background: var(--nice-canvas);
-		border-bottom: 1px solid var(--nice-subtle-border);
-		position: sticky;
-		top: 0;
+		background: transparent !important;
+		border: 0 !important;
+		box-shadow: none !important;
 		left: 0;
+		padding-top: 1.25rem;
+		pointer-events: none;
+		position: sticky;
 		right: 0;
+		top: 0;
 		z-index: 100;
-		padding-top: 0;
-		box-shadow: none;
-		backdrop-filter: none;
-		-webkit-backdrop-filter: none;
 	}
 
 	body.admin-bar.home .nice-site-header {
@@ -44,79 +43,163 @@
 
 	.home .nice-nav-shell {
 		align-items: center;
-		background: transparent;
-		border: 0;
-		border-radius: 0;
-		box-shadow: none;
-		backdrop-filter: none;
-		-webkit-backdrop-filter: none;
+		background: var(--nice-canvas);
+		border: 1px solid var(--nice-subtle-border);
+		border-radius: 9999px;
+		box-shadow: 0 4px 20px color-mix(in srgb, var(--nice-black) 5%, transparent);
+		box-sizing: border-box;
 		display: flex;
-		height: auto;
-		min-height: 4.5rem;
+		height: 3.75rem;
 		justify-content: space-between;
 		margin-inline: auto;
-		max-width: 80rem;
-		padding: 0.75rem 1.5rem;
-		width: 100%;
+		max-width: 56rem;
+		padding: 0.375rem 0.5rem 0.375rem 1.5rem;
+		pointer-events: auto;
+		transition:
+			box-shadow var(--wp--custom--motion--duration-normal) var(--wp--custom--motion--easing),
+			border-color var(--wp--custom--motion--duration-normal) var(--wp--custom--motion--easing);
+		width: calc(100% - 2rem);
 	}
 
 	@media (min-width: 64rem) {
 		.home .nice-nav-shell {
-			padding: 1rem 2.5rem;
+			max-width: 60rem;
+			padding: 0.4rem 0.625rem 0.4rem 1.75rem;
+			width: calc(100% - 3rem);
 		}
 	}
 
-	.home .nice-desktop-nav {
+	.home .nice-brand-link {
 		align-items: center;
-		display: none;
-		gap: 2.25rem;
+		display: inline-flex;
+		min-height: 2.75rem;
+		text-decoration: none;
 	}
 
-	@media (min-width: 48rem) {
-		.home .nice-desktop-nav {
-			display: flex;
+	.home .nice-logo--nav {
+		height: auto;
+		width: 5.25rem;
+	}
+
+	.home .nice-desktop-nav,
+	.home .nice-nav-cta {
+		display: none !important;
+	}
+
+	.home .nice-menu-toggle {
+		align-items: center;
+		appearance: none;
+		background: var(--nice-black) !important;
+		border: 0 !important;
+		border-radius: 50% !important;
+		color: var(--nice-canvas) !important;
+		cursor: pointer;
+		display: inline-flex !important;
+		height: 2.75rem;
+		justify-content: center;
+		padding: 0;
+		position: relative;
+		transition:
+			background-color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing),
+			transform var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
+		width: 2.75rem;
+	}
+
+	.home .nice-menu-toggle:hover,
+	.home .nice-menu-toggle:focus-visible {
+		background: var(--nice-red) !important;
+		transform: scale(1.04);
+	}
+
+	.home .nice-menu-icon,
+	.home .nice-menu-icon::before,
+	.home .nice-menu-icon::after {
+		background: currentColor;
+		content: "";
+		display: block;
+		height: 2px;
+		transition: transform var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
+		width: 1.125rem;
+	}
+
+	.home .nice-menu-icon {
+		position: relative;
+	}
+
+	.home .nice-menu-icon::before {
+		position: absolute;
+		transform: translateY(-0.35rem);
+	}
+
+	.home .nice-menu-icon::after {
+		position: absolute;
+		transform: translateY(0.35rem);
+	}
+
+	/* ── Homepage Overlay Menu (Accessible Drawer) ── */
+	.home .nice-mobile-menu {
+		background: var(--nice-canvas);
+		border: 1px solid var(--nice-subtle-border);
+		border-radius: 1.5rem;
+		box-shadow: 0 1.5rem 3rem color-mix(in srgb, var(--nice-black) 16%, transparent);
+		box-sizing: border-box;
+		display: grid !important;
+		grid-template-rows: auto 1fr auto;
+		inset: 1.5rem;
+		margin-inline: auto;
+		max-width: 44rem;
+		padding: 1.5rem 2rem;
+		position: fixed;
+		z-index: 120;
+	}
+
+	@media (max-width: 47.9375rem) {
+		.home .nice-mobile-menu {
+			border-radius: 1rem;
+			inset: 0.75rem;
+			padding: 1.25rem;
 		}
 	}
 
-	.home .nice-desktop-nav a {
-		color: var(--nice-muted);
-		font-family: var(--nice-font-label);
-		font-size: 0.8125rem;
-		font-weight: 600;
-		letter-spacing: 0.08em;
+	.home .nice-mobile-menu__links {
+		display: grid;
+		gap: 0.5rem;
+		padding-block: var(--wp--preset--spacing--md);
+	}
+
+	.home .nice-mobile-menu__links a {
+		border-bottom: 1px solid var(--nice-subtle-border);
+		color: var(--nice-black);
+		font-family: var(--nice-font-heading);
+		font-size: clamp(2rem, 5vw, 3rem);
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		line-height: 1.1;
+		padding-block: 0.75rem;
 		text-decoration: none;
-		text-transform: uppercase;
 		transition: color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
 	}
 
-	.home .nice-desktop-nav a:hover,
-	.home .nice-desktop-nav a:focus-visible {
-		color: var(--nice-black);
+	.home .nice-mobile-menu__links a:hover,
+	.home .nice-mobile-menu__links a:focus-visible {
+		color: var(--nice-red);
 	}
 
-	.home .nice-nav-cta {
-		background: var(--nice-black) !important;
-		border: 1px solid var(--nice-black) !important;
+	.home .nice-mobile-menu__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--wp--preset--spacing--sm);
+		padding-top: var(--wp--preset--spacing--md);
+	}
+
+	.home .nice-mobile-menu__actions .nice-button {
 		border-radius: 0 !important;
-		color: var(--nice-canvas) !important;
 		font-family: var(--nice-font-label) !important;
-		font-size: 0.75rem !important;
+		font-size: 0.8125rem !important;
 		font-weight: 600 !important;
 		letter-spacing: 0.08em !important;
-		min-height: 2.375rem !important;
-		padding: 0.5rem 1.25rem !important;
+		padding: 0.625rem 1.25rem !important;
 		text-transform: uppercase !important;
-		transition:
-			background-color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing),
-			border-color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing),
-			color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing) !important;
-	}
-
-	.home .nice-nav-cta:hover,
-	.home .nice-nav-cta:focus-visible {
-		background: var(--nice-red) !important;
-		border-color: var(--nice-red) !important;
-		color: #FFFFFF !important;
 	}
 
 	/* ── Section 01: Hero ── */
@@ -133,20 +216,20 @@
 		gap: 1.5rem;
 		margin-inline: auto;
 		max-width: 80rem;
-		padding: 3.5rem 1.5rem 3rem;
+		padding: 5rem 1.5rem 3.5rem;
 		width: 100%;
 	}
 
 	@media (min-width: 48rem) {
 		.nice-landing-hero__inner {
 			gap: 2rem;
-			padding: 5rem 2rem 4rem;
+			padding: 6.5rem 2rem 5rem;
 		}
 	}
 
 	@media (min-width: 64rem) {
 		.nice-landing-hero__inner {
-			padding: 6rem 2.5rem 5rem;
+			padding: 7.5rem 2.5rem 6rem;
 		}
 	}
 
@@ -175,7 +258,7 @@
 	}
 
 	.nice-landing-hero__statement {
-		max-width: 62rem;
+		max-width: 64rem;
 	}
 
 	.nice-hero-headline {
@@ -197,6 +280,35 @@
 		line-height: 1.55;
 		margin: 0;
 		max-width: 40rem;
+	}
+
+	/* ── Restrained NICE Statement Strip ── */
+	.nice-philosophy-strip {
+		align-items: center;
+		border-bottom: 1px solid var(--nice-subtle-border);
+		box-sizing: border-box;
+		display: flex;
+		gap: 1rem;
+		justify-content: center;
+		margin-inline: auto;
+		max-width: 80rem;
+		padding: 1.25rem 1.5rem;
+		width: 100%;
+	}
+
+	.nice-philosophy-strip__item {
+		color: var(--nice-muted);
+		font-family: var(--nice-font-label);
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+	}
+
+	.nice-philosophy-strip__dot {
+		color: var(--nice-red);
+		font-size: 0.875rem;
+		line-height: 1;
 	}
 
 	/* ── Sections 02 & 03: Editorial Visual Doors ── */
@@ -226,7 +338,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		padding: 2.25rem 1.5rem;
+		padding: 2.5rem 1.5rem;
 		position: relative;
 		transition: background-color var(--wp--custom--motion--duration-normal) var(--wp--custom--motion--easing);
 	}
