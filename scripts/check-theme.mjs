@@ -173,14 +173,21 @@ if (/linear-gradient|radial-gradient/i.test(css)) {
 for (const requiredPattern of [
 	'nice/landing-hero',
 	'nice/landing-pathways',
+]) {
+	if (!frontPage.includes(requiredPattern)) {
+		fail(`Front page is missing required pattern: ${requiredPattern}`);
+	}
+}
+
+for (const excludedPattern of [
 	'nice/landing-philosophy',
 	'nice/landing-work',
 	'nice/landing-capabilities',
 	'nice/landing-clients',
 	'nice/direct-contact',
 ]) {
-	if (!frontPage.includes(requiredPattern)) {
-		fail(`Front page is missing required pattern: ${requiredPattern}`);
+	if (frontPage.includes(excludedPattern)) {
+		fail(`Front page contains excluded pattern: ${excludedPattern}`);
 	}
 }
 
