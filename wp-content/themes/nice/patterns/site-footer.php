@@ -18,6 +18,7 @@ $nice_is_events = function_exists( 'nice_theme_is_events_context' ) && nice_them
 $nice_is_studio = function_exists( 'nice_theme_is_studio_context' ) && nice_theme_is_studio_context();
 
 if ( $nice_is_events ) {
+	$nice_clients_url = esc_url( home_url( '/events/clients/' ) );
 	$nice_work_url     = esc_url( home_url( '/events/case-studies/' ) );
 	$nice_services_url = esc_url( home_url( '/events/services/' ) );
 	$nice_contact_url  = esc_url( home_url( '/events/contact/' ) );
@@ -25,10 +26,12 @@ if ( $nice_is_events ) {
 	$nice_work_url     = esc_url( home_url( '/studio/case-studies/' ) );
 	$nice_services_url = esc_url( home_url( '/studio/services/' ) );
 	$nice_contact_url  = esc_url( home_url( '/studio/contact/' ) );
+	$nice_clients_url  = esc_url( home_url( '/studio/clients/' ) );
 } else {
-	$nice_work_url     = esc_url( home_url( '/#work' ) );
-	$nice_services_url = esc_url( home_url( '/#capabilities' ) );
-	$nice_contact_url  = esc_url( home_url( '/#contact' ) );
+	$nice_work_url     = esc_url( home_url( '/events/case-studies/' ) );
+	$nice_services_url = esc_url( home_url( '/events/services/' ) );
+	$nice_contact_url  = esc_url( home_url( '/events/contact/' ) );
+	$nice_clients_url  = esc_url( home_url( '/events/clients/' ) );
 }
 ?>
 <!-- wp:html -->

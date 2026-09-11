@@ -17,8 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string   $type      REST/meta type.
  * @param callable $sanitize  Sanitization callback.
  * @param mixed    $default   Default value.
+ * @param callable $authorize Authorization callback.
  */
-function nice_register_post_meta_field( $post_type, $meta_key, $type, $sanitize, $default ) {
+function nice_register_post_meta_field( $post_type, $meta_key, $type, $sanitize, $default, $authorize = 'nice_authorize_post_meta' ) {
 	register_post_meta(
 		$post_type,
 		$meta_key,
@@ -27,7 +28,7 @@ function nice_register_post_meta_field( $post_type, $meta_key, $type, $sanitize,
 			'single'            => true,
 			'default'           => $default,
 			'sanitize_callback' => $sanitize,
-			'auth_callback'     => 'nice_authorize_post_meta',
+			'auth_callback'     => $authorize,
 			'show_in_rest'      => array(
 				'schema' => array(
 					'type'    => $type,
@@ -42,6 +43,20 @@ function nice_register_post_meta_field( $post_type, $meta_key, $type, $sanitize,
  * Register metadata for Case Studies, Clients, and Team Members.
  */
 function nice_register_content_meta() {
+	nice_register_post_meta_field( 'page', '_nice_events_hero_image_id', 'integer', 'nice_sanitize_hero_image_id', 0, 'nice_authorize_events_hero_meta' );
+	nice_register_post_meta_field( 'page', '_nice_events_hero_mobile_image_id', 'integer', 'nice_sanitize_hero_image_id', 0, 'nice_authorize_events_hero_meta' );
+	nice_register_post_meta_field( 'page', '_nice_events_hero_focal_x', 'integer', 'nice_sanitize_percentage', 50, 'nice_authorize_events_hero_meta' );
+	nice_register_post_meta_field( 'page', '_nice_events_hero_focal_y', 'integer', 'nice_sanitize_percentage', 50, 'nice_authorize_events_hero_meta' );
+	nice_register_post_meta_field( 'page', '_nice_events_hero_reference', 'boolean', 'rest_sanitize_boolean', false, 'nice_authorize_events_hero_meta' );
+	nice_register_post_meta_field( 'page', '_nice_events_hero_media_initialized', 'boolean', 'rest_sanitize_boolean', false, 'nice_authorize_events_hero_meta' );
+
+	nice_register_post_meta_field( 'page', '_nice_studio_hero_image_id', 'integer', 'absint', 0 );
+	nice_register_post_meta_field( 'page', '_nice_studio_hero_mobile_image_id', 'integer', 'absint', 0 );
+	nice_register_post_meta_field( 'page', '_nice_studio_hero_focal_x', 'integer', 'nice_sanitize_percentage', 50 );
+	nice_register_post_meta_field( 'page', '_nice_studio_hero_focal_y', 'integer', 'nice_sanitize_percentage', 50 );
+	nice_register_post_meta_field( 'page', '_nice_studio_hero_reference', 'boolean', 'rest_sanitize_boolean', false );
+	nice_register_post_meta_field( 'page', '_nice_studio_hero_media_initialized', 'boolean', 'rest_sanitize_boolean', false );
+
 	nice_register_post_meta_field( 'nice_case_study', '_nice_client_id', 'integer', 'nice_sanitize_client_id', 0 );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_client_name', 'string', 'sanitize_text_field', '' );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_location', 'string', 'sanitize_text_field', '' );

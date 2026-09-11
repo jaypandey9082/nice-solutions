@@ -1,0 +1,57 @@
+.nice-studio-media-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 20px;
+}
+
+.nice-studio-media-control {
+	min-width: 0;
+}
+
+.nice-studio-media-preview {
+	display: grid;
+	place-items: center;
+	min-height: 180px;
+	background: #f0f0f1;
+	border: 1px solid #c3c4c7;
+	overflow: hidden;
+}
+
+.nice-studio-media-preview img {
+	display: block;
+	width: 100%;
+	height: 180px;
+	object-fit: cover;
+}
+
+.nice-studio-media-control .button-link-delete {
+	margin-left: 10px;
+}
+
+.nice-studio-focal-controls {
+	max-width: 680px;
+	margin-top: 24px;
+}
+
+.nice-studio-focal-controls label {
+	display: grid;
+	grid-template-columns: 100px minmax(180px, 1fr) 48px;
+	align-items: center;
+	gap: 12px;
+	margin-top: 12px;
+}
+
+.nice-studio-focal-controls output {
+	font-variant-numeric: tabular-nums;
+	text-align: right;
+}
+
+@media (max-width: 782px) {
+	.nice-studio-media-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.nice-studio-focal-controls label {
+		grid-template-columns: 80px minmax(120px, 1fr) 42px;
+	}
+}

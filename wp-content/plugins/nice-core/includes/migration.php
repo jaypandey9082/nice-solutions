@@ -477,6 +477,105 @@ function nice_migrate_media_attachment( $filename, $alt ) {
 }
 
 /**
+ * Assign the Studio reference hero once, without restoring an editor removal.
+ *
+ * @return array{status: string, attachment_id: int, message: string}
+ */
+function nice_initialize_studio_hero_media() {
+	$summary = array(
+		'status'        => 'skipped',
+		'attachment_id' => 0,
+		'message'       => '',
+	);
+	$studio = get_page_by_path( 'studio', OBJECT, 'page' );
+
+	if ( ! $studio instanceof WP_Post ) {
+		$summary['status']  = 'unavailable';
+		$summary['message'] = 'The Studio Home Page is unavailable.';
+		return $summary;
+	}
+
+	if ( metadata_exists( 'post', $studio->ID, '_nice_studio_hero_media_initialized' ) ) {
+		return $summary;
+	}
+
+	$filename = 'studio-reference-hero.webp';
+	$source   = get_theme_file_path( '/assets/images/' . $filename );
+	if ( ! is_readable( $source ) ) {
+		$summary['status']  = 'unavailable';
+		$summary['message'] = 'The optional Studio reference hero asset is unavailable.';
+		return $summary;
+	}
+
+	$attachment_id = nice_migrate_media_attachment(
+		$filename,
+		__( 'Creative production team working on a cinematic studio set', 'nice-core' )
+	);
+
+	if ( is_wp_error( $attachment_id ) ) {
+		$summary['status']  = 'unavailable';
+		$summary['message'] = $attachment_id->get_error_message();
+		return $summary;
+	}
+
+	update_post_meta( $studio->ID, '_nice_studio_hero_image_id', absint( $attachment_id ) );
+	update_post_meta( $studio->ID, '_nice_studio_hero_focal_x', 50 );
+	update_post_meta( $studio->ID, '_nice_studio_hero_focal_y', 50 );
+	update_post_meta( $studio->ID, '_nice_studio_hero_reference', 1 );
+	update_post_meta( $studio->ID, '_nice_studio_hero_media_initialized', 1 );
+
+	$summary['status']        = 'initialized';
+	$summary['attachment_id'] = absint( $attachment_id );
+
+	return $summary;
+}
+
+/**
+ * Initialize Events reference media once, preserving all prior editorial choices.
+ * Callable directly with wp eval 'print_r( nice_initialize_events_hero_media() );'.
+ *
+ * @return array{status: string, attachment_id: int, message: string}
+ */
+function nice_initialize_events_hero_media() {
+	$summary = array( 'status' => 'skipped', 'attachment_id' => 0, 'message' => '' );
+	$events  = get_page_by_path( 'events', OBJECT, 'page' );
+	if ( ! $events instanceof WP_Post || ! nice_is_events_home_page( $events->ID ) ) {
+		$summary['status']  = 'unavailable';
+		$summary['message'] = 'The Events Page is unavailable.';
+		return $summary;
+	}
+
+	// Existence matters: a saved zero, false or empty selection is intentional.
+	foreach ( array( 'media_initialized', 'image_id', 'mobile_image_id', 'focal_x', 'focal_y', 'reference' ) as $field ) {
+		if ( metadata_exists( 'post', $events->ID, '_nice_events_hero_' . $field ) ) {
+			return $summary;
+		}
+	}
+
+	$filename = 'events-reference-hero.webp';
+	if ( ! is_readable( get_theme_file_path( '/assets/images/' . $filename ) ) ) {
+		$summary['status']  = 'unavailable';
+		$summary['message'] = 'The optional Events reference hero asset is unavailable.';
+		return $summary;
+	}
+	$attachment_id = nice_migrate_media_attachment( $filename, __( 'Temporary Events reference imagery', 'nice-core' ) );
+	if ( is_wp_error( $attachment_id ) || ! nice_sanitize_hero_image_id( $attachment_id ) ) {
+		$summary['status']  = 'unavailable';
+		$summary['message'] = is_wp_error( $attachment_id ) ? $attachment_id->get_error_message() : 'The Events reference asset is not an image attachment.';
+		return $summary;
+	}
+
+	update_post_meta( $events->ID, '_nice_events_hero_image_id', $attachment_id );
+	update_post_meta( $events->ID, '_nice_events_hero_focal_x', 50 );
+	update_post_meta( $events->ID, '_nice_events_hero_focal_y', 50 );
+	update_post_meta( $events->ID, '_nice_events_hero_reference', 1 );
+	update_post_meta( $events->ID, '_nice_events_hero_media_initialized', 1 );
+	$summary['status']        = 'initialized';
+	$summary['attachment_id'] = $attachment_id;
+	return $summary;
+}
+
+/**
  * Insert one approved post without overwriting an existing record.
  *
  * @param string               $post_type Post type.
@@ -567,6 +666,8 @@ function nice_run_content_migration() {
 		'case_studies' => array( 'created' => 0, 'skipped' => 0 ),
 		'media'        => array( 'linked' => 0, 'errors' => array() ),
 		'enriched'     => 0,
+		'studio_hero'  => array( 'status' => 'skipped', 'attachment_id' => 0, 'message' => '' ),
+		'events_hero'  => array( 'status' => 'skipped', 'attachment_id' => 0, 'message' => '' ),
 	);
 
 	if ( ! empty( $summary['terms']['errors'] ) ) {
@@ -578,6 +679,9 @@ function nice_run_content_migration() {
 	if ( ! empty( $summary['studio_page']['errors'] ) ) {
 		return new WP_Error( 'nice_studio_page_migration_failed', implode( ' ', $summary['studio_page']['errors'] ) );
 	}
+
+	$summary['studio_hero'] = nice_initialize_studio_hero_media();
+	$summary['events_hero'] = nice_initialize_events_hero_media();
 
 	$client_ids = array();
 	foreach ( $manifest['clients'] as $record ) {
@@ -682,6 +786,15 @@ function nice_cli_migrate_content() {
 	WP_CLI::log( sprintf( 'Studio Home: %d created, %d existing', $result['studio_page']['created'], $result['studio_page']['skipped'] ) );
 	WP_CLI::log( sprintf( 'Source-backed fields enriched: %d', $result['enriched'] ) );
 	WP_CLI::log( sprintf( 'Media linked: %d', $result['media']['linked'] ) );
+	WP_CLI::log( sprintf( 'Studio reference hero: %s', $result['studio_hero']['status'] ) );
+	WP_CLI::log( sprintf( 'Events reference hero: %s', $result['events_hero']['status'] ) );
+	if ( $result['events_hero']['message'] ) {
+		WP_CLI::warning( $result['events_hero']['message'] );
+	}
+
+	if ( $result['studio_hero']['message'] ) {
+		WP_CLI::warning( $result['studio_hero']['message'] );
+	}
 
 	if ( $result['media']['errors'] ) {
 		foreach ( array_unique( $result['media']['errors'] ) as $error ) {

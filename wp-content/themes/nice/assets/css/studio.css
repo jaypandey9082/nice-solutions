@@ -1,8 +1,4 @@
 @layer components {
-	.nice-is-studio-page .nice-site-header {
-		position: fixed;
-	}
-
 	.nice-studio-page {
 		overflow: clip;
 	}
@@ -39,35 +35,18 @@
 	}
 
 	.nice-studio-hero {
-		background: var(--wp--preset--color--text);
+		background: #0f0f11;
 		color: var(--wp--preset--color--surface);
-		isolation: isolate;
 		min-height: 80svh;
-		overflow: hidden;
 		position: relative;
 	}
 
-	.nice-studio-hero__media,
-	.nice-studio-hero__veil {
-		inset: 0;
-		position: absolute;
-	}
-
 	.nice-studio-hero__media {
-		display: block;
-		z-index: -2;
-	}
-
-	.nice-studio-hero__media img {
-		height: 100%;
-		object-fit: cover;
-		object-position: 58% center;
-		width: 100%;
-	}
-
-	.nice-studio-hero__veil {
-		background: color-mix(in srgb, var(--wp--preset--color--text) 55%, transparent);
-		z-index: -1;
+		inset: 0;
+		opacity: 0;
+		pointer-events: none;
+		position: absolute;
+		z-index: -10;
 	}
 
 	.nice-studio-hero__inner {
@@ -101,9 +80,11 @@
 	}
 
 	.nice-studio-hero__statement > p {
-		font-size: 2.8rem;
+		font-family: var(--nice-type-editorial);
+		font-size: 3rem;
 		font-weight: 400;
-		line-height: 1.02;
+		letter-spacing: -0.025em;
+		line-height: 0.96;
 		max-width: 13ch;
 		text-wrap: balance;
 	}
@@ -205,8 +186,8 @@
 	}
 
 	.nice-studio-capabilities {
-		background: var(--wp--preset--color--text);
-		color: var(--wp--preset--color--surface);
+		background: #0f0f11;
+		color: #ffffff;
 	}
 
 	.nice-studio-capabilities__inner {
@@ -218,6 +199,12 @@
 	.nice-studio-capabilities header {
 		display: grid;
 		gap: var(--wp--preset--spacing--md);
+	}
+
+	.nice-studio-capabilities h2 {
+		font-family: var(--nice-type-editorial);
+		font-weight: 400;
+		letter-spacing: -0.02em;
 	}
 
 	.nice-studio-capabilities header > p:last-child {
@@ -288,8 +275,8 @@
 	}
 
 	.nice-studio-story {
-		background: var(--wp--preset--color--text);
-		color: var(--wp--preset--color--surface);
+		background: #0f0f11;
+		color: #ffffff;
 	}
 
 	.nice-studio-story__inner {
@@ -299,7 +286,10 @@
 	}
 
 	.nice-studio-story h2 {
+		font-family: var(--nice-type-editorial);
 		font-size: 2.8rem;
+		font-weight: 400;
+		letter-spacing: -0.02em;
 		max-width: 12ch;
 	}
 
@@ -376,8 +366,8 @@
 	}
 
 	.nice-studio-contact {
-		background: var(--wp--preset--color--text);
-		color: var(--wp--preset--color--surface);
+		background: #0f0f11;
+		color: #ffffff;
 	}
 
 	.nice-studio-contact__inner {
@@ -387,7 +377,10 @@
 	}
 
 	.nice-studio-contact h2 {
+		font-family: var(--nice-type-editorial);
 		font-size: 2.5rem;
+		font-weight: 400;
+		letter-spacing: -0.02em;
 		max-width: 16ch;
 	}
 
@@ -610,42 +603,12 @@
 	/* Studio Inner Hero */
 	.nice-studio-inner-hero {
 		background: var(--wp--preset--color--warm);
-		isolation: isolate;
-		min-height: 28rem;
-		overflow: hidden;
+		min-height: 22rem;
 		position: relative;
 	}
 
-	.nice-studio-inner-hero--media {
-		background: var(--wp--preset--color--text);
-		color: var(--wp--preset--color--surface);
-		min-height: 72svh;
-	}
-
-	.nice-studio-inner-hero__media,
-	.nice-studio-inner-hero__veil {
-		inset: 0;
-		position: absolute;
-	}
-
-	.nice-studio-inner-hero__media {
-		z-index: -2;
-	}
-
-	.nice-studio-inner-hero__media img,
-	.nice-studio-inner-hero__media video {
-		height: 100%;
-		object-fit: cover;
-		width: 100%;
-	}
-
-	.nice-studio-inner-hero__veil {
-		background: color-mix(in srgb, var(--wp--preset--color--text) 60%, transparent);
-		z-index: -1;
-	}
-
 	.nice-studio-inner-hero__content {
-		align-content: end;
+		align-content: center;
 		display: grid;
 		gap: var(--wp--preset--spacing--lg);
 		min-height: inherit;
@@ -653,16 +616,12 @@
 		padding-top: var(--nice-section-space);
 	}
 
-	.nice-studio-inner-hero:not(.nice-studio-inner-hero--media) .nice-studio-inner-hero__content {
-		align-content: center;
-	}
-
 	.nice-studio-inner-hero .nice-eyebrow {
 		color: var(--wp--preset--color--brand-red);
 	}
 
 	.nice-studio-inner-hero h1 {
-		font-family: var(--nice-type-editorial);
+		font-family: var(--nice-type-editorial) !important;
 		font-size: 3.4rem;
 		letter-spacing: -0.02em;
 		line-height: 0.95;
@@ -852,8 +811,8 @@
 
 	/* Studio Case Study Detail */
 	.nice-studio-case-quote {
-		background: var(--wp--preset--color--text);
-		color: var(--wp--preset--color--surface);
+		background: #0f0f11;
+		color: #ffffff;
 		padding-block: var(--nice-section-space);
 	}
 
@@ -864,9 +823,12 @@
 	}
 
 	.nice-studio-case-quote p {
-		color: var(--wp--preset--color--surface);
-		font-size: clamp(1.75rem, 3vw + 0.5rem, 3rem);
-		line-height: 1.15;
+		color: #ffffff;
+		font-family: var(--nice-type-editorial);
+		font-size: clamp(2rem, 3.5vw + 0.5rem, 3.5rem);
+		font-weight: 400;
+		letter-spacing: -0.025em;
+		line-height: 1.12;
 	}
 
 	.nice-studio-case-quote cite {
@@ -905,24 +867,40 @@
 	}
 
 	.nice-studio-project-proof {
-		background: var(--wp--preset--color--warm);
-		border-bottom: 1px solid var(--wp--preset--color--border);
-		padding-block: var(--wp--preset--spacing--2-xl);
+		background: #0f0f11;
+		color: #ffffff;
+		padding-block: var(--nice-section-space);
 	}
 
 	.nice-studio-project-proof__content {
-		align-items: baseline;
+		align-items: end;
 		display: grid;
-		gap: var(--wp--preset--spacing--lg);
+		gap: var(--wp--preset--spacing--xl);
 	}
 
 	.nice-studio-project-proof__value {
-		color: var(--wp--preset--color--action-red);
+		color: var(--wp--preset--color--surface);
 		font-family: var(--nice-type-editorial);
 		font-size: clamp(3.5rem, 8vw, 6.5rem);
 		font-weight: 400;
+		letter-spacing: -0.03em;
 		line-height: 0.9;
 		margin: 0;
+	}
+
+	.nice-studio-project-proof .nice-eyebrow {
+		color: var(--wp--preset--color--brand-red);
+		margin-bottom: var(--wp--preset--spacing--sm);
+	}
+
+	.nice-studio-project-proof h2 {
+		color: #ffffff;
+		font-family: var(--nice-type-editorial);
+		font-size: 2rem;
+		font-weight: 400;
+		letter-spacing: -0.02em;
+		line-height: 1.1;
+		max-width: 23ch;
 	}
 
 	.nice-studio-case-intro {
@@ -1119,8 +1097,8 @@
 
 	/* Studio Inner CTA */
 	.nice-studio-inner-cta {
-		background: var(--wp--preset--color--text);
-		color: var(--wp--preset--color--surface);
+		background: #0f0f11;
+		color: #ffffff;
 		padding-block: clamp(4rem, 8vw, 8rem);
 	}
 

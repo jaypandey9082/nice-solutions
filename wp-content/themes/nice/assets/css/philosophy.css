@@ -1,0 +1,39 @@
+@layer components {
+	.nice-philosophy-strip {
+		align-items: center;
+		background: #F4F2ED;
+		border-block: 1px solid #C7C1B2;
+		box-sizing: border-box;
+		color: var(--wp--preset--color--text, #121213);
+		display: flex;
+		justify-content: center;
+		margin-block: 0;
+		min-height: 48px;
+		padding: 0.75rem 1.25rem;
+		width: 100%;
+	}
+
+	.nice-philosophy-strip .nice-philosophy-strip__text {
+		font-family: var(--nice-font-label, Arial, sans-serif);
+		font-size: 0.875rem;
+		font-weight: 600;
+		letter-spacing: 0;
+		line-height: 1.5;
+		margin: 0;
+		overflow-wrap: anywhere;
+		text-align: center;
+		text-transform: none;
+	}
+
+	.nice-philosophy-strip__separator {
+		color: #EF233C;
+		margin-inline: 0.375em;
+	}
+
+	@media (min-width: 48rem) {
+		.nice-philosophy-strip {
+			min-height: 56px;
+			padding-inline: 2.5rem;
+		}
+	}
+}

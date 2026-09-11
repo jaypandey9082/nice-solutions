@@ -60,24 +60,8 @@ function nice_theme_get_studio_content_url( $post ) {
  * @param string $video_url Optional hero video URL.
  */
 function nice_render_studio_inner_hero( $eyebrow, $title, $intro, $post_id = 0, $video_url = '' ) {
-	$image = $post_id ? nice_theme_get_featured_image(
-		$post_id,
-		'100vw',
-		array(
-			'alt'           => '',
-			'loading'       => 'eager',
-			'fetchpriority' => 'high',
-		)
-	) : '';
 	?>
-	<header class="nice-studio-inner-hero<?php echo ( $image || $video_url ) ? ' nice-studio-inner-hero--media' : ''; ?>">
-		<?php if ( $video_url ) : ?>
-			<div class="nice-studio-inner-hero__media" aria-hidden="true"><video src="<?php echo esc_url( $video_url ); ?>" muted autoplay playsinline loop poster="<?php echo esc_url( wp_get_attachment_image_url( get_post_thumbnail_id( $post_id ), 'full' ) ); ?>"></video></div>
-			<div class="nice-studio-inner-hero__veil" aria-hidden="true"></div>
-		<?php elseif ( $image ) : ?>
-			<div class="nice-studio-inner-hero__media" aria-hidden="true"><?php echo $image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
-			<div class="nice-studio-inner-hero__veil" aria-hidden="true"></div>
-		<?php endif; ?>
+	<header class="nice-studio-inner-hero">
 		<div class="nice-wide nice-studio-inner-hero__content" data-nice-reveal>
 			<p class="nice-eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
 			<h1 class="nice-editorial" data-nice-editorial-reveal><?php echo esc_html( $title ); ?></h1>
@@ -87,6 +71,7 @@ function nice_render_studio_inner_hero( $eyebrow, $title, $intro, $post_id = 0, 
 		</div>
 	</header>
 	<?php
+	echo nice_render_philosophy_strip(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shared static markup.
 }
 
 /**
@@ -441,6 +426,29 @@ function nice_render_studio_case_study_detail() {
 			</dl>
 		</div>
 	</section>
+	<?php
+	$case_hero_image = nice_theme_get_featured_image(
+		$case_study->ID,
+		'(min-width: 75rem) 1200px, 100vw',
+		array(
+			'alt'           => get_the_title( $case_study->ID ),
+			'loading'       => 'eager',
+			'fetchpriority' => 'high',
+		)
+	);
+	if ( $video_url || $case_hero_image ) : ?>
+		<section class="nice-case-hero-media-wrap" aria-label="<?php esc_attr_e( 'Project visual', 'nice' ); ?>">
+			<div class="nice-wide">
+				<div class="nice-case-hero-media" data-nice-reveal>
+					<?php if ( $video_url ) : ?>
+						<video src="<?php echo esc_url( $video_url ); ?>" muted autoplay playsinline loop poster="<?php echo esc_url( wp_get_attachment_image_url( get_post_thumbnail_id( $case_study->ID ), 'full' ) ); ?>"></video>
+					<?php else : ?>
+						<?php echo $case_hero_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php endif; ?>
+				</div>
+			</div>
+		</section>
+	<?php endif; ?>
 	<?php if ( $proof_value && $proof_label ) : ?>
 		<section class="nice-studio-project-proof" aria-labelledby="nice-project-proof-title">
 			<div class="nice-wide nice-studio-project-proof__content" data-nice-reveal>
