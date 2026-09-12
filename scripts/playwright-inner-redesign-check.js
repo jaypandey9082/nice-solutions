@@ -49,6 +49,11 @@ const assert = (condition, message) => {
 			});
 			page.on('pageerror', (error) => errors.push(error.message));
 			page.on('request', (request) => {
+				/* Only asset requests count. A case-study route such as
+				   /events/case-studies/voltas-fam-tastic-fiesta/ legitimately carries a
+				   retired name in its slug, so testing every request URL flags the page
+				   navigation itself. */
+				if (!['image', 'media', 'font'].includes(request.resourceType())) return;
 				if (retiredMedia.test(request.url())) retiredRequests.push(request.url());
 			});
 
