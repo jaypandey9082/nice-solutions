@@ -33,13 +33,25 @@ The migration is safe to run again and reports records as created or skipped.
 Case Studies include a private Content Source & Approval panel for editors. Add
 the HTTPS source URL and a short source label or verification note, then move the
 approval state from Draft to Review and finally Approved as evidence and usage
-rights are confirmed. Approval records editorial clearance; publishing remains
-a separate WordPress action.
+rights are confirmed. Approval records editorial clearance of the wording and its
+source; publishing remains a separate WordPress action.
+
+Two rules apply to that panel.
+
+Approval requires a Source URL that identifies the individual post. The seeded
+candidates carry the LinkedIn company feed, which records where they came from
+but not which post each one came from. A record still carrying the feed URL is
+held at Review with an explanatory notice until an editor pastes the real one.
+
+Image rights are a separate control. "Media cleared for publication" is its own
+checkbox, because approving wording must never publish the photograph attached to
+the record. Migrated records carry deck photography that has not been cleared;
+until the box is ticked the project page shows an intentional placeholder.
 
 Running `wp nice migrate-content` also creates five LinkedIn-derived Events
 candidate records as WordPress drafts. They contain brief paraphrased text and
-the official NICE Solutions LinkedIn company-posts URL, but no images, team
-members, proof metrics, or publication approval. An existing slug in any status
+the NICE Solutions LinkedIn company-feed URL rather than a per-post citation, and
+no images, team members, proof metrics, or publication approval. An existing slug in any status
 is skipped completely, so reruns never overwrite editor changes or alter a
 published record.
 
@@ -73,10 +85,11 @@ The development install is a combined site: Events and Studio sit behind the
 configuration.
 
 Production splits across three installations, where each division owns a
-hostname and serves its own content at the root with no prefix. Declare which
-division an installation serves in wp-config.php:
+hostname and serves its own content at the root with no prefix. Every production
+installation declares itself in wp-config.php, including the gateway:
 
-    define( 'NICE_SITE_DIVISION', 'events' );
+    define( 'NICE_SITE_DIVISION', 'main' );     // the gateway
+    define( 'NICE_SITE_DIVISION', 'events' );   // the Events installation
 
 and tell it where its siblings live, so cross-site links resolve:
 
@@ -84,8 +97,14 @@ and tell it where its siblings live, so cross-site links resolve:
     define( 'NICE_EVENTS_SITE_URL', 'https://events.nicesolutions.in' );
     define( 'NICE_STUDIO_SITE_URL', 'https://studios.nicesolutions.in' );
 
-The gateway installation defines only the three URLs and leaves
-NICE_SITE_DIVISION unset, so it keeps linking out to both divisions.
+The gateway sets NICE_SITE_DIVISION to 'main'. It owns no division content: it
+registers no division routes, provisions no division pages, refuses
+wp nice migrate-content, and resolves Events and Studio links against the
+configured sibling URLs. Leaving the constant unset there would instead produce
+the combined development site and publish both divisions from one database.
+
+An unrecognised value raises a _doing_it_wrong() notice rather than silently
+falling back.
 
 What the setting changes:
 

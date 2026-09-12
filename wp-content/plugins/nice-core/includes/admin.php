@@ -391,6 +391,7 @@ function nice_render_case_study_source_meta_box( $post ) {
 	$source_url      = get_post_meta( $post->ID, '_nice_source_url', true );
 	$source_note     = get_post_meta( $post->ID, '_nice_source_note', true );
 	$approval_status = nice_sanitize_case_study_approval_status( get_post_meta( $post->ID, '_nice_source_approval_status', true ) );
+	$media_approved  = rest_sanitize_boolean( get_post_meta( $post->ID, '_nice_media_approved', true ) );
 	?>
 	<p class="description"><?php esc_html_e( 'Private editorial fields. They are not exposed through the public REST API.', 'nice-core' ); ?></p>
 	<p>
@@ -409,7 +410,17 @@ function nice_render_case_study_source_meta_box( $post ) {
 			<option value="approved" <?php selected( $approval_status, 'approved' ); ?>><?php esc_html_e( 'Approved - cleared for editorial use', 'nice-core' ); ?></option>
 		</select>
 	</p>
-	<p class="description"><?php esc_html_e( 'Approval here records editorial clearance. Publishing remains a separate WordPress action.', 'nice-core' ); ?></p>
+	<p class="description"><?php esc_html_e( 'Approval here records editorial clearance of the wording and its source. It does not clear the image.', 'nice-core' ); ?></p>
+	<?php if ( function_exists( 'nice_source_url_is_specific' ) && ! nice_source_url_is_specific( $source_url ) ) : ?>
+		<p class="description"><strong><?php esc_html_e( 'Approval is blocked: the Source URL must identify the individual post, not the company feed.', 'nice-core' ); ?></strong></p>
+	<?php endif; ?>
+	<p>
+		<label for="nice-media-approved">
+			<input type="checkbox" id="nice-media-approved" name="nice_media_approved" value="1" <?php checked( $media_approved ); ?>>
+			<strong><?php esc_html_e( 'Media cleared for publication', 'nice-core' ); ?></strong>
+		</label>
+	</p>
+	<p class="description"><?php esc_html_e( 'Separate from the approval above. Tick this only when NICE holds the right to publish the featured image on this record. While it is unticked the project page shows an intentional placeholder instead.', 'nice-core' ); ?></p>
 	<?php
 }
 
@@ -536,7 +547,20 @@ function nice_save_content_meta( $post_id, $post ) {
 		nice_save_or_delete_meta( $post_id, '_nice_proof_label', $proof_label );
 		nice_save_or_delete_meta( $post_id, '_nice_source_url', $source_url );
 		nice_save_or_delete_meta( $post_id, '_nice_source_note', $source_note );
+		/*
+		 * Seeded candidates carry the LinkedIn company feed, which does not say
+		 * which post they came from. Approving on that basis clears wording nobody
+		 * can trace, so hold the record at review until a specific post URL is in.
+		 */
+		if ( 'approved' === $approval_status
+			&& function_exists( 'nice_source_url_is_specific' )
+			&& ! nice_source_url_is_specific( $source_url ) ) {
+			$approval_status = 'review';
+			set_transient( 'nice_source_approval_blocked_' . $post_id, 1, 60 );
+		}
+
 		update_post_meta( $post_id, '_nice_source_approval_status', $approval_status );
+		update_post_meta( $post_id, '_nice_media_approved', empty( $_POST['nice_media_approved'] ) ? 0 : 1 );
 		update_post_meta( $post_id, '_nice_featured', empty( $_POST['nice_featured'] ) ? 0 : 1 );
 		update_post_meta( $post_id, '_nice_display_order', nice_sanitize_integer( wp_unslash( $_POST['nice_display_order'] ?? 0 ) ) );
 	}
@@ -696,3 +720,18 @@ function nice_render_title_required_notice() {
 	echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'A title is required before this NICE record can be published.', 'nice-core' ) . '</p></div>';
 }
 add_action( 'admin_notices', 'nice_render_title_required_notice' );
+
+/**
+ * Explain why a source approval was held back at review.
+ */
+function nice_render_source_approval_blocked_notice() {
+	$post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only notice.
+
+	if ( ! $post_id || ! get_transient( 'nice_source_approval_blocked_' . $post_id ) ) {
+		return;
+	}
+
+	delete_transient( 'nice_source_approval_blocked_' . $post_id );
+	echo '<div class="notice notice-warning is-dismissible"><p>' . esc_html__( 'This record was held at Review. Its Source URL is the LinkedIn company feed, which does not identify the post the wording came from. Paste the individual post URL, then approve.', 'nice-core' ) . '</p></div>';
+}
+add_action( 'admin_notices', 'nice_render_source_approval_blocked_notice' );

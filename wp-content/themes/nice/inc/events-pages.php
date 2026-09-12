@@ -85,15 +85,18 @@ function nice_theme_get_primary_term( $post_id, $taxonomy ) {
 /**
  * Report whether a record's own media is cleared for publication.
  *
- * Attaching a featured image is not the same as clearing it for the public
- * site. Migrated deck photography sits on these records awaiting review, so the
- * hero only renders once an editor moves the source approval to approved.
+ * Attaching a featured image is not the same as holding the right to publish it.
+ * Migrated deck photography sits on these records awaiting clearance, so the
+ * hero renders only once an editor ticks "Media cleared for publication".
+ *
+ * This is deliberately not the source approval status: that clears the wording
+ * and its provenance, and approving copy must not publish a picture with it.
  *
  * @param int $post_id Record ID.
  * @return bool
  */
 function nice_theme_media_approved( $post_id ) {
-	return 'approved' === get_post_meta( $post_id, '_nice_source_approval_status', true );
+	return (bool) get_post_meta( $post_id, '_nice_media_approved', true );
 }
 
 /**

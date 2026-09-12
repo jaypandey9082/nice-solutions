@@ -103,6 +103,13 @@ function nice_register_content_meta() {
 	nice_register_post_meta_field( 'nice_case_study', '_nice_source_url', 'string', 'nice_sanitize_https_url', '', 'nice_authorize_case_study_source_meta', false );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_source_note', 'string', 'sanitize_textarea_field', '', 'nice_authorize_case_study_source_meta', false );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_source_approval_status', 'string', 'nice_sanitize_case_study_approval_status', 'draft', 'nice_authorize_case_study_source_meta', false );
+	/*
+	 * Deliberately separate from the source approval above. That one clears the
+	 * wording and its provenance; this one clears the right to publish the
+	 * attached photograph. Migrated records carry deck imagery that has not been
+	 * cleared, so approving the copy must never publish the picture with it.
+	 */
+	nice_register_post_meta_field( 'nice_case_study', '_nice_media_approved', 'boolean', 'rest_sanitize_boolean', false, 'nice_authorize_case_study_source_meta', false );
 
 	nice_register_post_meta_field( 'nice_client', '_nice_client_url', 'string', 'nice_sanitize_https_url', '' );
 	nice_register_post_meta_field( 'nice_client', '_nice_display_order', 'integer', 'nice_sanitize_integer', 0 );
