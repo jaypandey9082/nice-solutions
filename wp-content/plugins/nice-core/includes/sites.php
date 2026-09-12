@@ -241,7 +241,15 @@ function nice_get_division_url( $division, $path = '' ) {
 		$urls = nice_get_division_site_urls();
 
 		if ( ! empty( $urls[ $division ] ) ) {
-			return user_trailingslashit( $urls[ $division ] . '/' . $path );
+			/*
+			 * trailingslashit() rather than user_trailingslashit(): the sibling is
+			 * a separate installation, and its canonical URLs carry a trailing
+			 * slash whatever this site's own permalink structure happens to be.
+			 * Asking the local setting about a remote host sends every cross-site
+			 * link through a redirect, and through none at all on a plain-permalink
+			 * gateway.
+			 */
+			return trailingslashit( $urls[ $division ] . '/' . $path );
 		}
 	}
 
@@ -385,6 +393,15 @@ function nice_get_site_identity_warnings() {
 				$constant
 			);
 		}
+	}
+
+	/*
+	 * A fresh WordPress uses plain permalinks, under which none of the content
+	 * routes can ever match. The site would come up looking installed and then
+	 * 404 every service, project and section page.
+	 */
+	if ( ! get_option( 'permalink_structure' ) ) {
+		$warnings[] = __( 'Permalinks are set to Plain. Every NICE route needs a pretty permalink structure: choose Post name under Settings > Permalinks and save, then run setup again.', 'nice-core' );
 	}
 
 	return $warnings;

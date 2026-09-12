@@ -171,7 +171,7 @@ Verify with \`shasum -a 256 -c SHA256SUMS.txt\`.
 
 ## Before uploading
 
-- [ ] \`npm run check\` and \`npm run check:phases\` pass on this commit.
+- [ ] \`npm run check\`, \`npm run check:phases\` and \`npm run check:install\` pass on this commit.
 - [ ] \`wp eval-file scripts/wp-identity-check.php\` passes.
 - [ ] \`wp eval-file scripts/wp-launch-readiness.php\` shows nothing outstanding that blocks this launch.
 - [ ] A file and database backup exists for the installation being changed, and one restore has been tested.

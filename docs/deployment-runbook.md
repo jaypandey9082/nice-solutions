@@ -53,13 +53,15 @@ Then, in wp-admin:
 
 1. **Settings → Reading**: tick *Discourage search engines*. Leave it ticked
    until the launch review.
-2. **Plugins → Add New → Upload**: `nice-core-1.3.0.zip`, activate.
-3. **Appearance → Themes → Add New → Upload**: `nice-theme-0.8.0.zip`, activate.
-4. **Tools → NICE Setup**. It shows the identity it resolved — confirm it says
+2. **Settings → Permalinks**: choose **Post name** and save. Do this *before*
+   setup. A fresh WordPress uses Plain permalinks, under which every NICE route
+   404s; the setup screen warns if it finds them still set that way.
+3. **Plugins → Add New → Upload**: `nice-core-1.3.0.zip`, activate.
+4. **Appearance → Themes → Add New → Upload**: `nice-theme-0.8.0.zip`, activate.
+5. **Tools → NICE Setup**. It shows the identity it resolved — confirm it says
    *NICE Events* before running. It refuses outright if the constant is missing
    or misspelled. Leave *set the generated home page as the front page* ticked.
-5. **Settings → Reading**: confirm the front page is now *Events*.
-6. **Settings → Permalinks**: save once, without changing anything.
+6. **Settings → Reading**: confirm the front page is now *Events*.
 7. **Settings → NICE Contact**: enter the Events phone, WhatsApp and email, and
    the company social URLs.
 8. **Media**: upload the approved project imagery. On each Case Study, set the

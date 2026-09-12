@@ -101,6 +101,18 @@ Focused runtime checks (temporarily write metadata and restore it in finally):
 
     wp eval-file scripts/wp-events-media-check.php
 
+== Activation ==
+
+Activating the plugin registers the content structures, creates the approved
+vocabulary, and refreshes rewrite rules. It creates no pages and imports no
+media.
+
+That is deliberate. Activation runs whenever an administrator clicks Activate,
+which on a new host is usually before wp-config.php declares which installation
+this is, so provisioning there would build the combined development site's page
+tree on what is about to become the gateway. Content comes from setup instead,
+which runs after the identity is known.
+
 == Installation Shapes ==
 
 The same code runs two ways.

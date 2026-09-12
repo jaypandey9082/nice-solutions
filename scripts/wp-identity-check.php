@@ -256,6 +256,64 @@ foreach ( nice_get_linkedin_case_study_draft_manifest() as $nice_record ) {
 	);
 }
 
+/* ── The approval gate, through the save handler ──────────────────────────── */
+
+/*
+ * The predicate above is the rule; this is the path an editor actually takes.
+ * A record can only be cleared by submitting the meta box, so the test that
+ * matters is whether that submission can set "approved" with a source URL that
+ * does not support it.
+ */
+$nice_gate_post_id = wp_insert_post(
+	array(
+		'post_type'   => 'nice_case_study',
+		'post_status' => 'draft',
+		'post_title'  => 'Temporary approval gate check',
+	),
+	true
+);
+
+if ( is_wp_error( $nice_gate_post_id ) ) {
+	throw new RuntimeException( 'Could not create the temporary record: ' . $nice_gate_post_id->get_error_message() );
+}
+
+try {
+	update_post_meta( $nice_gate_post_id, '_nice_source_origin', 'linkedin' );
+	wp_set_current_user( 1 );
+
+	$nice_gate_attempts = array(
+		array( nice_get_linkedin_company_feed_url(), 'review', 'the company feed' ),
+		array( 'https://www.linkedin.com/company/n-i-c-e-solutions/', 'review', 'a company page' ),
+		array( 'https://example.com/a-page', 'review', 'an unrelated site' ),
+		array( '', 'review', 'no source at all' ),
+		array( 'https://www.linkedin.com/posts/n-i-c-e-solutions_activity-7280000000000000000-abcd', 'approved', 'the post it came from' ),
+	);
+
+	foreach ( $nice_gate_attempts as $nice_attempt ) {
+		list( $nice_url, $nice_expected, $nice_label ) = $nice_attempt;
+
+		$_POST = array(
+			'nice_content_meta_nonce'      => wp_create_nonce( 'nice_save_content_meta' ),
+			'nice_source_url'              => $nice_url,
+			'nice_source_approval_status'  => 'approved',
+		);
+
+		nice_save_content_meta( $nice_gate_post_id, get_post( $nice_gate_post_id ) );
+
+		$nice_actual = get_post_meta( $nice_gate_post_id, '_nice_source_approval_status', true );
+
+		nice_identity_assert(
+			$nice_expected === $nice_actual,
+			sprintf( 'Submitting %s leaves the record at "%s".', $nice_label, $nice_expected )
+		);
+	}
+
+	$_POST = array();
+} finally {
+	wp_delete_post( $nice_gate_post_id, true );
+	nice_identity_assert( null === get_post( $nice_gate_post_id ), 'The temporary record was removed.' );
+}
+
 /* ── Result ──────────────────────────────────────────────────────────────── */
 
 if ( $nice_failures ) {

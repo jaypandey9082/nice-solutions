@@ -873,6 +873,7 @@ publication; the theme renders its media placeholder wherever an image is absent
 ```bash
 npm run check && npm run check:inner-pages && npm run check:phases
 npm run build:release
+npm run check:install   # installs the packages into a throwaway WordPress, twice
 ```
 
 ```bash

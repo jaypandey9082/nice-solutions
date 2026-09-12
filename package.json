@@ -12,6 +12,7 @@
     "check": "npm run build:preview && npm run check:theme && npm run check:plugin && npm run check:js",
     "preview:serve": "python3 -m http.server 8787 --bind 127.0.0.1 --directory wp-content/themes/nice",
     "check:phases": "node scripts/run-playwright-phase.js",
+    "check:install": "bash scripts/verify-release-install.sh",
     "build:release": "node scripts/build-release.mjs"
   },
   "devDependencies": {

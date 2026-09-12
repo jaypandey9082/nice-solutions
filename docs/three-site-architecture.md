@@ -127,6 +127,21 @@ simulates each one through the `nice_site_division` filter rather than by editin
 covers URL resolution, content ownership, the gateway's refusal to import
 division content, destination-URL restriction and source-provenance rules.
 
+`npm run check:install` installs the built packages into a throwaway WordPress
+against an empty database, twice: once as a production Events installation and
+once as the gateway. It declares the identity *after* activating the plugin,
+which is the order an administrator is most likely to use and the order that
+catches anything provisioning content before it knows the shape. Each pass runs
+setup, asserts the resulting structure, reruns setup to prove it creates and
+changes nothing, edits a record and reruns again to prove editor changes
+survive, and fails on any PHP notice, warning or deprecation. It never touches
+the development site or its database.
+
+Two things it found, both of which would have reached production: a fresh
+WordPress has Plain permalinks, under which every NICE route 404s, so set them
+before running setup; and activation used to provision pages, which on a gateway
+activated before its wp-config was edited created the combined site's page tree.
+
 `wp eval-file scripts/wp-launch-readiness.php` reports the content side of the
 acceptance criteria for whichever installation it is run on: what is configured,
 what is approved, and what is still outstanding. It changes nothing.
