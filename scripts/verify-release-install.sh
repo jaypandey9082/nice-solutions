@@ -105,9 +105,20 @@ verify_identity() {
 
 	local debug_log="$wp_dir/wp-content/debug.log"
 	if [ -s "$debug_log" ]; then
-		echo "==> PHP notices during installation and setup:"
-		cat "$debug_log"
-		exit 1
+		# Core pings wordpress.org for updates on a fresh install. A sandbox with
+		# no route there logs a warning that says nothing about these packages, so
+		# it is the one thing filtered out; everything else still fails the run.
+		local ours
+		ours="$(grep -v -E 'wp_update_plugins|wp_update_themes|wp_version_check|could not establish a secure connection to WordPress.org' "$debug_log" || true)"
+
+		if [ -n "$(echo "$ours" | tr -d '[:space:]')" ]; then
+			echo "==> PHP notices during installation and setup:"
+			echo "$ours"
+			exit 1
+		fi
+
+		echo "    ok   no PHP notices from these packages (core's update ping could not reach wordpress.org here)"
+		return
 	fi
 
 	echo "    ok   no PHP notices, warnings or deprecations"
