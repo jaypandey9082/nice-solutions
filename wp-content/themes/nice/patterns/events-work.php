@@ -7,7 +7,7 @@
  */
 
 $nice_events_projects = nice_get_events_project_previews();
-$nice_events_work_url = esc_url( home_url( '/events/case-studies/' ) );
+$nice_events_work_url = esc_url( nice_theme_division_url( 'events', 'case-studies/' ) );
 ?>
 <!-- wp:html -->
 <section class="nice-events-work nice-events-section" id="events-work" aria-labelledby="nice-events-work-title">

@@ -10,8 +10,8 @@ $nice_events_image        = esc_url( get_theme_file_uri( '/assets/images/voltas-
 $nice_events_image_mobile = esc_url( get_theme_file_uri( '/assets/images/voltas-crowd-480.webp' ) );
 $nice_studio_image        = esc_url( get_theme_file_uri( '/assets/images/strata-production.webp' ) );
 $nice_studio_image_mobile = esc_url( get_theme_file_uri( '/assets/images/strata-production-480.webp' ) );
-$nice_events_url          = esc_url( home_url( '/events/' ) );
-$nice_studio_url          = esc_url( home_url( '/studio/' ) );
+$nice_events_url          = esc_url( nice_theme_division_url( 'events' ) );
+$nice_studio_url          = esc_url( nice_theme_division_url( 'studio' ) );
 ?>
 <!-- wp:html -->
 <section class="nice-doors-section" id="destinations" aria-label="<?php esc_attr_e( 'NICE Divisions', 'nice' ); ?>">

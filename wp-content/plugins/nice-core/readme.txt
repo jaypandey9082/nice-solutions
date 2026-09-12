@@ -64,6 +64,47 @@ Focused runtime checks (temporarily write metadata and restore it in finally):
 
     wp eval-file scripts/wp-events-media-check.php
 
+== Installation Shapes ==
+
+The same code runs two ways.
+
+The development install is a combined site: Events and Studio sit behind the
+/events/ and /studio/ path prefixes. This is the default and needs no
+configuration.
+
+Production splits across three installations, where each division owns a
+hostname and serves its own content at the root with no prefix. Declare which
+division an installation serves in wp-config.php:
+
+    define( 'NICE_SITE_DIVISION', 'events' );
+
+and tell it where its siblings live, so cross-site links resolve:
+
+    define( 'NICE_MAIN_SITE_URL', 'https://nicesolutions.in' );
+    define( 'NICE_EVENTS_SITE_URL', 'https://events.nicesolutions.in' );
+    define( 'NICE_STUDIO_SITE_URL', 'https://studios.nicesolutions.in' );
+
+The gateway installation defines only the three URLs and leaves
+NICE_SITE_DIVISION unset, so it keeps linking out to both divisions.
+
+What the setting changes:
+
+* Rewrite rules. A division install registers ^services/{slug} rather than
+  ^events/services/{slug}, and does not register the sibling's routes at all.
+* Generated URLs. Its own content resolves against its own host; the sibling's
+  resolves against the configured sibling URL.
+* Division context. Every page on a division install belongs to that division,
+  so navigation, contact details and styling resolve without a path prefix.
+* Page provisioning. `wp nice migrate-content` creates the section pages at the
+  root instead of nesting them under an Events or Studio landing page.
+* Requests for the sibling division's records return 404 rather than serving a
+  page that belongs on another host.
+
+Run `wp nice migrate-content` and flush permalinks after changing the setting.
+
+The prefix and sibling URLs are filterable through `nice_division_prefix` and
+`nice_division_site_urls` if a deployment needs something different.
+
 == Team Members ==
 
 Adding a person is a form-filling job. In wp-admin go to Team Members, then

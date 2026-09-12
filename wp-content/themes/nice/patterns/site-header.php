@@ -7,9 +7,9 @@
  */
 
 $nice_logo_url        = esc_url( get_theme_file_uri( '/assets/images/nice-logo.png' ) );
-$nice_home_url        = esc_url( home_url( '/' ) );
-$nice_events_url      = esc_url( home_url( '/events/' ) );
-$nice_studio_url      = esc_url( home_url( '/studio/' ) );
+$nice_home_url        = esc_url( nice_theme_main_url() );
+$nice_events_url      = esc_url( nice_theme_division_url( 'events' ) );
+$nice_studio_url      = esc_url( nice_theme_division_url( 'studio' ) );
 $nice_clients_url     = esc_url( home_url( '/#clients' ) );
 /*
  * The header is shared across divisions, so the drawer lists every channel set
@@ -30,23 +30,23 @@ $nice_has_team    = false;
 $nice_division = 'global';
 if ( $nice_is_events ) {
 	$nice_division     = 'events';
-	$nice_work_url     = esc_url( home_url( '/events/case-studies/' ) );
-	$nice_services_url = esc_url( home_url( '/events/services/' ) );
-	$nice_contact_url  = esc_url( home_url( '/events/contact/' ) );
-	$nice_clients_url  = esc_url( home_url( '/events/clients/' ) );
+	$nice_work_url     = esc_url( nice_theme_division_url( 'events', 'case-studies/' ) );
+	$nice_services_url = esc_url( nice_theme_division_url( 'events', 'services/' ) );
+	$nice_contact_url  = esc_url( nice_theme_division_url( 'events', 'contact/' ) );
+	$nice_clients_url  = esc_url( nice_theme_division_url( 'events', 'clients/' ) );
 	$nice_has_team     = function_exists( 'nice_get_team_members_by_division' ) && ! empty( nice_get_team_members_by_division( 'events' ) );
 } elseif ( $nice_is_studio ) {
 	$nice_division     = 'studio';
-	$nice_work_url     = esc_url( home_url( '/studio/case-studies/' ) );
-	$nice_services_url = esc_url( home_url( '/studio/services/' ) );
-	$nice_contact_url  = esc_url( home_url( '/studio/contact/' ) );
-	$nice_clients_url  = esc_url( home_url( '/studio/clients/' ) );
+	$nice_work_url     = esc_url( nice_theme_division_url( 'studio', 'case-studies/' ) );
+	$nice_services_url = esc_url( nice_theme_division_url( 'studio', 'services/' ) );
+	$nice_contact_url  = esc_url( nice_theme_division_url( 'studio', 'contact/' ) );
+	$nice_clients_url  = esc_url( nice_theme_division_url( 'studio', 'clients/' ) );
 	$nice_has_team     = function_exists( 'nice_get_team_members_by_division' ) && ! empty( nice_get_team_members_by_division( 'studio' ) );
 } else {
-	$nice_work_url     = esc_url( home_url( '/events/case-studies/' ) );
-	$nice_services_url = esc_url( home_url( '/events/services/' ) );
-	$nice_contact_url  = esc_url( home_url( '/events/contact/' ) );
-	$nice_clients_url  = esc_url( home_url( '/events/clients/' ) );
+	$nice_work_url     = esc_url( nice_theme_division_url( 'events', 'case-studies/' ) );
+	$nice_services_url = esc_url( nice_theme_division_url( 'events', 'services/' ) );
+	$nice_contact_url  = esc_url( nice_theme_division_url( 'events', 'contact/' ) );
+	$nice_clients_url  = esc_url( nice_theme_division_url( 'events', 'clients/' ) );
 }
 ?>
 <!-- wp:html -->
@@ -63,7 +63,7 @@ if ( $nice_is_events ) {
 				<a href="<?php echo $nice_services_url; ?>"<?php echo $nice_is_services ? ' aria-current="page"' : ''; ?>>Services</a>
 				<a href="<?php echo $nice_work_url; ?>"<?php echo $nice_is_work ? ' aria-current="page"' : ''; ?>>Work</a>
 				<a href="<?php echo $nice_clients_url; ?>"<?php echo $nice_is_clients ? ' aria-current="page"' : ''; ?>>Clients</a>
-				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( home_url( '/events/team/' ) ); ?>"<?php echo is_page( 'team' ) ? ' aria-current="page"' : ''; ?>>Team</a><?php endif; ?>
+				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( nice_theme_division_url( 'events', 'team/' ) ); ?>"<?php echo is_page( 'team' ) ? ' aria-current="page"' : ''; ?>>Team</a><?php endif; ?>
 				<a href="<?php echo $nice_contact_url; ?>"<?php echo $nice_is_contact ? ' aria-current="page"' : ''; ?>>Contact</a>
 				<a href="<?php echo $nice_studio_url; ?>">Studio</a>
 			<?php elseif ( $nice_is_studio ) : ?>
@@ -72,7 +72,7 @@ if ( $nice_is_events ) {
 				<a href="<?php echo $nice_services_url; ?>"<?php echo $nice_is_services ? ' aria-current="page"' : ''; ?>>Services</a>
 				<a href="<?php echo $nice_work_url; ?>"<?php echo $nice_is_work ? ' aria-current="page"' : ''; ?>>Work</a>
 				<a href="<?php echo $nice_clients_url; ?>"<?php echo $nice_is_clients ? ' aria-current="page"' : ''; ?>>Clients</a>
-				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( home_url( '/studio/team/' ) ); ?>"<?php echo is_page( 'team' ) ? ' aria-current="page"' : ''; ?>>Team</a><?php endif; ?>
+				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( nice_theme_division_url( 'studio', 'team/' ) ); ?>"<?php echo is_page( 'team' ) ? ' aria-current="page"' : ''; ?>>Team</a><?php endif; ?>
 				<a href="<?php echo $nice_contact_url; ?>"<?php echo $nice_is_contact ? ' aria-current="page"' : ''; ?>>Contact</a>
 				<a href="<?php echo $nice_events_url; ?>">Events</a>
 			<?php else : ?>
@@ -99,7 +99,7 @@ if ( $nice_is_events ) {
 				<a href="<?php echo $nice_services_url; ?>">Services</a>
 				<a href="<?php echo $nice_work_url; ?>">Work</a>
 				<a href="<?php echo $nice_clients_url; ?>">Clients</a>
-				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( home_url( '/events/team/' ) ); ?>">Team</a><?php endif; ?>
+				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( nice_theme_division_url( 'events', 'team/' ) ); ?>">Team</a><?php endif; ?>
 				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
 				<a href="<?php echo $nice_studio_url; ?>">Studio</a>
 			<?php elseif ( $nice_is_studio ) : ?>
@@ -108,7 +108,7 @@ if ( $nice_is_events ) {
 				<a href="<?php echo $nice_services_url; ?>">Services</a>
 				<a href="<?php echo $nice_work_url; ?>">Work</a>
 				<a href="<?php echo $nice_clients_url; ?>">Clients</a>
-				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( home_url( '/studio/team/' ) ); ?>">Team</a><?php endif; ?>
+				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( nice_theme_division_url( 'studio', 'team/' ) ); ?>">Team</a><?php endif; ?>
 				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
 				<a href="<?php echo $nice_events_url; ?>">Events</a>
 			<?php else : ?>

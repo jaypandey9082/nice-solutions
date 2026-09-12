@@ -7,9 +7,9 @@
  */
 
 $nice_logo_url        = esc_url( get_theme_file_uri( '/assets/images/nice-logo.png' ) );
-$nice_home_url        = esc_url( home_url( '/' ) );
-$nice_events_url      = esc_url( home_url( '/events/' ) );
-$nice_studio_url      = esc_url( home_url( '/studio/' ) );
+$nice_home_url        = esc_url( nice_theme_main_url() );
+$nice_events_url      = esc_url( nice_theme_division_url( 'events' ) );
+$nice_studio_url      = esc_url( nice_theme_division_url( 'studio' ) );
 $nice_clients_url     = esc_url( home_url( '/#clients' ) );
 /*
  * The footer is shared, so it resolves every channel set that applies. A
@@ -24,20 +24,20 @@ $nice_is_events = function_exists( 'nice_theme_is_events_context' ) && nice_them
 $nice_is_studio = function_exists( 'nice_theme_is_studio_context' ) && nice_theme_is_studio_context();
 
 if ( $nice_is_events ) {
-	$nice_clients_url = esc_url( home_url( '/events/clients/' ) );
-	$nice_work_url     = esc_url( home_url( '/events/case-studies/' ) );
-	$nice_services_url = esc_url( home_url( '/events/services/' ) );
-	$nice_contact_url  = esc_url( home_url( '/events/contact/' ) );
+	$nice_clients_url = esc_url( nice_theme_division_url( 'events', 'clients/' ) );
+	$nice_work_url     = esc_url( nice_theme_division_url( 'events', 'case-studies/' ) );
+	$nice_services_url = esc_url( nice_theme_division_url( 'events', 'services/' ) );
+	$nice_contact_url  = esc_url( nice_theme_division_url( 'events', 'contact/' ) );
 } elseif ( $nice_is_studio ) {
-	$nice_work_url     = esc_url( home_url( '/studio/case-studies/' ) );
-	$nice_services_url = esc_url( home_url( '/studio/services/' ) );
-	$nice_contact_url  = esc_url( home_url( '/studio/contact/' ) );
-	$nice_clients_url  = esc_url( home_url( '/studio/clients/' ) );
+	$nice_work_url     = esc_url( nice_theme_division_url( 'studio', 'case-studies/' ) );
+	$nice_services_url = esc_url( nice_theme_division_url( 'studio', 'services/' ) );
+	$nice_contact_url  = esc_url( nice_theme_division_url( 'studio', 'contact/' ) );
+	$nice_clients_url  = esc_url( nice_theme_division_url( 'studio', 'clients/' ) );
 } else {
-	$nice_work_url     = esc_url( home_url( '/events/case-studies/' ) );
-	$nice_services_url = esc_url( home_url( '/events/services/' ) );
-	$nice_contact_url  = esc_url( home_url( '/events/contact/' ) );
-	$nice_clients_url  = esc_url( home_url( '/events/clients/' ) );
+	$nice_work_url     = esc_url( nice_theme_division_url( 'events', 'case-studies/' ) );
+	$nice_services_url = esc_url( nice_theme_division_url( 'events', 'services/' ) );
+	$nice_contact_url  = esc_url( nice_theme_division_url( 'events', 'contact/' ) );
+	$nice_clients_url  = esc_url( nice_theme_division_url( 'events', 'clients/' ) );
 }
 ?>
 <!-- wp:html -->

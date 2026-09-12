@@ -7,7 +7,7 @@
  */
 
 $nice_events_clients     = nice_get_events_clients();
-$nice_events_clients_url = esc_url( home_url( '/events/clients/' ) );
+$nice_events_clients_url = esc_url( nice_theme_division_url( 'events', 'clients/' ) );
 ?>
 <!-- wp:html -->
 <section class="nice-events-clients nice-events-section" id="events-clients" aria-labelledby="nice-events-clients-title">

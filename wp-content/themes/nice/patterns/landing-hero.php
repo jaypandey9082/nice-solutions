@@ -6,8 +6,8 @@
  * Description: Minimal warm editorial hero with display statement and narrative support.
  */
 
-$nice_events_url = esc_url( home_url( '/events/' ) );
-$nice_studio_url = esc_url( home_url( '/studio/' ) );
+$nice_events_url = esc_url( nice_theme_division_url( 'events' ) );
+$nice_studio_url = esc_url( nice_theme_division_url( 'studio' ) );
 ?>
 <!-- wp:html -->
 <section class="nice-landing-hero" id="top" aria-labelledby="nice-landing-title">

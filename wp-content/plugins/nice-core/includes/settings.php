@@ -222,7 +222,7 @@ function nice_get_contact_channel_sets( $division = '' ) {
 					array(
 						'division'    => $division,
 						'label'       => $labels[ $division ],
-						'contact_url' => home_url( '/' . $division . '/contact/' ),
+						'contact_url' => nice_get_division_url( $division, 'contact/' ),
 					),
 					$channels
 				),
@@ -244,7 +244,7 @@ function nice_get_contact_channel_sets( $division = '' ) {
 				array(
 					'division'    => $slug,
 					'label'       => $label,
-					'contact_url' => home_url( '/' . $slug . '/contact/' ),
+					'contact_url' => nice_get_division_url( $slug, 'contact/' ),
 				),
 				$channels
 			);

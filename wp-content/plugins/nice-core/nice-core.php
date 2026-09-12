@@ -21,6 +21,7 @@ define( 'NICE_CORE_FILE', __FILE__ );
 define( 'NICE_CORE_DIR', plugin_dir_path( __FILE__ ) );
 
 require_once NICE_CORE_DIR . 'includes/helpers.php';
+require_once NICE_CORE_DIR . 'includes/sites.php';
 require_once NICE_CORE_DIR . 'includes/post-types.php';
 require_once NICE_CORE_DIR . 'includes/taxonomies.php';
 require_once NICE_CORE_DIR . 'includes/meta.php';

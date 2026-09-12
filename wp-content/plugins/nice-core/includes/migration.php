@@ -330,31 +330,57 @@ function nice_get_events_page_manifest() {
  *
  * @return array{created: int, skipped: int, errors: string[]}
  */
-function nice_provision_events_pages() {
+/**
+ * Provision one division's section pages at the path this installation uses.
+ *
+ * The combined site nests them under an /events/ or /studio/ landing page. A
+ * dedicated division installation owns its hostname, so the same pages sit at
+ * the root with no landing page above them.
+ *
+ * @param string $division      Division slug.
+ * @param string $parent_title  Title for the landing page on the combined site.
+ * @param array  $manifest      Section page manifest.
+ * @return array{created: int, skipped: int, errors: string[]}
+ */
+function nice_provision_division_pages( $division, $parent_title, $manifest ) {
 	$summary = array( 'created' => 0, 'skipped' => 0, 'errors' => array() );
-	$events  = get_page_by_path( 'events', OBJECT, 'page' );
 
-	if ( ! $events instanceof WP_Post ) {
-		$events_id = wp_insert_post(
-			array(
-				'post_type'   => 'page',
-				'post_status' => 'publish',
-				'post_name'   => 'events',
-				'post_title'  => 'Events',
-			),
-			true
-		);
-
-		if ( is_wp_error( $events_id ) ) {
-			$summary['errors'][] = $events_id->get_error_message();
-			return $summary;
-		}
-
-		$events = get_post( $events_id );
+	if ( ! nice_division_is_local( $division ) ) {
+		return $summary;
 	}
 
-	foreach ( nice_get_events_page_manifest() as $record ) {
-		$page = get_page_by_path( 'events/' . $record['slug'], OBJECT, 'page' );
+	$prefix    = nice_get_division_prefix( $division );
+	$parent_id = 0;
+
+	if ( $prefix ) {
+		$parent = get_page_by_path( $prefix, OBJECT, 'page' );
+
+		if ( ! $parent instanceof WP_Post ) {
+			$new_parent_id = wp_insert_post(
+				array(
+					'post_type'   => 'page',
+					'post_status' => 'publish',
+					'post_name'   => $prefix,
+					'post_title'  => $parent_title,
+				),
+				true
+			);
+
+			if ( is_wp_error( $new_parent_id ) ) {
+				$summary['errors'][] = $new_parent_id->get_error_message();
+				return $summary;
+			}
+
+			$parent = get_post( $new_parent_id );
+			++$summary['created'];
+		}
+
+		$parent_id = $parent->ID;
+	}
+
+	foreach ( $manifest as $record ) {
+		$path = $prefix ? $prefix . '/' . $record['slug'] : $record['slug'];
+		$page = get_page_by_path( $path, OBJECT, 'page' );
 
 		if ( $page instanceof WP_Post ) {
 			++$summary['skipped'];
@@ -363,7 +389,7 @@ function nice_provision_events_pages() {
 				array(
 					'post_type'   => 'page',
 					'post_status' => 'publish',
-					'post_parent' => $events->ID,
+					'post_parent' => $parent_id,
 					'post_name'   => $record['slug'],
 					'post_title'  => $record['title'],
 				),
@@ -383,6 +409,17 @@ function nice_provision_events_pages() {
 	}
 
 	return $summary;
+}
+
+/**
+ * Provision the approved Events section pages.
+ *
+ * Existing page content and titles are preserved.
+ *
+ * @return array{created: int, skipped: int, errors: string[]}
+ */
+function nice_provision_events_pages() {
+	return nice_provision_division_pages( 'events', 'Events', nice_get_events_page_manifest() );
 }
 
 /**
@@ -408,59 +445,7 @@ function nice_get_studio_page_manifest() {
  * @return array{created: int, skipped: int, errors: string[]}
  */
 function nice_provision_studio_pages() {
-	$summary = array( 'created' => 0, 'skipped' => 0, 'errors' => array() );
-	$studio  = get_page_by_path( 'studio', OBJECT, 'page' );
-
-	if ( ! $studio instanceof WP_Post ) {
-		$studio_id = wp_insert_post(
-			array(
-				'post_type'   => 'page',
-				'post_status' => 'publish',
-				'post_name'   => 'studio',
-				'post_title'  => 'Studio',
-			),
-			true
-		);
-
-		if ( is_wp_error( $studio_id ) ) {
-			$summary['errors'][] = $studio_id->get_error_message();
-			return $summary;
-		}
-
-		$studio = get_post( $studio_id );
-		++$summary['created'];
-	}
-
-	foreach ( nice_get_studio_page_manifest() as $record ) {
-		$page = get_page_by_path( 'studio/' . $record['slug'], OBJECT, 'page' );
-
-		if ( $page instanceof WP_Post ) {
-			++$summary['skipped'];
-		} else {
-			$page_id = wp_insert_post(
-				array(
-					'post_type'   => 'page',
-					'post_status' => 'publish',
-					'post_parent' => $studio->ID,
-					'post_name'   => $record['slug'],
-					'post_title'  => $record['title'],
-				),
-				true
-			);
-
-			if ( is_wp_error( $page_id ) ) {
-				$summary['errors'][] = $page_id->get_error_message();
-				continue;
-			}
-
-			$page = get_post( $page_id );
-			++$summary['created'];
-		}
-
-		update_post_meta( $page->ID, '_wp_page_template', $record['template'] );
-	}
-
-	return $summary;
+	return nice_provision_division_pages( 'studio', 'Studio', nice_get_studio_page_manifest() );
 }
 
 /**

@@ -13,12 +13,23 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Register the approved content detail-route families.
  */
 function nice_register_content_rewrite_rules() {
-	// Events routes.
-	add_rewrite_rule( '^events/services/([^/]+)/?$', 'index.php?nice_service=$matches[1]', 'top' );
-	add_rewrite_rule( '^events/case-studies/([^/]+)/?$', 'index.php?nice_case_study=$matches[1]', 'top' );
-	// Studio routes (templates not yet active — will 404 until Phase 8).
-	add_rewrite_rule( '^studio/services/([^/]+)/?$', 'index.php?nice_service=$matches[1]', 'top' );
-	add_rewrite_rule( '^studio/case-studies/([^/]+)/?$', 'index.php?nice_case_study=$matches[1]', 'top' );
+	/*
+	 * Only register routes this installation actually serves, and build them
+	 * from the configured prefix. The combined site matches
+	 * ^events/services/... while an Events installation owns its hostname and
+	 * matches ^services/... instead.
+	 */
+	foreach ( nice_get_division_slugs() as $division ) {
+		if ( ! nice_division_is_local( $division ) ) {
+			continue;
+		}
+
+		$prefix = nice_get_division_prefix( $division );
+		$base   = $prefix ? '^' . $prefix . '/' : '^';
+
+		add_rewrite_rule( $base . 'services/([^/]+)/?$', 'index.php?nice_service=$matches[1]', 'top' );
+		add_rewrite_rule( $base . 'case-studies/([^/]+)/?$', 'index.php?nice_case_study=$matches[1]', 'top' );
+	}
 }
 
 /**
@@ -85,11 +96,11 @@ function nice_get_content_url( $post ) {
 	}
 
 	if ( 'nice_service' === $post->post_type ) {
-		return home_url( user_trailingslashit( $division . '/services/' . $post->post_name ) );
+		return nice_get_division_url( $division, 'services/' . $post->post_name );
 	}
 
 	if ( 'nice_case_study' === $post->post_type ) {
-		return home_url( user_trailingslashit( $division . '/case-studies/' . $post->post_name ) );
+		return nice_get_division_url( $division, 'case-studies/' . $post->post_name );
 	}
 
 	return '';
@@ -147,12 +158,21 @@ function nice_enforce_content_routes() {
 		return;
 	}
 
+	/*
+	 * A division installation holds the whole dataset but only publishes its
+	 * own division, so a record belonging to the sibling site is not found here.
+	 */
+	if ( ! nice_division_is_local( $division ) ) {
+		nice_set_content_request_404();
+		return;
+	}
+
 	$raw_request_path = (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ?? '/' ), PHP_URL_PATH );
 	$request_path     = trailingslashit( $raw_request_path );
 	$canonical_path   = trailingslashit( (string) wp_parse_url( $canonical, PHP_URL_PATH ) );
 
 	// Disallow raw CPT URLs or cross-division requests (return 404, not 301 redirect).
-	$division_prefix = '/' . $division . '/';
+	$division_prefix = nice_get_division_path_prefix( $division );
 	if ( ! str_starts_with( $request_path, $division_prefix ) ) {
 		nice_set_content_request_404();
 		return;
@@ -186,7 +206,9 @@ function nice_filter_unapproved_canonical_guesses( $redirect_url, $requested_url
 	$post = get_queried_object();
 	if ( $post instanceof WP_Post && in_array( $post->post_type, array( 'nice_service', 'nice_case_study' ), true ) ) {
 		$division = nice_get_content_division( $post );
-		if ( $division && ! str_starts_with( $path, $division . '/' ) ) {
+		$prefix   = $division ? trim( nice_get_division_path_prefix( $division ), '/' ) : '';
+
+		if ( $division && $prefix && ! str_starts_with( $path, $prefix . '/' ) ) {
 			return false;
 		}
 	}

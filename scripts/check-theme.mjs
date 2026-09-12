@@ -234,13 +234,15 @@ for (const service of [
 	}
 }
 
-for (const route of [
-	'/events/services/',
-	'/events/case-studies/',
-	'/events/clients/',
-	'/events/contact/',
-]) {
-	if (![eventsHome, eventsHero, eventsServices, eventsWork, eventsContact].some((markup) => markup.includes(route))) {
+/*
+ * Division routes are built through nice_theme_division_url() rather than
+ * literal paths, so that the same markup works on the combined site and on a
+ * dedicated division installation where the prefix is empty. Match the call.
+ */
+for (const route of ['services/', 'case-studies/', 'clients/', 'contact/']) {
+	const call = `nice_theme_division_url( 'events', '${route}' )`;
+
+	if (![eventsHome, eventsHero, eventsServices, eventsWork, eventsContact].some((markup) => markup.includes(call))) {
 		fail(`Events home is missing approved future route: ${route}`);
 	}
 }
@@ -323,11 +325,11 @@ if (!header.includes('assets/images/nice-logo.png')) {
 	fail('Global header must use the supplied NICE logo asset.');
 }
 
-if ([header, footer].some((markup) => /home_url\(\s*['"]\/team\//.test(markup))) {
+if ([header, footer].some((markup) => /home_url\(\s*['"]\/team\/|nice_theme_division_url\(\s*['"]{2}\s*,\s*['"]team\//.test(markup))) {
 	fail('Team must remain division-specific and cannot be exposed as a global route.');
 }
 
-for (const destination of ["home_url( '/events/' )", "home_url( '/studio/' )"]) {
+for (const destination of ["nice_theme_division_url( 'events' )", "nice_theme_division_url( 'studio' )"]) {
 	if (!hero.includes(destination)) {
 		fail(`Hero is missing direct division route: ${destination}`);
 	}

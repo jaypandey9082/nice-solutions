@@ -17,6 +17,29 @@ The Studio brand remains **NICE Studio**. The hostname uses **studios**, plural.
 `/studio/`. It is the design, CMS, accessibility, and regression reference. Its
 path structure must not be treated as the final production canonical structure.
 
+## Configuring an Installation
+
+The codebase supports both shapes. NICE Core reads which division an
+installation serves from wp-config.php and derives every path from it:
+
+```php
+define( 'NICE_SITE_DIVISION', 'events' );          // omit on the Main gateway
+define( 'NICE_MAIN_SITE_URL', 'https://nicesolutions.in' );
+define( 'NICE_EVENTS_SITE_URL', 'https://events.nicesolutions.in' );
+define( 'NICE_STUDIO_SITE_URL', 'https://studios.nicesolutions.in' );
+```
+
+With nothing defined the behaviour is the combined development site, so
+`nice-solutions.local` needs no configuration and stays the reference.
+
+A division installation registers its rewrite rules without the prefix, resolves
+its own content against its own host, links the sibling division by absolute
+URL, treats every page as belonging to its division, and provisions the section
+pages at the root rather than under a landing page. Requests for the sibling's
+records return 404.
+
+Run `wp nice migrate-content` and flush permalinks after setting it.
+
 ## Ownership Rules
 
 - Each installation owns its database, media, users, settings, sitemap, backup,

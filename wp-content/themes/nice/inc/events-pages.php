@@ -15,6 +15,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool
  */
 function nice_theme_is_events_context() {
+	/*
+	 * A dedicated events installation owns its hostname, so every page it serves
+	 * belongs to the division and there is no path prefix to look for.
+	 */
+	if ( function_exists( 'nice_get_site_division' ) && 'events' === nice_get_site_division() ) {
+		return true;
+	}
+
 	if ( is_singular( array( 'nice_service', 'nice_case_study' ) ) ) {
 		return has_term( 'events', 'nice_division', get_queried_object_id() );
 	}
@@ -23,9 +31,15 @@ function nice_theme_is_events_context() {
 		return false;
 	}
 
+	$prefix = function_exists( 'nice_get_division_prefix' ) ? nice_get_division_prefix( 'events' ) : 'events';
+
+	if ( ! $prefix ) {
+		return false;
+	}
+
 	$page_path = get_page_uri( get_queried_object_id() );
 
-	return 'events' === $page_path || str_starts_with( $page_path, 'events/' );
+	return $prefix === $page_path || str_starts_with( $page_path, $prefix . '/' );
 }
 
 /**
@@ -69,14 +83,6 @@ function nice_theme_get_primary_term( $post_id, $taxonomy ) {
 }
 
 /**
- * Return responsive featured-image markup.
- *
- * @param int                  $post_id Post ID.
- * @param string               $sizes   Responsive sizes value.
- * @param array<string, mixed> $attrs   Additional attributes.
- * @return string
- */
-/**
  * Report whether a record's own media is cleared for publication.
  *
  * Attaching a featured image is not the same as clearing it for the public
@@ -90,6 +96,14 @@ function nice_theme_media_approved( $post_id ) {
 	return 'approved' === get_post_meta( $post_id, '_nice_source_approval_status', true );
 }
 
+/**
+ * Return responsive featured-image markup.
+ *
+ * @param int                  $post_id Post ID.
+ * @param string               $sizes   Responsive sizes value.
+ * @param array<string, mixed> $attrs   Additional attributes.
+ * @return string
+ */
 function nice_theme_get_featured_image( $post_id, $sizes, $attrs = array() ) {
 	$attachment_id = get_post_thumbnail_id( $post_id );
 
@@ -196,7 +210,7 @@ function nice_render_events_inner_contact_cta( $args = array() ) {
 	$eyebrow         = ! empty( $args['eyebrow'] ) ? $args['eyebrow'] : 'Start a conversation';
 	$heading         = ! empty( $args['heading'] ) ? $args['heading'] : 'Have an Events brief?';
 	$cta_label       = ! empty( $args['cta_label'] ) ? $args['cta_label'] : "Let's make it NICE";
-	$cta_url         = ! empty( $args['cta_url'] ) ? $args['cta_url'] : home_url( '/events/contact/' );
+	$cta_url         = ! empty( $args['cta_url'] ) ? $args['cta_url'] : nice_theme_division_url( 'events', 'contact/' );
 	$whatsapp_action = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'whatsapp', '', 'events' ) : null;
 	$email_action    = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'email', '', 'events' ) : null;
 	?>

@@ -16,6 +16,7 @@ const requiredFiles = [
 	'includes/queries.php',
 	'includes/routes.php',
 	'includes/helpers.php',
+	'includes/sites.php',
 	'includes/admin.php',
 	'includes/migration.php',
 	'includes/activation.php',
@@ -120,14 +121,19 @@ if (!migration.includes("WP_CLI::add_command( 'nice migrate-content'")) {
 	fail('The idempotent NICE content migration command is missing.');
 }
 
-for (const route of [
-	'^events/services/([^/]+)/?$',
-	'^events/case-studies/([^/]+)/?$',
-	'^studio/services/([^/]+)/?$',
-	'^studio/case-studies/([^/]+)/?$',
+/*
+ * Rewrite rules are assembled from the configured division prefix so a
+ * dedicated installation can serve its division at the root. Check the
+ * assembly and the per-division guard rather than four literal patterns.
+ */
+for (const fragment of [
+	"nice_get_division_prefix( $division )",
+	"nice_division_is_local( $division )",
+	"'services/([^/]+)/?$'",
+	"'case-studies/([^/]+)/?$'",
 ]) {
-	if (!routes.includes(route)) {
-		fail(`Missing controlled route: ${route}`);
+	if (!routes.includes(fragment)) {
+		fail(`Missing controlled route construction: ${fragment}`);
 	}
 }
 

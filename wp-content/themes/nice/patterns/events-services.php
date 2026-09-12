@@ -7,7 +7,7 @@
  */
 
 $nice_events_services     = nice_get_events_service_previews();
-$nice_all_services_url    = esc_url( home_url( '/events/services/' ) );
+$nice_all_services_url    = esc_url( nice_theme_division_url( 'events', 'services/' ) );
 $nice_service_sizes       = '(min-width: 1320px) 612px, (min-width: 768px) calc(50vw - 40px), calc(100vw - 40px)';
 ?>
 <!-- wp:html -->
@@ -24,7 +24,7 @@ $nice_service_sizes       = '(min-width: 1320px) 612px, (min-width: 768px) calc(
 			<?php foreach ( $nice_events_services as $nice_index => $nice_service ) :
 				$nice_service_image        = esc_url( get_theme_file_uri( '/assets/images/' . $nice_service['image'] . '.webp' ) );
 				$nice_service_image_mobile = esc_url( get_theme_file_uri( '/assets/images/' . $nice_service['image_mobile'] . '.webp' ) );
-				$nice_service_url          = esc_url( home_url( '/events/services/' . $nice_service['slug'] . '/' ) );
+				$nice_service_url          = esc_url( nice_theme_division_url( 'events', 'services/' . $nice_service['slug'] ) );
 			?>
 				<article class="nice-events-service<?php echo 1 === $nice_index ? ' nice-events-service--reverse' : ''; ?>" data-nice-reveal>
 					<div class="nice-events-service__media">

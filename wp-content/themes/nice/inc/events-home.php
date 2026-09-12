@@ -92,7 +92,7 @@ function nice_render_events_home() {
 							<span class="nice-events-service__index"><?php echo esc_html( sprintf( '%02d', $index + 1 ) ); ?></span>
 							<h3><?php echo esc_html( $service['name'] ); ?></h3>
 							<p><?php echo esc_html( $service['description'] ); ?></p>
-							<a class="nice-link" href="<?php echo esc_url( home_url( '/events/services/' . $service['slug'] . '/' ) ); ?>" aria-label="<?php echo esc_attr( 'Explore ' . $service['name'] ); ?>">Explore <span aria-hidden="true">&#8599;</span></a>
+							<a class="nice-link" href="<?php echo esc_url( nice_theme_division_url( 'events', 'services/' . $service['slug'] ) ); ?>" aria-label="<?php echo esc_attr( 'Explore ' . $service['name'] ); ?>">Explore <span aria-hidden="true">&#8599;</span></a>
 						</article>
 					<?php endforeach; ?>
 				</div>
@@ -100,7 +100,7 @@ function nice_render_events_home() {
 		</section>
 		<section class="nice-events-section nice-events-work" id="events-work" aria-labelledby="nice-events-work-title">
 			<div class="nice-wide">
-				<header class="nice-events-section-heading" data-nice-reveal><p class="nice-eyebrow">02 / Selected work</p><h2 id="nice-events-work-title">Made for<br>the moment.</h2><a class="nice-link" href="<?php echo esc_url( home_url( '/events/case-studies/' ) ); ?>">All case studies <span aria-hidden="true">&#8599;</span></a></header>
+				<header class="nice-events-section-heading" data-nice-reveal><p class="nice-eyebrow">02 / Selected work</p><h2 id="nice-events-work-title">Made for<br>the moment.</h2><a class="nice-link" href="<?php echo esc_url( nice_theme_division_url( 'events', 'case-studies/' ) ); ?>">All case studies <span aria-hidden="true">&#8599;</span></a></header>
 				<div class="nice-events-work__grid">
 					<?php foreach ( $projects as $project ) : ?>
 						<article class="nice-events-project" data-nice-reveal>
@@ -126,7 +126,7 @@ function nice_render_events_home() {
 		</section>
 		<section class="nice-events-section nice-events-clients" id="events-clients" aria-labelledby="nice-events-clients-title">
 			<div class="nice-wide">
-				<header class="nice-events-section-heading" data-nice-reveal><p class="nice-eyebrow">04 / Collaborations</p><h2 id="nice-events-clients-title">Shared experiences.</h2><a class="nice-link" href="<?php echo esc_url( home_url( '/events/clients/' ) ); ?>">Client list <span aria-hidden="true">&#8599;</span></a></header>
+				<header class="nice-events-section-heading" data-nice-reveal><p class="nice-eyebrow">04 / Collaborations</p><h2 id="nice-events-clients-title">Shared experiences.</h2><a class="nice-link" href="<?php echo esc_url( nice_theme_division_url( 'events', 'clients/' ) ); ?>">Client list <span aria-hidden="true">&#8599;</span></a></header>
 				<ul class="nice-events-clients__list" data-nice-reveal><?php foreach ( $clients as $client ) : ?><li><?php echo esc_html( $client ); ?></li><?php endforeach; ?></ul>
 				<?php if ( $proof ) : ?><div class="nice-events-proof__grid">
 					<?php foreach ( $proof as $item ) : ?><article data-nice-reveal><p class="nice-events-proof__number"><?php echo esc_html( $item['value'] ); ?></p><h3><?php echo esc_html( $item['title'] ); ?></h3><p><?php echo esc_html( $item['label'] ); ?></p></article><?php endforeach; ?>
@@ -137,7 +137,7 @@ function nice_render_events_home() {
 			<div class="nice-wide nice-events-contact__inner">
 				<div data-nice-reveal><p class="nice-eyebrow">Start a conversation</p><h2 id="nice-events-contact-title">Planning an event?<br>Let's make it NICE.</h2></div>
 				<div class="nice-events-contact__actions" data-nice-reveal>
-					<a class="nice-link" href="<?php echo esc_url( home_url( '/events/contact/' ) ); ?>">Events contact <span aria-hidden="true">&#8599;</span></a>
+					<a class="nice-link" href="<?php echo esc_url( nice_theme_division_url( 'events', 'contact/' ) ); ?>">Events contact <span aria-hidden="true">&#8599;</span></a>
 					<?php foreach ( $actions as $action ) : ?><a class="nice-link" href="<?php echo esc_url( $action['url'] ); ?>"><?php echo esc_html( $action['label'] ); ?> <span aria-hidden="true">&#8599;</span></a><?php endforeach; ?>
 					<?php if ( ! $actions ) : ?><p id="events-contact-details-pending">Contact details pending publication approval.</p><?php endif; ?>
 				</div>

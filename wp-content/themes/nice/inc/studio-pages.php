@@ -15,6 +15,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool
  */
 function nice_theme_is_studio_context() {
+	/*
+	 * A dedicated studio installation owns its hostname, so every page it serves
+	 * belongs to the division and there is no path prefix to look for.
+	 */
+	if ( function_exists( 'nice_get_site_division' ) && 'studio' === nice_get_site_division() ) {
+		return true;
+	}
+
 	if ( is_singular( array( 'nice_service', 'nice_case_study' ) ) ) {
 		return has_term( 'studio', 'nice_division', get_queried_object_id() );
 	}
@@ -23,9 +31,15 @@ function nice_theme_is_studio_context() {
 		return false;
 	}
 
+	$prefix = function_exists( 'nice_get_division_prefix' ) ? nice_get_division_prefix( 'studio' ) : 'studio';
+
+	if ( ! $prefix ) {
+		return false;
+	}
+
 	$page_path = get_page_uri( get_queried_object_id() );
 
-	return 'studio' === $page_path || str_starts_with( $page_path, 'studio/' );
+	return $prefix === $page_path || str_starts_with( $page_path, $prefix . '/' );
 }
 
 /**
@@ -151,7 +165,7 @@ function nice_render_studio_inner_contact_cta( $args = array() ) {
 	$eyebrow         = ! empty( $args['eyebrow'] ) ? $args['eyebrow'] : 'Start a conversation';
 	$heading         = ! empty( $args['heading'] ) ? $args['heading'] : 'Have a story to tell?';
 	$cta_label       = ! empty( $args['cta_label'] ) ? $args['cta_label'] : "Let's make it NICE";
-	$cta_url         = ! empty( $args['cta_url'] ) ? $args['cta_url'] : home_url( '/studio/contact/' );
+	$cta_url         = ! empty( $args['cta_url'] ) ? $args['cta_url'] : nice_theme_division_url( 'studio', 'contact/' );
 	$whatsapp_action = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'whatsapp', '', 'studio' ) : null;
 	$email_action    = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'email', '', 'studio' ) : null;
 	?>

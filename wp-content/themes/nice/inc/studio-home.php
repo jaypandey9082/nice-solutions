@@ -135,7 +135,7 @@ function nice_render_studio_home() {
 				<?php if ( $services ) : ?>
 					<div class="nice-studio-services__list">
 						<?php foreach ( $services as $index => $service ) :
-							$service_url = home_url( '/studio/services/' . $service->post_name . '/' );
+							$service_url = nice_theme_division_url( 'studio', 'services/' . $service->post_name );
 							?>
 							<article class="nice-studio-service" data-nice-studio-service="<?php echo esc_attr( $service->post_name ); ?>" data-nice-reveal>
 								<span class="nice-studio-service__index"><?php echo esc_html( sprintf( '%02d', $index + 1 ) ); ?></span>
@@ -162,7 +162,7 @@ function nice_render_studio_home() {
 						<?php foreach ( $case_studies as $index => $case_study ) :
 							$client       = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $case_study->ID ) : '';
 							$service_name = nice_get_studio_case_study_service_name( $case_study->ID );
-							$project_url  = home_url( '/studio/case-studies/' . $case_study->post_name . '/' );
+							$project_url  = nice_theme_division_url( 'studio', 'case-studies/' . $case_study->post_name );
 						?>
 							<article class="nice-studio-project" data-nice-studio-project="<?php echo esc_attr( $case_study->post_name ); ?>" data-nice-reveal>
 				<a class="nice-studio-project__media nice-studio-project__media--empty" data-nice-project-media-placeholder href="<?php echo esc_url( $project_url ); ?>" aria-label="<?php echo esc_attr( sprintf( 'View %s case study', $case_study->post_title ) ); ?>">
