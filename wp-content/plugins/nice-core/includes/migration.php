@@ -240,9 +240,63 @@ function nice_get_content_migration_manifest() {
  *
  * @return array<int, array<string, mixed>>
  */
+/**
+ * Return the LinkedIn company feed URL used to seed source candidates.
+ *
+ * @return string
+ */
+function nice_get_linkedin_company_feed_url() {
+	return 'https://www.linkedin.com/company/n-i-c-e-solutions/posts/?feedView=all';
+}
+
+/**
+ * Report whether a source URL identifies a specific post rather than a feed.
+ *
+ * Seeded candidates all carry the company feed, which records where they came
+ * from but not which post each one came from. Approving on that basis would
+ * clear wording nobody can trace back, so a feed-level URL is treated as
+ * missing provenance.
+ *
+ * @param string $source_url Stored source URL.
+ * @return bool
+ */
+function nice_source_url_is_specific( $source_url ) {
+	$source_url = trim( (string) $source_url );
+
+	if ( ! $source_url ) {
+		return false;
+	}
+
+	if ( untrailingslashit( $source_url ) === untrailingslashit( nice_get_linkedin_company_feed_url() ) ) {
+		return false;
+	}
+
+	$path = (string) wp_parse_url( $source_url, PHP_URL_PATH );
+
+	/* A company or feed root is not a citation; an individual post has a deeper path. */
+	return (bool) preg_match( '#/(posts|feed|activity|pulse)/[^/]+#i', $path ) || ! preg_match( '#/company/[^/]+/?(posts/?)?$#i', $path );
+}
+
+/**
+ * Report whether a Case Study may be moved to approved.
+ *
+ * @param int $post_id Case Study ID.
+ * @return bool
+ */
+function nice_case_study_source_is_approvable( $post_id ) {
+	return nice_source_url_is_specific( get_post_meta( $post_id, '_nice_source_url', true ) );
+}
+
 function nice_get_linkedin_case_study_draft_manifest() {
-	$source_url  = 'https://www.linkedin.com/company/n-i-c-e-solutions/posts/?feedView=all';
-	$source_note = 'NICE Solutions LinkedIn company posts. Verify the scope, client wording, media rights, and final copy before publishing.';
+	/*
+	 * The company feed, not a citation. It records where these candidates came
+	 * from, but it does not identify which post any one of them came from, so a
+	 * record carrying only this URL cannot be approved. An editor must replace it
+	 * with the individual post URL before the record can clear review; see
+	 * nice_source_url_is_specific().
+	 */
+	$source_url  = nice_get_linkedin_company_feed_url();
+	$source_note = 'Derived from the NICE Solutions LinkedIn company feed. Replace this URL with the individual post before approving, and verify the scope, client wording, media rights, and final copy.';
 
 	return array(
 		array(
@@ -901,6 +955,19 @@ function nice_enrich_migrated_content( $post_type, $record ) {
  * @return array<string, mixed>|WP_Error
  */
 function nice_run_content_migration() {
+	/*
+	 * The gateway owns curated previews and links out; the division datasets
+	 * belong to the division installations. Running this here would publish both
+	 * divisions from one database, which is exactly what the three-site split
+	 * exists to prevent, so refuse rather than half-apply it.
+	 */
+	if ( nice_is_gateway_site() ) {
+		return new WP_Error(
+			'nice_gateway_migration_refused',
+			__( 'This installation is configured as the NICE gateway, which owns no division content. Run the content migration on the Events and Studio installations instead.', 'nice-core' )
+		);
+	}
+
 	$manifest = nice_get_content_migration_manifest();
 	$summary  = array(
 		'terms'        => nice_ensure_default_terms(),
