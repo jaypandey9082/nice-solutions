@@ -1,0 +1,8 @@
+{
+  "role": "events",
+  "title": "NICE Events",
+  "port": 8181,
+  "production_url": "https://events.nicesolutions.in/",
+  "theme": "nice-platform",
+  "plugin": "nice-platform-core/nice-platform-core.php"
+}

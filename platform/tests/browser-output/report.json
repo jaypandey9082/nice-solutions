@@ -1,0 +1,573 @@
+{
+  "browser": "Google Chrome 152.0.7977.83 via Playwright Chromium, headless macOS",
+  "base": "http://localhost:8180/",
+  "timestamp": "2026-09-10T04:16:26.744Z",
+  "checks": [
+    {
+      "name": "layout-320",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "loaded-images-320",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "reveals-after-scroll-320",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "name": "lab-motion-320",
+      "detail": {
+        "shifts": 0,
+        "longTasks": [
+          65
+        ]
+      }
+    },
+    {
+      "name": "layout-390",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "loaded-images-390",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "reveals-after-scroll-390",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "name": "lab-motion-390",
+      "detail": {
+        "shifts": 0.0006500409864921135,
+        "longTasks": []
+      }
+    },
+    {
+      "name": "layout-768",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "loaded-images-768",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "reveals-after-scroll-768",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "name": "lab-motion-768",
+      "detail": {
+        "shifts": 0.00038832745910111243,
+        "longTasks": []
+      }
+    },
+    {
+      "name": "layout-1024",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "loaded-images-1024",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "reveals-after-scroll-1024",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "name": "lab-motion-1024",
+      "detail": {
+        "shifts": 0.0002251136302947998,
+        "longTasks": []
+      }
+    },
+    {
+      "name": "layout-1440",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "loaded-images-1440",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "reveals-after-scroll-1440",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "name": "lab-motion-1440",
+      "detail": {
+        "shifts": 0,
+        "longTasks": []
+      }
+    },
+    {
+      "name": "first-tab-skip-link",
+      "pass": true
+    },
+    {
+      "name": "skip-focus-main",
+      "pass": true
+    },
+    {
+      "name": "menu-focus-close",
+      "pass": true
+    },
+    {
+      "name": "menu-background-inert",
+      "pass": true
+    },
+    {
+      "name": "menu-reverse-trap",
+      "pass": true
+    },
+    {
+      "name": "menu-forward-trap",
+      "pass": true
+    },
+    {
+      "name": "escape-restores-focus-scroll",
+      "pass": true
+    },
+    {
+      "name": "menu-anchor-focus-offset",
+      "pass": true,
+      "detail": {
+        "focus": "about",
+        "top": 79.9375,
+        "bottom": 64,
+        "hash": "#about"
+      }
+    },
+    {
+      "name": "anchor-smooth-cleanup",
+      "pass": true
+    },
+    {
+      "name": "resize-dismiss-focus-visible",
+      "pass": true
+    },
+    {
+      "name": "direct-fragment-offset",
+      "pass": true
+    },
+    {
+      "name": "back-scroll-restoration",
+      "pass": true,
+      "detail": 1100
+    },
+    {
+      "name": "live-reduced-all-visible",
+      "pass": true
+    },
+    {
+      "name": "reduced-menu-no-animation",
+      "pass": true
+    },
+    {
+      "name": "motion-enabled-no-replay",
+      "pass": true
+    },
+    {
+      "name": "short-menu-can-scroll",
+      "pass": true
+    },
+    {
+      "name": "nojs-layout-320",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "nojs-navigation-320",
+      "pass": true
+    },
+    {
+      "name": "nojs-reveals-320",
+      "pass": true
+    },
+    {
+      "name": "nojs-layout-390",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "nojs-navigation-390",
+      "pass": true
+    },
+    {
+      "name": "nojs-reveals-390",
+      "pass": true
+    },
+    {
+      "name": "nojs-layout-768",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "nojs-navigation-768",
+      "pass": true
+    },
+    {
+      "name": "nojs-reveals-768",
+      "pass": true
+    },
+    {
+      "name": "nojs-layout-1024",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "nojs-navigation-1024",
+      "pass": true
+    },
+    {
+      "name": "nojs-reveals-1024",
+      "pass": true
+    },
+    {
+      "name": "nojs-layout-1440",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "nojs-navigation-1440",
+      "pass": true
+    },
+    {
+      "name": "nojs-reveals-1440",
+      "pass": true
+    },
+    {
+      "name": "division-8181-homepage-load",
+      "pass": true,
+      "detail": "NICE Events"
+    },
+    {
+      "name": "division-8182-homepage-load",
+      "pass": true,
+      "detail": "NICE Studio"
+    },
+    {
+      "name": "page-errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "failed-requests",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "layouts": [
+    {
+      "width": 320,
+      "height": 844,
+      "scrollWidth": 320,
+      "overflow": [],
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 64,
+        "top": 0,
+        "right": 320,
+        "bottom": 64,
+        "left": 0
+      },
+      "hero": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 756,
+        "top": 0,
+        "right": 320,
+        "bottom": 756,
+        "left": 0
+      },
+      "brokenImages": [],
+      "media": [
+        {
+          "src": "http://localhost:8180/wp-content/themes/nice-platform/assets/images/nice-logo.png",
+          "width": 1080,
+          "loading": "auto"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/themes/nice-platform/assets/images/nice-logo.png",
+          "width": 1080,
+          "loading": "auto"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/event-reference-768x512.webp",
+          "width": 320,
+          "loading": "eager"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/event-reference-768x512.webp",
+          "width": 280,
+          "loading": "lazy"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/studio-reference-300x200.webp",
+          "width": 280,
+          "loading": "lazy"
+        }
+      ],
+      "invisibleReveals": 0
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "overflow": [],
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 64,
+        "top": 0,
+        "right": 390,
+        "bottom": 64,
+        "left": 0
+      },
+      "hero": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 756,
+        "top": 0,
+        "right": 390,
+        "bottom": 756,
+        "left": 0
+      },
+      "brokenImages": [],
+      "media": [
+        {
+          "src": "http://localhost:8180/wp-content/themes/nice-platform/assets/images/nice-logo.png",
+          "width": 1080,
+          "loading": "auto"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/themes/nice-platform/assets/images/nice-logo.png",
+          "width": 1080,
+          "loading": "auto"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/event-reference-768x512.webp",
+          "width": 390,
+          "loading": "eager"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/event-reference-768x512.webp",
+          "width": 350,
+          "loading": "lazy"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/studio-reference-768x512.webp",
+          "width": 350,
+          "loading": "lazy"
+        }
+      ],
+      "invisibleReveals": 0
+    },
+    {
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "overflow": [],
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 72,
+        "top": 0,
+        "right": 768,
+        "bottom": 72,
+        "left": 0
+      },
+      "hero": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 748,
+        "top": 0,
+        "right": 768,
+        "bottom": 748,
+        "left": 0
+      },
+      "brokenImages": [],
+      "media": [
+        {
+          "src": "http://localhost:8180/wp-content/themes/nice-platform/assets/images/nice-logo.png",
+          "width": 1080,
+          "loading": "auto"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/themes/nice-platform/assets/images/nice-logo.png",
+          "width": 1080,
+          "loading": "auto"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/event-reference-768x512.webp",
+          "width": 768,
+          "loading": "eager"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/event-reference-768x512.webp",
+          "width": 342,
+          "loading": "lazy"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/studio-reference-768x512.webp",
+          "width": 342,
+          "loading": "lazy"
+        }
+      ],
+      "invisibleReveals": 0
+    },
+    {
+      "width": 1024,
+      "height": 900,
+      "scrollWidth": 1024,
+      "overflow": [],
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1024,
+        "height": 80,
+        "top": 0,
+        "right": 1024,
+        "bottom": 80,
+        "left": 0
+      },
+      "hero": {
+        "x": 0,
+        "y": 0,
+        "width": 1024,
+        "height": 804,
+        "top": 0,
+        "right": 1024,
+        "bottom": 804,
+        "left": 0
+      },
+      "brokenImages": [],
+      "media": [
+        {
+          "src": "http://localhost:8180/wp-content/themes/nice-platform/assets/images/nice-logo.png",
+          "width": 1080,
+          "loading": "auto"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/themes/nice-platform/assets/images/nice-logo.png",
+          "width": 1080,
+          "loading": "auto"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/event-reference-1024x683.webp",
+          "width": 1024,
+          "loading": "eager"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/event-reference-1024x683.webp",
+          "width": 440,
+          "loading": "lazy"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/studio-reference-768x512.webp",
+          "width": 440,
+          "loading": "lazy"
+        }
+      ],
+      "invisibleReveals": 0
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "scrollWidth": 1440,
+      "overflow": [],
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 80,
+        "top": 0,
+        "right": 1440,
+        "bottom": 80,
+        "left": 0
+      },
+      "hero": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 804,
+        "top": 0,
+        "right": 1440,
+        "bottom": 804,
+        "left": 0
+      },
+      "brokenImages": [],
+      "media": [
+        {
+          "src": "http://localhost:8180/wp-content/themes/nice-platform/assets/images/nice-logo.png",
+          "width": 1080,
+          "loading": "auto"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/themes/nice-platform/assets/images/nice-logo.png",
+          "width": 1080,
+          "loading": "auto"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/event-reference.webp",
+          "width": 1439,
+          "loading": "eager"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/event-reference.webp",
+          "width": 648,
+          "loading": "lazy"
+        },
+        {
+          "src": "http://localhost:8180/wp-content/uploads/2026/09/studio-reference-768x512.webp",
+          "width": 648,
+          "loading": "lazy"
+        }
+      ],
+      "invisibleReveals": 0
+    }
+  ],
+  "screenshots": [
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-320-hero.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-320-full.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-390-hero.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-390-full.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-768-hero.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-768-full.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-1024-hero.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-1024-full.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-1440-hero.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-1440-full.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-390-menu.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-390-short-hero.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-390-short-menu.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-320-nojs.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/main-768-nojs.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/division-8181-390.png",
+    "/Users/jaypandey/Documents/ChatGPT/nice-solutions/platform/tests/browser-output/division-8182-390.png"
+  ],
+  "errors": [],
+  "failedRequests": []
+}

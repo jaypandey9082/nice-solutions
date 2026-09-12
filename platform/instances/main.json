@@ -1,0 +1,8 @@
+{
+  "role": "main",
+  "title": "NICE Solutions",
+  "port": 8180,
+  "production_url": "https://nicesolutions.in/",
+  "theme": "nice-platform",
+  "plugin": "nice-platform-core/nice-platform-core.php"
+}

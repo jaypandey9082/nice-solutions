@@ -1,0 +1,85 @@
+/* Load after structural styles. The lead owns header/dialog positioning and size.
+   Header nav is the no-JS fallback; keep the menu toggle outside that nav.
+   #nice-menu must be hidden in HTML and be outside header/main/footer.
+   Put data-reveal on individual sections OR their items, never both levels.
+   --reveal-delay accepts a time, e.g. 60ms; no delay may exceed 180ms. */
+@layer motion {
+  :root {
+    --nice-anchor-offset: 88px;
+    scroll-padding-top: var(--nice-anchor-offset);
+  }
+
+  :root.is-anchor-scrolling { scroll-behavior: smooth; }
+
+  [data-menu-toggle] { display: none; }
+  #nice-menu[hidden] { display: none !important; }
+
+  @media (max-width: 899px) {
+    :root { --nice-anchor-offset: 80px; }
+    .has-navigation [data-menu-toggle] { display: inline-flex; }
+    .has-navigation [data-site-header] nav { display: none; }
+  }
+
+  .has-motion [data-reveal]:not(.is-visible) {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  .has-motion [data-reveal].is-visible {
+    transition-property: opacity, transform;
+    transition-duration: 360ms;
+    transition-timing-function: cubic-bezier(.22, 1, .36, 1);
+    transition-delay: clamp(0ms, var(--reveal-delay, 0ms), 180ms);
+  }
+
+  .has-motion [data-reveal]:focus-within {
+    opacity: 1;
+    transform: none;
+    transition-duration: 0s;
+    transition-delay: 0s;
+  }
+
+  #nice-menu:not([hidden]) {
+    animation: nice-menu-enter 180ms cubic-bezier(.22, 1, .36, 1) both;
+    overscroll-behavior: contain;
+  }
+
+  #nice-menu.is-menu-closing:not([hidden]) {
+    animation-name: nice-menu-exit;
+  }
+
+  @keyframes nice-menu-enter {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes nice-menu-exit {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(8px); }
+  }
+
+  /* Optional opt-in hooks; these never affect control geometry. */
+  [data-motion-link] { transition: color 160ms ease, opacity 160ms ease; }
+  [data-motion-arrow] { transition: transform 160ms ease; }
+
+  @media (hover: hover) and (pointer: fine) {
+    [data-motion-link]:hover [data-motion-arrow] { transform: translateX(4px); }
+    [data-motion-image] img { transition: transform 360ms cubic-bezier(.22, 1, .36, 1); }
+    [data-motion-image]:hover img { transform: scale(1.025); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root.is-anchor-scrolling { scroll-behavior: auto; }
+    .has-motion [data-reveal],
+    .has-motion [data-reveal]:not(.is-visible) { opacity: 1; transform: none; }
+
+    [data-reveal], #nice-menu, [data-motion-link], [data-motion-arrow], [data-motion-image] img {
+      animation: none !important;
+      transition-duration: 0s !important;
+      transition-delay: 0s !important;
+      animation-delay: 0s !important;
+    }
+
+    [data-motion-link]:hover [data-motion-arrow], [data-motion-image]:hover img { transform: none; }
+  }
+}
