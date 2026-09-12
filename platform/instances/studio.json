@@ -1,8 +1,0 @@
-{
-  "role": "studio",
-  "title": "NICE Studio",
-  "port": 8182,
-  "production_url": "https://studios.nicesolutions.in/",
-  "theme": "nice-platform",
-  "plugin": "nice-platform-core/nice-platform-core.php"
-}
