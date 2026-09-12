@@ -64,6 +64,36 @@ Focused runtime checks (temporarily write metadata and restore it in finally):
 
     wp eval-file scripts/wp-events-media-check.php
 
+== Team Members ==
+
+Adding a person is a form-filling job. In wp-admin go to Team Members, then
+Add New, and fill in:
+
+* Title: the person's full name. A record without a title cannot be published.
+* Team Member Details: Role is the job title shown above the name. Division
+  decides which page they appear on. Display Order sorts the roster, lowest
+  first; use increments of ten so later additions can be slotted between
+  existing people without renumbering.
+* Featured Image: the portrait. Use a portrait-orientation photograph, roughly
+  4:5 for Events and 3:4 for Studio. Set the attachment's alternative text,
+  because the roster reads its alt text from the Media Library. A member with
+  no portrait renders as role and name, without an empty image box.
+
+Publish when the profile is approved. Draft members are never public.
+
+Two behaviours worth knowing:
+
+* A member saved without a Division appears on neither team page. The division
+  select starts empty, so choose one before publishing.
+* The Team link is hidden from a division's navigation until that division has
+  at least one published member, so a half-filled roster never leaks.
+
+The content migration seeds six placeholder drafts, three per division, so the
+structure is visible in wp-admin before real profiles arrive. They carry no
+portrait, because a production photograph standing in for a face would
+misrepresent the team. Replace or delete them as real people are added; reruns
+skip any slug that already exists and never overwrite editor changes.
+
 == Changelog ==
 
 = 1.2.0 =

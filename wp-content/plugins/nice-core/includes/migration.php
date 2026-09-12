@@ -578,6 +578,107 @@ function nice_migrate_linkedin_case_study_drafts() {
 }
 
 /**
+ * Return placeholder team records that establish the structure to fill in.
+ *
+ * These are deliberately unmistakable placeholders rather than invented people.
+ * They carry no portrait, because there is no approved likeness to attach and a
+ * production photograph standing in for a face would misrepresent the team.
+ *
+ * Display order follows the migration convention of increments of ten so later
+ * additions can be interleaved without renumbering the existing rows.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function nice_get_team_member_draft_manifest() {
+	$manifest = array();
+
+	foreach ( array( 'events', 'studio' ) as $division ) {
+		$label = ucfirst( $division );
+
+		foreach ( array( 'One', 'Two', 'Three' ) as $index => $position ) {
+			$manifest[] = array(
+				'slug'     => sprintf( '%s-team-member-%s', $division, strtolower( $position ) ),
+				'title'    => sprintf( '%s Team Member %s', $label, $position ),
+				'role'     => sprintf( '%s role to be confirmed', $label ),
+				'division' => $division,
+				'order'    => ( $index + 1 ) * 10,
+			);
+		}
+	}
+
+	return $manifest;
+}
+
+/**
+ * Create placeholder team members as private editorial drafts.
+ *
+ * An existing slug in any status is a hard stop, so reruns never duplicate a
+ * record or overwrite an editor's changes.
+ *
+ * @return array{created: int, skipped: int, errors: string[]}
+ */
+function nice_migrate_team_member_drafts() {
+	$summary   = array(
+		'created' => 0,
+		'skipped' => 0,
+		'errors'  => array(),
+	);
+	$divisions = nice_get_approved_divisions();
+
+	foreach ( nice_get_team_member_draft_manifest() as $record ) {
+		if ( nice_find_migrated_post( $record['slug'], 'nice_team_member' ) ) {
+			++$summary['skipped'];
+			continue;
+		}
+
+		$division = sanitize_title( $record['division'] ?? '' );
+		if ( empty( $divisions[ $division ] ) ) {
+			$summary['errors'][] = sprintf( 'Invalid division for team member: %s', sanitize_text_field( $record['title'] ?? '' ) );
+			continue;
+		}
+
+		$post_id = wp_insert_post(
+			array(
+				'post_type'   => 'nice_team_member',
+				'post_status' => 'draft',
+				'post_name'   => sanitize_title( $record['slug'] ),
+				'post_title'  => sanitize_text_field( $record['title'] ),
+			),
+			true
+		);
+
+		if ( is_wp_error( $post_id ) ) {
+			$summary['errors'][] = $post_id->get_error_message();
+			continue;
+		}
+
+		// Keep placeholder people unpublished even if another hook changes the insert status.
+		if ( 'draft' !== get_post_status( $post_id ) ) {
+			$status_result = wp_update_post(
+				array(
+					'ID'          => $post_id,
+					'post_status' => 'draft',
+				),
+				true
+			);
+
+			if ( is_wp_error( $status_result ) || 'draft' !== get_post_status( $post_id ) ) {
+				wp_delete_post( $post_id, true );
+				$summary['errors'][] = sprintf( 'Could not keep the placeholder team member as a draft: %s', sanitize_text_field( $record['title'] ) );
+				continue;
+			}
+		}
+
+		wp_set_object_terms( $post_id, $division, 'nice_division', false );
+		update_post_meta( $post_id, '_nice_role', sanitize_text_field( $record['role'] ?? '' ) );
+		update_post_meta( $post_id, '_nice_display_order', nice_sanitize_integer( $record['order'] ?? 0 ) );
+		++$summary['created'];
+	}
+
+	return $summary;
+}
+
+/**
  * Import one existing theme image into the media library once.
  *
  * @param string $filename Theme image filename.
@@ -824,6 +925,7 @@ function nice_run_content_migration() {
 		'services'     => array( 'created' => 0, 'skipped' => 0 ),
 		'case_studies' => array( 'created' => 0, 'skipped' => 0 ),
 		'source_drafts' => array( 'created' => 0, 'skipped' => 0, 'errors' => array() ),
+		'team_drafts'   => array( 'created' => 0, 'skipped' => 0, 'errors' => array() ),
 		'media'        => array( 'linked' => 0, 'errors' => array() ),
 		'enriched'     => 0,
 		'studio_hero'  => array( 'status' => 'skipped', 'attachment_id' => 0, 'message' => '' ),
@@ -845,6 +947,11 @@ function nice_run_content_migration() {
 	$summary['source_drafts'] = nice_migrate_linkedin_case_study_drafts();
 	if ( ! empty( $summary['source_drafts']['errors'] ) ) {
 		return new WP_Error( 'nice_source_draft_migration_failed', implode( ' ', $summary['source_drafts']['errors'] ) );
+	}
+
+	$summary['team_drafts'] = nice_migrate_team_member_drafts();
+	if ( ! empty( $summary['team_drafts']['errors'] ) ) {
+		return new WP_Error( 'nice_team_draft_migration_failed', implode( ' ', $summary['team_drafts']['errors'] ) );
 	}
 
 	$client_ids = array();
@@ -950,6 +1057,7 @@ function nice_cli_migrate_content() {
 	WP_CLI::log( sprintf( 'Studio Home: %d created, %d existing', $result['studio_page']['created'], $result['studio_page']['skipped'] ) );
 	WP_CLI::log( sprintf( 'Source-backed fields enriched: %d', $result['enriched'] ) );
 	WP_CLI::log( sprintf( 'LinkedIn source drafts: %d created, %d skipped', $result['source_drafts']['created'], $result['source_drafts']['skipped'] ) );
+	WP_CLI::log( sprintf( 'Team member drafts: %d created, %d skipped', $result['team_drafts']['created'], $result['team_drafts']['skipped'] ) );
 	WP_CLI::log( sprintf( 'Media linked: %d', $result['media']['linked'] ) );
 	WP_CLI::log( sprintf( 'Studio reference hero: %s', $result['studio_hero']['status'] ) );
 	WP_CLI::log( sprintf( 'Events reference hero: %s', $result['events_hero']['status'] ) );

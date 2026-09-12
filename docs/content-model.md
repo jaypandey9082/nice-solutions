@@ -109,15 +109,32 @@ Client logos use the core featured-image attachment ID.
 | `_nice_role` | string | Role/title |
 | `_nice_display_order` | integer | Stable editorial ordering |
 
-Portraits use the core featured-image attachment ID. No Team Member records are
-created until approved names, roles, biographies, and portraits are supplied.
+Division comes from the `nice_division` taxonomy and is capped at one term per
+member. A member with no division appears on neither team page.
+
+Portraits use the core featured-image attachment ID and are optional; a member
+without one renders as role and name rather than an empty image box. The content
+migration seeds six placeholder drafts, three per division, so the structure is
+editable before approved names, roles, and portraits are supplied. Drafts are
+never public, and the Team navigation link stays hidden until a division has at
+least one published member.
 
 ## Contact Settings
 
 Option: `nice_contact_settings`
 
-Stored keys are `whatsapp_url`, `email_address`, `phone`, and `social_urls`.
-Public helpers derive `phone_url`. WhatsApp and social values must be HTTPS;
+Stored keys are `whatsapp_url`, `email_address`, `phone`, `social_urls`, the
+named `social` map (`linkedin`, `instagram`, `facebook`), and `divisions`, which
+holds a `whatsapp_url`/`email_address`/`phone` set per division.
+
+A division inherits any field it leaves blank from the company-wide values, so
+the shared keys act as defaults rather than a separate channel. Public helpers
+derive `phone_url`, and derive a `wa.me` URL from the phone when no explicit
+WhatsApp override is stored; derivation requires an international number with a
+country code. Division pages resolve their own set, while the shared header,
+footer, and contact band list every division that publishes.
+
+WhatsApp and social values must be HTTPS;
 email uses WordPress email validation; phone input preserves readable
 international formatting and generates a sanitized `tel:` URL. Invalid URL or
 email submissions retain the last approved value.
@@ -190,7 +207,7 @@ The migration now contains:
   images.
 - 5 structural Events Pages with their assigned block-theme templates.
 - 1 structural Studio Home Page with its assigned block-theme template.
-- 0 Team Member records.
+- 6 placeholder Team Member drafts, 3 per division, none published.
 
 Theme source images remain in place as fallback media. Publication-approved
 masters can replace each featured image in WordPress without changing templates
