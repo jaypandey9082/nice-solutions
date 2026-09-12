@@ -197,19 +197,20 @@
 		width: 100%;
 	}
 
+	/*
+	 * The division imagery stays in full colour at rest. Desaturating it until
+	 * hover hid the one thing the card is there to show, and left the two
+	 * divisions reading as a single grey block on first paint.
+	 */
 	.nice-door__media img {
-		filter: grayscale(100%) contrast(110%);
 		height: 100%;
 		object-fit: cover;
-		transition:
-			filter var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing),
-			transform var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing);
+		transition: transform var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing);
 		width: 100%;
 	}
 
 	.nice-door:hover .nice-door__media img,
 	.nice-door:focus-within .nice-door__media img {
-		filter: grayscale(0%) contrast(100%);
 		transform: scale(1.02);
 	}
 
@@ -411,7 +412,6 @@
 		}
 
 		.nice-door__media img {
-			filter: none;
 			transform: none;
 			transition: none;
 		}
