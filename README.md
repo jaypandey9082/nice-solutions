@@ -876,7 +876,13 @@ npm run build:release
 ```
 
 ```bash
-wp eval-file scripts/wp-identity-check.php   # combined, Main, Events and Studio
-wp eval-file scripts/wp-phase5-check.php     # and 6, 7, 7-1, 8
-wp nice migrate-content                      # expect nothing created on a rerun
+wp eval-file scripts/wp-identity-check.php     # combined, Main, Events and Studio
+wp eval-file scripts/wp-launch-readiness.php  # what this installation still needs
+wp eval-file scripts/wp-phase5-check.php      # and 6, 7, 7-1, 8
+wp nice migrate-content                       # expect nothing created on a rerun
 ```
+
+`wp-launch-readiness.php` is read-only and reports the content side of the
+acceptance criteria: identity and sibling URLs, contact and social details, per
+division services, project imagery with alt text and media clearance, hero
+images, team profiles, source citations, and gateway previews.

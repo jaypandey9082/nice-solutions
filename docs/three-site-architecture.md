@@ -126,3 +126,7 @@ simulates each one through the `nice_site_division` filter rather than by editin
 `wp-config.php`, so it is safe to run on the development installation, and it
 covers URL resolution, content ownership, the gateway's refusal to import
 division content, destination-URL restriction and source-provenance rules.
+
+`wp eval-file scripts/wp-launch-readiness.php` reports the content side of the
+acceptance criteria for whichever installation it is run on: what is configured,
+what is approved, and what is still outstanding. It changes nothing.
