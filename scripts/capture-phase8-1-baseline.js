@@ -23,9 +23,11 @@ const viewports = [
 ];
 
 (async () => {
-  const browser = await chromium.launch({
-    executablePath: '/Users/jaypandey/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell',
-  });
+	const launchOptions = { headless: true };
+	if (process.env.PLAYWRIGHT_CHROMIUM_PATH) {
+		launchOptions.executablePath = process.env.PLAYWRIGHT_CHROMIUM_PATH;
+	}
+	const browser = await chromium.launch(launchOptions);
 
   const report = {};
 

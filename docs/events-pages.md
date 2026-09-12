@@ -1,7 +1,34 @@
 # Events Pages
 
-Phase 6 implements the Events section without starting Studio or enabling native
-CPT archives.
+The Events section uses the shared NICE editorial foundation without enabling
+native CPT archives. Its homepage was refined after Phase 7 to match the current
+landing and Studio homepages.
+
+## Events Homepage
+
+The Events homepage is rendered by the dynamic `nice/events-home` block in this
+order:
+
+```text
+Hero
+Emagine - Explore - Execute
+Services
+Selected work
+Process
+Clients and approved proof
+Contact
+```
+
+Services and project records continue to come from NICE Core. Four editor-ordered
+Events case studies are shown in a two-column desktop grid and a one-column mobile
+layout. Their media areas intentionally remain neutral until approved project
+photographs are available; the homepage does not load retired deck photography.
+
+The temporary Events hero is editable from **Pages > Events > Events Hero Media**.
+Editors can select, replace, or remove the desktop image, optionally add a mobile
+alternative, set the focal position, and update attachment alt text in the Media
+Library. Mobile falls back to the desktop image. Removing the initialized
+reference image is respected by later migration runs.
 
 ## Public Routes
 
@@ -23,8 +50,9 @@ unapproved global `/team/` route return the shared NICE `404` template.
 ## Template Architecture
 
 Five custom Page templates render the section indexes. Two post-type hierarchy
-templates render every Service and Case Study detail page. All use the same
-header, footer, Events sub-navigation, `events.css`, and `events-inner.css`.
+templates render every Service and Case Study detail page. All use the shared
+header, footer, and inner-page styles. The Events homepage additionally uses
+`events-home.css` and the shared editorial foundation.
 
 The templates call eight PHP-rendered theme blocks registered in
 `inc/events-pages.php`. These blocks query NICE Core at request time, so content
@@ -45,6 +73,11 @@ edits appear without editing a template. They add no frontend JavaScript.
 Events Home also queries the current featured Case Studies and Clients. Existing
 approved arrays remain only as an atomic resilience fallback for the landing and
 Events Home.
+
+Every public landing, division, service, case-study, client, team, and contact
+page contains one shared `Emagine - Explore - Execute` strip immediately after
+its main banner or title introduction. Studio Home also presents Services before
+Selected Work.
 
 ## Routing And Provisioning
 

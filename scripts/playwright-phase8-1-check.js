@@ -3,7 +3,6 @@ const path = require("path");
 const { chromium } = require("playwright");
 
 const BASE_URL = "http://nice-solutions.local";
-const CHROMIUM_PATH = "/Users/jaypandey/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell";
 const AFTER_DIR = path.resolve(__dirname, "../output/playwright/after");
 const BASELINE_REPORT_PATH = path.resolve(__dirname, "../output/playwright/baseline/baseline-report.json");
 
@@ -39,10 +38,11 @@ const RESPONSIVE_WIDTHS = [320, 360, 390, 430, 768, 900, 1024, 1200, 1440];
     fs.mkdirSync(AFTER_DIR, { recursive: true });
   }
 
-  const browser = await chromium.launch({
-    executablePath: CHROMIUM_PATH,
-    headless: true,
-  });
+	const launchOptions = { headless: true };
+	if (process.env.PLAYWRIGHT_CHROMIUM_PATH) {
+		launchOptions.executablePath = process.env.PLAYWRIGHT_CHROMIUM_PATH;
+	}
+	const browser = await chromium.launch(launchOptions);
 
   const results = {
     timestamp: new Date().toISOString(),

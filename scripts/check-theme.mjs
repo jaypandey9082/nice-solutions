@@ -14,15 +14,21 @@ const requiredFiles = [
 	'functions.php',
 	'inc/contact.php',
 	'inc/events-data.php',
+	'inc/events-home.php',
 	'inc/events-pages.php',
 	'inc/landing-data.php',
+	'inc/philosophy.php',
 	'inc/studio-data.php',
 	'inc/studio-home.php',
 	'inc/studio-pages.php',
 	'assets/css/site.css',
 	'assets/css/events.css',
+	'assets/css/events-home.css',
 	'assets/css/events-inner.css',
+	'assets/css/editorial-foundation.css',
 	'assets/css/landing.css',
+	'assets/css/philosophy.css',
+	'assets/css/studio-home.css',
 	'assets/css/studio.css',
 	'assets/css/editor.css',
 	'assets/js/navigation.js',
@@ -30,6 +36,7 @@ const requiredFiles = [
 	'assets/js/media.js',
 	'assets/images/nice-logo.png',
 	'assets/images/nice-site-icon.png',
+	'assets/images/events-reference-hero.webp',
 	'assets/images/exhibition-stall.webp',
 	'assets/images/exhibition-stall-480.webp',
 	'assets/images/power-champs.webp',
@@ -144,8 +151,12 @@ for (const slug of requiredFontSizes) {
 const css = [
 	readFileSync(resolve(themeDirectory, 'assets/css/site.css'), 'utf8'),
 	readFileSync(resolve(themeDirectory, 'assets/css/landing.css'), 'utf8'),
+	readFileSync(resolve(themeDirectory, 'assets/css/editorial-foundation.css'), 'utf8'),
 	readFileSync(resolve(themeDirectory, 'assets/css/events.css'), 'utf8'),
+	readFileSync(resolve(themeDirectory, 'assets/css/events-home.css'), 'utf8'),
 	readFileSync(resolve(themeDirectory, 'assets/css/events-inner.css'), 'utf8'),
+	readFileSync(resolve(themeDirectory, 'assets/css/philosophy.css'), 'utf8'),
+	readFileSync(resolve(themeDirectory, 'assets/css/studio-home.css'), 'utf8'),
 	readFileSync(resolve(themeDirectory, 'assets/css/studio.css'), 'utf8'),
 ].join('\n');
 const header = readFileSync(resolve(themeDirectory, 'patterns/site-header.php'), 'utf8');
@@ -156,6 +167,8 @@ const contact = readFileSync(resolve(themeDirectory, 'inc/contact.php'), 'utf8')
 const frontPage = readFileSync(resolve(themeDirectory, 'templates/front-page.html'), 'utf8');
 const eventsPage = readFileSync(resolve(themeDirectory, 'templates/page-events.html'), 'utf8');
 const eventsData = readFileSync(resolve(themeDirectory, 'inc/events-data.php'), 'utf8');
+const eventsHome = readFileSync(resolve(themeDirectory, 'inc/events-home.php'), 'utf8');
+const philosophy = readFileSync(resolve(themeDirectory, 'inc/philosophy.php'), 'utf8');
 const eventsHero = readFileSync(resolve(themeDirectory, 'patterns/events-hero.php'), 'utf8');
 const eventsServices = readFileSync(resolve(themeDirectory, 'patterns/events-services.php'), 'utf8');
 const eventsWork = readFileSync(resolve(themeDirectory, 'patterns/events-work.php'), 'utf8');
@@ -191,18 +204,24 @@ for (const excludedPattern of [
 	}
 }
 
-for (const requiredPattern of [
-	'nice/events-hero',
-	'nice/events-services',
-	'nice/events-work',
-	'nice/events-process',
-	'nice/events-proof',
-	'nice/events-clients',
-	'nice/events-contact',
-]) {
-	if (!eventsPage.includes(requiredPattern)) {
-		fail(`Events page is missing required pattern: ${requiredPattern}`);
-	}
+if (!eventsPage.includes('nice/events-home')) {
+	fail('Events Home must use its server-rendered CMS block.');
+}
+
+if (!eventsHome.includes("register_block_type( 'nice/events-home'") || !eventsHome.includes('fetchpriority')) {
+	fail('Events Home block or hero priority is missing.');
+}
+
+if (!eventsHome.includes('nice_render_philosophy_strip()')) {
+	fail('Events Home must render the shared philosophy strip directly after its hero.');
+}
+
+if (!philosophy.includes('Emagine') || !philosophy.includes('Explore') || !philosophy.includes('Execute')) {
+	fail('Shared philosophy strip is missing the approved slogan.');
+}
+
+if (eventsHome.indexOf('id="events-services"') > eventsHome.indexOf('id="events-work"')) {
+	fail('Events Services must appear before Events work.');
 }
 
 for (const service of [
@@ -221,7 +240,7 @@ for (const route of [
 	'/events/clients/',
 	'/events/contact/',
 ]) {
-	if (![eventsHero, eventsServices, eventsWork, eventsContact].some((markup) => markup.includes(route))) {
+	if (![eventsHome, eventsHero, eventsServices, eventsWork, eventsContact].some((markup) => markup.includes(route))) {
 		fail(`Events home is missing approved future route: ${route}`);
 	}
 }
@@ -246,8 +265,8 @@ if (!studioHome.includes("register_block_type(\n\t\t'nice/studio-home'") || !stu
 	fail('Studio Home block or hero priority is missing.');
 }
 
-if (/href=["'][^"']*\/studio\/(services|case-studies|clients|team|contact)\//.test(studioHome)) {
-	fail('Phase 7 must not expose unimplemented Studio inner-page links.');
+if (studioHome.indexOf('id="studio-services"') > studioHome.indexOf('id="studio-work"')) {
+	fail('Studio Services must appear before Studio work.');
 }
 
 for (const block of [
@@ -288,15 +307,15 @@ if (/\/nice_(service|case_study)\//.test(studioPages)) {
 	fail('Studio pages must not expose raw CPT URL paths.');
 }
 
-if ((eventsHero.match(/fetchpriority="high"/g) ?? []).length !== 1) {
+if ((eventsHome.match(/fetchpriority[^\n]*high/g) ?? []).length !== 1) {
 	fail('Events hero must prioritize exactly one LCP image.');
 }
 
-if (!eventsServices.includes('loading="lazy"') || !eventsWork.includes('loading="lazy"')) {
-	fail('Below-the-fold Events imagery must load lazily.');
+if (/assets\/images\/(voltas|gca|zoetis|power|run-for-equity|vision-to-victory)/i.test(eventsHome)) {
+	fail('Events Home must not reference retired deck photography.');
 }
 
-if (!eventsContact.includes("nice_get_contact_action( 'whatsapp'") || !eventsContact.includes("nice_get_contact_action( 'email'")) {
+if (!eventsHome.includes("nice_get_contact_action( $channel") || !eventsHome.includes("'whatsapp' => 'WhatsApp'")) {
 	fail('Events contact must use the centralized contact adapter.');
 }
 
@@ -304,7 +323,7 @@ if (!header.includes('assets/images/nice-logo.png')) {
 	fail('Global header must use the supplied NICE logo asset.');
 }
 
-if ([header, footer].some((markup) => markup.includes('/team/'))) {
+if ([header, footer].some((markup) => /home_url\(\s*['"]\/team\//.test(markup))) {
 	fail('Team must remain division-specific and cannot be exposed as a global route.');
 }
 

@@ -1,7 +1,7 @@
 # NICE Solutions Website
 
 Architecture, design system, NICE Core CMS, landing page, Events website, and
-Studio Home for
+Studio website for
 Nucleus Integrated Communication & Entertainment Pvt. Ltd. (N.I.C.E.).
 
 ## Phase Status
@@ -24,7 +24,8 @@ certificate in LocalWP.
 - Start at a 390px viewport and expand intentionally to tablet and desktop.
 - Use white/off-white as the dominant surface, dark text, and the approved NICE
   red only as a restrained accent.
-- Lead with real NICE photography and video, not generic stock assets.
+- Use approved NICE photography and video for named work. Keep project media
+  neutral until publication rights and source files are confirmed.
 - Use core WordPress blocks first and add custom dynamic blocks only where they
   improve editing or querying.
 - Do not use Elementor, WPBakery, Divi, or another visual page builder.
@@ -88,28 +89,26 @@ or animation should be copied.
 | We Events | Broad service discovery and prominent media | Template-like service cards, generic copy, long loading screen, excessive page volume |
 | Yellow Canvas | Image-led hero, three-service framing, project grid, direct contact emphasis | Utility-heavy header, repeated content, subscription/contact forms, dated gallery interactions |
 
-## Recommended Architecture
+## Confirmed Production Architecture
 
-Use one WordPress installation, one database, one custom theme, and one custom
-plugin. This keeps shared Clients, Team, contact settings, media, and case
-studies in one editorial system.
+Production uses three independent WordPress installations. Each installation
+owns its database, media library, users, settings, sitemap, backups, and release.
+This is not WordPress Multisite.
 
-### Recommended Domain Strategy
+| Site | Production URL | Responsibility |
+| --- | --- | --- |
+| Main | `https://nicesolutions.in/` | NICE gateway and curated introduction |
+| Events | `https://events.nicesolutions.in/` | Events services, work, clients, people, and contact |
+| Studio | `https://studios.nicesolutions.in/` | Studio services, work, clients, people, and contact |
 
-Use canonical paths on the primary domain:
+The brand is **NICE Studio** while the confirmed hostname is `studios`, plural.
+The current repository and LocalWP site remain the combined development/reference
+implementation. Local routes such as `/events/` and `/studio/` are preserved for
+testing and do not define the final production URL structure.
 
-- `nicesolutions.in/`
-- `nicesolutions.in/events/`
-- `nicesolutions.in/studio/`
-
-Configure `events.nicesolutions.in` and `studio.nicesolutions.in` as permanent
-redirects to the matching canonical paths. This is the recommended option
-because it avoids WordPress Multisite, duplicated content, cross-site queries,
-multiple sitemaps, and competing canonical URLs.
-
-If true public subdomains are mandatory, that is a separate hosting and SEO
-decision. The fallback should still be one WordPress database with explicit
-host-aware routing and canonical rules, not three independently managed sites.
+Shared theme and plugin code is version controlled here, but content is not
+silently synchronized between installations. Cross-site links must use configured
+site destinations, and no code may assume shared post IDs or attachment IDs.
 
 ### Responsibility Split
 
@@ -125,7 +124,7 @@ options are sufficient for the expected content volume.
 
 ## Information Architecture
 
-Proposed canonical routes:
+Development/reference routes:
 
 | Route | Purpose |
 | --- | --- |
@@ -787,5 +786,4 @@ Phase 8 builds the complete, production-grade Studio inner-page experience:
    - Automated PHP assertion suite (`scripts/wp-phase8-check.php`) testing versions, page provisioning, canonical routes, and CMS draft creation/cleanup.
    - Zero console errors, zero failed network requests, and CLS < 0.1.
    - Events and Landing page verified for zero regression.
-
 

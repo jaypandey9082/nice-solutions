@@ -153,8 +153,12 @@ if (/\b(dbDelta|CREATE\s+TABLE|ALTER\s+TABLE|DROP\s+TABLE)\b/i.test(source)) {
 	fail('NICE Core must not create or alter custom database tables.');
 }
 
-if (/wp_enqueue_(script|style)\s*\(/.test(source)) {
-	fail('NICE Core must not add frontend or admin assets in Phase 5.');
+if (/add_action\(\s*['"]wp_enqueue_scripts['"]/.test(source)) {
+	fail('NICE Core must not add frontend presentation assets.');
+}
+
+if (/wp_enqueue_(script|style)\s*\(/.test(source) && !source.includes("add_action( 'admin_enqueue_scripts', 'nice_enqueue_studio_hero_admin_assets' )")) {
+	fail('NICE Core assets must remain limited to approved native admin controls.');
 }
 
 if (/react|vue|next\.js|tailwind|bootstrap|gsap|jquery/i.test(source)) {
