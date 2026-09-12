@@ -226,10 +226,15 @@
         "pill": "999px"
       },
       "motion": {
-        "duration-fast": "140ms",
-        "duration-normal": "220ms",
-        "duration-slow": "360ms",
-        "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)"
+        "duration-fast": "160ms",
+        "duration-menu": "240ms",
+        "duration-normal": "300ms",
+        "duration-slow": "560ms",
+        "duration-media": "720ms",
+        "duration-image-hover": "500ms",
+        "duration-page-out": "220ms",
+        "duration-page-in": "360ms",
+        "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
       }
     }
   },

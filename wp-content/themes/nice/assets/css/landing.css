@@ -279,13 +279,13 @@
 	.nice-door__media img {
 		height: 100%;
 		object-fit: cover;
-		transition: transform var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing);
+		transition: transform var(--wp--custom--motion--duration-image-hover) var(--wp--custom--motion--easing);
 		width: 100%;
 	}
 
 	.nice-door:hover .nice-door__media img,
 	.nice-door:focus-within .nice-door__media img {
-		transform: scale(1.02);
+		transform: scale(1.018);
 	}
 
 	.nice-door__body {
@@ -426,65 +426,7 @@
 }
 
 @layer motion {
-	/* ── Standard Reveal ── */
-	.nice-has-reveal [data-nice-reveal] {
-		opacity: 0;
-		transform: translateY(0.75rem);
-		transition:
-			opacity var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing),
-			transform var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing);
-	}
-
-	.nice-has-reveal [data-nice-reveal].is-visible {
-		opacity: 1;
-		transform: translateY(0);
-	}
-
-	/* ── Editorial Reveal (Word-by-Word) ── */
-	.nice-sr-only {
-		border: 0;
-		clip: rect(0, 0, 0, 0);
-		height: 1px;
-		margin: -1px;
-		overflow: hidden;
-		padding: 0;
-		position: absolute;
-		white-space: nowrap;
-		width: 1px;
-	}
-
-	.nice-reveal-mask {
-		display: inline-block;
-		overflow: hidden;
-		vertical-align: bottom;
-	}
-
-	.nice-has-reveal [data-nice-editorial-reveal] .nice-reveal-unit {
-		display: inline-block;
-		opacity: 0;
-		transform: translateY(100%);
-		transition:
-			opacity var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing),
-			transform var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing);
-	}
-
-	.nice-has-reveal [data-nice-editorial-reveal].is-visible .nice-reveal-unit {
-		opacity: 1;
-		transform: translateY(0);
-	}
-
-	/* ── Accessible Motion Preference ── */
 	@media (prefers-reduced-motion: reduce) {
-		.nice-has-reveal [data-nice-reveal] {
-			opacity: 1;
-			transform: none;
-		}
-
-		.nice-has-reveal [data-nice-editorial-reveal] .nice-reveal-unit {
-			opacity: 1;
-			transform: none;
-		}
-
 		.nice-door__media img {
 			transform: none;
 			transition: none;

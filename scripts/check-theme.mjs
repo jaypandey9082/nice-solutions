@@ -33,7 +33,7 @@ const requiredFiles = [
 	'assets/css/studio.css',
 	'assets/css/editor.css',
 	'assets/js/navigation.js',
-	'assets/js/landing.js',
+	'assets/js/motion.js',
 	'assets/js/media.js',
 	'assets/images/nice-logo.png',
 	'assets/images/nice-site-icon.png',

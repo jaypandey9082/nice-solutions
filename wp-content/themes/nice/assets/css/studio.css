@@ -134,18 +134,18 @@
 	.nice-studio-project__media img {
 		height: 100%;
 		object-fit: cover;
-		transition: transform var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing);
+		transition: transform var(--wp--custom--motion--duration-image-hover) var(--wp--custom--motion--easing);
 		width: 100%;
 	}
 
 	.nice-studio-service:hover .nice-studio-service__media img,
 	.nice-studio-service:focus-within .nice-studio-service__media img {
-		transform: scale(1.03);
+		transform: scale(1.018);
 	}
 
 	.nice-studio-project:hover .nice-studio-project__media img,
 	.nice-studio-project:focus-within .nice-studio-project__media img {
-		transform: scale(1.04);
+		transform: scale(1.018);
 	}
 
 	.nice-studio-service__body {
@@ -644,12 +644,12 @@
 	.nice-studio-service-row__media img {
 		height: 100%;
 		object-fit: cover;
-		transition: transform var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing);
+		transition: transform var(--wp--custom--motion--duration-image-hover) var(--wp--custom--motion--easing);
 		width: 100%;
 	}
 
 	.nice-studio-service-row:hover .nice-studio-service-row__media img {
-		transform: scale(1.03);
+		transform: scale(1.018);
 	}
 
 	.nice-studio-service-row__content {
@@ -768,12 +768,12 @@
 	.nice-studio-case-preview__media img {
 		height: 100%;
 		object-fit: cover;
-		transition: transform var(--wp--custom--motion--duration-slow) var(--wp--custom--motion--easing);
+		transition: transform var(--wp--custom--motion--duration-image-hover) var(--wp--custom--motion--easing);
 		width: 100%;
 	}
 
 	.nice-studio-case-preview:hover .nice-studio-case-preview__media img {
-		transform: scale(1.03);
+		transform: scale(1.018);
 	}
 
 	.nice-studio-case-preview__body {

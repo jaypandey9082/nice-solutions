@@ -120,18 +120,22 @@ function nice_theme_enqueue_assets() {
 		);
 	}
 
-	if ( is_front_page() || $nice_is_events_context || $nice_is_studio_context ) {
-		wp_enqueue_script(
-			'nice-reveal',
-			get_theme_file_uri( '/assets/js/landing.js' ),
-			array(),
-			nice_theme_asset_version( '/assets/js/landing.js' ),
-			array(
-				'in_footer' => true,
-				'strategy'  => 'defer',
-			)
-		);
-	}
+	/*
+	 * Site-wide rather than per-template. The reveal half returns immediately
+	 * when a page has nothing to reveal, and the anchor half is needed wherever
+	 * a link points at a section of the same page, which includes the header
+	 * navigation on every page.
+	 */
+	wp_enqueue_script(
+		'nice-motion',
+		get_theme_file_uri( '/assets/js/motion.js' ),
+		array(),
+		nice_theme_asset_version( '/assets/js/motion.js' ),
+		array(
+			'in_footer' => true,
+			'strategy'  => 'defer',
+		)
+	);
 }
 add_action( 'wp_enqueue_scripts', 'nice_theme_enqueue_assets' );
 

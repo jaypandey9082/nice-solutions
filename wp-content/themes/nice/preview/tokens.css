@@ -36,8 +36,13 @@
 	--wp--custom--radius--medium: 8px;
 	--wp--custom--radius--large: 16px;
 	--wp--custom--radius--pill: 999px;
-	--wp--custom--motion--duration-fast: 140ms;
-	--wp--custom--motion--duration-normal: 220ms;
-	--wp--custom--motion--duration-slow: 360ms;
-	--wp--custom--motion--easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+	--wp--custom--motion--duration-fast: 160ms;
+	--wp--custom--motion--duration-menu: 240ms;
+	--wp--custom--motion--duration-normal: 300ms;
+	--wp--custom--motion--duration-slow: 560ms;
+	--wp--custom--motion--duration-media: 720ms;
+	--wp--custom--motion--duration-image-hover: 500ms;
+	--wp--custom--motion--duration-page-out: 220ms;
+	--wp--custom--motion--duration-page-in: 360ms;
+	--wp--custom--motion--easing: cubic-bezier(0.22, 1, 0.36, 1);
 }

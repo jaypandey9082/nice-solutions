@@ -80,12 +80,3 @@
 		.nice-events-home .nice-events-section-heading > a { grid-column: auto; align-self: end; }
 	}
 }
-
-@layer motion {
-	.nice-has-reveal .nice-events-home [data-nice-reveal] { transform: translateY(12px); transition: opacity 360ms ease, transform 360ms ease; }
-	.nice-has-reveal .nice-events-home [data-nice-reveal].is-visible { transform: none; }
-	@media (prefers-reduced-motion: reduce) {
-		.nice-events-home *, .nice-events-home *::before, .nice-events-home *::after { transition: none !important; animation: none !important; }
-		.nice-has-reveal .nice-events-home [data-nice-reveal] { opacity: 1; transform: none; }
-	}
-}

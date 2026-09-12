@@ -214,3 +214,67 @@ landing page, Events home, all Events inner routes, and Studio Home have been
 checked in a real browser from 320px through 1440px. The supplied PDF images are
 appropriate for this local implementation, but original web-ready masters and
 publication rights should still be confirmed before production deployment.
+
+## Motion
+
+Physical scrolling is never intercepted. There is no wheel handler, no
+touchmove handler, no scroll-hijacking library and no `scroll-behavior: smooth`
+on the document: a wheel, a trackpad, a finger, the scrollbar and the keyboard
+all move the page at exactly the speed the operating system says they should.
+
+`assets/js/motion.js` owns the two kinds of motion a visitor does not drive
+directly, in one coordinated system rather than several competing observers.
+
+### Deliberate travel
+
+Clicking a link to a section of the same page eases over 650ms on
+`cubic-bezier(0.22, 1, 0.36, 1)`, landing clear of the sticky header. The
+fragment is pushed to history so Back returns where the visitor came from, and
+keyboard focus moves to the destination without moving the page.
+
+The animation aborts the moment the page is not where the last frame put it,
+which is how a wheel or a scrollbar drag takes over instantly without a wheel
+listener existing. Back and Forward move immediately: a restoration is not a
+journey.
+
+### Reveals
+
+One IntersectionObserver, triggering slightly early (`rootMargin` bottom 10%)
+so a section is already moving as the visitor reaches it. Content reveals once,
+with opacity and at most 14px of vertical travel. Rows stagger by 70ms, capped
+at 210ms, so a row of three arrives as a row.
+
+Anything already on screen at load is simply visible: a heading and its primary
+action are never animated into place.
+
+A passive, frame-throttled scroll listener sweeps sections the visitor has
+scrolled past. Without it, a scrollbar dragged to the bottom carries a section
+from below the viewport to above it between two observer callbacks — it never
+intersects, no threshold is crossed, the observer is never called, and the
+section sits invisible waiting to be scrolled back to.
+
+### Tokens
+
+| Token | Duration | Used for |
+| --- | --- | --- |
+| `duration-fast` | 160ms | interaction feedback |
+| `duration-menu` | 240ms | the mobile menu |
+| `duration-normal` | 300ms | the condensed header |
+| `duration-slow` | 560ms | text and section reveals |
+| `duration-media` | 720ms | large media reveals |
+| `duration-image-hover` | 500ms | hover zoom, capped at `scale(1.018)` |
+| `duration-page-out` / `-in` | 220ms / 360ms | cross-document transitions |
+
+Media settles from `scale(1.015)` to `1`. There is no parallax and no
+scroll-linked background movement.
+
+### Rules
+
+Only `transform` and `opacity` are animated. `will-change` is released once an
+animation finishes. Observation stops while the tab is hidden. A change to the
+operating system's reduced-motion preference takes effect immediately, without
+a reload — everything is revealed and travel becomes instant. Nothing is ever
+hidden when JavaScript does not run, because the hiding rules are scoped to a
+class JavaScript adds.
+
+`npm run check:motion` asserts all of the above against the running site.
