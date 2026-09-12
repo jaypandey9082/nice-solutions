@@ -60,15 +60,30 @@ if ( $nice_is_events ) {
 			<nav class="nice-footer-nav" aria-label="<?php esc_attr_e( 'Connect', 'nice' ); ?>">
 				<span class="nice-eyebrow">Connect</span>
 				<a href="<?php echo $nice_clients_url; ?>">Clients</a>
-				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
-				<?php
-				foreach ( $nice_channel_sets as $nice_set ) :
-					$nice_prefix   = $nice_label_channels && $nice_set['label'] ? $nice_set['label'] . ' ' : '';
+				<?php if ( $nice_label_channels ) : ?>
+					<?php
+					/*
+					 * Outside a division a single "Contact" link has to pick a side,
+					 * and four raw channels leave the reader working out whose is
+					 * whose. Name the two destinations instead; each contact page
+					 * presents that division's channels in full.
+					 */
+					foreach ( $nice_channel_sets as $nice_set ) :
+						?>
+						<a href="<?php echo esc_url( $nice_set['contact_url'] ); ?>" data-nice-contact-division="<?php echo esc_attr( $nice_set['division'] ); ?>"><?php
+							/* translators: %s: division label. */
+							echo esc_html( sprintf( __( 'Contact %s', 'nice' ), $nice_set['label'] ) );
+						?></a>
+					<?php endforeach; ?>
+				<?php else : ?>
+					<a href="<?php echo $nice_contact_url; ?>">Contact</a>
+					<?php
+					$nice_set           = $nice_channel_sets[0];
 					$nice_division_attr = $nice_set['division'] ? ' data-nice-contact-division="' . esc_attr( $nice_set['division'] ) . '"' : '';
 					?>
-					<?php if ( $nice_set['whatsapp_url'] ) : ?><a href="<?php echo esc_url( $nice_set['whatsapp_url'] ); ?>" data-nice-contact-channel="whatsapp"<?php echo $nice_division_attr; ?>><?php echo esc_html( $nice_prefix . 'WhatsApp' ); ?></a><?php endif; ?>
-					<?php if ( $nice_set['email_address'] ) : ?><a href="<?php echo esc_url( 'mailto:' . $nice_set['email_address'] ); ?>" data-nice-contact-channel="email"<?php echo $nice_division_attr; ?>><?php echo esc_html( $nice_prefix . 'Email' ); ?></a><?php endif; ?>
-				<?php endforeach; ?>
+					<?php if ( $nice_set['whatsapp_url'] ) : ?><a href="<?php echo esc_url( $nice_set['whatsapp_url'] ); ?>" data-nice-contact-channel="whatsapp"<?php echo $nice_division_attr; ?>>WhatsApp</a><?php endif; ?>
+					<?php if ( $nice_set['email_address'] ) : ?><a href="<?php echo esc_url( 'mailto:' . $nice_set['email_address'] ); ?>" data-nice-contact-channel="email"<?php echo $nice_division_attr; ?>>Email</a><?php endif; ?>
+				<?php endif; ?>
 			</nav>
 			<?php if ( $nice_social_profiles ) : ?>
 				<nav class="nice-footer-nav nice-footer-social" aria-label="<?php esc_attr_e( 'Social profiles', 'nice' ); ?>">

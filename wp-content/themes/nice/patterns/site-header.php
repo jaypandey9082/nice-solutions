@@ -119,14 +119,28 @@ if ( $nice_is_events ) {
 		</div>
 		<?php if ( $nice_channel_sets ) : ?>
 			<div class="nice-mobile-menu__actions" aria-label="<?php esc_attr_e( 'Contact options', 'nice' ); ?>">
-				<?php
-				foreach ( $nice_channel_sets as $nice_set ) :
-					$nice_prefix        = $nice_label_channels && $nice_set['label'] ? $nice_set['label'] . ' ' : '';
+				<?php if ( $nice_label_channels ) : ?>
+					<?php
+					/*
+					 * Outside a division, a raw WhatsApp button cannot say whose it
+					 * is. Offer one clear choice per division instead and let the
+					 * contact page present that division's channels.
+					 */
+					foreach ( $nice_channel_sets as $nice_set ) :
+						?>
+						<a class="nice-button nice-button--secondary" href="<?php echo esc_url( $nice_set['contact_url'] ); ?>" data-nice-contact-division="<?php echo esc_attr( $nice_set['division'] ); ?>"><?php
+							/* translators: %s: division label. */
+							echo esc_html( sprintf( __( 'Talk to %s', 'nice' ), $nice_set['label'] ) );
+						?></a>
+					<?php endforeach; ?>
+				<?php else : ?>
+					<?php
+					$nice_set           = $nice_channel_sets[0];
 					$nice_division_attr = $nice_set['division'] ? ' data-nice-contact-division="' . esc_attr( $nice_set['division'] ) . '"' : '';
 					?>
-					<?php if ( $nice_set['whatsapp_url'] ) : ?><a class="nice-button nice-button--primary" href="<?php echo esc_url( $nice_set['whatsapp_url'] ); ?>" data-nice-contact-channel="whatsapp"<?php echo $nice_division_attr; ?>><?php echo esc_html( $nice_prefix . 'WhatsApp' ); ?></a><?php endif; ?>
-					<?php if ( $nice_set['email_address'] ) : ?><a class="nice-button nice-button--secondary" href="<?php echo esc_url( 'mailto:' . $nice_set['email_address'] ); ?>" data-nice-contact-channel="email"<?php echo $nice_division_attr; ?>><?php echo esc_html( $nice_prefix . 'Email' ); ?></a><?php endif; ?>
-				<?php endforeach; ?>
+					<?php if ( $nice_set['whatsapp_url'] ) : ?><a class="nice-button nice-button--primary" href="<?php echo esc_url( $nice_set['whatsapp_url'] ); ?>" data-nice-contact-channel="whatsapp"<?php echo $nice_division_attr; ?>>WhatsApp</a><?php endif; ?>
+					<?php if ( $nice_set['email_address'] ) : ?><a class="nice-button nice-button--secondary" href="<?php echo esc_url( 'mailto:' . $nice_set['email_address'] ); ?>" data-nice-contact-channel="email"<?php echo $nice_division_attr; ?>>Email</a><?php endif; ?>
+				<?php endif; ?>
 			</div>
 		<?php endif; ?>
 	</div>

@@ -217,13 +217,22 @@ function nice_get_contact_channel_sets( $division = '' ) {
 		$channels = nice_get_contact_channels( $division );
 
 		return nice_contact_channels_published( $channels )
-			? array( array_merge( array( 'division' => $division, 'label' => $labels[ $division ] ), $channels ) )
+			? array(
+				array_merge(
+					array(
+						'division'    => $division,
+						'label'       => $labels[ $division ],
+						'contact_url' => home_url( '/' . $division . '/contact/' ),
+					),
+					$channels
+				),
+			)
 			: array();
 	}
 
 	$shared = nice_get_contact_channels();
 	if ( nice_contact_channels_published( $shared ) ) {
-		return array( array_merge( array( 'division' => '', 'label' => '' ), $shared ) );
+		return array( array_merge( array( 'division' => '', 'label' => '', 'contact_url' => '' ), $shared ) );
 	}
 
 	$sets = array();
@@ -231,7 +240,14 @@ function nice_get_contact_channel_sets( $division = '' ) {
 		$channels = nice_get_contact_channels( $slug );
 
 		if ( nice_contact_channels_published( $channels ) ) {
-			$sets[] = array_merge( array( 'division' => $slug, 'label' => $label ), $channels );
+			$sets[] = array_merge(
+				array(
+					'division'    => $slug,
+					'label'       => $label,
+					'contact_url' => home_url( '/' . $slug . '/contact/' ),
+				),
+				$channels
+			);
 		}
 	}
 
