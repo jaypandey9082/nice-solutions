@@ -414,15 +414,20 @@ function nice_render_studio_case_study_detail() {
 		</div>
 	</section>
 	<?php
-	$case_hero_image = nice_theme_get_featured_image(
-		$case_study->ID,
-		'(min-width: 75rem) 1200px, 100vw',
-		array(
-			'alt'           => get_the_title( $case_study->ID ),
-			'loading'       => 'eager',
-			'fetchpriority' => 'high',
+	/* Project media stays unpublished until its source approval is cleared. */
+	$case_media_approved = nice_theme_media_approved( $case_study->ID );
+	$case_hero_image     = $case_media_approved
+		? nice_theme_get_featured_image(
+			$case_study->ID,
+			'(min-width: 75rem) 1200px, 100vw',
+			array(
+				'alt'           => get_the_title( $case_study->ID ),
+				'loading'       => 'eager',
+				'fetchpriority' => 'high',
+			)
 		)
-	);
+		: '';
+	$video_url = $case_media_approved ? $video_url : '';
 	?>
 	<section class="nice-case-hero-media-wrap" aria-label="<?php esc_attr_e( 'Project visual', 'nice' ); ?>">
 		<div class="nice-wide">

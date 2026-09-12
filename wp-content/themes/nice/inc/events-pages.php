@@ -76,6 +76,20 @@ function nice_theme_get_primary_term( $post_id, $taxonomy ) {
  * @param array<string, mixed> $attrs   Additional attributes.
  * @return string
  */
+/**
+ * Report whether a record's own media is cleared for publication.
+ *
+ * Attaching a featured image is not the same as clearing it for the public
+ * site. Migrated deck photography sits on these records awaiting review, so the
+ * hero only renders once an editor moves the source approval to approved.
+ *
+ * @param int $post_id Record ID.
+ * @return bool
+ */
+function nice_theme_media_approved( $post_id ) {
+	return 'approved' === get_post_meta( $post_id, '_nice_source_approval_status', true );
+}
+
 function nice_theme_get_featured_image( $post_id, $sizes, $attrs = array() ) {
 	$attachment_id = get_post_thumbnail_id( $post_id );
 
@@ -449,15 +463,17 @@ function nice_render_events_case_study_detail() {
 		</div>
 	</section>
 	<?php
-	$case_hero_image = nice_theme_get_featured_image(
-		$case_study->ID,
-		'(min-width: 75rem) 1200px, 100vw',
-		array(
-			'alt'           => get_the_title( $case_study->ID ),
-			'loading'       => 'eager',
-			'fetchpriority' => 'high',
+	$case_hero_image = nice_theme_media_approved( $case_study->ID )
+		? nice_theme_get_featured_image(
+			$case_study->ID,
+			'(min-width: 75rem) 1200px, 100vw',
+			array(
+				'alt'           => get_the_title( $case_study->ID ),
+				'loading'       => 'eager',
+				'fetchpriority' => 'high',
+			)
 		)
-	);
+		: '';
 	?>
 	<section class="nice-case-hero-media-wrap" aria-label="<?php esc_attr_e( 'Project visual', 'nice' ); ?>">
 		<div class="nice-wide">
