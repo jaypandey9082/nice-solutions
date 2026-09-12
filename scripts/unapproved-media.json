@@ -1,0 +1,27 @@
+{
+	"comment": "Deck photography that has not been cleared for publication. These files stay out of every production package: the theme falls back to its media placeholder when they are absent, and NICE uploads approved imagery through the Media Library instead. Keep this list and the retired-media patterns in the Playwright suites in step.",
+	"files": [
+		"voltas-crowd.webp",
+		"voltas-crowd-480.webp",
+		"voltas-fam-tastic.webp",
+		"voltas-fam-tastic-480.webp",
+		"gca-2025.webp",
+		"gca-2025-480.webp",
+		"zoetis-engagement.webp",
+		"zoetis-engagement-480.webp",
+		"power-champs.webp",
+		"power-champs-480.webp",
+		"run-for-equity.webp",
+		"run-for-equity-360.webp",
+		"vision-to-victory.webp",
+		"vision-to-victory-360.webp",
+		"exhibition-stall.webp",
+		"exhibition-stall-480.webp",
+		"strata-production.webp",
+		"strata-production-480.webp",
+		"studio-career-agents.webp",
+		"studio-crisil-literacy.webp",
+		"studio-jayanti.webp",
+		"studio-krish-e.webp"
+	]
+}

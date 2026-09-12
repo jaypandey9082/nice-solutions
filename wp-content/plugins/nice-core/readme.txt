@@ -3,7 +3,7 @@ Contributors: nicesolutions
 Tags: content, portfolio, services, clients, team
 Requires at least: 6.6
 Requires PHP: 8.2
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 
 NICE Solutions content types, taxonomies, metadata, contact settings, and query helpers.
@@ -24,9 +24,25 @@ uninstall preserve content and options.
 
 1. Place `nice-core` in `wp-content/plugins/`.
 2. Activate NICE Core in WordPress.
-3. Run `wp nice migrate-content` once when the approved starter records should be imported.
+3. Declare the installation's identity in wp-config.php (see Installation Shapes).
+4. Run setup once: Tools -> NICE Setup in wp-admin, or `wp nice migrate-content`
+   with shell access.
 
-The migration is safe to run again and reports records as created or skipped.
+Setup is safe to run again and reports records as created, already present, or
+owned by another installation. Nothing it creates as a draft is ever published.
+
+== Tools -> NICE Setup ==
+
+The admin screen exists because most of these installations are administered
+through a hosting panel with no shell. It does the same work as the WP-CLI
+command, behind the same capability and nonce checks, and it says what it did.
+
+It shows the identity it resolved and the sibling URLs it will link to, and
+refuses to run when the identity is missing or unrecognised on a production or
+staging host: guessing there would publish both divisions from one database.
+
+On a division installation it also offers to set the generated home page as the
+front page, which is the one Settings -> Reading step that setup cannot infer.
 
 == Case Study Source Approval ==
 
@@ -38,18 +54,27 @@ source; publishing remains a separate WordPress action.
 
 Two rules apply to that panel.
 
-Approval requires a Source URL that identifies the individual post. The seeded
-candidates carry the LinkedIn company feed, which records where they came from
-but not which post each one came from. A record still carrying the feed URL is
-held at Review with an explanatory notice until an editor pastes the real one.
+Approval requires a Source URL that leads to the source itself. A LinkedIn
+address is accepted only in the shapes that identify one post: a
+/posts/... permalink, a /feed/update/urn:li:activity:... permalink, or a
+/pulse/ article. A company page, a posts tab, the feed, a personal profile or a
+plain-http address is not a citation and cannot clear a record.
+
+A record seeded from LinkedIn carries that origin in its metadata, so swapping
+in an unrelated address does not clear it either: it has to cite the post it
+came from. A record that was never derived from LinkedIn may cite anywhere, as
+long as the address names a page rather than a site.
+
+A record that cannot be approved is held at Review with a notice saying which of
+these rules it failed.
 
 Image rights are a separate control. "Media cleared for publication" is its own
 checkbox, because approving wording must never publish the photograph attached to
 the record. Migrated records carry deck photography that has not been cleared;
 until the box is ticked the project page shows an intentional placeholder.
 
-Running `wp nice migrate-content` also creates five LinkedIn-derived Events
-candidate records as WordPress drafts. They contain brief paraphrased text and
+Setup also creates five LinkedIn-derived Events candidate records as WordPress
+drafts, on an installation that owns Events. They contain brief paraphrased text and
 the NICE Solutions LinkedIn company-feed URL rather than a per-post citation, and
 no images, team members, proof metrics, or publication approval. An existing slug in any status
 is skipped completely, so reruns never overwrite editor changes or alter a
@@ -124,6 +149,28 @@ Run `wp nice migrate-content` and flush permalinks after changing the setting.
 The prefix and sibling URLs are filterable through `nice_division_prefix` and
 `nice_division_site_urls` if a deployment needs something different.
 
+== Gateway Projects ==
+
+Registered on the gateway and on the combined development site only. A division
+installation publishes its work itself and never sees this type.
+
+A Gateway Project is a preview on the gateway home page: title, summary,
+division, featured image, display order, and the destination it sends the reader
+to. It holds its own copy of everything, because the case study it points at
+lives in another database and an attachment ID from one installation means
+nothing in another.
+
+The destination is restricted to the selected division's own case studies. The
+rule runs as the metadata sanitizer rather than only in the editing screen, so an
+address anywhere else is discarded rather than stored.
+
+Setup seeds three drafts. They stay drafts: publishing is an editorial decision,
+and until one is published the gateway front page carries no preview section at
+all.
+
+"Media cleared for publication" works exactly as it does on a Case Study. The
+preview renders without its image until the box is ticked.
+
 == Team Members ==
 
 Adding a person is a form-filling job. In wp-admin go to Team Members, then
@@ -148,13 +195,17 @@ Two behaviours worth knowing:
 * The Team link is hidden from a division's navigation until that division has
   at least one published member, so a half-filled roster never leaks.
 
-The content migration seeds six placeholder drafts, three per division, so the
+Setup seeds three placeholder drafts per division it owns -- six on the combined
+development site, three on a division installation, none on the gateway -- so the
 structure is visible in wp-admin before real profiles arrive. They carry no
 portrait, because a production photograph standing in for a face would
 misrepresent the team. Replace or delete them as real people are added; reruns
 skip any slug that already exists and never overwrite editor changes.
 
 == Changelog ==
+
+= 1.3.0 =
+* Scope setup to the installation's declared identity, add Gateway Projects, and add Tools -> NICE Setup.
 
 = 1.2.0 =
 * Add Studio Services, selected Studio Case Studies, and Studio Home provisioning.

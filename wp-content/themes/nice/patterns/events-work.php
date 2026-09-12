@@ -23,10 +23,14 @@ $nice_events_work_url = esc_url( nice_theme_division_url( 'events', 'case-studie
 			<?php foreach ( $nice_events_projects as $nice_project ) :
 				$nice_project_image        = esc_url( get_theme_file_uri( '/assets/images/' . $nice_project['image'] . '.webp' ) );
 				$nice_project_image_mobile = esc_url( get_theme_file_uri( '/assets/images/' . $nice_project['image_mobile'] . '.webp' ) );
+				/* The theme fallback only exists where the asset shipped; see nice_theme_image_exists(). */
+				$nice_project_file_exists  = ! function_exists( 'nice_theme_image_exists' ) || nice_theme_image_exists( $nice_project['image'] . '.webp' );
 			?>
 				<article class="nice-events-project <?php echo esc_attr( $nice_project['class'] ); ?>" data-nice-reveal>
 					<?php if ( ! empty( $nice_project['attachment_id'] ) || ! empty( $nice_project['image'] ) ) : ?><div class="nice-events-project__media">
-						<?php if ( ! empty( $nice_project['attachment_id'] ) ) : ?>
+						<?php if ( empty( $nice_project['attachment_id'] ) && ! $nice_project_file_exists ) : ?>
+							<?php nice_render_events_media_placeholder( sprintf( '%s project media pending approval', $nice_project['title'] ) ); ?>
+						<?php elseif ( ! empty( $nice_project['attachment_id'] ) ) : ?>
 							<?php echo wp_get_attachment_image( $nice_project['attachment_id'], 'full', false, array( 'alt' => $nice_project['alt'], 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(min-width: 1320px) 760px, (min-width: 768px) 58vw, calc(100vw - 40px)' ) ); ?>
 						<?php else : ?>
 							<img src="<?php echo $nice_project_image_mobile; ?>" srcset="<?php echo $nice_project_image_mobile; ?> <?php echo esc_attr( str_contains( $nice_project['image_mobile'], '-360' ) ? '360w' : '480w' ); ?>, <?php echo $nice_project_image; ?> <?php echo esc_attr( $nice_project['width'] ); ?>w" sizes="(min-width: 1320px) 760px, (min-width: 768px) 58vw, calc(100vw - 40px)" width="<?php echo esc_attr( $nice_project['width'] ); ?>" height="<?php echo esc_attr( $nice_project['height'] ); ?>" alt="<?php echo esc_attr( $nice_project['alt'] ); ?>" loading="lazy" decoding="async">

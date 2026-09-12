@@ -69,3 +69,6 @@ logs/
 reference/*.pdf
 reference/*.docx
 reference/*.pptx
+
+# Generated release packages and their manifests
+output/releases/

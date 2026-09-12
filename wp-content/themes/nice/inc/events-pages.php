@@ -162,6 +162,29 @@ function nice_render_events_inner_hero( $eyebrow, $title, $intro, $post_id = 0 )
 }
 
 /**
+ * Report whether a theme image is actually present.
+ *
+ * Production packages ship without the deck photography that has not been
+ * cleared for publication, so a pattern that falls back to a theme file has to
+ * check rather than assume. Where the file is absent the placeholder stands in,
+ * which is what an uncleared attachment already produces.
+ *
+ * @param string $filename Image filename inside /assets/images/.
+ * @return bool
+ */
+function nice_theme_image_exists( $filename ) {
+	static $cache = array();
+
+	$filename = ltrim( (string) $filename, '/' );
+
+	if ( ! isset( $cache[ $filename ] ) ) {
+		$cache[ $filename ] = '' !== $filename && file_exists( get_theme_file_path( '/assets/images/' . $filename ) );
+	}
+
+	return $cache[ $filename ];
+}
+
+/**
  * Render an intentional media field while project imagery awaits approval.
  *
  * @param string $label Accessible description for the empty media field.

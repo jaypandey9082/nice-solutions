@@ -1,17 +1,18 @@
 {
   "name": "nice-solutions-theme-foundation",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "private": true,
   "description": "Validation and preview scripts for the NICE WordPress block theme.",
   "scripts": {
     "build:preview": "node scripts/build-preview-tokens.mjs",
     "check:plugin": "node scripts/check-plugin.mjs",
     "check:theme": "node scripts/check-theme.mjs",
-    "check:js": "node --check wp-content/themes/nice/assets/js/navigation.js && node --check wp-content/themes/nice/assets/js/media.js && node --check wp-content/themes/nice/assets/js/landing.js && node --check scripts/playwright-phase2-check.js && node --check scripts/playwright-phase3-check.js && node --check scripts/playwright-phase4-check.js && node --check scripts/playwright-phase6-check.js && node --check scripts/playwright-phase7-check.js && node --check scripts/playwright-phase7-1-check.js && node --check scripts/playwright-phase8-check.js && node --check scripts/playwright-phase8-1-check.js && node --check scripts/playwright-inner-redesign-check.js && node --check scripts/run-playwright-phase.js",
+    "check:js": "node --check wp-content/themes/nice/assets/js/navigation.js && node --check wp-content/themes/nice/assets/js/media.js && node --check wp-content/themes/nice/assets/js/landing.js && node --check scripts/playwright-phase2-check.js && node --check scripts/playwright-phase3-check.js && node --check scripts/playwright-phase4-check.js && node --check scripts/playwright-phase6-check.js && node --check scripts/playwright-phase7-check.js && node --check scripts/playwright-phase7-1-check.js && node --check scripts/playwright-phase8-check.js && node --check scripts/playwright-phase8-1-check.js && node --check scripts/playwright-inner-redesign-check.js && node --check scripts/run-playwright-phase.js && node --check scripts/build-release.mjs",
     "check:inner-pages": "node scripts/playwright-inner-redesign-check.js",
     "check": "npm run build:preview && npm run check:theme && npm run check:plugin && npm run check:js",
     "preview:serve": "python3 -m http.server 8787 --bind 127.0.0.1 --directory wp-content/themes/nice",
-    "check:phases": "node scripts/run-playwright-phase.js"
+    "check:phases": "node scripts/run-playwright-phase.js",
+    "build:release": "node scripts/build-release.mjs"
   },
   "devDependencies": {
     "playwright": "^1.63.0"

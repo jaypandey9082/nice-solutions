@@ -25,10 +25,13 @@ $nice_service_sizes       = '(min-width: 1320px) 612px, (min-width: 768px) calc(
 				$nice_service_image        = esc_url( get_theme_file_uri( '/assets/images/' . $nice_service['image'] . '.webp' ) );
 				$nice_service_image_mobile = esc_url( get_theme_file_uri( '/assets/images/' . $nice_service['image_mobile'] . '.webp' ) );
 				$nice_service_url          = esc_url( nice_theme_division_url( 'events', 'services/' . $nice_service['slug'] ) );
+				$nice_service_file_exists  = ! function_exists( 'nice_theme_image_exists' ) || nice_theme_image_exists( $nice_service['image'] . '.webp' );
 			?>
 				<article class="nice-events-service<?php echo 1 === $nice_index ? ' nice-events-service--reverse' : ''; ?>" data-nice-reveal>
 					<div class="nice-events-service__media">
-						<?php if ( ! empty( $nice_service['attachment_id'] ) ) : ?>
+						<?php if ( empty( $nice_service['attachment_id'] ) && ! $nice_service_file_exists ) : ?>
+							<?php nice_render_events_media_placeholder( sprintf( '%s media pending approval', $nice_service['name'] ) ); ?>
+						<?php elseif ( ! empty( $nice_service['attachment_id'] ) ) : ?>
 							<?php echo wp_get_attachment_image( $nice_service['attachment_id'], 'full', false, array( 'alt' => $nice_service['alt'], 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => $nice_service_sizes ) ); ?>
 						<?php else : ?>
 							<img src="<?php echo $nice_service_image_mobile; ?>" srcset="<?php echo $nice_service_image_mobile; ?> 480w, <?php echo $nice_service_image; ?> <?php echo esc_attr( $nice_service['width'] ); ?>w" sizes="<?php echo esc_attr( $nice_service_sizes ); ?>" width="<?php echo esc_attr( $nice_service['width'] ); ?>" height="<?php echo esc_attr( $nice_service['height'] ); ?>" alt="<?php echo esc_attr( $nice_service['alt'] ); ?>" loading="lazy" decoding="async">
