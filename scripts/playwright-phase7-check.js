@@ -31,7 +31,8 @@ async (page) => {
     "/studio/team/",
     "/studio/contact/",
   ];
-  const retiredDeckImagePattern = /\/(?:strata-production(?:-480)?|studio-(?:career-agents|crisil-literacy|jayanti|krish-e))\.webp(?:\?|$)/i;
+  /* Kept in step with retiredMedia in playwright-inner-redesign-check.js. */
+  const retiredDeckImagePattern = /\/(?:voltas-(?:crowd|fam-tastic)(?:-480)?|gca-2025(?:-480)?|zoetis-engagement(?:-480)?|power-champs(?:-480)?|run-for-equity(?:-360)?|vision-to-victory(?:-360)?|exhibition-stall(?:-480)?|strata-production(?:-480)?|studio-(?:career-agents|crisil-literacy|jayanti|krish-e))\.webp(?:\?|$)/i;
   const viewportResults = [];
   const failedRequests = [];
   const consoleErrors = [];

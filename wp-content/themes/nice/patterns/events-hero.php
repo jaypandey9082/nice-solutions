@@ -6,8 +6,9 @@
  * Description: Full-bleed editorial introduction to the Events division.
  */
 
-$nice_events_hero_image        = esc_url( get_theme_file_uri( '/assets/images/voltas-crowd.webp' ) );
-$nice_events_hero_image_mobile = esc_url( get_theme_file_uri( '/assets/images/voltas-crowd-480.webp' ) );
+/* Approved reference imagery; see the note in landing-pathways.php. */
+$nice_events_hero_image        = esc_url( get_theme_file_uri( '/assets/images/events-reference-hero-700.webp' ) );
+$nice_events_hero_image_mobile = esc_url( get_theme_file_uri( '/assets/images/events-reference-hero-480.webp' ) );
 $nice_events_services_url      = esc_url( nice_theme_division_url( 'events', 'services/' ) );
 $nice_events_work_url          = esc_url( nice_theme_division_url( 'events', 'case-studies/' ) );
 $nice_events_clients_url       = esc_url( nice_theme_division_url( 'events', 'clients/' ) );

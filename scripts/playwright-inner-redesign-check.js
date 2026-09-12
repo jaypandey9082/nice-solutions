@@ -6,6 +6,11 @@ const origin = process.env.NICE_BASE_URL || 'http://nice-solutions.local';
 const outputDir = path.resolve(__dirname, '../output/playwright/inner-redesign');
 const widths = [320, 390, 768, 1024, 1440];
 const routes = [
+	// The landing page belongs here too: it is the one page that carried
+	// hardcoded deck photography, and it previously sat outside every suite.
+	'/',
+	'/events/',
+	'/studio/',
 	'/events/services/',
 	'/events/services/corporate-events/',
 	'/events/case-studies/',
@@ -21,7 +26,11 @@ const routes = [
 	'/studio/team/',
 	'/studio/contact/',
 ];
-const retiredMedia = /(voltas|gca|zoetis|power-champs|run-for-equity|vision-to-victory|strata-production|studio-career-agents|studio-crisil|studio-jayanti|studio-krish-e)/i;
+/*
+ * Every migrated deck image. Keep this the single list: a second, narrower copy
+ * in another suite is how the landing page went unchecked.
+ */
+const retiredMedia = /(voltas|gca-2025|zoetis|power-champs|run-for-equity|vision-to-victory|strata-production|exhibition-stall|studio-career-agents|studio-crisil|studio-jayanti|studio-krish-e)/i;
 
 const assert = (condition, message) => {
 	if (!condition) {

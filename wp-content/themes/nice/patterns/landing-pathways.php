@@ -6,10 +6,15 @@
  * Description: Editorial doors for Events and Studio divisions.
  */
 
-$nice_events_image        = esc_url( get_theme_file_uri( '/assets/images/voltas-crowd.webp' ) );
-$nice_events_image_mobile = esc_url( get_theme_file_uri( '/assets/images/voltas-crowd-480.webp' ) );
-$nice_studio_image        = esc_url( get_theme_file_uri( '/assets/images/strata-production.webp' ) );
-$nice_studio_image_mobile = esc_url( get_theme_file_uri( '/assets/images/strata-production-480.webp' ) );
+/*
+ * Approved reference imagery. These are theme assets rather than attachments,
+ * so the media approval gate cannot reach them; they must therefore be images
+ * already cleared for publication, never migrated deck photography.
+ */
+$nice_events_image        = esc_url( get_theme_file_uri( '/assets/images/events-reference-hero-700.webp' ) );
+$nice_events_image_mobile = esc_url( get_theme_file_uri( '/assets/images/events-reference-hero-480.webp' ) );
+$nice_studio_image        = esc_url( get_theme_file_uri( '/assets/images/studio-reference-hero-577.webp' ) );
+$nice_studio_image_mobile = esc_url( get_theme_file_uri( '/assets/images/studio-reference-hero-480.webp' ) );
 $nice_events_url          = esc_url( nice_theme_division_url( 'events' ) );
 $nice_studio_url          = esc_url( nice_theme_division_url( 'studio' ) );
 ?>
@@ -29,7 +34,7 @@ $nice_studio_url          = esc_url( nice_theme_division_url( 'studio' ) );
 					sizes="(min-width: 1024px) 38rem, calc(100vw - 2rem)"
 					width="700"
 					height="377"
-					alt="Audience members raising their hands during a live event"
+					alt="Reference imagery for the NICE Events division"
 					loading="lazy"
 					decoding="async"
 				>
@@ -61,7 +66,7 @@ $nice_studio_url          = esc_url( nice_theme_division_url( 'studio' ) );
 					sizes="(min-width: 1024px) 38rem, calc(100vw - 2rem)"
 					width="577"
 					height="325"
-					alt="Production crew filming inside a factory set"
+					alt="Reference imagery for the NICE Studio division"
 					loading="lazy"
 					decoding="async"
 				>

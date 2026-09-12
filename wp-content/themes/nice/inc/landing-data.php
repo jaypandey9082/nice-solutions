@@ -73,6 +73,8 @@ function nice_get_landing_project_previews() {
 			$item['title']         = $case_study->post_title;
 			$item['client']        = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $case_study->ID ) : $item['client'];
 			$item['attachment_id'] = get_post_thumbnail_id( $case_study );
+			/* Needed so the preview can check media clearance and build its link. */
+			$item['post_id']       = $case_study->ID;
 			$previews[]            = $item;
 		}
 
