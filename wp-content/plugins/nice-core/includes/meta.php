@@ -17,8 +17,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string   $type      REST/meta type.
  * @param callable $sanitize  Sanitization callback.
  * @param mixed    $default   Default value.
+ * @param callable $authorize    Authorization callback.
+ * @param bool     $show_in_rest Whether the field is exposed through REST.
  */
-function nice_register_post_meta_field( $post_type, $meta_key, $type, $sanitize, $default ) {
+function nice_register_post_meta_field( $post_type, $meta_key, $type, $sanitize, $default, $authorize = 'nice_authorize_post_meta', $show_in_rest = true ) {
+	$rest_schema = false;
+
+	if ( $show_in_rest ) {
+		$rest_schema = array(
+			'schema' => array(
+				'type'    => $type,
+				'default' => $default,
+			),
+		);
+	}
+
 	register_post_meta(
 		$post_type,
 		$meta_key,
@@ -27,21 +40,54 @@ function nice_register_post_meta_field( $post_type, $meta_key, $type, $sanitize,
 			'single'            => true,
 			'default'           => $default,
 			'sanitize_callback' => $sanitize,
-			'auth_callback'     => 'nice_authorize_post_meta',
-			'show_in_rest'      => array(
-				'schema' => array(
-					'type'    => $type,
-					'default' => $default,
-				),
-			),
+			'auth_callback'     => $authorize,
+			'show_in_rest'      => $rest_schema,
 		)
 	);
+}
+
+/**
+ * Return a supported editorial approval state.
+ *
+ * @param mixed $value Candidate approval state.
+ * @return string
+ */
+function nice_sanitize_case_study_approval_status( $value ) {
+	$status = sanitize_key( (string) $value );
+
+	return in_array( $status, array( 'draft', 'review', 'approved' ), true ) ? $status : 'draft';
+}
+
+/**
+ * Restrict private source metadata to editors of Case Study records.
+ *
+ * @param bool   $allowed   Existing decision.
+ * @param string $meta_key  Meta key.
+ * @param int    $object_id Case Study ID.
+ * @return bool
+ */
+function nice_authorize_case_study_source_meta( $allowed, $meta_key, $object_id ) {
+	return 'nice_case_study' === get_post_type( $object_id ) && current_user_can( 'edit_post', $object_id );
 }
 
 /**
  * Register metadata for Case Studies, Clients, and Team Members.
  */
 function nice_register_content_meta() {
+	nice_register_post_meta_field( 'page', '_nice_events_hero_image_id', 'integer', 'nice_sanitize_hero_image_id', 0, 'nice_authorize_events_hero_meta' );
+	nice_register_post_meta_field( 'page', '_nice_events_hero_mobile_image_id', 'integer', 'nice_sanitize_hero_image_id', 0, 'nice_authorize_events_hero_meta' );
+	nice_register_post_meta_field( 'page', '_nice_events_hero_focal_x', 'integer', 'nice_sanitize_percentage', 50, 'nice_authorize_events_hero_meta' );
+	nice_register_post_meta_field( 'page', '_nice_events_hero_focal_y', 'integer', 'nice_sanitize_percentage', 50, 'nice_authorize_events_hero_meta' );
+	nice_register_post_meta_field( 'page', '_nice_events_hero_reference', 'boolean', 'rest_sanitize_boolean', false, 'nice_authorize_events_hero_meta' );
+	nice_register_post_meta_field( 'page', '_nice_events_hero_media_initialized', 'boolean', 'rest_sanitize_boolean', false, 'nice_authorize_events_hero_meta' );
+
+	nice_register_post_meta_field( 'page', '_nice_studio_hero_image_id', 'integer', 'absint', 0 );
+	nice_register_post_meta_field( 'page', '_nice_studio_hero_mobile_image_id', 'integer', 'absint', 0 );
+	nice_register_post_meta_field( 'page', '_nice_studio_hero_focal_x', 'integer', 'nice_sanitize_percentage', 50 );
+	nice_register_post_meta_field( 'page', '_nice_studio_hero_focal_y', 'integer', 'nice_sanitize_percentage', 50 );
+	nice_register_post_meta_field( 'page', '_nice_studio_hero_reference', 'boolean', 'rest_sanitize_boolean', false );
+	nice_register_post_meta_field( 'page', '_nice_studio_hero_media_initialized', 'boolean', 'rest_sanitize_boolean', false );
+
 	nice_register_post_meta_field( 'nice_case_study', '_nice_client_id', 'integer', 'nice_sanitize_client_id', 0 );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_client_name', 'string', 'sanitize_text_field', '' );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_location', 'string', 'sanitize_text_field', '' );
@@ -54,6 +100,9 @@ function nice_register_content_meta() {
 	nice_register_post_meta_field( 'nice_case_study', '_nice_hero_video_url', 'string', 'nice_sanitize_https_url', '' );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_quote_text', 'string', 'sanitize_text_field', '' );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_quote_author', 'string', 'sanitize_text_field', '' );
+	nice_register_post_meta_field( 'nice_case_study', '_nice_source_url', 'string', 'nice_sanitize_https_url', '', 'nice_authorize_case_study_source_meta', false );
+	nice_register_post_meta_field( 'nice_case_study', '_nice_source_note', 'string', 'sanitize_textarea_field', '', 'nice_authorize_case_study_source_meta', false );
+	nice_register_post_meta_field( 'nice_case_study', '_nice_source_approval_status', 'string', 'nice_sanitize_case_study_approval_status', 'draft', 'nice_authorize_case_study_source_meta', false );
 
 	nice_register_post_meta_field( 'nice_client', '_nice_client_url', 'string', 'nice_sanitize_https_url', '' );
 	nice_register_post_meta_field( 'nice_client', '_nice_display_order', 'integer', 'nice_sanitize_integer', 0 );

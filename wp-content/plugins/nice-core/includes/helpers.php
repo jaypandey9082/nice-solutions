@@ -32,6 +32,73 @@ function nice_sanitize_integer( $value ) {
 }
 
 /**
+ * Sanitize a percentage used for media focal positioning.
+ *
+ * @param mixed $value Candidate percentage.
+ * @return int
+ */
+function nice_sanitize_percentage( $value ) {
+	return max( 0, min( 100, nice_sanitize_integer( $value ) ) );
+}
+
+/**
+ * Return whether a Page is the top-level Studio home.
+ *
+ * @param int $post_id Candidate Page ID.
+ * @return bool
+ */
+function nice_is_studio_home_page( $post_id ) {
+	$post = get_post( $post_id );
+
+	return $post instanceof WP_Post
+		&& 'page' === $post->post_type
+		&& 0 === (int) $post->post_parent
+		&& 'studio' === $post->post_name;
+}
+
+/**
+ * Return whether a Page is the top-level Events home.
+ *
+ * @param int $post_id Candidate Page ID.
+ * @return bool
+ */
+function nice_is_events_home_page( $post_id ) {
+	$post = get_post( $post_id );
+
+	return $post instanceof WP_Post
+		&& 'page' === $post->post_type
+		&& 0 === (int) $post->post_parent
+		&& 'events' === $post->post_name;
+}
+
+/**
+ * Accept only existing image attachments, or zero for an empty selection.
+ *
+ * @param mixed $value Candidate attachment ID.
+ * @return int
+ */
+function nice_sanitize_hero_image_id( $value ) {
+	if ( ! is_int( $value ) && ! is_string( $value ) ) {
+		return 0;
+	}
+	$id = filter_var( $value, FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+
+	return $id && 'attachment' === get_post_type( $id ) && wp_attachment_is_image( $id ) ? $id : 0;
+}
+
+/**
+ * Restrict Events hero REST edits to editors of the top-level Events Page.
+ *
+ * @param bool   $allowed   Existing decision.
+ * @param string $meta_key  Meta key.
+ * @param int    $object_id Page ID.
+ * @return bool
+ */
+function nice_authorize_events_hero_meta( $allowed, $meta_key, $object_id ) {
+	return nice_is_events_home_page( $object_id ) && current_user_can( 'edit_post', $object_id );
+}
+
+/**
  * Sanitize an optional four-digit year.
  *
  * @param mixed $value Candidate year.

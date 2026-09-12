@@ -28,6 +28,42 @@ uninstall preserve content and options.
 
 The migration is safe to run again and reports records as created or skipped.
 
+== Case Study Source Approval ==
+
+Case Studies include a private Content Source & Approval panel for editors. Add
+the HTTPS source URL and a short source label or verification note, then move the
+approval state from Draft to Review and finally Approved as evidence and usage
+rights are confirmed. Approval records editorial clearance; publishing remains
+a separate WordPress action.
+
+Running `wp nice migrate-content` also creates five LinkedIn-derived Events
+candidate records as WordPress drafts. They contain brief paraphrased text and
+the official NICE Solutions LinkedIn company-posts URL, but no images, team
+members, proof metrics, or publication approval. An existing slug in any status
+is skipped completely, so reruns never overwrite editor changes or alter a
+published record.
+
+== Events Hero Media ==
+
+Events hero media uses the native Media Library on the top-level Events Page.
+The REST fields are _nice_events_hero_image_id, _nice_events_hero_mobile_image_id,
+_nice_events_hero_focal_x, _nice_events_hero_focal_y, _nice_events_hero_reference,
+and _nice_events_hero_media_initialized. Focal positions default to 50.
+
+To initialize only the optional Events reference hero manually:
+
+    wp eval 'print_r( nice_initialize_events_hero_media() );'
+
+The initializer also runs during activation and the explicit content migration.
+It imports assets/images/events-reference-hero.webp from the active theme only
+when no Events hero metadata exists. Missing assets remain retryable. Existing
+values, including empty selections and false initialized markers, are preserved.
+No initialization runs on ordinary frontend or admin requests.
+
+Focused runtime checks (temporarily write metadata and restore it in finally):
+
+    wp eval-file scripts/wp-events-media-check.php
+
 == Changelog ==
 
 = 1.2.0 =

@@ -15,15 +15,6 @@ $nice_studio_url          = esc_url( home_url( '/studio/' ) );
 ?>
 <!-- wp:html -->
 <section class="nice-doors-section" id="destinations" aria-label="<?php esc_attr_e( 'NICE Divisions', 'nice' ); ?>">
-	<!-- Integrated Restrained NICE Statement -->
-	<div class="nice-philosophy-strip" aria-label="<?php esc_attr_e( 'NICE Philosophy', 'nice' ); ?>" data-nice-reveal>
-		<span class="nice-philosophy-strip__item">Brief.</span>
-		<span class="nice-philosophy-strip__dot" aria-hidden="true">&bull;</span>
-		<span class="nice-philosophy-strip__item">Idea.</span>
-		<span class="nice-philosophy-strip__dot" aria-hidden="true">&bull;</span>
-		<span class="nice-philosophy-strip__item">Solution.</span>
-	</div>
-
 	<div class="nice-wide nice-doors-grid">
 		<!-- Section 02: Events -->
 		<article class="nice-door nice-door--events nice-pathway" id="events" data-nice-reveal>

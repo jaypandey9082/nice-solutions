@@ -20,6 +20,8 @@ function nice_core_activate() {
 	nice_ensure_default_terms();
 	nice_provision_events_pages();
 	nice_provision_studio_pages();
+	nice_initialize_studio_hero_media();
+	nice_initialize_events_hero_media();
 	flush_rewrite_rules();
 }
 

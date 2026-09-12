@@ -14,6 +14,7 @@
 	let condensed = false;
 	let scrollFrame = 0;
 	let returnFocus = null;
+	const inertedElements = new Map();
 
 	const updateHeader = () => {
 		const scrollPosition = window.scrollY;
@@ -50,6 +51,41 @@
 
 	const isOpen = () => menu.dataset.state === 'open';
 
+	const setBackgroundInert = (shouldInert) => {
+		if (!shouldInert) {
+			inertedElements.forEach((wasInert, element) => {
+				if (!wasInert) {
+					element.removeAttribute('inert');
+				}
+			});
+			inertedElements.clear();
+			return;
+		}
+
+		let activeBranch = menu;
+		while (activeBranch.parentElement) {
+			const parent = activeBranch.parentElement;
+
+			[...parent.children].forEach((sibling) => {
+				if (
+					sibling === activeBranch ||
+					sibling.tagName === 'SCRIPT' ||
+					sibling.tagName === 'STYLE'
+				) {
+					return;
+				}
+
+				inertedElements.set(sibling, sibling.hasAttribute('inert'));
+				sibling.setAttribute('inert', '');
+			});
+
+			activeBranch = parent;
+			if (parent === document.body) {
+				break;
+			}
+		}
+	};
+
 	const openMenu = () => {
 		returnFocus = document.activeElement;
 		menu.dataset.state = 'open';
@@ -57,6 +93,7 @@
 		menu.setAttribute('aria-hidden', 'false');
 		openButton.setAttribute('aria-expanded', 'true');
 		document.body.classList.add('nice-menu-is-open');
+		setBackgroundInert(true);
 		closeButton.focus();
 	};
 
@@ -66,6 +103,7 @@
 		menu.setAttribute('aria-hidden', 'true');
 		openButton.setAttribute('aria-expanded', 'false');
 		document.body.classList.remove('nice-menu-is-open');
+		setBackgroundInert(false);
 
 		if (restoreFocus && returnFocus instanceof HTMLElement) {
 			returnFocus.focus();
@@ -117,4 +155,3 @@
 
 	closeMenu(false);
 })();
-

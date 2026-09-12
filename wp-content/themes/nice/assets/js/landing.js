@@ -8,7 +8,8 @@
 		return;
 	}
 
-	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+	const reducedMotion = motionPreference.matches;
 
 	if (reducedMotion || !('IntersectionObserver' in window)) {
 		revealElements.forEach((el) => el.classList.add('is-visible'));
@@ -56,7 +57,7 @@
 			const unit = document.createElement('span');
 			unit.className = 'nice-reveal-unit';
 			unit.textContent = word;
-			unit.style.transitionDelay = `${index * 80}ms`;
+			unit.style.transitionDelay = `${Math.min(index * 60, 180)}ms`;
 
 			mask.appendChild(unit);
 			fragment.appendChild(mask);
@@ -99,4 +100,36 @@
 	);
 
 	editorialElements.forEach((el) => editorialObserver.observe(el));
+
+	const disableMotion = (event) => {
+		if (!event.matches) {
+			return;
+		}
+
+		revealObserver.disconnect();
+		editorialObserver.disconnect();
+		document.documentElement.classList.remove('nice-has-reveal');
+		revealElements.forEach((el) => el.classList.add('is-visible'));
+		editorialElements.forEach((el) => el.classList.add('is-visible'));
+	};
+
+	motionPreference.addEventListener?.('change', disableMotion);
+
+	document.addEventListener('click', (event) => {
+		const link = event.target.closest('a[href^="#"]');
+		if (!link) {
+			return;
+		}
+
+		const target = document.querySelector(link.getAttribute('href'));
+		if (!target) {
+			return;
+		}
+
+		window.setTimeout(() => {
+			target.setAttribute('tabindex', '-1');
+			target.focus({ preventScroll: true });
+			target.addEventListener('blur', () => target.removeAttribute('tabindex'), { once: true });
+		}, motionPreference.matches ? 0 : 380);
+	});
 })();

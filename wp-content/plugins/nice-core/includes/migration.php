@@ -234,6 +234,81 @@ function nice_get_content_migration_manifest() {
 }
 
 /**
+ * Return source-backed Events candidates that require editorial approval.
+ *
+ * These records intentionally omit images, proof metrics, and public approval.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function nice_get_linkedin_case_study_draft_manifest() {
+	$source_url  = 'https://www.linkedin.com/company/n-i-c-e-solutions/posts/?feedView=all';
+	$source_note = 'NICE Solutions LinkedIn company posts. Verify the scope, client wording, media rights, and final copy before publishing.';
+
+	return array(
+		array(
+			'slug'         => 'yarn-expo-surat-2026',
+			'title'        => 'Yarn Expo Surat 2026',
+			'description'  => 'An exhibition presence for Texpert India and Textile Trade Buddy at Yarn Expo Surat 2026.',
+			'content'      => '<p>NICE supported the Yarn Expo Surat 2026 exhibition presence for Texpert India and Textile Trade Buddy through stall design and fabrication.</p>',
+			'service_type' => 'exhibitions-conferences',
+			'client_name'  => 'Texpert India and Textile Trade Buddy',
+			'location'     => 'Surat',
+			'year'         => 2026,
+			'source_url'   => $source_url,
+			'source_note'  => $source_note,
+		),
+		array(
+			'slug'         => 'netsurf-communications-conference',
+			'title'        => 'Netsurf Communications Conference',
+			'description'  => 'A corporate conference for Netsurf Communications at ITC Fortune in Vashi.',
+			'content'      => '<p>NICE supported a Netsurf Communications conference at ITC Fortune in Vashi with event production and on-ground delivery.</p>',
+			'service_type' => 'corporate-events',
+			'client_name'  => 'Netsurf Communications',
+			'location'     => 'ITC Fortune, Vashi',
+			'year'         => 0,
+			'source_url'   => $source_url,
+			'source_note'  => $source_note,
+		),
+		array(
+			'slug'         => 'livcon-mumbai-2026',
+			'title'        => 'LIVCON Mumbai 2026',
+			'description'  => 'An event environment delivered with Panther Pharma for LIVCON Mumbai 2026.',
+			'content'      => '<p>NICE partnered with Panther Pharma for LIVCON Mumbai 2026, shaping the event environment and coordinating event delivery.</p>',
+			'service_type' => 'exhibitions-conferences',
+			'client_name'  => 'Panther Pharma',
+			'location'     => 'Mumbai',
+			'year'         => 2026,
+			'source_url'   => $source_url,
+			'source_note'  => $source_note,
+		),
+		array(
+			'slug'         => 'mngl-foundation-day',
+			'title'        => 'MNGL Foundation Day',
+			'description'  => 'A foundation-day event for MNGL combining venue branding, stage design, and event coordination.',
+			'content'      => '<p>NICE supported MNGL\'s Foundation Day with venue branding, stage design, awards coordination, and event delivery.</p>',
+			'service_type' => 'corporate-events',
+			'client_name'  => 'MNGL',
+			'location'     => '',
+			'year'         => 0,
+			'source_url'   => $source_url,
+			'source_note'  => $source_note,
+		),
+		array(
+			'slug'         => 'constro-2026',
+			'title'        => 'CONSTRO 2026',
+			'description'  => 'Exhibition booths for Apollo Carmix and Apollo Zenith at CONSTRO 2026.',
+			'content'      => '<p>NICE designed and fabricated exhibition booths for Apollo Carmix and Apollo Zenith at CONSTRO 2026.</p>',
+			'service_type' => 'exhibitions-conferences',
+			'client_name'  => 'Apollo Carmix and Apollo Zenith',
+			'location'     => 'Pune',
+			'year'         => 2026,
+			'source_url'   => $source_url,
+			'source_note'  => $source_note,
+		),
+	);
+}
+
+/**
  * Return the approved Events section Page manifest.
  *
  * @return array<int, array{slug: string, title: string, template: string}>
@@ -419,6 +494,83 @@ function nice_find_migrated_post( $slug, $post_type ) {
 }
 
 /**
+ * Create source-backed Events candidates as private editorial drafts.
+ *
+ * An existing slug in any status is a hard stop. This protects published
+ * records and every editor change from migration reruns.
+ *
+ * @return array{created: int, skipped: int, errors: string[]}
+ */
+function nice_migrate_linkedin_case_study_drafts() {
+	$summary = array(
+		'created' => 0,
+		'skipped' => 0,
+		'errors'  => array(),
+	);
+	$service_types = nice_get_approved_service_types();
+
+	foreach ( nice_get_linkedin_case_study_draft_manifest() as $record ) {
+		if ( nice_find_migrated_post( $record['slug'], 'nice_case_study' ) ) {
+			++$summary['skipped'];
+			continue;
+		}
+
+		$service_type = sanitize_title( $record['service_type'] ?? '' );
+		if ( empty( $service_types[ $service_type ] ) || 'events' !== $service_types[ $service_type ]['division'] ) {
+			$summary['errors'][] = sprintf( 'Invalid Events service type for source draft: %s', sanitize_text_field( $record['title'] ?? '' ) );
+			continue;
+		}
+
+		$post_id = wp_insert_post(
+			array(
+				'post_type'    => 'nice_case_study',
+				'post_status'  => 'draft',
+				'post_name'    => sanitize_title( $record['slug'] ),
+				'post_title'   => sanitize_text_field( $record['title'] ),
+				'post_excerpt' => sanitize_textarea_field( $record['description'] ?? '' ),
+				'post_content' => wp_kses_post( $record['content'] ?? '' ),
+			),
+			true
+		);
+
+		if ( is_wp_error( $post_id ) ) {
+			$summary['errors'][] = $post_id->get_error_message();
+			continue;
+		}
+
+		// Keep source intake private even if another hook changes the insert status.
+		if ( 'draft' !== get_post_status( $post_id ) ) {
+			$status_result = wp_update_post(
+				array(
+					'ID'          => $post_id,
+					'post_status' => 'draft',
+				),
+				true
+			);
+
+			if ( is_wp_error( $status_result ) || 'draft' !== get_post_status( $post_id ) ) {
+				wp_delete_post( $post_id, true );
+				$summary['errors'][] = sprintf( 'Could not keep source candidate as a draft: %s', sanitize_text_field( $record['title'] ) );
+				continue;
+			}
+		}
+
+		wp_set_object_terms( $post_id, $service_type, 'nice_service_type', false );
+		update_post_meta( $post_id, '_nice_client_name', sanitize_text_field( $record['client_name'] ?? '' ) );
+		update_post_meta( $post_id, '_nice_location', sanitize_text_field( $record['location'] ?? '' ) );
+		update_post_meta( $post_id, '_nice_year', nice_sanitize_year( $record['year'] ?? 0 ) );
+		update_post_meta( $post_id, '_nice_featured', 0 );
+		update_post_meta( $post_id, '_nice_display_order', 0 );
+		update_post_meta( $post_id, '_nice_source_url', nice_sanitize_https_url( $record['source_url'] ?? '' ) );
+		update_post_meta( $post_id, '_nice_source_note', sanitize_textarea_field( $record['source_note'] ?? '' ) );
+		update_post_meta( $post_id, '_nice_source_approval_status', 'draft' );
+		++$summary['created'];
+	}
+
+	return $summary;
+}
+
+/**
  * Import one existing theme image into the media library once.
  *
  * @param string $filename Theme image filename.
@@ -474,6 +626,105 @@ function nice_migrate_media_attachment( $filename, $alt ) {
 	update_post_meta( $attachment_id, '_wp_attachment_image_alt', sanitize_text_field( $alt ) );
 
 	return $attachment_id;
+}
+
+/**
+ * Assign the Studio reference hero once, without restoring an editor removal.
+ *
+ * @return array{status: string, attachment_id: int, message: string}
+ */
+function nice_initialize_studio_hero_media() {
+	$summary = array(
+		'status'        => 'skipped',
+		'attachment_id' => 0,
+		'message'       => '',
+	);
+	$studio = get_page_by_path( 'studio', OBJECT, 'page' );
+
+	if ( ! $studio instanceof WP_Post ) {
+		$summary['status']  = 'unavailable';
+		$summary['message'] = 'The Studio Home Page is unavailable.';
+		return $summary;
+	}
+
+	if ( metadata_exists( 'post', $studio->ID, '_nice_studio_hero_media_initialized' ) ) {
+		return $summary;
+	}
+
+	$filename = 'studio-reference-hero.webp';
+	$source   = get_theme_file_path( '/assets/images/' . $filename );
+	if ( ! is_readable( $source ) ) {
+		$summary['status']  = 'unavailable';
+		$summary['message'] = 'The optional Studio reference hero asset is unavailable.';
+		return $summary;
+	}
+
+	$attachment_id = nice_migrate_media_attachment(
+		$filename,
+		__( 'Creative production team working on a cinematic studio set', 'nice-core' )
+	);
+
+	if ( is_wp_error( $attachment_id ) ) {
+		$summary['status']  = 'unavailable';
+		$summary['message'] = $attachment_id->get_error_message();
+		return $summary;
+	}
+
+	update_post_meta( $studio->ID, '_nice_studio_hero_image_id', absint( $attachment_id ) );
+	update_post_meta( $studio->ID, '_nice_studio_hero_focal_x', 50 );
+	update_post_meta( $studio->ID, '_nice_studio_hero_focal_y', 50 );
+	update_post_meta( $studio->ID, '_nice_studio_hero_reference', 1 );
+	update_post_meta( $studio->ID, '_nice_studio_hero_media_initialized', 1 );
+
+	$summary['status']        = 'initialized';
+	$summary['attachment_id'] = absint( $attachment_id );
+
+	return $summary;
+}
+
+/**
+ * Initialize Events reference media once, preserving all prior editorial choices.
+ * Callable directly with wp eval 'print_r( nice_initialize_events_hero_media() );'.
+ *
+ * @return array{status: string, attachment_id: int, message: string}
+ */
+function nice_initialize_events_hero_media() {
+	$summary = array( 'status' => 'skipped', 'attachment_id' => 0, 'message' => '' );
+	$events  = get_page_by_path( 'events', OBJECT, 'page' );
+	if ( ! $events instanceof WP_Post || ! nice_is_events_home_page( $events->ID ) ) {
+		$summary['status']  = 'unavailable';
+		$summary['message'] = 'The Events Page is unavailable.';
+		return $summary;
+	}
+
+	// Existence matters: a saved zero, false or empty selection is intentional.
+	foreach ( array( 'media_initialized', 'image_id', 'mobile_image_id', 'focal_x', 'focal_y', 'reference' ) as $field ) {
+		if ( metadata_exists( 'post', $events->ID, '_nice_events_hero_' . $field ) ) {
+			return $summary;
+		}
+	}
+
+	$filename = 'events-reference-hero.webp';
+	if ( ! is_readable( get_theme_file_path( '/assets/images/' . $filename ) ) ) {
+		$summary['status']  = 'unavailable';
+		$summary['message'] = 'The optional Events reference hero asset is unavailable.';
+		return $summary;
+	}
+	$attachment_id = nice_migrate_media_attachment( $filename, __( 'Temporary Events reference imagery', 'nice-core' ) );
+	if ( is_wp_error( $attachment_id ) || ! nice_sanitize_hero_image_id( $attachment_id ) ) {
+		$summary['status']  = 'unavailable';
+		$summary['message'] = is_wp_error( $attachment_id ) ? $attachment_id->get_error_message() : 'The Events reference asset is not an image attachment.';
+		return $summary;
+	}
+
+	update_post_meta( $events->ID, '_nice_events_hero_image_id', $attachment_id );
+	update_post_meta( $events->ID, '_nice_events_hero_focal_x', 50 );
+	update_post_meta( $events->ID, '_nice_events_hero_focal_y', 50 );
+	update_post_meta( $events->ID, '_nice_events_hero_reference', 1 );
+	update_post_meta( $events->ID, '_nice_events_hero_media_initialized', 1 );
+	$summary['status']        = 'initialized';
+	$summary['attachment_id'] = $attachment_id;
+	return $summary;
 }
 
 /**
@@ -565,8 +816,11 @@ function nice_run_content_migration() {
 		'clients'      => array( 'created' => 0, 'skipped' => 0 ),
 		'services'     => array( 'created' => 0, 'skipped' => 0 ),
 		'case_studies' => array( 'created' => 0, 'skipped' => 0 ),
+		'source_drafts' => array( 'created' => 0, 'skipped' => 0, 'errors' => array() ),
 		'media'        => array( 'linked' => 0, 'errors' => array() ),
 		'enriched'     => 0,
+		'studio_hero'  => array( 'status' => 'skipped', 'attachment_id' => 0, 'message' => '' ),
+		'events_hero'  => array( 'status' => 'skipped', 'attachment_id' => 0, 'message' => '' ),
 	);
 
 	if ( ! empty( $summary['terms']['errors'] ) ) {
@@ -577,6 +831,13 @@ function nice_run_content_migration() {
 	}
 	if ( ! empty( $summary['studio_page']['errors'] ) ) {
 		return new WP_Error( 'nice_studio_page_migration_failed', implode( ' ', $summary['studio_page']['errors'] ) );
+	}
+
+	$summary['studio_hero'] = nice_initialize_studio_hero_media();
+	$summary['events_hero'] = nice_initialize_events_hero_media();
+	$summary['source_drafts'] = nice_migrate_linkedin_case_study_drafts();
+	if ( ! empty( $summary['source_drafts']['errors'] ) ) {
+		return new WP_Error( 'nice_source_draft_migration_failed', implode( ' ', $summary['source_drafts']['errors'] ) );
 	}
 
 	$client_ids = array();
@@ -681,7 +942,17 @@ function nice_cli_migrate_content() {
 	WP_CLI::log( sprintf( 'Events pages: %d created, %d existing', $result['pages']['created'], $result['pages']['skipped'] ) );
 	WP_CLI::log( sprintf( 'Studio Home: %d created, %d existing', $result['studio_page']['created'], $result['studio_page']['skipped'] ) );
 	WP_CLI::log( sprintf( 'Source-backed fields enriched: %d', $result['enriched'] ) );
+	WP_CLI::log( sprintf( 'LinkedIn source drafts: %d created, %d skipped', $result['source_drafts']['created'], $result['source_drafts']['skipped'] ) );
 	WP_CLI::log( sprintf( 'Media linked: %d', $result['media']['linked'] ) );
+	WP_CLI::log( sprintf( 'Studio reference hero: %s', $result['studio_hero']['status'] ) );
+	WP_CLI::log( sprintf( 'Events reference hero: %s', $result['events_hero']['status'] ) );
+	if ( $result['events_hero']['message'] ) {
+		WP_CLI::warning( $result['events_hero']['message'] );
+	}
+
+	if ( $result['studio_hero']['message'] ) {
+		WP_CLI::warning( $result['studio_hero']['message'] );
+	}
 
 	if ( $result['media']['errors'] ) {
 		foreach ( array_unique( $result['media']['errors'] ) as $error ) {

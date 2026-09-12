@@ -56,15 +56,28 @@ function nice_get_studio_home_case_studies() {
 		return array();
 	}
 
-	return apply_filters(
-		'nice_studio_home_case_studies',
-		nice_get_featured_case_studies(
-			array(
-				'division'       => 'studio',
-				'posts_per_page' => 5,
-			)
+	$case_studies = nice_get_featured_case_studies(
+		array(
+			'division'       => 'studio',
+			'posts_per_page' => 20,
 		)
 	);
+	$by_slug      = array();
+
+	foreach ( $case_studies as $case_study ) {
+		if ( $case_study instanceof WP_Post ) {
+			$by_slug[ $case_study->post_name ] = $case_study;
+		}
+	}
+
+	$selected = array();
+	foreach ( array( 'strata-geosystems-factory-shoot', 'career-agents-academy', 'krish-e' ) as $slug ) {
+		if ( isset( $by_slug[ $slug ] ) ) {
+			$selected[] = $by_slug[ $slug ];
+		}
+	}
+
+	return apply_filters( 'nice_studio_home_case_studies', $selected );
 }
 
 /**
@@ -81,22 +94,6 @@ function nice_get_studio_home_clients() {
 		'nice_studio_home_clients',
 		nice_get_featured_clients( array( 'posts_per_page' => 8 ) )
 	);
-}
-
-/**
- * Return the Corporate Videos record used as the Studio hero media source.
- *
- * @param WP_Post[] $services Studio Services.
- * @return WP_Post|null
- */
-function nice_get_studio_hero_source( $services ) {
-	foreach ( $services as $service ) {
-		if ( 'corporate-videos' === $service->post_name && has_post_thumbnail( $service ) ) {
-			return $service;
-		}
-	}
-
-	return null;
 }
 
 /**

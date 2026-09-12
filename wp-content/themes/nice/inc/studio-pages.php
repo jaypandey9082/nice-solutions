@@ -51,26 +51,61 @@ function nice_theme_get_studio_content_url( $post ) {
 }
 
 /**
+ * Prepare text-led project content without loading unapproved embedded media.
+ *
+ * @param string $content Stored Case Study content.
+ * @return string
+ */
+function nice_theme_get_studio_project_content( $content ) {
+	$allowed_html = array(
+		'a'          => array(
+			'href'   => true,
+			'rel'    => true,
+			'target' => true,
+		),
+		'blockquote' => array( 'cite' => true ),
+		'br'         => array(),
+		'cite'       => array(),
+		'div'        => array( 'class' => true ),
+		'em'         => array(),
+		'h2'         => array( 'class' => true, 'id' => true ),
+		'h3'         => array( 'class' => true, 'id' => true ),
+		'h4'         => array( 'class' => true, 'id' => true ),
+		'li'         => array(),
+		'ol'         => array( 'class' => true ),
+		'p'          => array( 'class' => true ),
+		'span'       => array( 'class' => true ),
+		'strong'     => array(),
+		'ul'         => array( 'class' => true ),
+	);
+	$text_content = strip_shortcodes( $content );
+	$text_content = apply_filters( 'the_content', $text_content );
+
+	return wp_kses( $text_content, $allowed_html );
+}
+
+/**
  * Render a full-bleed Studio inner-page hero.
  *
  * @param string $eyebrow   Introductory label.
  * @param string $title     Page title.
  * @param string $intro     Introductory copy.
- * @param int    $post_id   Optional featured-image source.
- * @param string $video_url Optional hero video URL.
+ * @param int    $post_id   Retained for renderer compatibility.
+ * @param string $video_url Retained for renderer compatibility.
  */
 function nice_render_studio_inner_hero( $eyebrow, $title, $intro, $post_id = 0, $video_url = '' ) {
 	?>
-	<header class="nice-studio-inner-hero">
+	<header class="nice-studio-inner-hero nice-studio-inner-hero--cinematic">
 		<div class="nice-wide nice-studio-inner-hero__content" data-nice-reveal>
 			<p class="nice-eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
-			<h1 class="nice-editorial" data-nice-editorial-reveal><?php echo esc_html( $title ); ?></h1>
+			<h1><?php echo esc_html( $title ); ?></h1>
 			<?php if ( $intro ) : ?>
 				<p><?php echo esc_html( $intro ); ?></p>
 			<?php endif; ?>
 		</div>
 	</header>
 	<?php
+	echo nice_render_philosophy_strip(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shared static markup.
 }
 
 /**
@@ -84,12 +119,15 @@ function nice_render_studio_case_preview( $case_study, $class_name = '' ) {
 	$client      = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $case_study->ID ) : '';
 	$location    = get_post_meta( $case_study->ID, '_nice_location', true );
 	$year        = (int) get_post_meta( $case_study->ID, '_nice_year', true );
-	$image       = nice_theme_get_featured_image( $case_study->ID, '(min-width: 75rem) 720px, (min-width: 48rem) 52vw, calc(100vw - 40px)' );
 	$description = $case_study->post_excerpt ?: wp_trim_words( wp_strip_all_tags( $case_study->post_content ), 30 );
 	?>
 	<article class="nice-studio-case-preview <?php echo esc_attr( $class_name ); ?>" data-nice-reveal>
-		<?php if ( $image ) : ?>
-			<div class="nice-studio-case-preview__media"><?php echo $image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+		<?php if ( $url ) : ?>
+			<a class="nice-studio-case-preview__media nice-studio-media-placeholder" href="<?php echo esc_url( $url ); ?>" aria-label="<?php echo esc_attr( sprintf( 'View %s case study', $case_study->post_title ) ); ?>">
+				<span aria-hidden="true">NICE Studio</span>
+			</a>
+		<?php else : ?>
+			<div class="nice-studio-case-preview__media nice-studio-media-placeholder" aria-hidden="true"><span>NICE Studio</span></div>
 		<?php endif; ?>
 		<div class="nice-studio-case-preview__body">
 			<?php if ( $client ) : ?><p class="nice-eyebrow"><?php echo esc_html( $client ); ?></p><?php endif; ?>
@@ -143,44 +181,7 @@ function nice_render_studio_inner_contact_cta( $args = array() ) {
  * @return string
  */
 function nice_render_studio_section_navigation() {
-	if ( ! nice_theme_is_studio_context() ) {
-		return '';
-	}
-
-	$section = 'home';
-
-	if ( is_singular( 'nice_service' ) || is_page( 'services' ) ) {
-		$section = 'services';
-	} elseif ( is_singular( 'nice_case_study' ) || is_page( 'case-studies' ) ) {
-		$section = 'case-studies';
-	} elseif ( is_page( 'clients' ) ) {
-		$section = 'clients';
-	} elseif ( is_page( 'team' ) ) {
-		$section = 'team';
-	} elseif ( is_page( 'contact' ) ) {
-		$section = 'contact';
-	}
-
-	$links = array(
-		'home'         => array( 'label' => 'Studio Home', 'path' => '/studio/' ),
-		'services'     => array( 'label' => 'Services', 'path' => '/studio/services/' ),
-		'case-studies' => array( 'label' => 'Case Studies', 'path' => '/studio/case-studies/' ),
-		'clients'      => array( 'label' => 'Clients', 'path' => '/studio/clients/' ),
-		'team'         => array( 'label' => 'Team', 'path' => '/studio/team/' ),
-		'contact'      => array( 'label' => 'Contact', 'path' => '/studio/contact/' ),
-	);
-
-	ob_start();
-	?>
-	<div class="nice-studio-subnav-shell">
-		<nav class="nice-wide nice-studio-subnav" aria-label="<?php esc_attr_e( 'Studio navigation', 'nice' ); ?>">
-			<?php foreach ( $links as $key => $link ) : ?>
-				<a href="<?php echo esc_url( home_url( $link['path'] ) ); ?>"<?php echo $section === $key ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $link['label'] ); ?></a>
-			<?php endforeach; ?>
-		</nav>
-	</div>
-	<?php
-	return (string) ob_get_clean();
+	return '';
 }
 
 /**
@@ -196,7 +197,7 @@ function nice_render_studio_services_index() {
 	nice_render_studio_inner_hero(
 		'NICE / Studio',
 		'Studio services',
-		'Screen-based storytelling across multiple formats and formats. From conceptualisation to post-production, we bring stories to life.',
+		'Screen-based storytelling across multiple formats. From conceptualisation to post-production, we bring stories to life.',
 		$hero_id
 	);
 	?>
@@ -209,14 +210,12 @@ function nice_render_studio_services_index() {
 			<?php if ( 3 === count( $services ) ) : ?>
 				<div class="nice-studio-services-index__list">
 					<?php foreach ( $services as $index => $service ) :
-						$image       = nice_theme_get_featured_image( $service->ID, '(min-width: 75rem) 720px, (min-width: 48rem) 58vw, calc(100vw - 40px)' );
 						$url         = nice_theme_get_studio_content_url( $service );
 						$description = $service->post_excerpt ?: wp_trim_words( wp_strip_all_tags( $service->post_content ), 30 );
 						?>
-						<article class="nice-studio-service-row<?php echo 1 === $index % 2 ? ' nice-studio-service-row--reverse' : ''; ?>" data-nice-reveal>
-							<?php if ( $image ) : ?><div class="nice-studio-service-row__media"><?php echo $image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div><?php endif; ?>
+						<article class="nice-studio-service-row" data-nice-reveal>
 							<div class="nice-studio-service-row__content">
-								<span><?php echo esc_html( sprintf( '%02d', $index + 1 ) ); ?></span>
+								<span class="nice-studio-service-row__index"><?php echo esc_html( sprintf( '%02d', $index + 1 ) ); ?></span>
 								<h3><?php echo esc_html( $service->post_title ); ?></h3>
 								<p><?php echo esc_html( $description ); ?></p>
 								<?php if ( $url ) : ?><a class="nice-link" href="<?php echo esc_url( $url ); ?>">Explore <?php echo esc_html( $service->post_title ); ?> <span aria-hidden="true">-&gt;</span></a><?php endif; ?>
@@ -338,17 +337,7 @@ function nice_render_studio_case_studies_index() {
 					</header>
 					<?php if ( $case_studies ) : ?>
 						<div class="nice-studio-case-list">
-							<?php
-							$hierarchy_classes = array(
-								0 => 'nice-studio-case-preview--featured',
-								1 => 'nice-studio-case-preview--large',
-								2 => 'nice-studio-case-preview--secondary',
-							);
-							foreach ( $case_studies as $idx => $case_study ) :
-								$variant_class = $hierarchy_classes[ $idx ] ?? 'nice-studio-case-preview--secondary';
-								nice_render_studio_case_preview( $case_study, $variant_class );
-							endforeach;
-							?>
+							<?php foreach ( $case_studies as $case_study ) : nice_render_studio_case_preview( $case_study ); endforeach; ?>
 						</div>
 					<?php else : ?>
 						<div class="nice-studio-empty-state" data-nice-reveal><p>Approved case studies in this service are being prepared for publication.</p></div>
@@ -382,7 +371,6 @@ function nice_render_studio_case_study_detail() {
 	$proof_label  = get_post_meta( $case_study->ID, '_nice_proof_label', true );
 	$quote_text   = get_post_meta( $case_study->ID, '_nice_quote_text', true );
 	$quote_author = get_post_meta( $case_study->ID, '_nice_quote_author', true );
-	$video_url    = get_post_meta( $case_study->ID, '_nice_hero_video_url', true );
 	$service_type = function_exists( 'nice_theme_get_primary_term' ) ? nice_theme_get_primary_term( $case_study->ID, 'nice_service_type' ) : null;
 	$division     = function_exists( 'nice_theme_get_primary_term' ) ? nice_theme_get_primary_term( $case_study->ID, 'nice_division' ) : null;
 	$related      = $service_type && function_exists( 'nice_get_case_studies_by_service' )
@@ -400,7 +388,7 @@ function nice_render_studio_case_study_detail() {
 	$next         = false !== $current && $current < count( $all_cases ) - 1 ? $all_cases[ $current + 1 ] : null;
 
 	ob_start();
-	nice_render_studio_inner_hero( $client ?: 'Studio case study', $case_study->post_title, $case_study->post_excerpt, $case_study->ID, $video_url );
+	nice_render_studio_inner_hero( $client ?: 'Studio case study', $case_study->post_title, $case_study->post_excerpt, $case_study->ID );
 	?>
 	<?php if ( $quote_text ) : ?>
 		<section class="nice-studio-case-quote nice-studio-inner-section" aria-label="<?php esc_attr_e( 'Client quote', 'nice' ); ?>">
@@ -425,29 +413,13 @@ function nice_render_studio_case_study_detail() {
 			</dl>
 		</div>
 	</section>
-	<?php
-	$case_hero_image = nice_theme_get_featured_image(
-		$case_study->ID,
-		'(min-width: 75rem) 1200px, 100vw',
-		array(
-			'alt'           => get_the_title( $case_study->ID ),
-			'loading'       => 'eager',
-			'fetchpriority' => 'high',
-		)
-	);
-	if ( $video_url || $case_hero_image ) : ?>
-		<section class="nice-case-hero-media-wrap" aria-label="<?php esc_attr_e( 'Project visual', 'nice' ); ?>">
-			<div class="nice-wide">
-				<div class="nice-case-hero-media" data-nice-reveal>
-					<?php if ( $video_url ) : ?>
-						<video src="<?php echo esc_url( $video_url ); ?>" muted autoplay playsinline loop poster="<?php echo esc_url( wp_get_attachment_image_url( get_post_thumbnail_id( $case_study->ID ), 'full' ) ); ?>"></video>
-					<?php else : ?>
-						<?php echo $case_hero_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-					<?php endif; ?>
-				</div>
+	<section class="nice-case-hero-media-wrap" aria-label="<?php esc_attr_e( 'Project media', 'nice' ); ?>">
+		<div class="nice-wide">
+			<div class="nice-case-hero-media nice-studio-media-placeholder" data-nice-reveal role="img" aria-label="<?php esc_attr_e( 'Project media pending approval', 'nice' ); ?>">
+				<span aria-hidden="true">NICE Studio</span>
 			</div>
-		</section>
-	<?php endif; ?>
+		</div>
+	</section>
 	<?php if ( $proof_value && $proof_label ) : ?>
 		<section class="nice-studio-project-proof" aria-labelledby="nice-project-proof-title">
 			<div class="nice-wide nice-studio-project-proof__content" data-nice-reveal>
@@ -459,7 +431,7 @@ function nice_render_studio_case_study_detail() {
 	<section class="nice-studio-case-intro nice-studio-inner-section">
 		<div class="nice-wide nice-studio-case-intro__grid">
 			<div class="nice-studio-editor-content" data-nice-reveal>
-				<?php echo wp_kses_post( apply_filters( 'the_content', $case_study->post_content ) ); ?>
+				<?php echo nice_theme_get_studio_project_content( $case_study->post_content ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Sanitized by helper. ?>
 			</div>
 		</div>
 	</section>
@@ -468,25 +440,18 @@ function nice_render_studio_case_study_detail() {
 			<div class="nice-wide">
 				<header class="nice-studio-inner-heading" data-nice-reveal><p class="nice-eyebrow">Continue exploring</p><h2 id="nice-related-work-title">Related work</h2></header>
 				<div class="nice-studio-case-list">
-					<?php foreach ( $related as $idx => $item ) :
-						$rel_class = 0 === $idx ? 'nice-studio-case-preview--featured' : 'nice-studio-case-preview--secondary';
-						nice_render_studio_case_preview( $item, $rel_class );
-					endforeach; ?>
+					<?php foreach ( $related as $item ) : nice_render_studio_case_preview( $item ); endforeach; ?>
 				</div>
 			</div>
 		</section>
 	<?php endif; ?>
 	<?php if ( $previous || $next ) : ?>
 		<nav class="nice-studio-project-navigation nice-wide" aria-label="<?php esc_attr_e( 'Case study navigation', 'nice' ); ?>">
-			<?php if ( $previous ) :
-				$prev_client = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $previous->ID ) : '';
-				$prev_img    = nice_theme_get_featured_image( $previous->ID, '160px' );
-			?>
-				<a class="nice-studio-nav-card nice-studio-nav-card--prev" href="<?php echo esc_url( nice_theme_get_studio_content_url( $previous ) ); ?>">
-					<?php if ( $prev_img ) : ?>
-						<div class="nice-studio-nav-card__media"><?php echo $prev_img; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
-					<?php endif; ?>
-					<div class="nice-studio-nav-card__body">
+		<?php if ( $previous ) :
+			$prev_client = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $previous->ID ) : '';
+		?>
+			<a class="nice-studio-nav-card nice-studio-nav-card--prev" href="<?php echo esc_url( nice_theme_get_studio_content_url( $previous ) ); ?>">
+				<div class="nice-studio-nav-card__body">
 						<small>&larr; Previous project</small>
 						<?php if ( $prev_client ) : ?><span class="nice-eyebrow"><?php echo esc_html( $prev_client ); ?></span><?php endif; ?>
 						<span class="nice-studio-nav-card__title"><?php echo esc_html( $previous->post_title ); ?></span>
@@ -495,20 +460,16 @@ function nice_render_studio_case_study_detail() {
 			<?php else : ?>
 				<span class="nice-studio-nav-card-empty"></span>
 			<?php endif; ?>
-			<?php if ( $next ) :
-				$next_client = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $next->ID ) : '';
-				$next_img    = nice_theme_get_featured_image( $next->ID, '160px' );
-			?>
+		<?php if ( $next ) :
+			$next_client = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $next->ID ) : '';
+		?>
 				<a class="nice-studio-nav-card nice-studio-nav-card--next" href="<?php echo esc_url( nice_theme_get_studio_content_url( $next ) ); ?>">
 					<div class="nice-studio-nav-card__body">
 						<small>Next project &rarr;</small>
 						<?php if ( $next_client ) : ?><span class="nice-eyebrow"><?php echo esc_html( $next_client ); ?></span><?php endif; ?>
 						<span class="nice-studio-nav-card__title"><?php echo esc_html( $next->post_title ); ?></span>
 					</div>
-					<?php if ( $next_img ) : ?>
-						<div class="nice-studio-nav-card__media"><?php echo $next_img; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
-					<?php endif; ?>
-				</a>
+			</a>
 			<?php endif; ?>
 		</nav>
 	<?php endif; ?>

@@ -41,27 +41,27 @@
         {
           "slug": "background",
           "name": "Background",
-          "color": "#FFFFFF"
+          "color": "#E7E3D8"
         },
         {
           "slug": "warm",
           "name": "Warm Background",
-          "color": "#F7F6F2"
+          "color": "#F4F2ED"
         },
         {
           "slug": "surface",
           "name": "Surface",
-          "color": "#FFFFFF"
+          "color": "#F4F2ED"
         },
         {
           "slug": "text",
           "name": "Text",
-          "color": "#111111"
+          "color": "#121213"
         },
         {
           "slug": "muted",
           "name": "Muted Text",
-          "color": "#5F6268"
+          "color": "#565249"
         },
         {
           "slug": "brand-red",
@@ -81,12 +81,12 @@
         {
           "slug": "border",
           "name": "Border",
-          "color": "#D9DADC"
+          "color": "#C7C1B2"
         },
         {
           "slug": "media-neutral",
           "name": "Media Neutral",
-          "color": "#DCE6EC"
+          "color": "#DAD5C8"
         }
       ]
     },

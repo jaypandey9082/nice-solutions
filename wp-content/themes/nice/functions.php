@@ -16,6 +16,8 @@ require_once get_theme_file_path( '/inc/events-data.php' );
 require_once get_theme_file_path( '/inc/events-pages.php' );
 require_once get_theme_file_path( '/inc/studio-data.php' );
 require_once get_theme_file_path( '/inc/studio-home.php' );
+require_once get_theme_file_path( '/inc/philosophy.php' );
+require_once get_theme_file_path( '/inc/events-home.php' );
 require_once get_theme_file_path( '/inc/studio-pages.php' );
 require_once get_theme_file_path( '/inc/assets.php' );
 require_once get_theme_file_path( '/inc/block-styles.php' );

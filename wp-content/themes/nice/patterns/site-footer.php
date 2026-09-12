@@ -18,6 +18,7 @@ $nice_is_events = function_exists( 'nice_theme_is_events_context' ) && nice_them
 $nice_is_studio = function_exists( 'nice_theme_is_studio_context' ) && nice_theme_is_studio_context();
 
 if ( $nice_is_events ) {
+	$nice_clients_url = esc_url( home_url( '/events/clients/' ) );
 	$nice_work_url     = esc_url( home_url( '/events/case-studies/' ) );
 	$nice_services_url = esc_url( home_url( '/events/services/' ) );
 	$nice_contact_url  = esc_url( home_url( '/events/contact/' ) );
@@ -25,6 +26,7 @@ if ( $nice_is_events ) {
 	$nice_work_url     = esc_url( home_url( '/studio/case-studies/' ) );
 	$nice_services_url = esc_url( home_url( '/studio/services/' ) );
 	$nice_contact_url  = esc_url( home_url( '/studio/contact/' ) );
+	$nice_clients_url  = esc_url( home_url( '/studio/clients/' ) );
 } else {
 	$nice_work_url     = esc_url( home_url( '/events/case-studies/' ) );
 	$nice_services_url = esc_url( home_url( '/events/services/' ) );
@@ -53,8 +55,8 @@ if ( $nice_is_events ) {
 				<span class="nice-eyebrow">Connect</span>
 				<a href="<?php echo $nice_clients_url; ?>">Clients</a>
 				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
-				<a href="<?php echo esc_url( $nice_whatsapp_action['url'] ); ?>" data-nice-contact-channel="whatsapp" data-nice-contact-placeholder="<?php echo $nice_whatsapp_action['placeholder'] ? 'true' : 'false'; ?>">WhatsApp</a>
-				<a href="<?php echo esc_url( $nice_email_action['url'] ); ?>" data-nice-contact-channel="email" data-nice-contact-placeholder="<?php echo $nice_email_action['placeholder'] ? 'true' : 'false'; ?>">Email</a>
+				<?php if ( ! $nice_whatsapp_action['placeholder'] ) : ?><a href="<?php echo esc_url( $nice_whatsapp_action['url'] ); ?>" data-nice-contact-channel="whatsapp">WhatsApp</a><?php endif; ?>
+				<?php if ( ! $nice_email_action['placeholder'] ) : ?><a href="<?php echo esc_url( $nice_email_action['url'] ); ?>" data-nice-contact-channel="email">Email</a><?php endif; ?>
 			</nav>
 		</div>
 		<div class="nice-footer-meta">

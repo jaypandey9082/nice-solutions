@@ -28,6 +28,7 @@ function nice_theme_setup() {
 	add_editor_style(
 		array(
 			'assets/css/site.css',
+			'assets/css/editorial-foundation.css',
 			'assets/css/landing.css',
 			'assets/css/events.css',
 			'assets/css/events-inner.css',
