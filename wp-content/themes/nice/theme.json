@@ -234,7 +234,8 @@
         "duration-image-hover": "500ms",
         "duration-page-out": "220ms",
         "duration-page-in": "360ms",
-        "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+        "easing": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "scroll-ease": "0.1"
       }
     }
   },

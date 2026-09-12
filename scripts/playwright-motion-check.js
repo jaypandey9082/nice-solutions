@@ -10,10 +10,9 @@ const assert = (ok, message) => {
 (async () => {
 	const browser = await chromium.launch({ headless: true });
 
-	/* 1. No wheel or touch handler is registered anywhere. */
+	/* 1. The wheel is smoothed; every other input stays the browser's. */
 	{
 		const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-		const registered = [];
 		await page.addInitScript(() => {
 			window.__niceListeners = [];
 			const add = EventTarget.prototype.addEventListener;
@@ -22,13 +21,69 @@ const assert = (ok, message) => {
 				return add.call(this, type, ...rest);
 			};
 		});
-		await page.goto(`${base}/`, { waitUntil: "load" });
-		registered.push(...(await page.evaluate(() => window.__niceListeners)));
-		const intercepting = registered.filter((t) => ["wheel", "mousewheel", "touchmove", "touchstart", "DOMMouseScroll"].includes(t));
-		assert(intercepting.length === 0, `no scroll-intercepting listeners (found: ${intercepting.join(", ") || "none"})`);
+		await page.goto(`${base}/events/`, { waitUntil: "load" });
+
+		const registered = await page.evaluate(() => window.__niceListeners);
+		const touch = registered.filter((t) => ["touchmove", "touchstart", "touchend"].includes(t));
+		assert(touch.length === 0, `touch is never intercepted (found: ${touch.join(", ") || "none"})`);
 
 		const scrollBehavior = await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior);
 		assert(scrollBehavior === "auto", `html scroll-behavior stays auto (is ${scrollBehavior})`);
+
+		/* A single wheel gesture should glide rather than jump. */
+		await page.evaluate(() => { window.__s = []; const t = setInterval(() => window.__s.push(Math.round(window.scrollY)), 50); setTimeout(() => clearInterval(t), 1500); });
+		await page.mouse.move(700, 450);
+		await page.mouse.wheel(0, 600);
+		await page.waitForTimeout(1200);
+
+		const samples = [...new Set(await page.evaluate(() => window.__s))];
+		assert(samples.length >= 5, `a wheel gesture eases over several frames (${samples.length} positions)`);
+		assert(samples[0] < 300, `it starts moving immediately (first sample ${samples[0]})`);
+		const landed = samples[samples.length - 1];
+		assert(Math.abs(landed - 600) <= 40, `and lands where the gesture asked (${landed} of 600)`);
+
+		/* Deceleration, not a constant slide. */
+		const firstStep = samples[1] - samples[0];
+		const lastStep = samples[samples.length - 1] - samples[samples.length - 2];
+		assert(firstStep > lastStep, `it decelerates (${firstStep}px then ${lastStep}px per frame)`);
+		await page.close();
+	}
+
+	/* 1b. Keyboard and programmatic scrolling remain native. */
+	{
+		const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+		await page.goto(`${base}/events/`, { waitUntil: "load" });
+
+		await page.evaluate(() => window.scrollTo(0, 0));
+		await page.keyboard.press("End");
+		await page.waitForTimeout(400);
+		const afterEnd = await page.evaluate(() => window.scrollY);
+		assert(afterEnd > 1000, `End still jumps to the bottom (${afterEnd})`);
+
+		await page.keyboard.press("Home");
+		await page.waitForTimeout(400);
+		const afterHome = await page.evaluate(() => window.scrollY);
+		assert(afterHome === 0, `Home still returns to the top (${afterHome})`);
+
+		/* The easing layer must resynchronise rather than fight a native move. */
+		await page.evaluate(() => window.scrollTo(0, 900));
+		await page.mouse.move(700, 450);
+		await page.mouse.wheel(0, 200);
+		await page.waitForTimeout(900);
+		const resynced = await page.evaluate(() => window.scrollY);
+		assert(resynced > 900 && resynced < 1250, `a wheel after a native jump continues from there (${resynced})`);
+		await page.close();
+	}
+
+	/* 1c. At the top of the page, scrolling up is left entirely to the browser. */
+	{
+		const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+		await page.goto(`${base}/events/`, { waitUntil: "load" });
+		const defaultPrevented = await page.evaluate(() => new Promise((resolve) => {
+			window.addEventListener("wheel", (e) => resolve(e.defaultPrevented), { once: true, passive: true });
+			window.dispatchEvent(new WheelEvent("wheel", { deltaY: -120, cancelable: true, bubbles: true }));
+		}));
+		assert(defaultPrevented === false, "an upward gesture at the top is not swallowed");
 		await page.close();
 	}
 
@@ -154,6 +209,13 @@ const assert = (ok, message) => {
 		}));
 		assert(!state.hasReveal, "no reveal state is applied");
 		assert(state.hidden === 0, `nothing is hidden (${state.hidden})`);
+
+		await page.evaluate(() => window.scrollTo(0, 0));
+		await page.mouse.move(700, 450);
+		await page.mouse.wheel(0, 400);
+		await page.waitForTimeout(250);
+		const position = await page.evaluate(() => window.scrollY);
+		assert(position >= 380, `the wheel moves the page natively, with no easing (${position} of 400)`);
 		await page.close();
 	}
 

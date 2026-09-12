@@ -32,6 +32,131 @@
 	const STAGGER_STEP = 70;
 	const STAGGER_CAP = 210;
 
+	/* ──────────────────────────── Smoothed wheel ──────────────────────────── */
+
+	/*
+	 * The page eases toward where the wheel has asked it to go, rather than
+	 * jumping there in one step. This is the one place motion is added to
+	 * scrolling itself, and it is deliberately narrow:
+	 *
+	 *   - wheel and trackpad only, on devices with a precise pointer
+	 *   - touch is untouched, because a finger dragging a page that then keeps
+	 *     gliding feels broken rather than smooth
+	 *   - the scrollbar, Page Up/Down, Home/End, arrows, find-in-page and every
+	 *     other way the browser scrolls stay native and are resynchronised
+	 *     rather than fought
+	 *   - off entirely under reduced motion
+	 *
+	 * Each wheel event still moves the page immediately and in proportion to the
+	 * gesture. What changes is that the movement lands over a few frames, which
+	 * is what reads as weight.
+	 */
+	/*
+	 * The fraction of the remaining distance covered each frame. Lower is
+	 * heavier and slower to settle; higher approaches a native jump. Tunable
+	 * from theme.json without touching this file.
+	 */
+	const SCROLL_EASE = (() => {
+		const value = Number.parseFloat(
+			getComputedStyle(root).getPropertyValue('--wp--custom--motion--scroll-ease')
+		);
+
+		return Number.isFinite(value) && value > 0 && value <= 1 ? value : 0.1;
+	})();
+	const canSmoothWheel = window.matchMedia('(pointer: fine)').matches;
+
+	let wheelTarget = window.scrollY;
+	let wheelFrame = 0;
+	let lastApplied = null;
+
+	const maxScroll = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+
+	const stopWheelEasing = () => {
+		if (wheelFrame) {
+			window.cancelAnimationFrame(wheelFrame);
+			wheelFrame = 0;
+		}
+
+		lastApplied = null;
+	};
+
+	const stepWheelEasing = () => {
+		const distance = wheelTarget - window.scrollY;
+
+		if (Math.abs(distance) < 0.5) {
+			window.scrollTo(0, wheelTarget);
+			stopWheelEasing();
+			return;
+		}
+
+		const position = window.scrollY + distance * SCROLL_EASE;
+
+		window.scrollTo(0, position);
+		lastApplied = window.scrollY;
+		wheelFrame = window.requestAnimationFrame(stepWheelEasing);
+	};
+
+	/* Normalise the three ways a browser reports wheel distance. */
+	const wheelDistance = (event) => {
+		if (1 === event.deltaMode) {
+			return event.deltaY * 16;
+		}
+
+		if (2 === event.deltaMode) {
+			return event.deltaY * window.innerHeight;
+		}
+
+		return event.deltaY;
+	};
+
+	const onWheel = (event) => {
+		if (prefersReducedMotion() || event.ctrlKey || event.defaultPrevented) {
+			return;
+		}
+
+		/* Let a scrollable panel, a select, or the open menu handle its own wheel. */
+		if (document.body.classList.contains('nice-menu-is-open') || event.target.closest('[data-nice-native-scroll]')) {
+			return;
+		}
+
+		const limit = maxScroll();
+
+		if (limit <= 0) {
+			return;
+		}
+
+		/* A gesture at a boundary belongs to the browser: overscroll, rubber band, chaining. */
+		const atTop = window.scrollY <= 0 && event.deltaY < 0;
+		const atBottom = window.scrollY >= limit && event.deltaY > 0;
+
+		if (atTop || atBottom) {
+			stopWheelEasing();
+			return;
+		}
+
+		event.preventDefault();
+		stopTravel();
+
+		/* Resynchronise whenever the page moved by some other means. */
+		if (null === lastApplied || Math.abs(window.scrollY - lastApplied) > 2) {
+			wheelTarget = window.scrollY;
+		}
+
+		wheelTarget = Math.min(limit, Math.max(0, wheelTarget + wheelDistance(event)));
+
+		if (!wheelFrame) {
+			lastApplied = window.scrollY;
+			wheelFrame = window.requestAnimationFrame(stepWheelEasing);
+		}
+	};
+
+	if (canSmoothWheel) {
+		window.addEventListener('wheel', onWheel, { passive: false });
+		window.addEventListener('resize', () => {
+			wheelTarget = Math.min(maxScroll(), wheelTarget);
+		}, { passive: true });
+	}
+
 	/* ───────────────────────── Deliberate anchor travel ───────────────────── */
 
 	/**
@@ -54,12 +179,12 @@
 
 	let travel = null;
 
-	const stopTravel = () => {
+	function stopTravel() {
 		if (travel) {
 			window.cancelAnimationFrame(travel.frame);
 			travel = null;
 		}
-	};
+	}
 
 	/**
 	 * Move keyboard focus to a destination without moving the page.
@@ -88,6 +213,9 @@
 			maximum,
 			Math.max(0, window.scrollY + target.getBoundingClientRect().top - headerOffset())
 		);
+
+		stopWheelEasing();
+		wheelTarget = destination;
 
 		if (prefersReducedMotion()) {
 			window.scrollTo(0, destination);
@@ -413,6 +541,7 @@
 	document.addEventListener('visibilitychange', () => {
 		if (document.hidden) {
 			stopTravel();
+			stopWheelEasing();
 			observer.disconnect();
 			return;
 		}
@@ -429,6 +558,7 @@
 		}
 
 		stopTravel();
+		stopWheelEasing();
 		observer.disconnect();
 		root.classList.remove('nice-has-reveal');
 		revealEverything();
