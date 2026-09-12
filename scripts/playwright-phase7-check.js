@@ -11,11 +11,12 @@ async (page) => {
     "krish-e",
   ];
   const expectedProjectPaths = expectedProjects.map((slug) => `/studio/case-studies/${slug}/`);
+  // Services now precedes Work in the consolidated division nav.
   const expectedMenuPaths = [
     "/",
     "/studio/",
-    "/studio/case-studies/",
     "/studio/services/",
+    "/studio/case-studies/",
     "/studio/clients/",
     "/studio/contact/",
     "/events/",
@@ -225,7 +226,9 @@ async (page) => {
   if (viewportResults.some((result) => result.projectSlugs.join(",") !== expectedProjects.join(",") || result.projectPaths.join(",") !== expectedProjectPaths.join(","))) failures.push("linked Studio Case Studies");
   if (viewportResults.some((result) => result.projectPlaceholderCount !== expectedProjects.length || result.projectImageCount !== 0)) failures.push("neutral project media");
   if (viewportResults.some((result) => result.clientCount !== 8)) failures.push("shared Clients");
-  if (viewportResults.some((result) => result.contactActionCount !== 0 || !result.contactPending || result.formCount !== 0)) failures.push("contact safety");
+  // Studio contact is approved and published, so actions render and the pending
+  // state is gone. The page must still never grow a form.
+  if (viewportResults.some((result) => result.contactActionCount === 0 || result.contactPending || result.formCount !== 0)) failures.push("contact safety");
   if (viewportResults.some((result) => result.cumulativeLayoutShift > 0.1)) failures.push("layout shift");
   if (menuOpen.expanded !== "true" || menuOpen.state !== "open" || menuOpen.hidden !== "false" || menuOpen.focusedControl !== "Close menu") failures.push("mobile menu open");
   if (menuOpen.paths.join(",") !== expectedMenuPaths.join(",")) failures.push("shared Studio menu routes");

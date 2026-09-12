@@ -124,7 +124,11 @@ async (page) => {
             h1Count: document.querySelectorAll("h1").length,
             hasMain: Boolean(document.querySelector("main#main-content")),
             hasFooter: Boolean(document.querySelector("footer.nice-site-footer")),
-            hasStudioNavigation: Boolean(document.querySelector(".nice-studio-subnav")),
+            // The Studio sub-navigation was consolidated into the shared pill
+            // header, so division navigation now lives in the site header.
+            hasStudioNavigation: Boolean(
+              document.querySelector(".nice-nav-shell .nice-desktop-nav, .nice-nav-shell [data-nice-menu-open]"),
+            ),
             activeNavigationCount: activeNavLinks.length,
             hasHorizontalOverflow: document.documentElement.scrollWidth > window.innerWidth + 1,
             headingsFit: headings.every((heading) => heading.scrollWidth <= heading.clientWidth + 2),

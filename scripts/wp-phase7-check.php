@@ -27,8 +27,10 @@ nice_phase7_assert( in_array( wp_get_theme()->get( 'Version' ), array( '0.6.0', 
 $studio = get_page_by_path( 'studio', OBJECT, 'page' );
 nice_phase7_assert( $studio instanceof WP_Post && 'publish' === $studio->post_status, 'Studio Home Page is missing.' );
 
-foreach ( array( 'services', 'case-studies', 'clients', 'team', 'contact' ) as $future_slug ) {
-	nice_phase7_assert( null === get_page_by_path( 'studio/' . $future_slug, OBJECT, 'page' ), "Unexpected Phase 8 Page exists: {$future_slug}" );
+/* Phase 8 shipped these routes, so they are now expected rather than forbidden. */
+foreach ( array( 'services', 'case-studies', 'clients', 'team', 'contact' ) as $inner_slug ) {
+	$inner_page = get_page_by_path( 'studio/' . $inner_slug, OBJECT, 'page' );
+	nice_phase7_assert( $inner_page instanceof WP_Post && 'publish' === $inner_page->post_status, "Studio Page is missing: {$inner_slug}" );
 }
 
 $service_slugs = array( 'corporate-videos', 'digital-content-creation', 'films-entertainment' );
@@ -72,26 +74,43 @@ nice_phase7_assert( 10 === count( nice_get_clients() ), 'The shared Client datas
 nice_phase7_assert( 3 === count( nice_get_events_services() ), 'Events Services changed unexpectedly.' );
 nice_phase7_assert( 5 === count( nice_get_case_studies( array( 'division' => 'events' ) ) ), 'Events Case Studies changed unexpectedly.' );
 
-$settings = nice_get_contact_settings();
-nice_phase7_assert( empty( $settings['whatsapp_url'] ) && empty( $settings['email_address'] ) && empty( $settings['phone_url'] ), 'Studio contact is no longer publication-pending.' );
-nice_phase7_assert( empty( nice_get_social_links() ), 'Studio social links are no longer publication-pending.' );
+$studio_contact = nice_get_contact_channels( 'studio' );
+nice_phase7_assert( 'sameer@nicesolutions.in' === $studio_contact['email_address'], 'Studio email is not the approved address.' );
+nice_phase7_assert( 'tel:+919892049519' === $studio_contact['phone_url'], 'Studio phone is not the approved number.' );
+nice_phase7_assert( 'https://wa.me/919892049519' === $studio_contact['whatsapp_url'], 'Studio WhatsApp is not derived from the approved number.' );
+
+$social_links = nice_get_social_links();
+nice_phase7_assert( 3 === count( $social_links ), 'Expected three approved social profiles.' );
+foreach ( $social_links as $social_link ) {
+	nice_phase7_assert( 0 === strpos( $social_link, 'https://' ), "Social profile is not HTTPS: {$social_link}" );
+}
 
 $registry = WP_Block_Type_Registry::get_instance();
 nice_phase7_assert( $registry->is_registered( 'nice/studio-home' ), 'Studio Home block is not registered.' );
 
 $rendered = do_blocks( '<!-- wp:nice/studio-home /-->' );
-foreach ( array_merge( $service_names, wp_list_pluck( $case_studies, 'post_title' ) ) as $title ) {
+/*
+ * Studio Home curates its project grid rather than listing every record, so the
+ * expectation comes from the same selector the block renders from.
+ */
+$home_cases = nice_get_studio_home_case_studies();
+nice_phase7_assert( ! empty( $home_cases ), 'Studio Home has no curated case studies to render.' );
+
+foreach ( array_merge( $service_names, wp_list_pluck( $home_cases, 'post_title' ) ) as $title ) {
 	nice_phase7_assert( str_contains( $rendered, esc_html( $title ) ), "CMS content missing from rendered Studio Home: {$title}" );
 }
-nice_phase7_assert( ! preg_match( '#href=["\'][^"\']*/studio/(services|case-studies|clients|team|contact)/#', $rendered ), 'Studio Home exposes an unimplemented Phase 8 route.' );
+/* Phase 8 implemented these routes, so Studio Home may now link to them. */
 nice_phase7_assert( ! str_contains( $rendered, '<form' ), 'Studio Home must not render a form.' );
-nice_phase7_assert( str_contains( $rendered, 'data-nice-studio-contact-pending' ), 'Studio contact pending state is missing.' );
-nice_phase7_assert( ! str_contains( $rendered, 'nice-studio-social' ), 'Empty social settings must omit the social section.' );
+nice_phase7_assert( ! str_contains( $rendered, 'data-nice-studio-contact-pending' ), 'Studio contact is still publication-pending after approval.' );
+nice_phase7_assert( str_contains( $rendered, 'wa.me/919892049519' ) || str_contains( $rendered, 'sameer@nicesolutions.in' ), 'Studio Home does not surface the approved Studio contact.' );
+nice_phase7_assert( ! str_contains( $rendered, 'nice-studio-social' ), 'Social profiles belong to the shared footer, not a Studio section.' );
 
 $rerun = nice_run_content_migration();
 nice_phase7_assert( ! is_wp_error( $rerun ), 'Migration rerun failed.' );
 nice_phase7_assert( 0 === $rerun['services']['created'] && 0 === $rerun['case_studies']['created'], 'Migration rerun created duplicate Studio content.' );
-nice_phase7_assert( 0 === $rerun['studio_page']['created'] && 1 === $rerun['studio_page']['skipped'], 'Migration rerun duplicated Studio Home.' );
+/* Phase 8 grew Studio from a single gateway page to the full inner-page set. */
+$studio_page_count = count( nice_get_studio_page_manifest() );
+nice_phase7_assert( 0 === $rerun['studio_page']['created'] && $studio_page_count === $rerun['studio_page']['skipped'], 'Migration rerun duplicated Studio pages.' );
 nice_phase7_assert( 0 === $rerun['media']['linked'] && 0 === $rerun['enriched'], 'Migration rerun changed existing editorial content or media.' );
 
 WP_CLI::success( 'NICE Phase 7 runtime checks passed.' );
