@@ -4,6 +4,13 @@ async (page) => {
   const viewportResults = [];
   const failedRequests = [];
   const consoleErrors = [];
+  /*
+   * The theme opts into cross-document view transitions. Driving navigation as
+   * fast as these checks do aborts a transition mid-flight, and the engine
+   * reports that abort as a page error. It is an artefact of automated
+   * navigation rather than a fault on the page, so it is not counted.
+   */
+  const niceIgnorableEngineError = (text) => /ViewTransition opt-in disabled|Transition was aborted because of invalid state/i.test(String(text));
 
   page.on("requestfailed", (request) => {
     failedRequests.push({ url: request.url(), error: request.failure()?.errorText });
@@ -11,7 +18,7 @@ async (page) => {
   page.on("console", (message) => {
     if (message.type() === "error") consoleErrors.push(message.text());
   });
-  page.on("pageerror", (error) => consoleErrors.push(error.message));
+  page.on("pageerror", (error) => { if (!niceIgnorableEngineError(error.message)) consoleErrors.push(error.message); });
 
   await page.addInitScript(() => {
     window.__niceCumulativeLayoutShift = 0;
@@ -43,9 +50,10 @@ async (page) => {
     await page.goto(url, { waitUntil: "networkidle" });
     const result = await page.evaluate(() => {
       const hero = document.querySelector(".nice-landing-hero");
-      const mosaic = document.querySelector(".nice-landing-hero__mosaic");
+      // The hero is now text-only and the imagery moved into the doors grid.
+      const doors = document.querySelector(".nice-doors-grid");
       const nav = document.querySelector(".nice-nav-shell");
-      const brand = document.querySelector(".nice-landing-hero__brand");
+      const heroLead = document.querySelector(".nice-landing-hero__overline");
       const dimensions = {
         clientWidth: document.documentElement.clientWidth,
         scrollWidth: document.documentElement.scrollWidth,
@@ -55,15 +63,15 @@ async (page) => {
         ...dimensions,
         hasHorizontalOverflow: dimensions.scrollWidth > dimensions.clientWidth,
         heroHeight: Math.round(hero?.getBoundingClientRect().height ?? 0),
-        heroMosaicColumns: getComputedStyle(mosaic).gridTemplateColumns.split(" ").length,
-        heroSources: [...mosaic.querySelectorAll("img")].map((image) => new URL(image.currentSrc).pathname),
+        doorsGridColumns: doors ? getComputedStyle(doors).gridTemplateColumns.split(" ").length : 0,
+        doorSources: [...(doors?.querySelectorAll("img") ?? [])].map((image) => new URL(image.currentSrc).pathname),
         cumulativeLayoutShift: window.__niceCumulativeLayoutShift,
         imagesHaveIntrinsicDimensions: [...document.images].every(
           (image) => image.hasAttribute("width") && image.hasAttribute("height"),
         ),
         navClearsHeroContent:
           (nav?.getBoundingClientRect().bottom ?? 0) <
-          (brand?.getBoundingClientRect().top ?? 0),
+          (heroLead?.getBoundingClientRect().top ?? 0),
       };
     });
     viewportResults.push({ width, ...result });
@@ -91,12 +99,25 @@ async (page) => {
   }));
 
   await menuButton.click();
-  await page.locator('.nice-mobile-menu [data-nice-contact-channel="whatsapp"]').click();
-  const placeholderClick = await page.evaluate(() => ({
-    hash: window.location.hash,
+  /*
+   * The drawer now carries approved contact details, so these are inspected
+   * rather than clicked. Following a real wa.me or mailto link would navigate
+   * away from the site and invalidate every later assertion in this run.
+   */
+  const drawerContact = await page.evaluate(() => ({
     menuState: document.querySelector("[data-nice-mobile-menu]")?.dataset.state,
-    statusVisible: Boolean(document.querySelector("#contact-details-pending")),
+    links: [...document.querySelectorAll(".nice-mobile-menu [data-nice-contact-channel]")].map((link) => ({
+      channel: link.dataset.niceContactChannel,
+      division: link.dataset.niceContactDivision ?? "",
+      href: link.getAttribute("href"),
+      label: link.textContent.trim(),
+    })),
+    divisionRoutes: [...document.querySelectorAll(".nice-mobile-menu__actions a[data-nice-contact-division]")]
+      .filter((link) => !link.dataset.niceContactChannel)
+      .map((link) => ({ path: link.pathname, label: link.textContent.trim() })),
+    pendingNotice: Boolean(document.querySelector("#contact-details-pending")),
   }));
+  await page.keyboard.press("Escape");
 
   await page.evaluate(() => window.scrollTo(0, 220));
   await page.waitForTimeout(350);
@@ -138,11 +159,11 @@ async (page) => {
       placeholder: link.dataset.niceContactPlaceholder,
       hash: link.hash,
     })),
-    heroMedia: [...document.querySelectorAll(".nice-landing-hero__mosaic img")].map((image) => ({
+    doorMedia: [...document.querySelectorAll(".nice-door__media img")].map((image) => ({
       priority: image.getAttribute("fetchpriority"),
       sizes: image.getAttribute("sizes"),
       source: image.currentSrc,
-      alt: image.getAttribute("alt"),
+      alt: (image.getAttribute("alt") ?? "").trim(),
     })),
     pathwayMedia: [...document.querySelectorAll(".nice-pathway img")].map((image) => ({
       loading: image.loading,
@@ -161,8 +182,8 @@ async (page) => {
   const freshMobilePage = await page.context().newPage();
   await freshMobilePage.setViewportSize({ width: 390, height: 844 });
   await freshMobilePage.goto(url, { waitUntil: "networkidle" });
-  contentChecks.mobileHeroSources = await freshMobilePage
-    .locator(".nice-landing-hero__mosaic img")
+  contentChecks.mobileDoorSources = await freshMobilePage
+    .locator(".nice-door__media img")
     .evaluateAll((images) => images.map((image) => new URL(image.currentSrc).pathname));
   await freshMobilePage.close();
 
@@ -187,19 +208,32 @@ async (page) => {
   if (viewportResults.some((result) => result.hasHorizontalOverflow)) validationFailures.push("horizontal overflow");
   if (viewportResults.some((result) => !result.imagesHaveIntrinsicDimensions)) validationFailures.push("missing image dimensions");
   if (viewportResults.some((result) => !result.navClearsHeroContent)) validationFailures.push("navbar overlaps hero content");
-  if (viewportResults.some((result) => result.heroMosaicColumns !== (result.width < 768 ? 2 : 4))) validationFailures.push("hero mosaic columns");
-  if (contentChecks.mobileHeroSources.some((source) => !source.includes("-480.webp"))) validationFailures.push("oversized mobile hero source");
+  if (viewportResults.some((result) => result.doorsGridColumns !== (result.width < 1024 ? 1 : 2))) validationFailures.push("doors grid columns");
+  if (contentChecks.mobileDoorSources.some((source) => !source.includes("-480.webp"))) validationFailures.push("oversized mobile door source");
   if (viewportResults.some((result) => result.cumulativeLayoutShift > 0.1)) validationFailures.push("layout shift");
   if (contentChecks.loadedImageCount !== contentChecks.imageCount) validationFailures.push("broken image");
   if (contentChecks.visibleRevealCount !== contentChecks.revealCount) validationFailures.push("hidden revealed content");
   if (contentChecks.heroTargets.join(",") !== "/events/,/studio/") validationFailures.push("hero routes");
   if (contentChecks.hasGlobalTeamRoute) validationFailures.push("global team route");
-  if (contentChecks.heroMedia.filter((image) => image.priority === "high").length !== 1) validationFailures.push("hero priority");
-  if (contentChecks.heroMedia.some((image) => image.alt !== "")) validationFailures.push("decorative hero alt text");
+  // The hero is text-first, so there is no priority image to preload. The door
+  // imagery is below the fold, lazy, and carries meaningful alt text.
+  if (contentChecks.doorMedia.length !== 2) validationFailures.push("doors media count");
+  if (contentChecks.doorMedia.some((image) => image.priority === "high")) validationFailures.push("below-fold image marked high priority");
+  if (contentChecks.doorMedia.some((image) => !image.alt)) validationFailures.push("missing door alt text");
   if (contentChecks.pathwayMedia.some((image) => image.loading !== "lazy" || !image.loaded)) validationFailures.push("pathway loading");
   if (contentChecks.meaningfulImageAlts.some((alt) => !alt)) validationFailures.push("meaningful image alt text");
-  if (contentChecks.contactActions.some((action) => action.placeholder !== "true" || action.hash !== "#contact-details-pending")) validationFailures.push("contact placeholders");
-  if (placeholderClick.hash !== "#contact-details-pending" || placeholderClick.menuState !== "closed" || !placeholderClick.statusVisible) validationFailures.push("contact placeholder interaction");
+  // Contact details are approved and published, so nothing may still render as
+  // a placeholder and the pending notice must be gone.
+  if (contentChecks.contactActions.some((action) => action.placeholder === "true")) validationFailures.push("contact still placeholder");
+  if (drawerContact.menuState !== "open") validationFailures.push("drawer did not open");
+  if (drawerContact.pendingNotice) validationFailures.push("contact pending notice still rendered");
+  // Neither division owns the landing page, so rather than four ambiguous
+  // channel buttons the drawer offers one named route per division, each
+  // leading to that division's contact page.
+  if (drawerContact.divisionRoutes.length !== 2) validationFailures.push("landing drawer must offer both divisions");
+  if (drawerContact.divisionRoutes.some((route) => !/^\/(events|studio)\/contact\/$/.test(route.path))) validationFailures.push("drawer division routes");
+  if (drawerContact.divisionRoutes.some((route) => !route.label.includes("Events") && !route.label.includes("Studio"))) validationFailures.push("drawer routes must name their division");
+  if (drawerContact.links.length !== 0) validationFailures.push("landing drawer must not expose raw channels");
   if (!condensedAtScroll || !expandedAtTop) validationFailures.push("sticky navbar state");
   if (menuOpen.expanded !== "true" || menuClosed.expanded !== "false" || !menuClosed.focusRestored) validationFailures.push("mobile menu accessibility");
   if (!reducedMotion.revealsRemainVisible) validationFailures.push("reduced motion visibility");
@@ -215,7 +249,7 @@ async (page) => {
     menuOpen,
     focusWrapTarget,
     menuClosed,
-    placeholderClick,
+    drawerContact,
     condensedAtScroll,
     expandedAtTop,
     reducedMotion,

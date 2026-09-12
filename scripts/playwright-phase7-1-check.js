@@ -18,12 +18,19 @@ async (page) => {
 
   const failedRequests = [];
   const consoleErrors = [];
+  /*
+   * The theme opts into cross-document view transitions. Driving navigation as
+   * fast as these checks do aborts a transition mid-flight, and the engine
+   * reports that abort as a page error. It is an artefact of automated
+   * navigation rather than a fault on the page, so it is not counted.
+   */
+  const niceIgnorableEngineError = (text) => /ViewTransition opt-in disabled|Transition was aborted because of invalid state/i.test(String(text));
 
   page.on("requestfailed", (request) => failedRequests.push({ url: request.url(), error: request.failure()?.errorText }));
   const consoleHandler = (message) => {
     if (message.type() === "error") consoleErrors.push(message.text());
   };
-  const pageErrorHandler = (error) => consoleErrors.push(error.message);
+  const pageErrorHandler = (error) => { if (!niceIgnorableEngineError(error.message)) consoleErrors.push(error.message); };
   page.on("console", consoleHandler);
   page.on("pageerror", pageErrorHandler);
 
@@ -90,8 +97,8 @@ async (page) => {
           featuredPreviewCount: featuredPreviews.length,
           navCardCount: navCards.length,
           hasInfobar: Boolean(infobar),
-          studioHeroHasEditorial: studioHeroH1?.classList.contains("nice-editorial") || false,
-          studioStatementHasEditorial: studioHeroStatement?.classList.contains("nice-editorial") || false,
+          hasStudioHeroHeading: Boolean(studioHeroH1),
+          hasStudioHeroStatement: Boolean(studioHeroStatement),
           innerCtaHasEditorial: innerCtaHeading?.classList.contains("nice-editorial") || false,
           hasHorizontalOverflow: root.scrollWidth > root.clientWidth,
           cls: window.__niceCumulativeLayoutShift || 0,
@@ -122,8 +129,9 @@ async (page) => {
 
   // 1. Landing navigation
   const landing1440 = results.landing[1440];
-  if (!landing1440.workHref.includes("/#work")) failures.push("Landing Work link should point to /#work");
-  if (!landing1440.servicesHref.includes("/#capabilities")) failures.push("Landing Services link should point to /#capabilities");
+  // The landing nav now offers the two divisions rather than in-page anchors;
+  // Work and Services live inside each division.
+  if (landing1440.workHref || landing1440.servicesHref) failures.push("Landing nav should not carry Work or Services links");
 
   // 2. Events navigation
   const events1440 = results.events[1440];
@@ -133,13 +141,15 @@ async (page) => {
 
   // 3. Studio navigation
   const studio1440 = results.studio[1440];
-  if (!studio1440.workHref.includes("/studio/#studio-work")) failures.push("Studio Work link should point to /studio/#studio-work");
-  if (!studio1440.servicesHref.includes("/studio/#studio-services")) failures.push("Studio Services link should point to /studio/#studio-services");
+  if (!studio1440.workHref.includes("/studio/case-studies/")) failures.push("Studio Work link should point to /studio/case-studies/");
+  if (!studio1440.servicesHref.includes("/studio/services/")) failures.push("Studio Services link should point to /studio/services/");
   if (studio1440.division !== "studio") failures.push("Studio header division attribute should be 'studio'");
 
   // 4. Studio hero editorial treatment
-  if (!studio1440.studioHeroHasEditorial) failures.push("Studio hero H1 must use .nice-editorial");
-  if (!studio1440.studioStatementHasEditorial) failures.push("Studio hero statement must use .nice-editorial");
+  // The .nice-editorial hook was retired with the Phase 8.1 type system, so the
+  // hero is checked structurally instead.
+  if (!studio1440.hasStudioHeroHeading) failures.push("Studio hero must render an H1");
+  if (!studio1440.hasStudioHeroStatement) failures.push("Studio hero must render a statement");
 
   // 5. Case studies hierarchy
   const caseStudies1440 = results["events-case-studies"][1440];
@@ -151,9 +161,9 @@ async (page) => {
   if (!detail1440.hasInfobar) failures.push("Case study detail must have .nice-events-case-infobar");
   if (detail1440.navCardCount === 0) failures.push("Case study detail must have .nice-events-nav-card");
 
-  // 7. Future Studio routes must 404
+  // 7. Phase 8 shipped these Studio routes, so they must now resolve.
   for (const route of invalidRoutes) {
-    if (route.status !== 404) failures.push(`Future route ${route.path} must 404 but got ${route.status}`);
+    if (route.status !== 200) failures.push(`Studio route ${route.path} must resolve but got ${route.status}`);
   }
 
   // 8. Layout shift & overflow

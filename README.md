@@ -511,6 +511,43 @@ builder, ACF installation, form plugin, analytics SDK, or SEO plugin is required
 for the foundation. ACF Pro can be reconsidered only if the native editing
 prototype proves materially harder for NICE's editors.
 
+## Running the Checks
+
+```bash
+npm run check            # preview tokens, theme, plugin, and JavaScript syntax
+npm run check:inner-pages # Events and Studio inner pages across five widths
+npm run check:phases     # every phase suite, in a real browser
+```
+
+The phase suites in `scripts/playwright-phase*-check.js` are bare
+`async (page) => {}` expressions rather than executable scripts. Running one
+with `node` directly evaluates the expression and exits 0 without ever calling
+it, which looks like a pass but tests nothing. Use `npm run check:phases`, which
+supplies the browser page each suite expects. It accepts a filter:
+
+```bash
+node scripts/run-playwright-phase.js 7 8
+```
+
+`playwright-phase8-1-check.js` drives its own browser, so the runner skips it;
+run that one with `node` directly.
+
+Phase 2 checks the static preview rather than the WordPress site, so it needs a
+server on port 8787 in another shell:
+
+```bash
+npm run preview:serve
+```
+
+The WordPress runtime checks need WP-CLI against the LocalWP install:
+
+```bash
+wp eval-file scripts/wp-phase7-check.php
+```
+
+Playwright and its browser are dev dependencies: `npm install` then
+`npx playwright install chromium`.
+
 ## Development Environment Status
 
 Checked on 2026-09-05.

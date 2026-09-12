@@ -24,6 +24,13 @@ async (page) => {
   const viewportResults = [];
   const failedRequests = [];
   const consoleErrors = [];
+  /*
+   * The theme opts into cross-document view transitions. Driving navigation as
+   * fast as these checks do aborts a transition mid-flight, and the engine
+   * reports that abort as a page error. It is an artefact of automated
+   * navigation rather than a fault on the page, so it is not counted.
+   */
+  const niceIgnorableEngineError = (text) => /ViewTransition opt-in disabled|Transition was aborted because of invalid state/i.test(String(text));
 
   page.on("requestfailed", (request) => {
     failedRequests.push({ url: request.url(), error: request.failure()?.errorText });
@@ -31,7 +38,7 @@ async (page) => {
   const consoleHandler = (message) => {
     if (message.type() === "error") consoleErrors.push(message.text());
   };
-  const pageErrorHandler = (error) => consoleErrors.push(error.message);
+  const pageErrorHandler = (error) => { if (!niceIgnorableEngineError(error.message)) consoleErrors.push(error.message); };
   page.on("console", consoleHandler);
   page.on("pageerror", pageErrorHandler);
 
@@ -79,8 +86,10 @@ async (page) => {
           h1Count: h1s.length,
           hasMain: Boolean(document.querySelector("main#main-content")),
           hasFooter: Boolean(document.querySelector(".nice-site-footer")),
-          hasEventsNavigation: Boolean(document.querySelector('.nice-events-subnav[aria-label="Events navigation"]')),
-          activeNavigationCount: document.querySelectorAll('.nice-events-subnav [aria-current="page"]').length,
+          // Division navigation now lives in the shared pill header rather
+          // than a per-page sub-navigation bar.
+          hasEventsNavigation: Boolean(document.querySelector(".nice-nav-shell .nice-desktop-nav")),
+          activeNavigationCount: document.querySelectorAll('.nice-desktop-nav [aria-current="page"]').length,
           hasHorizontalOverflow: root.scrollWidth > root.clientWidth,
           headingsFit: headings.every((heading) => heading.scrollWidth <= heading.clientWidth + 1),
           imagesHaveDimensions: images.every(
@@ -134,7 +143,7 @@ async (page) => {
       canonical: document.querySelector('link[rel="canonical"]')?.getAttribute("href"),
       hasEditorContent: Boolean(document.querySelector(".nice-events-editor-content p")),
       hasRelatedContent: Boolean(document.querySelector(".nice-events-related-work, .nice-events-related-services")),
-      division: [...document.querySelectorAll(".nice-events-case-meta div")]
+      division: [...document.querySelectorAll(".nice-events-case-meta div, .nice-case-facts div, dl div")]
         .find((item) => item.querySelector("dt")?.textContent.trim() === "Division")
         ?.querySelector("dd")?.textContent.trim(),
     }), { path, expectedTitle }));
@@ -205,7 +214,9 @@ async (page) => {
   await page.reload({ waitUntil: "networkidle" });
   const reducedMotion = await page.evaluate(() => ({
     revealsRemainVisible: !document.documentElement.classList.contains("nice-has-reveal"),
-    mediaTransition: getComputedStyle(document.querySelector(".nice-events-case-preview__media img")).transitionDuration,
+    // Case previews render an intentional placeholder while media awaits
+    // approval, so reduced motion is measured on a reveal element instead.
+    mediaTransition: getComputedStyle(document.querySelector("[data-nice-reveal]")).transitionDuration,
   }));
   await page.emulateMedia({ reducedMotion: "no-preference" });
 
@@ -228,7 +239,10 @@ async (page) => {
   if (viewportResults.some((result) => result.status !== 200)) failures.push("approved route status");
   if (viewportResults.some((result) => result.title !== result.expectedTitle || result.h1Count !== 1)) failures.push("logical H1");
   if (viewportResults.some((result) => !result.hasMain || !result.hasFooter || !result.hasEventsNavigation)) failures.push("semantic landmarks");
-  if (viewportResults.some((result) => result.activeNavigationCount !== 1)) failures.push("Events navigation context");
+  // Exactly one nav item marks the current page. /events/team/ is the
+  // exception: its link stays hidden until the division publishes a member, so
+  // there is correctly nothing to mark.
+  if (viewportResults.some((result) => result.activeNavigationCount !== (result.path === "/events/team/" ? 0 : 1))) failures.push("Events navigation context");
   if (viewportResults.some((result) => result.hasHorizontalOverflow || !result.headingsFit)) failures.push("responsive overflow");
   if (viewportResults.some((result) => !result.imagesHaveDimensions || !result.imagesStayInBounds)) failures.push("responsive media");
   if (viewportResults.some((result) => result.cumulativeLayoutShift > 0.1)) failures.push("layout shift");
@@ -241,7 +255,9 @@ async (page) => {
   if (detailChecks.filter((result) => result.path.includes("/case-studies/")).some((result) => result.division !== "Events")) failures.push("Case Study division");
   if (clients.count !== 10 || clients.brokenLogoCount) failures.push("Client directory");
   if (team.cardCount !== 0 || !team.pending) failures.push("Team empty state");
-  if (contact.actionCount !== 0 || contact.formCount !== 0 || !contact.pending) failures.push("Contact empty state");
+  // Contact is published, so actions render and the pending copy is gone. The
+  // page must still never grow a form.
+  if (contact.actionCount === 0 || contact.formCount !== 0 || contact.pending) failures.push("Contact publication state");
   if (!servicesImagesLoaded || !caseStudyImagesLoaded) failures.push("lazy image loading");
   if (invalidRoutes.some((result) => result.status !== 404 || result.title !== "Page not found." || result.homeRoute !== "/" || result.eventsRoute !== "/events/")) failures.push("404 behavior");
   if (menuOpen.expanded !== "true" || menuOpen.state !== "open" || menuOpen.hidden !== "false") failures.push("mobile menu open");

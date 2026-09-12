@@ -35,6 +35,13 @@ async (page) => {
   const viewportResults = [];
   const failedRequests = [];
   const consoleErrors = [];
+  /*
+   * The theme opts into cross-document view transitions. Driving navigation as
+   * fast as these checks do aborts a transition mid-flight, and the engine
+   * reports that abort as a page error. It is an artefact of automated
+   * navigation rather than a fault on the page, so it is not counted.
+   */
+  const niceIgnorableEngineError = (text) => /ViewTransition opt-in disabled|Transition was aborted because of invalid state/i.test(String(text));
   const studioHomeRequestedUrls = [];
 
   page.on("request", (request) => {
@@ -46,7 +53,7 @@ async (page) => {
   const consoleHandler = (message) => {
     if (message.type() === "error") consoleErrors.push(message.text());
   };
-  const pageErrorHandler = (error) => consoleErrors.push(error.message);
+  const pageErrorHandler = (error) => { if (!niceIgnorableEngineError(error.message)) consoleErrors.push(error.message); };
   page.on("console", consoleHandler);
   page.on("pageerror", pageErrorHandler);
 
