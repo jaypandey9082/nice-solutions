@@ -11,8 +11,12 @@ $nice_home_url        = esc_url( home_url( '/' ) );
 $nice_events_url      = esc_url( home_url( '/events/' ) );
 $nice_studio_url      = esc_url( home_url( '/studio/' ) );
 $nice_clients_url     = esc_url( home_url( '/#clients' ) );
-$nice_whatsapp_action = nice_get_contact_action( 'whatsapp' );
-$nice_email_action    = nice_get_contact_action( 'email' );
+/*
+ * The header is shared across divisions, so the drawer lists every channel set
+ * that applies: one on a division page, one per division on the main pages.
+ */
+$nice_channel_sets   = function_exists( 'nice_theme_get_contact_channel_sets' ) ? nice_theme_get_contact_channel_sets() : array();
+$nice_label_channels = count( $nice_channel_sets ) > 1;
 
 $nice_is_events = function_exists( 'nice_theme_is_events_context' ) && nice_theme_is_events_context();
 $nice_is_studio = function_exists( 'nice_theme_is_studio_context' ) && nice_theme_is_studio_context();
@@ -113,10 +117,16 @@ if ( $nice_is_events ) {
 				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
 			<?php endif; ?>
 		</div>
-		<?php if ( ! $nice_whatsapp_action['placeholder'] || ! $nice_email_action['placeholder'] ) : ?>
+		<?php if ( $nice_channel_sets ) : ?>
 			<div class="nice-mobile-menu__actions" aria-label="<?php esc_attr_e( 'Contact options', 'nice' ); ?>">
-				<?php if ( ! $nice_whatsapp_action['placeholder'] ) : ?><a class="nice-button nice-button--primary" href="<?php echo esc_url( $nice_whatsapp_action['url'] ); ?>" data-nice-contact-channel="whatsapp">WhatsApp</a><?php endif; ?>
-				<?php if ( ! $nice_email_action['placeholder'] ) : ?><a class="nice-button nice-button--secondary" href="<?php echo esc_url( $nice_email_action['url'] ); ?>" data-nice-contact-channel="email">Email</a><?php endif; ?>
+				<?php
+				foreach ( $nice_channel_sets as $nice_set ) :
+					$nice_prefix        = $nice_label_channels && $nice_set['label'] ? $nice_set['label'] . ' ' : '';
+					$nice_division_attr = $nice_set['division'] ? ' data-nice-contact-division="' . esc_attr( $nice_set['division'] ) . '"' : '';
+					?>
+					<?php if ( $nice_set['whatsapp_url'] ) : ?><a class="nice-button nice-button--primary" href="<?php echo esc_url( $nice_set['whatsapp_url'] ); ?>" data-nice-contact-channel="whatsapp"<?php echo $nice_division_attr; ?>><?php echo esc_html( $nice_prefix . 'WhatsApp' ); ?></a><?php endif; ?>
+					<?php if ( $nice_set['email_address'] ) : ?><a class="nice-button nice-button--secondary" href="<?php echo esc_url( 'mailto:' . $nice_set['email_address'] ); ?>" data-nice-contact-channel="email"<?php echo $nice_division_attr; ?>><?php echo esc_html( $nice_prefix . 'Email' ); ?></a><?php endif; ?>
+				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>
 	</div>

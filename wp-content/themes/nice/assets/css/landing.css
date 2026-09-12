@@ -294,7 +294,7 @@
 	@media (min-width: 48rem) {
 		.home .nice-footer-grid {
 			gap: 3rem;
-			grid-template-columns: 2fr 1fr 1fr;
+			grid-template-columns: 2fr 1fr 1fr 1fr;
 		}
 	}
 

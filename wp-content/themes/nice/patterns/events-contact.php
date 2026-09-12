@@ -7,8 +7,8 @@
  */
 
 $nice_events_placeholder_url = home_url( '/events/#events-contact-details-pending' );
-$nice_whatsapp_action        = nice_get_contact_action( 'whatsapp', $nice_events_placeholder_url );
-$nice_email_action           = nice_get_contact_action( 'email', $nice_events_placeholder_url );
+$nice_whatsapp_action        = nice_get_contact_action( 'whatsapp', $nice_events_placeholder_url, 'events' );
+$nice_email_action           = nice_get_contact_action( 'email', $nice_events_placeholder_url, 'events' );
 $nice_has_placeholder        = $nice_whatsapp_action['placeholder'] || $nice_email_action['placeholder'];
 $nice_events_contact_url     = esc_url( home_url( '/events/contact/' ) );
 ?>

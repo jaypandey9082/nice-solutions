@@ -19,7 +19,7 @@ function nice_get_studio_contact_actions() {
 	$actions = array();
 
 	foreach ( $labels as $channel => $label ) {
-		$action = nice_get_contact_action( $channel, '#studio-contact-pending' );
+		$action = nice_get_contact_action( $channel, '#studio-contact-pending', 'studio' );
 
 		if ( ! $action['placeholder'] ) {
 			$actions[] = array( 'channel' => $channel, 'label' => $label, 'url' => $action['url'] );

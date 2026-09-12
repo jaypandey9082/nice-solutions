@@ -349,22 +349,6 @@
 		color: inherit;
 	}
 
-	.nice-studio-social {
-		border-top: 1px solid var(--wp--preset--color--border);
-	}
-
-	.nice-studio-social__inner {
-		display: grid;
-		gap: var(--wp--preset--spacing--xl);
-		padding-block: var(--wp--preset--spacing--2-xl);
-	}
-
-	.nice-studio-social nav {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--wp--preset--spacing--md) var(--wp--preset--spacing--xl);
-	}
-
 	.nice-studio-contact {
 		background: #0f0f11;
 		color: #ffffff;

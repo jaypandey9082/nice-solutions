@@ -152,8 +152,8 @@ function nice_render_studio_inner_contact_cta( $args = array() ) {
 	$heading         = ! empty( $args['heading'] ) ? $args['heading'] : 'Have a story to tell?';
 	$cta_label       = ! empty( $args['cta_label'] ) ? $args['cta_label'] : "Let's make it NICE";
 	$cta_url         = ! empty( $args['cta_url'] ) ? $args['cta_url'] : home_url( '/studio/contact/' );
-	$whatsapp_action = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'whatsapp' ) : null;
-	$email_action    = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'email' ) : null;
+	$whatsapp_action = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'whatsapp', '', 'studio' ) : null;
+	$email_action    = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'email', '', 'studio' ) : null;
 	?>
 	<section class="nice-studio-inner-cta" aria-labelledby="nice-studio-inner-cta-title">
 		<div class="nice-wide nice-studio-inner-cta__content" data-nice-reveal>
@@ -587,7 +587,7 @@ function nice_render_studio_team_index() {
  * @return string
  */
 function nice_render_studio_contact_page() {
-	$settings = function_exists( 'nice_get_contact_settings' ) ? nice_get_contact_settings() : array();
+	$settings = function_exists( 'nice_theme_get_contact_channels' ) ? nice_theme_get_contact_channels( 'studio' ) : array();
 	$actions  = array();
 
 	if ( ! empty( $settings['whatsapp_url'] ) ) {

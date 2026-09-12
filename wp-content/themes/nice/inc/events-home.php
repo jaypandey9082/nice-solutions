@@ -43,7 +43,7 @@ function nice_render_events_home() {
 	$clients  = nice_get_events_clients();
 	$actions  = array();
 	foreach ( array( 'whatsapp' => 'WhatsApp', 'email' => 'Email', 'phone' => 'Phone' ) as $channel => $label ) {
-		$action = nice_get_contact_action( $channel, '#events-contact-details-pending' );
+		$action = nice_get_contact_action( $channel, '#events-contact-details-pending', 'events' );
 		if ( ! $action['placeholder'] ) {
 			$actions[] = array( 'label' => $label, 'url' => $action['url'] );
 		}

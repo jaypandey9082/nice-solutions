@@ -183,8 +183,8 @@ function nice_render_events_inner_contact_cta( $args = array() ) {
 	$heading         = ! empty( $args['heading'] ) ? $args['heading'] : 'Have an Events brief?';
 	$cta_label       = ! empty( $args['cta_label'] ) ? $args['cta_label'] : "Let's make it NICE";
 	$cta_url         = ! empty( $args['cta_url'] ) ? $args['cta_url'] : home_url( '/events/contact/' );
-	$whatsapp_action = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'whatsapp' ) : null;
-	$email_action    = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'email' ) : null;
+	$whatsapp_action = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'whatsapp', '', 'events' ) : null;
+	$email_action    = function_exists( 'nice_get_contact_action' ) ? nice_get_contact_action( 'email', '', 'events' ) : null;
 	?>
 	<section class="nice-events-inner-cta" aria-labelledby="nice-events-inner-cta-title">
 		<div class="nice-wide nice-events-inner-cta__content" data-nice-reveal>
@@ -621,7 +621,7 @@ function nice_render_events_team_index() {
  * @return string
  */
 function nice_render_events_contact_page() {
-	$settings = function_exists( 'nice_get_contact_settings' ) ? nice_get_contact_settings() : array();
+	$settings = function_exists( 'nice_theme_get_contact_channels' ) ? nice_theme_get_contact_channels( 'events' ) : array();
 	$actions  = array();
 
 	if ( ! empty( $settings['whatsapp_url'] ) ) {
