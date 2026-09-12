@@ -17,6 +17,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { spawnSync } = require("child_process");
 const { chromium } = require("playwright");
 
 const scriptsDir = __dirname;
@@ -58,8 +59,24 @@ const isStandalone = (source) => /require\(["']playwright["']\)/.test(source);
 
 			const source = fs.readFileSync(suite, "utf8");
 
+			/*
+			 * A standalone suite drives its own browser, so it runs as a child
+			 * process rather than being handed a page. It must still run: skipping
+			 * it and then reporting "all passed" is how it went unexercised.
+			 */
 			if (isStandalone(source)) {
-				console.log(`${name.padEnd(38)} SKIPPED (standalone; run it with node directly)`);
+				const run = spawnSync(process.execPath, [suite], {
+					stdio: "inherit",
+					env: { ...process.env, NODE_PATH: path.resolve(scriptsDir, "../node_modules") },
+				});
+
+				if (run.status === 0) {
+					console.log(`${name.padEnd(38)} PASS (standalone)`);
+				} else {
+					failures.push(name);
+					console.log(`${name.padEnd(38)} FAIL (standalone, exit ${run.status})`);
+				}
+
 				continue;
 			}
 

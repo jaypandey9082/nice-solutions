@@ -224,10 +224,38 @@ const RESPONSIVE_WIDTHS = [320, 360, 390, 430, 768, 900, 1024, 1200, 1440];
 
   await browser.close();
 
+  /*
+   * Draw the typography conclusion the run already has the inputs for. It was
+   * previously initialised false, never set and never read, so the suite
+   * reported success while claiming typography was unverified.
+   */
+  const viewportSamples = Object.values(results.routes).flatMap((route) => Object.values(route.viewports || {}));
+  results.typographyVerified =
+    viewportSamples.length > 0 &&
+    viewportSamples.every((sample) => Boolean(sample.h1Font) && Boolean(sample.h1FontSize)) &&
+    viewportSamples.some((sample) => sample.hasEditorialFont);
+
+  /* Every signal the run collects now decides the verdict. */
+  const failureReasons = [];
+  if (!results.overallSuccess) failureReasons.push("responsive integrity");
+  if (results.consoleErrors.length) failureReasons.push(`${results.consoleErrors.length} console error(s)`);
+  if (results.failedRequests.length) failureReasons.push(`${results.failedRequests.length} failed request(s)`);
+  if (!results.typographyVerified) failureReasons.push("typography not verified");
+  if (!results.reducedMotionVerified) failureReasons.push("reduced motion not verified");
+
+  results.overallSuccess = failureReasons.length === 0;
+
   const reportPath = path.join(AFTER_DIR, "after-report.json");
   fs.writeFileSync(reportPath, JSON.stringify(results, null, 2), "utf8");
   console.log(`\nPhase 8.1 validation complete. Report saved to ${reportPath}`);
   console.log(`Total Console Errors: ${results.consoleErrors.length}`);
   console.log(`Total Failed Requests: ${results.failedRequests.length}`);
-  console.log(`Overall Status: ${results.overallSuccess && results.consoleErrors.length === 0 ? "PASSED" : "FAILED"}`);
+  console.log(`Typography verified: ${results.typographyVerified}`);
+  console.log(`Reduced motion verified: ${results.reducedMotionVerified}`);
+  console.log(`Overall Status: ${results.overallSuccess ? "PASSED" : `FAILED (${failureReasons.join(", ")})`}`);
+
+  /* Without this the suite exits 0 even when it prints FAILED. */
+  if (!results.overallSuccess) {
+    process.exitCode = 1;
+  }
 })();

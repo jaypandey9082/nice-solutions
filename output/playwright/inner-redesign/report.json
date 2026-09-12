@@ -3,6 +3,39 @@
   "results": [
     {
       "width": 320,
+      "route": "/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 320,
+      "route": "/events/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 320,
+      "route": "/studio/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 320,
       "route": "/events/services/",
       "h1Count": 1,
       "stripCount": 1,
@@ -157,6 +190,39 @@
     },
     {
       "width": 390,
+      "route": "/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 390,
+      "route": "/events/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 390,
+      "route": "/studio/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 390,
       "route": "/events/services/",
       "h1Count": 1,
       "stripCount": 1,
@@ -311,6 +377,39 @@
     },
     {
       "width": 768,
+      "route": "/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 768,
+      "route": "/events/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 768,
+      "route": "/studio/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 768,
       "route": "/events/services/",
       "h1Count": 1,
       "stripCount": 1,
@@ -465,6 +564,39 @@
     },
     {
       "width": 1024,
+      "route": "/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 1024,
+      "route": "/events/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 1024,
+      "route": "/studio/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 1024,
       "route": "/events/services/",
       "h1Count": 1,
       "stripCount": 1,
@@ -609,6 +741,39 @@
     {
       "width": 1024,
       "route": "/studio/contact/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 1440,
+      "route": "/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 1440,
+      "route": "/events/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false
+    },
+    {
+      "width": 1440,
+      "route": "/studio/",
       "h1Count": 1,
       "stripCount": 1,
       "hasLegacySubnav": false,
