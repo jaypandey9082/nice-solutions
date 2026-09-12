@@ -19,6 +19,8 @@ const requiredFiles = [
 	'includes/sites.php',
 	'includes/admin.php',
 	'includes/migration.php',
+	'includes/gateway-projects.php',
+	'includes/setup-screen.php',
 	'includes/activation.php',
 	'uninstall.php',
 	'readme.txt',
@@ -50,8 +52,25 @@ const themeStyle = readFileSync(resolve(themeDirectory, 'style.css'), 'utf8');
 const eventsData = readFileSync(resolve(themeDirectory, 'inc/events-data.php'), 'utf8');
 const landingData = readFileSync(resolve(themeDirectory, 'inc/landing-data.php'), 'utf8');
 
-if (!/Version:\s*1\.2\.0/.test(rootPlugin) || !rootPlugin.includes("define( 'NICE_CORE_VERSION', '1.2.0' )")) {
-	fail('NICE Core must declare version 1.2.0 consistently.');
+/*
+ * The version is read rather than pinned: three installations are updated from
+ * these packages, so what matters is that the header, the constant and the
+ * readme agree, not that they hold one particular number.
+ */
+const pluginVersion = rootPlugin.match(/Version:\s*([0-9]+\.[0-9]+\.[0-9]+)/)?.[1];
+
+if (!pluginVersion) {
+	fail('NICE Core must declare a version in its plugin header.');
+}
+
+if (!rootPlugin.includes(`define( 'NICE_CORE_VERSION', '${pluginVersion}' )`)) {
+	fail(`NICE Core header says ${pluginVersion} but NICE_CORE_VERSION disagrees.`);
+}
+
+const pluginReadme = readFileSync(resolve(pluginDirectory, 'readme.txt'), 'utf8');
+
+if (!pluginReadme.includes(`Stable tag: ${pluginVersion}`)) {
+	fail(`NICE Core readme.txt must carry stable tag ${pluginVersion}.`);
 }
 
 for (const postType of ['nice_service', 'nice_case_study', 'nice_client', 'nice_team_member']) {
@@ -175,8 +194,33 @@ if (!eventsData.includes("function_exists( 'nice_get_events_services' )") || !la
 	fail('Theme adapters must detect NICE Core and preserve fallbacks.');
 }
 
-if (!/Version:\s*0\.7\.0/.test(themeStyle)) {
-	fail('The NICE theme must declare Phase 7.1 version 0.7.0.');
+const themeVersion = themeStyle.match(/Version:\s*([0-9]+\.[0-9]+\.[0-9]+)/)?.[1];
+
+if (!themeVersion) {
+	fail('The NICE theme must declare a version in style.css.');
 }
 
-console.log(`Validated NICE Core 1.2.0 structure, ${requiredFiles.length} files, CMS boundaries, routes, and theme fallbacks.`);
+const packageVersion = JSON.parse(readFileSync(resolve(projectRoot, "package.json"), 'utf8')).version;
+
+if (packageVersion !== themeVersion) {
+	fail(`package.json is ${packageVersion} but the theme declares ${themeVersion}. Release packages are named from these.`);
+}
+
+/* The gateway owns previews; a division installation must never register them. */
+const gatewayProjects = readFileSync(resolve(pluginDirectory, 'includes/gateway-projects.php'), 'utf8');
+
+if (!gatewayProjects.includes('nice_site_owns_gateway_projects')) {
+	fail('Gateway Projects must be gated on the installation identity.');
+}
+
+const setupScreen = readFileSync(resolve(pluginDirectory, 'includes/setup-screen.php'), 'utf8');
+
+for (const guard of ['current_user_can', 'check_admin_referer', 'nice_get_site_identity_problems']) {
+	if (!setupScreen.includes(guard)) {
+		fail(`The NICE Setup screen must call ${guard}.`);
+	}
+}
+
+console.log(
+	`Validated NICE Core ${pluginVersion} and theme ${themeVersion}: ${requiredFiles.length} files, CMS boundaries, routes, identity gating, and theme fallbacks.`
+);

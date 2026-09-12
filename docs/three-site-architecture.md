@@ -46,7 +46,44 @@ URL, treats every page as belonging to its division, and provisions the section
 pages at the root rather than under a landing page. Requests for the sibling's
 records return 404.
 
-Run `wp nice migrate-content` and flush permalinks after setting it.
+Run setup once the constants are in place, then flush permalinks. Either route
+does the same work:
+
+- **Tools → NICE Setup** in wp-admin, for a host with no shell. It shows the
+  identity it resolved, refuses to run when the identity is missing or
+  unrecognised on a production host, reports what it created, what was already
+  there, and what belongs to another installation, and leaves every draft as a
+  draft.
+- `wp nice migrate-content`, where there is shell access.
+
+Setup is scoped to the identity. An Events installation imports the Events
+services, Events projects and Events team placeholders and nothing else; Studio
+does the same with its own; the gateway imports neither and seeds its curated
+previews instead. Clients are shared vocabulary and are created on both division
+installations. Reruns create nothing and change nothing.
+
+A division installation also gets a landing page carrying its division slug.
+That page is what an administrator selects under Settings → Reading, and the
+setup screen offers to select it. Its own section pages sit at the root beside
+it.
+
+## Gateway Previews
+
+The gateway publishes no division content, so it cannot show a Case Study: that
+record lives in another database, and an attachment ID from one installation
+means nothing in another. It publishes **Gateway Projects** instead, a
+dashboard-only content type holding its own title, summary, division, image,
+display order and destination URL, with its image in its own Media Library.
+
+A destination is accepted only when it lands on the selected division's own
+case studies — `https://events.nicesolutions.in/case-studies/...` for an Events
+preview. Anything else is discarded rather than stored, at the metadata layer
+rather than only in the editing screen, so an import or a REST write faces the
+same rule an editor does.
+
+Setup seeds three drafts (Voltas, GCA, Strata). Publishing is an editorial act:
+until one is published the front page carries no preview section at all, and the
+section lays out correctly with one, two or three published entries.
 
 ## Ownership Rules
 
@@ -67,3 +104,25 @@ Run `wp nice migrate-content` and flush permalinks after setting it.
 This repository does not perform an implicit migration. Before production, each
 site receives an inventory, export/import mapping, host-specific URL configuration,
 canonical and sitemap checks, a backup, and an independent rollback package.
+
+## Packages
+
+`npm run build:release` writes `nice-theme-<version>.zip`, `nice-core-<version>.zip`,
+`SHA256SUMS.txt` and a release checklist into `output/releases/`, which is not
+committed. The same commit produces byte-identical archives.
+
+Packages deliberately exclude the repository's own machinery, the static design
+preview, and the deck photography that has not been cleared for publication
+(listed in `scripts/unapproved-media.json`). The theme renders its media
+placeholder wherever an image is absent, so a production installation shows an
+intentional gap rather than a broken image, and NICE fills it through the Media
+Library.
+
+## Verification
+
+`wp eval-file scripts/wp-identity-check.php` asserts the behaviour of all four
+identities — combined, Main, Events and Studio — against the running site. It
+simulates each one through the `nice_site_division` filter rather than by editing
+`wp-config.php`, so it is safe to run on the development installation, and it
+covers URL resolution, content ownership, the gateway's refusal to import
+division content, destination-URL restriction and source-provenance rules.

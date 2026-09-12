@@ -561,7 +561,7 @@ Checked on 2026-09-05.
 | PHP | Ready | The LocalWP site is running PHP 8.2.30 |
 | MySQL | Ready | Local has MySQL 8.4.0, which meets the proposed baseline |
 | WP-CLI | Ready | LocalWP's bundled WP-CLI activated and verified the NICE theme |
-| NICE Core | Ready | Version 1.2.0 is active; runtime, REST, routes, lifecycle, and migration checks pass |
+| NICE Core | Ready | Version 1.3.0 is active; runtime, REST, routes, lifecycle, setup, and identity checks pass |
 | Git | Ready | Apple Git 2.50.1 |
 | GitHub CLI | Ready | Authenticated to GitHub as `jaypandey9082` |
 | Node.js | Ready | Node.js 24.20.0 |
@@ -824,3 +824,59 @@ Phase 8 builds the complete, production-grade Studio inner-page experience:
    - Zero console errors, zero failed network requests, and CLS < 0.1.
    - Events and Landing page verified for zero regression.
 
+## Pre-Deployment Completion
+
+The NICE theme is `0.8.0` and NICE Core is `1.3.0`. The code side of the
+three-site split is finished; what remains is hosting, approved content, and the
+launch itself.
+
+### Setup is scoped to the installation
+
+Every installation declares itself in `wp-config.php` and imports only what it
+owns. Events imports Events services, projects and team placeholders; Studio
+imports its own; the gateway imports neither and seeds curated previews instead.
+Clients are created on both division installations. Reruns create nothing.
+
+`Tools → NICE Setup` runs the same routine as `wp nice migrate-content`, behind
+the same capability and nonce checks, for hosts without shell access. It refuses
+to run when the identity is missing or unrecognised on a production host, reports
+what it created, what was already there and what belongs elsewhere, and leaves
+every draft unpublished.
+
+### Gateway previews
+
+`Gateway Project` is a dashboard-only content type owned by the gateway. Each
+preview holds its own title, summary, division, image, order and destination,
+because the case study it points at lives in another database. Destinations are
+restricted to the selected division's own `/case-studies/` path, enforced at the
+metadata layer. Three drafts are seeded; publishing is an editorial act, and the
+front page carries no preview section until one is published.
+
+### Source provenance
+
+A Case Study can be approved only when its Source URL leads to the source. For
+LinkedIn that means a `/posts/`, `/feed/update/urn:li:activity:` or `/pulse/`
+permalink — a company page, a posts tab, the feed or a profile is not a citation.
+A record seeded from LinkedIn records that origin, so an unrelated address cannot
+clear it either.
+
+### Packages
+
+`npm run build:release` produces `output/releases/nice-theme-0.8.0.zip`,
+`nice-core-1.3.0.zip`, `SHA256SUMS.txt` and a release checklist. The same commit
+builds byte-identical archives. Packages exclude the repository's machinery, the
+static preview, and the deck photography that has not been cleared for
+publication; the theme renders its media placeholder wherever an image is absent.
+
+### Verification
+
+```bash
+npm run check && npm run check:inner-pages && npm run check:phases
+npm run build:release
+```
+
+```bash
+wp eval-file scripts/wp-identity-check.php   # combined, Main, Events and Studio
+wp eval-file scripts/wp-phase5-check.php     # and 6, 7, 7-1, 8
+wp nice migrate-content                      # expect nothing created on a rerun
+```

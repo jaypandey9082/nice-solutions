@@ -21,8 +21,8 @@ function nice_phase7_assert( $condition, $message ) {
 	}
 }
 
-nice_phase7_assert( defined( 'NICE_CORE_VERSION' ) && '1.2.0' === NICE_CORE_VERSION, 'Unexpected NICE Core version.' );
-nice_phase7_assert( in_array( wp_get_theme()->get( 'Version' ), array( '0.6.0', '0.7.0' ), true ), 'Unexpected NICE theme version.' );
+nice_phase7_assert( defined( 'NICE_CORE_VERSION' ) && version_compare( NICE_CORE_VERSION, '1.2.0', '>=' ), 'Unexpected NICE Core version.' );
+nice_phase7_assert( version_compare( wp_get_theme()->get( 'Version' ), '0.6.0', '>=' ), 'Unexpected NICE theme version.' );
 
 $studio = get_page_by_path( 'studio', OBJECT, 'page' );
 nice_phase7_assert( $studio instanceof WP_Post && 'publish' === $studio->post_status, 'Studio Home Page is missing.' );
@@ -108,8 +108,12 @@ nice_phase7_assert( ! str_contains( $rendered, 'nice-studio-social' ), 'Social p
 $rerun = nice_run_content_migration();
 nice_phase7_assert( ! is_wp_error( $rerun ), 'Migration rerun failed.' );
 nice_phase7_assert( 0 === $rerun['services']['created'] && 0 === $rerun['case_studies']['created'], 'Migration rerun created duplicate Studio content.' );
-/* Phase 8 grew Studio from a single gateway page to the full inner-page set. */
-$studio_page_count = count( nice_get_studio_page_manifest() );
+/*
+ * Phase 8 grew Studio from a single gateway page to the full inner-page set, and
+ * the landing page itself is now reported alongside them: a division
+ * installation needs it as the page an administrator selects as the front page.
+ */
+$studio_page_count = count( nice_get_studio_page_manifest() ) + 1;
 nice_phase7_assert( 0 === $rerun['studio_page']['created'] && $studio_page_count === $rerun['studio_page']['skipped'], 'Migration rerun duplicated Studio pages.' );
 nice_phase7_assert( 0 === $rerun['media']['linked'] && 0 === $rerun['enriched'], 'Migration rerun changed existing editorial content or media.' );
 

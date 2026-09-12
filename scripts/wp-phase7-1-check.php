@@ -22,8 +22,8 @@ function nice_phase7_1_assert( $condition, $message ) {
 }
 
 // 1. Version checks.
-nice_phase7_1_assert( defined( 'NICE_CORE_VERSION' ) && '1.2.0' === NICE_CORE_VERSION, 'Unexpected NICE Core version.' );
-nice_phase7_1_assert( '0.7.0' === wp_get_theme()->get( 'Version' ), 'Unexpected NICE theme version.' );
+nice_phase7_1_assert( defined( 'NICE_CORE_VERSION' ) && version_compare( NICE_CORE_VERSION, '1.2.0', '>=' ), 'Unexpected NICE Core version.' );
+nice_phase7_1_assert( version_compare( wp_get_theme()->get( 'Version' ), '0.7.0', '>=' ), 'Unexpected NICE theme version.' );
 
 // 2. Meta registration check.
 $registered_meta = get_registered_meta_keys( 'post', 'nice_case_study' );
@@ -56,9 +56,16 @@ if ( $studio_case ) {
 	nice_phase7_1_assert( str_contains( $studio_url, '/studio/case-studies/krish-e/' ), "Studio URL mismatch: {$studio_url}" );
 }
 
-// 5. Future Studio routes must not exist as published pages.
-foreach ( array( 'services', 'case-studies', 'clients', 'team', 'contact' ) as $future_slug ) {
-	nice_phase7_1_assert( null === get_page_by_path( 'studio/' . $future_slug, OBJECT, 'page' ), "Unexpected Phase 8 Page exists: studio/{$future_slug}" );
+/*
+ * 5. Studio inner pages.
+ *
+ * Phase 7.1 predates them and asserted their absence. Phase 8 shipped them, so
+ * the assertion had been failing against its own repository ever since; it now
+ * says what the Phase 7 check says.
+ */
+foreach ( array( 'services', 'case-studies', 'clients', 'team', 'contact' ) as $inner_slug ) {
+	$inner_page = get_page_by_path( 'studio/' . $inner_slug, OBJECT, 'page' );
+	nice_phase7_1_assert( $inner_page instanceof WP_Post && 'publish' === $inner_page->post_status, "Studio Page is missing: {$inner_slug}" );
 }
 
 echo "Phase 7.1 runtime assertions passed successfully.\n";

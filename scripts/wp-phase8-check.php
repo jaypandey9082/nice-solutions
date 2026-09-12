@@ -31,8 +31,8 @@ if ( function_exists( 'nice_register_content_rewrite_rules' ) ) {
 flush_rewrite_rules();
 
 // 1. Version checks.
-nice_phase8_assert( defined( 'NICE_CORE_VERSION' ) && '1.2.0' === NICE_CORE_VERSION, 'Unexpected NICE Core version.' );
-nice_phase8_assert( '0.7.0' === wp_get_theme()->get( 'Version' ), 'Unexpected NICE theme version.' );
+nice_phase8_assert( defined( 'NICE_CORE_VERSION' ) && version_compare( NICE_CORE_VERSION, '1.2.0', '>=' ), 'Unexpected NICE Core version.' );
+nice_phase8_assert( version_compare( wp_get_theme()->get( 'Version' ), '0.7.0', '>=' ), 'Unexpected NICE theme version.' );
 
 // 2. Studio parent page check.
 $studio = get_page_by_path( 'studio', OBJECT, 'page' );
