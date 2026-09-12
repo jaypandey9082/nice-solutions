@@ -480,17 +480,24 @@ function nice_provision_studio_page() {
  * @return WP_Post|null
  */
 function nice_find_migrated_post( $slug, $post_type ) {
-	$posts = get_posts(
-		array(
-			'name'           => sanitize_title( $slug ),
-			'post_type'      => $post_type,
-			'post_status'    => 'any',
-			'posts_per_page' => 1,
-			'no_found_rows'  => true,
+	global $wpdb;
+
+	/*
+	 * Deliberately a direct lookup rather than get_posts(). A query carrying a
+	 * post name is treated as a single-post request, and WP_Query discards
+	 * results in a non-public status when no user is logged in. Under WP-CLI
+	 * nobody is logged in, so every draft slug looked invisible here and reruns
+	 * created duplicate records instead of stopping.
+	 */
+	$post_id = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_type = %s ORDER BY ID ASC LIMIT 1",
+			sanitize_title( $slug ),
+			$post_type
 		)
 	);
 
-	return $posts[0] ?? null;
+	return $post_id ? get_post( $post_id ) : null;
 }
 
 /**
