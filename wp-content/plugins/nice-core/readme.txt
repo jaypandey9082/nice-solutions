@@ -28,6 +28,21 @@ uninstall preserve content and options.
 
 The migration is safe to run again and reports records as created or skipped.
 
+== Case Study Source Approval ==
+
+Case Studies include a private Content Source & Approval panel for editors. Add
+the HTTPS source URL and a short source label or verification note, then move the
+approval state from Draft to Review and finally Approved as evidence and usage
+rights are confirmed. Approval records editorial clearance; publishing remains
+a separate WordPress action.
+
+Running `wp nice migrate-content` also creates five LinkedIn-derived Events
+candidate records as WordPress drafts. They contain brief paraphrased text and
+the official NICE Solutions LinkedIn company-posts URL, but no images, team
+members, proof metrics, or publication approval. An existing slug in any status
+is skipped completely, so reruns never overwrite editor changes or alter a
+published record.
+
 == Events Hero Media ==
 
 Events hero media uses the native Media Library on the top-level Events Page.

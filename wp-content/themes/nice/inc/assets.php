@@ -62,7 +62,7 @@ function nice_theme_enqueue_assets() {
 
 	wp_enqueue_style( 'nice-philosophy', get_theme_file_uri( '/assets/css/philosophy.css' ), array( 'nice-site' ), nice_theme_asset_version( '/assets/css/philosophy.css' ) );
 
-	if ( is_front_page() || $nice_is_studio_home || $nice_is_events_page ) {
+	if ( is_front_page() || $nice_is_studio_context || $nice_is_events_context ) {
 		wp_enqueue_style(
 			'nice-editorial-foundation',
 			get_theme_file_uri( '/assets/css/editorial-foundation.css' ),
@@ -93,7 +93,7 @@ function nice_theme_enqueue_assets() {
 		wp_enqueue_style(
 			'nice-events-inner',
 			get_theme_file_uri( '/assets/css/events-inner.css' ),
-			array( 'nice-site', 'nice-events' ),
+			array( 'nice-editorial-foundation', 'nice-events' ),
 			nice_theme_asset_version( '/assets/css/events-inner.css' )
 		);
 	}
@@ -106,7 +106,7 @@ function nice_theme_enqueue_assets() {
 		wp_enqueue_style(
 			'nice-studio',
 			get_theme_file_uri( '/assets/css/studio.css' ),
-			array( 'nice-site' ),
+			array( 'nice-editorial-foundation' ),
 			nice_theme_asset_version( '/assets/css/studio.css' )
 		);
 	}

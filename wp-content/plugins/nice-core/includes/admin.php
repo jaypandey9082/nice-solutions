@@ -42,6 +42,14 @@ function nice_add_content_meta_boxes() {
 		'default'
 	);
 	add_meta_box(
+		'nice-case-content-source',
+		__( 'Content Source & Approval', 'nice-core' ),
+		'nice_render_case_study_source_meta_box',
+		'nice_case_study',
+		'side',
+		'default'
+	);
+	add_meta_box(
 		'nice-client-details',
 		__( 'Client Details', 'nice-core' ),
 		'nice_render_client_meta_box',
@@ -373,6 +381,39 @@ function nice_render_portfolio_controls_meta_box( $post ) {
 }
 
 /**
+ * Render private source provenance and editorial approval controls.
+ *
+ * @param WP_Post $post Current Case Study.
+ */
+function nice_render_case_study_source_meta_box( $post ) {
+	nice_render_content_meta_nonce();
+
+	$source_url      = get_post_meta( $post->ID, '_nice_source_url', true );
+	$source_note     = get_post_meta( $post->ID, '_nice_source_note', true );
+	$approval_status = nice_sanitize_case_study_approval_status( get_post_meta( $post->ID, '_nice_source_approval_status', true ) );
+	?>
+	<p class="description"><?php esc_html_e( 'Private editorial fields. They are not exposed through the public REST API.', 'nice-core' ); ?></p>
+	<p>
+		<label for="nice-source-url"><strong><?php esc_html_e( 'Source URL', 'nice-core' ); ?></strong></label><br>
+		<input class="widefat" type="url" id="nice-source-url" name="nice_source_url" value="<?php echo esc_attr( $source_url ); ?>" placeholder="https://">
+	</p>
+	<p>
+		<label for="nice-source-note"><strong><?php esc_html_e( 'Source Label / Note', 'nice-core' ); ?></strong></label><br>
+		<textarea class="widefat" rows="4" id="nice-source-note" name="nice_source_note"><?php echo esc_textarea( $source_note ); ?></textarea>
+	</p>
+	<p>
+		<label for="nice-source-approval-status"><strong><?php esc_html_e( 'Approval Status', 'nice-core' ); ?></strong></label><br>
+		<select class="widefat" id="nice-source-approval-status" name="nice_source_approval_status">
+			<option value="draft" <?php selected( $approval_status, 'draft' ); ?>><?php esc_html_e( 'Draft - source captured', 'nice-core' ); ?></option>
+			<option value="review" <?php selected( $approval_status, 'review' ); ?>><?php esc_html_e( 'Review - awaiting approval', 'nice-core' ); ?></option>
+			<option value="approved" <?php selected( $approval_status, 'approved' ); ?>><?php esc_html_e( 'Approved - cleared for editorial use', 'nice-core' ); ?></option>
+		</select>
+	</p>
+	<p class="description"><?php esc_html_e( 'Approval here records editorial clearance. Publishing remains a separate WordPress action.', 'nice-core' ); ?></p>
+	<?php
+}
+
+/**
  * Render Client fields.
  *
  * @param WP_Post $post Current Client.
@@ -483,6 +524,9 @@ function nice_save_content_meta( $post_id, $post ) {
 		$reference_url = nice_sanitize_https_url( wp_unslash( $_POST['nice_reference_url'] ?? '' ) );
 		$proof_value   = sanitize_text_field( wp_unslash( $_POST['nice_proof_value'] ?? '' ) );
 		$proof_label   = sanitize_text_field( wp_unslash( $_POST['nice_proof_label'] ?? '' ) );
+		$source_url    = nice_sanitize_https_url( wp_unslash( $_POST['nice_source_url'] ?? '' ) );
+		$source_note   = sanitize_textarea_field( wp_unslash( $_POST['nice_source_note'] ?? '' ) );
+		$approval_status = nice_sanitize_case_study_approval_status( wp_unslash( $_POST['nice_source_approval_status'] ?? 'draft' ) );
 
 		nice_save_or_delete_meta( $post_id, '_nice_client_id', $client_id ?: '' );
 		nice_save_or_delete_meta( $post_id, '_nice_location', $location );
@@ -490,6 +534,9 @@ function nice_save_content_meta( $post_id, $post ) {
 		nice_save_or_delete_meta( $post_id, '_nice_reference_url', $reference_url );
 		nice_save_or_delete_meta( $post_id, '_nice_proof_value', $proof_value );
 		nice_save_or_delete_meta( $post_id, '_nice_proof_label', $proof_label );
+		nice_save_or_delete_meta( $post_id, '_nice_source_url', $source_url );
+		nice_save_or_delete_meta( $post_id, '_nice_source_note', $source_note );
+		update_post_meta( $post_id, '_nice_source_approval_status', $approval_status );
 		update_post_meta( $post_id, '_nice_featured', empty( $_POST['nice_featured'] ) ? 0 : 1 );
 		update_post_meta( $post_id, '_nice_display_order', nice_sanitize_integer( wp_unslash( $_POST['nice_display_order'] ?? 0 ) ) );
 	}

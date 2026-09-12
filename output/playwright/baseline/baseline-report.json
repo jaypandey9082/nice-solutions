@@ -1,0 +1,146 @@
+{
+  "home": {
+    "mobile": {
+      "screenshot": "/Users/jaypandey/Documents/ChatGPT/nice-solutions/output/playwright/baseline/home-mobile.png",
+      "loadDurationMs": 941,
+      "fcpMs": 340,
+      "cls": 0.0003,
+      "requestCount": 16,
+      "totalBytes": 381792,
+      "jsBytes": 29216,
+      "cssBytes": 32635,
+      "consoleErrorCount": 0
+    },
+    "desktop": {
+      "screenshot": "/Users/jaypandey/Documents/ChatGPT/nice-solutions/output/playwright/baseline/home-desktop.png",
+      "loadDurationMs": 630,
+      "fcpMs": 96,
+      "cls": 0.0001,
+      "requestCount": 18,
+      "totalBytes": 481442,
+      "jsBytes": 29216,
+      "cssBytes": 32635,
+      "consoleErrorCount": 0
+    }
+  },
+  "events": {
+    "mobile": {
+      "screenshot": "/Users/jaypandey/Documents/ChatGPT/nice-solutions/output/playwright/baseline/events-mobile.png",
+      "loadDurationMs": 619,
+      "fcpMs": 96,
+      "cls": 0.0003,
+      "requestCount": 16,
+      "totalBytes": 372268,
+      "jsBytes": 29216,
+      "cssBytes": 32945,
+      "consoleErrorCount": 0
+    },
+    "desktop": {
+      "screenshot": "/Users/jaypandey/Documents/ChatGPT/nice-solutions/output/playwright/baseline/events-desktop.png",
+      "loadDurationMs": 622,
+      "fcpMs": 108,
+      "cls": 0.0001,
+      "requestCount": 16,
+      "totalBytes": 396652,
+      "jsBytes": 29216,
+      "cssBytes": 32945,
+      "consoleErrorCount": 0
+    }
+  },
+  "events-services": {
+    "mobile": {
+      "screenshot": "/Users/jaypandey/Documents/ChatGPT/nice-solutions/output/playwright/baseline/events-services-mobile.png",
+      "loadDurationMs": 619,
+      "fcpMs": 88,
+      "cls": 0.0101,
+      "requestCount": 13,
+      "totalBytes": 241099,
+      "jsBytes": 29216,
+      "cssBytes": 50499,
+      "consoleErrorCount": 0
+    },
+    "desktop": {
+      "screenshot": "/Users/jaypandey/Documents/ChatGPT/nice-solutions/output/playwright/baseline/events-services-desktop.png",
+      "loadDurationMs": 610,
+      "fcpMs": 84,
+      "cls": 0.0059,
+      "requestCount": 13,
+      "totalBytes": 241099,
+      "jsBytes": 29216,
+      "cssBytes": 50499,
+      "consoleErrorCount": 0
+    }
+  },
+  "events-case-studies": {
+    "mobile": {
+      "screenshot": "/Users/jaypandey/Documents/ChatGPT/nice-solutions/output/playwright/baseline/events-case-studies-mobile.png",
+      "loadDurationMs": 629,
+      "fcpMs": 96,
+      "cls": 0.0101,
+      "requestCount": 15,
+      "totalBytes": 324767,
+      "jsBytes": 29216,
+      "cssBytes": 50499,
+      "consoleErrorCount": 0
+    },
+    "desktop": {
+      "screenshot": "/Users/jaypandey/Documents/ChatGPT/nice-solutions/output/playwright/baseline/events-case-studies-desktop.png",
+      "loadDurationMs": 807,
+      "fcpMs": 120,
+      "cls": 0.0059,
+      "requestCount": 15,
+      "totalBytes": 324767,
+      "jsBytes": 29216,
+      "cssBytes": 50499,
+      "consoleErrorCount": 0
+    }
+  },
+  "events-voltas": {
+    "mobile": {
+      "screenshot": "/Users/jaypandey/Documents/ChatGPT/nice-solutions/output/playwright/baseline/events-voltas-mobile.png",
+      "loadDurationMs": 627,
+      "fcpMs": 100,
+      "cls": 0.0101,
+      "requestCount": 14,
+      "totalBytes": 263221,
+      "jsBytes": 29216,
+      "cssBytes": 50499,
+      "consoleErrorCount": 0
+    },
+    "desktop": {
+      "screenshot": "/Users/jaypandey/Documents/ChatGPT/nice-solutions/output/playwright/baseline/events-voltas-desktop.png",
+      "loadDurationMs": 628,
+      "fcpMs": 96,
+      "cls": 0.0059,
+      "requestCount": 14,
+      "totalBytes": 263221,
+      "jsBytes": 29216,
+      "cssBytes": 50499,
+      "consoleErrorCount": 0
+    }
+  },
+  "studio": {
+    "mobile": {
+      "screenshot": "/Users/jaypandey/Documents/ChatGPT/nice-solutions/output/playwright/baseline/studio-mobile.png",
+      "loadDurationMs": 629,
+      "fcpMs": 108,
+      "cls": 0.0003,
+      "requestCount": 14,
+      "totalBytes": 285990,
+      "jsBytes": 29216,
+      "cssBytes": 49462,
+      "consoleErrorCount": 0
+    },
+    "desktop": {
+      "screenshot": "/Users/jaypandey/Documents/ChatGPT/nice-solutions/output/playwright/baseline/studio-desktop.png",
+      "loadDurationMs": 647,
+      "fcpMs": 112,
+      "cls": 0.0141,
+      "requestCount": 14,
+      "totalBytes": 285990,
+      "jsBytes": 29216,
+      "cssBytes": 49462,
+      "consoleErrorCount": 0
+    }
+  }
+}

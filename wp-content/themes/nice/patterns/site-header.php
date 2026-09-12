@@ -17,6 +17,11 @@ $nice_email_action    = nice_get_contact_action( 'email' );
 $nice_is_events = function_exists( 'nice_theme_is_events_context' ) && nice_theme_is_events_context();
 $nice_is_studio = function_exists( 'nice_theme_is_studio_context' ) && nice_theme_is_studio_context();
 $nice_is_studio_home = function_exists( 'nice_theme_is_studio_home' ) && nice_theme_is_studio_home();
+$nice_is_services = is_singular( 'nice_service' ) || is_page( 'services' );
+$nice_is_work     = is_singular( 'nice_case_study' ) || is_page( 'case-studies' );
+$nice_is_clients  = is_page( 'clients' );
+$nice_is_contact  = is_page( 'contact' );
+$nice_has_team    = false;
 
 $nice_division = 'global';
 if ( $nice_is_events ) {
@@ -25,11 +30,14 @@ if ( $nice_is_events ) {
 	$nice_services_url = esc_url( home_url( '/events/services/' ) );
 	$nice_contact_url  = esc_url( home_url( '/events/contact/' ) );
 	$nice_clients_url  = esc_url( home_url( '/events/clients/' ) );
+	$nice_has_team     = function_exists( 'nice_get_team_members_by_division' ) && ! empty( nice_get_team_members_by_division( 'events' ) );
 } elseif ( $nice_is_studio ) {
 	$nice_division     = 'studio';
 	$nice_work_url     = esc_url( home_url( '/studio/case-studies/' ) );
 	$nice_services_url = esc_url( home_url( '/studio/services/' ) );
 	$nice_contact_url  = esc_url( home_url( '/studio/contact/' ) );
+	$nice_clients_url  = esc_url( home_url( '/studio/clients/' ) );
+	$nice_has_team     = function_exists( 'nice_get_team_members_by_division' ) && ! empty( nice_get_team_members_by_division( 'studio' ) );
 } else {
 	$nice_work_url     = esc_url( home_url( '/events/case-studies/' ) );
 	$nice_services_url = esc_url( home_url( '/events/services/' ) );
@@ -48,19 +56,20 @@ if ( $nice_is_events ) {
 			<?php if ( $nice_is_events ) : ?>
 				<a href="<?php echo $nice_home_url; ?>">NICE</a>
 				<a href="<?php echo $nice_events_url; ?>"<?php echo is_page( 'events' ) ? ' aria-current="page"' : ''; ?>>Events Home</a>
-				<a href="<?php echo $nice_services_url; ?>">Services</a>
-				<a href="<?php echo $nice_work_url; ?>">Work</a>
-				<a href="<?php echo $nice_clients_url; ?>">Clients</a>
-				<a href="<?php echo esc_url( home_url( '/events/team/' ) ); ?>">Team</a>
-				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
+				<a href="<?php echo $nice_services_url; ?>"<?php echo $nice_is_services ? ' aria-current="page"' : ''; ?>>Services</a>
+				<a href="<?php echo $nice_work_url; ?>"<?php echo $nice_is_work ? ' aria-current="page"' : ''; ?>>Work</a>
+				<a href="<?php echo $nice_clients_url; ?>"<?php echo $nice_is_clients ? ' aria-current="page"' : ''; ?>>Clients</a>
+				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( home_url( '/events/team/' ) ); ?>"<?php echo is_page( 'team' ) ? ' aria-current="page"' : ''; ?>>Team</a><?php endif; ?>
+				<a href="<?php echo $nice_contact_url; ?>"<?php echo $nice_is_contact ? ' aria-current="page"' : ''; ?>>Contact</a>
 				<a href="<?php echo $nice_studio_url; ?>">Studio</a>
 			<?php elseif ( $nice_is_studio ) : ?>
 				<a href="<?php echo $nice_home_url; ?>">NICE</a>
 				<a href="<?php echo $nice_studio_url; ?>"<?php echo $nice_is_studio_home ? ' aria-current="page"' : ''; ?>>Studio Home</a>
-				<a href="<?php echo $nice_work_url; ?>">Work</a>
-				<a href="<?php echo $nice_services_url; ?>">Services</a>
-				<a href="<?php echo esc_url( home_url( '/studio/clients/' ) ); ?>">Clients</a>
-				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
+				<a href="<?php echo $nice_services_url; ?>"<?php echo $nice_is_services ? ' aria-current="page"' : ''; ?>>Services</a>
+				<a href="<?php echo $nice_work_url; ?>"<?php echo $nice_is_work ? ' aria-current="page"' : ''; ?>>Work</a>
+				<a href="<?php echo $nice_clients_url; ?>"<?php echo $nice_is_clients ? ' aria-current="page"' : ''; ?>>Clients</a>
+				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( home_url( '/studio/team/' ) ); ?>"<?php echo is_page( 'team' ) ? ' aria-current="page"' : ''; ?>>Team</a><?php endif; ?>
+				<a href="<?php echo $nice_contact_url; ?>"<?php echo $nice_is_contact ? ' aria-current="page"' : ''; ?>>Contact</a>
 				<a href="<?php echo $nice_events_url; ?>">Events</a>
 			<?php else : ?>
 				<a href="<?php echo $nice_events_url; ?>">Events</a>
@@ -86,15 +95,16 @@ if ( $nice_is_events ) {
 				<a href="<?php echo $nice_services_url; ?>">Services</a>
 				<a href="<?php echo $nice_work_url; ?>">Work</a>
 				<a href="<?php echo $nice_clients_url; ?>">Clients</a>
-				<a href="<?php echo esc_url( home_url( '/events/team/' ) ); ?>">Team</a>
+				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( home_url( '/events/team/' ) ); ?>">Team</a><?php endif; ?>
 				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
 				<a href="<?php echo $nice_studio_url; ?>">Studio</a>
 			<?php elseif ( $nice_is_studio ) : ?>
 				<a href="<?php echo $nice_home_url; ?>">NICE</a>
 				<a href="<?php echo $nice_studio_url; ?>">Studio Home</a>
-				<a href="<?php echo $nice_work_url; ?>">Work</a>
 				<a href="<?php echo $nice_services_url; ?>">Services</a>
-				<a href="<?php echo esc_url( home_url( '/studio/clients/' ) ); ?>">Clients</a>
+				<a href="<?php echo $nice_work_url; ?>">Work</a>
+				<a href="<?php echo $nice_clients_url; ?>">Clients</a>
+				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( home_url( '/studio/team/' ) ); ?>">Team</a><?php endif; ?>
 				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
 				<a href="<?php echo $nice_events_url; ?>">Events</a>
 			<?php else : ?>
@@ -103,10 +113,12 @@ if ( $nice_is_events ) {
 				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
 			<?php endif; ?>
 		</div>
-		<div class="nice-mobile-menu__actions" aria-label="<?php esc_attr_e( 'Contact options', 'nice' ); ?>">
-			<a class="nice-button nice-button--primary" href="<?php echo esc_url( $nice_whatsapp_action['url'] ); ?>" data-nice-contact-channel="whatsapp" data-nice-contact-placeholder="<?php echo $nice_whatsapp_action['placeholder'] ? 'true' : 'false'; ?>">WhatsApp</a>
-			<a class="nice-button nice-button--secondary" href="<?php echo esc_url( $nice_email_action['url'] ); ?>" data-nice-contact-channel="email" data-nice-contact-placeholder="<?php echo $nice_email_action['placeholder'] ? 'true' : 'false'; ?>">Email</a>
-		</div>
+		<?php if ( ! $nice_whatsapp_action['placeholder'] || ! $nice_email_action['placeholder'] ) : ?>
+			<div class="nice-mobile-menu__actions" aria-label="<?php esc_attr_e( 'Contact options', 'nice' ); ?>">
+				<?php if ( ! $nice_whatsapp_action['placeholder'] ) : ?><a class="nice-button nice-button--primary" href="<?php echo esc_url( $nice_whatsapp_action['url'] ); ?>" data-nice-contact-channel="whatsapp">WhatsApp</a><?php endif; ?>
+				<?php if ( ! $nice_email_action['placeholder'] ) : ?><a class="nice-button nice-button--secondary" href="<?php echo esc_url( $nice_email_action['url'] ); ?>" data-nice-contact-channel="email">Email</a><?php endif; ?>
+			</div>
+		<?php endif; ?>
 	</div>
 </header>
 <!-- /wp:html -->

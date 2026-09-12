@@ -38,13 +38,13 @@
 		--nice-type-editorial: var(--wp--preset--font-family--editorial);
 		--nice-type-editorial-display: 3.5rem;
 		--nice-type-editorial-hero: 4.5rem;
-		--nice-canvas: #FAF9F5;
-		--nice-black: #141413;
-		--nice-secondary-black: #30302E;
-		--nice-muted: #5E5D59;
-		--nice-subtle-border: #D1CFC5;
-		--nice-surface-container: #EFEEEA;
-		--nice-surface-container-low: #F5F3EB;
+		--nice-canvas: #E7E3D8;
+		--nice-black: #121213;
+		--nice-secondary-black: #292927;
+		--nice-muted: #565249;
+		--nice-subtle-border: #C7C1B2;
+		--nice-surface-container: #DAD5C8;
+		--nice-surface-container-low: #F4F2ED;
 		--nice-red: #EF233C;
 		--nice-font-heading: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 		--nice-font-body: "Cabin", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -957,7 +957,7 @@
 	.nice-editorial {
 		font-family: var(--nice-type-editorial) !important;
 		font-weight: 400;
-		letter-spacing: -0.025em;
+		letter-spacing: 0;
 		line-height: 1.02;
 	}
 
@@ -965,7 +965,7 @@
 		font-family: var(--nice-type-editorial) !important;
 		font-size: var(--nice-type-editorial-display);
 		font-weight: 400;
-		letter-spacing: -0.025em;
+		letter-spacing: 0;
 		line-height: 0.96;
 	}
 
@@ -973,7 +973,7 @@
 		font-family: var(--nice-type-editorial) !important;
 		font-size: var(--nice-type-editorial-hero);
 		font-weight: 400;
-		letter-spacing: -0.03em;
+		letter-spacing: 0;
 		line-height: 0.92;
 		text-wrap: balance;
 	}

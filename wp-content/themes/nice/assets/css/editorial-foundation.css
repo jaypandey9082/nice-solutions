@@ -25,21 +25,27 @@
 @layer components {
 	body.home,
 	body.nice-is-studio-page,
-	body.nice-is-events-page {
+	body.nice-is-studio-context,
+	body.nice-is-events-page,
+	body.nice-is-events-context {
 		background: var(--nice-canvas);
 		color: var(--nice-black);
 	}
 
 	.home .nice-nav-shell,
 	.nice-is-studio-page .nice-nav-shell,
-	.nice-is-events-page .nice-nav-shell {
+	.nice-is-studio-context .nice-nav-shell,
+	.nice-is-events-page .nice-nav-shell,
+	.nice-is-events-context .nice-nav-shell {
 		background: var(--nice-surface-container-low);
 		border-color: var(--nice-subtle-border);
 	}
 
 	.home .nice-mobile-menu__links a,
 	.nice-is-studio-page .nice-mobile-menu__links a,
-	.nice-is-events-page .nice-mobile-menu__links a {
+	.nice-is-studio-context .nice-mobile-menu__links a,
+	.nice-is-events-page .nice-mobile-menu__links a,
+	.nice-is-events-context .nice-mobile-menu__links a {
 		font-family: var(--nice-font-heading);
 		font-weight: 500;
 		letter-spacing: 0;
@@ -48,7 +54,9 @@
 
 	.home .nice-main,
 	.nice-is-studio-page .nice-main,
-	.nice-is-events-page .nice-main {
+	.nice-is-studio-context .nice-main,
+	.nice-is-events-page .nice-main,
+	.nice-is-events-context .nice-main {
 		margin-block-start: 0 !important;
 	}
 }

@@ -1190,6 +1190,596 @@
 			font-size: 2.75rem;
 		}
 	}
+
+	/* ==================================================
+	   Studio Inner Pages: premium shared-page system
+	   ================================================== */
+	.nice-studio-inner {
+		--nice-studio-canvas: #e7e3d8;
+		--nice-studio-surface: #f4f2ed;
+		--nice-studio-black: #121213;
+		--nice-studio-muted: #565249;
+		--nice-studio-border: #c7c1b2;
+		--nice-studio-placeholder: #dad5c8;
+		--nice-studio-red: #ef233c;
+		background: var(--nice-studio-canvas);
+		color: var(--nice-studio-black);
+		overflow: clip;
+	}
+
+	.nice-studio-subnav-shell {
+		display: none;
+	}
+
+	.nice-studio-inner .nice-wide {
+		box-sizing: border-box;
+		max-width: 75rem;
+		padding-inline: 1.25rem;
+		width: 100%;
+	}
+
+	.nice-studio-inner-section {
+		padding-block: 4.5rem;
+	}
+
+	.nice-studio-inner-heading {
+		gap: 0.75rem;
+		margin-bottom: 2.5rem;
+	}
+
+	.nice-studio-inner-heading h2,
+	.nice-studio-empty-state--feature h2,
+	.nice-studio-inner-cta__lead h2 {
+		font-family: var(--nice-font-heading, "NICE Condensed", "Arial Narrow", Arial, sans-serif);
+		font-size: 2.5rem;
+		font-weight: 500;
+		letter-spacing: 0;
+		line-height: 0.98;
+		max-width: 18ch;
+		text-transform: uppercase;
+	}
+
+	.nice-studio-inner .nice-eyebrow {
+		font-family: var(--nice-font-label, "Helvetica Neue", Helvetica, Arial, sans-serif);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0;
+		line-height: 1.4;
+		text-transform: uppercase;
+	}
+
+	.nice-studio-inner-hero {
+		background: var(--nice-studio-black);
+		color: var(--nice-studio-surface);
+		min-height: 24rem;
+	}
+
+	.nice-studio-inner-hero__content {
+		align-content: end;
+		gap: 1rem;
+		min-height: inherit;
+		padding-bottom: 2.5rem;
+		padding-top: 7rem;
+	}
+
+	.nice-studio-inner-hero .nice-eyebrow {
+		color: var(--nice-studio-red);
+	}
+
+	.nice-studio-inner-hero h1 {
+		color: var(--nice-studio-surface);
+		font-family: var(--nice-font-heading, "NICE Condensed", "Arial Narrow", Arial, sans-serif) !important;
+		font-size: 3.25rem;
+		font-weight: 500;
+		letter-spacing: 0;
+		line-height: 0.92;
+		max-width: 13ch;
+		text-transform: uppercase;
+	}
+
+	.nice-studio-inner-hero__content > p:last-child {
+		color: #d9d6cf;
+		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-size: 1.125rem;
+		line-height: 1.45;
+		max-width: 38rem;
+	}
+
+	.nice-studio-services-index {
+		background: var(--nice-studio-surface);
+	}
+
+	.nice-studio-services-index__list {
+		border-top: 1px solid var(--nice-studio-border);
+	}
+
+	.nice-studio-service-row {
+		border-bottom: 1px solid var(--nice-studio-border);
+		display: block;
+		padding-block: 1.75rem;
+	}
+
+	.nice-studio-service-row__content {
+		align-items: start;
+		display: grid;
+		gap: 0.875rem;
+	}
+
+	.nice-studio-service-row__index {
+		color: var(--nice-studio-red) !important;
+		font-family: var(--nice-font-label, "Helvetica Neue", Helvetica, Arial, sans-serif);
+		font-size: 0.75rem !important;
+		font-weight: 700;
+		letter-spacing: 0 !important;
+		line-height: 1.4;
+	}
+
+	.nice-studio-service-row__content h3 {
+		font-family: var(--nice-font-heading, "NICE Condensed", "Arial Narrow", Arial, sans-serif);
+		font-size: 2rem;
+		font-weight: 500;
+		letter-spacing: 0;
+		line-height: 1;
+		text-transform: uppercase;
+	}
+
+	.nice-studio-service-row__content > p {
+		color: var(--nice-studio-muted);
+		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-size: 1rem;
+		line-height: 1.55;
+		max-width: 36rem;
+	}
+
+	.nice-studio-service-row .nice-link {
+		align-self: center;
+		font-family: var(--nice-font-label, "Helvetica Neue", Helvetica, Arial, sans-serif);
+		font-size: 0.8125rem;
+		font-weight: 700;
+		letter-spacing: 0;
+		text-transform: uppercase;
+	}
+
+	.nice-studio-service-story,
+	.nice-studio-case-intro,
+	.nice-studio-contact-page {
+		background: var(--nice-studio-surface);
+	}
+
+	.nice-studio-editor-content {
+		color: var(--nice-studio-muted);
+		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-size: 1.125rem;
+		line-height: 1.65;
+		max-width: 46rem;
+	}
+
+	.nice-studio-editor-content h2,
+	.nice-studio-editor-content h3,
+	.nice-studio-editor-content h4 {
+		color: var(--nice-studio-black);
+		font-family: var(--nice-font-heading, "NICE Condensed", "Arial Narrow", Arial, sans-serif);
+		font-weight: 500;
+		letter-spacing: 0;
+		line-height: 1;
+		text-transform: uppercase;
+	}
+
+	.nice-studio-editor-content h2 {
+		font-size: 2.25rem;
+		margin-bottom: 1rem;
+		margin-top: 3rem;
+	}
+
+	.nice-studio-editor-content h3 {
+		font-size: 1.5rem;
+		margin-bottom: 0.75rem;
+		margin-top: 2rem;
+	}
+
+	.nice-studio-related-services {
+		background: var(--nice-studio-black);
+		color: var(--nice-studio-surface);
+	}
+
+	.nice-studio-related-services__list {
+		background: #333331;
+		border: 1px solid #333331;
+	}
+
+	.nice-studio-related-services__list a {
+		background: var(--nice-studio-black);
+		color: var(--nice-studio-surface);
+		font-family: var(--nice-font-heading, "NICE Condensed", "Arial Narrow", Arial, sans-serif);
+		font-size: 1.5rem;
+		font-weight: 500;
+		letter-spacing: 0;
+		padding: 1.25rem 1.5rem;
+		text-transform: uppercase;
+	}
+
+	.nice-studio-related-services__list a:hover {
+		background: #202022;
+	}
+
+	.nice-studio-case-groups {
+		display: block;
+	}
+
+	.nice-studio-case-group {
+		border-top: 1px solid var(--nice-studio-border);
+		padding-block: 4.5rem;
+	}
+
+	.nice-studio-case-group:nth-child(even) {
+		background: var(--nice-studio-black);
+		border-color: #333331;
+		color: var(--nice-studio-surface);
+	}
+
+	.nice-studio-case-group:nth-child(even) .nice-studio-inner-heading h2,
+	.nice-studio-case-group:nth-child(even) .nice-studio-case-preview__body h3,
+	.nice-studio-case-group:nth-child(even) .nice-link {
+		color: var(--nice-studio-surface);
+	}
+
+	.nice-studio-case-group:nth-child(even) .nice-studio-meta-line,
+	.nice-studio-case-group:nth-child(even) .nice-studio-case-preview__body > p {
+		color: #c9c5bc;
+	}
+
+	.nice-studio-case-list {
+		display: grid;
+		gap: 2rem;
+		grid-template-columns: 1fr;
+	}
+
+	.nice-studio-case-preview,
+	.nice-studio-case-preview--featured,
+	.nice-studio-case-preview--large,
+	.nice-studio-case-preview--secondary {
+		display: grid;
+		gap: 1rem;
+		grid-column: auto;
+	}
+
+	.nice-studio-case-preview__media,
+	.nice-case-hero-media {
+		aspect-ratio: 16 / 9;
+		background: var(--nice-studio-placeholder);
+		box-sizing: border-box;
+		color: var(--nice-studio-muted);
+		display: grid;
+		min-height: 0;
+		overflow: hidden;
+		place-items: end start;
+		text-decoration: none;
+	}
+
+	.nice-studio-media-placeholder span {
+		font-family: var(--nice-font-label, "Helvetica Neue", Helvetica, Arial, sans-serif);
+		font-size: 0.6875rem;
+		font-weight: 700;
+		letter-spacing: 0;
+		padding: 1rem;
+		text-transform: uppercase;
+	}
+
+	.nice-studio-case-preview__media:hover {
+		background: #d1ccbf;
+	}
+
+	.nice-studio-case-preview__body {
+		gap: 0.5rem;
+	}
+
+	.nice-studio-case-preview__body h3,
+	.nice-studio-case-preview--featured h3 {
+		font-family: var(--nice-font-heading, "NICE Condensed", "Arial Narrow", Arial, sans-serif);
+		font-size: 1.75rem;
+		font-weight: 500;
+		letter-spacing: 0;
+		line-height: 1;
+		text-transform: uppercase;
+	}
+
+	.nice-studio-case-preview__body > p:not(.nice-eyebrow):not(.nice-studio-meta-line) {
+		color: var(--nice-studio-muted);
+		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-size: 1rem;
+		line-height: 1.5;
+	}
+
+	.nice-studio-meta-line {
+		color: var(--nice-studio-muted);
+		font-family: var(--nice-font-label, "Helvetica Neue", Helvetica, Arial, sans-serif);
+		font-size: 0.75rem;
+		letter-spacing: 0;
+	}
+
+	.nice-studio-case-quote {
+		background: var(--nice-studio-black);
+		color: var(--nice-studio-surface);
+		padding-block: 4.5rem;
+	}
+
+	.nice-studio-case-quote .nice-case-quote {
+		border-left: 2px solid var(--nice-studio-red);
+		padding-left: 1.5rem;
+	}
+
+	.nice-studio-case-quote p {
+		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-size: 2rem;
+		font-weight: 400;
+		letter-spacing: 0;
+		line-height: 1.2;
+		max-width: 24ch;
+	}
+
+	.nice-studio-case-infobar {
+		background: var(--nice-studio-surface);
+		border-color: var(--nice-studio-border);
+		padding-block: 1rem;
+	}
+
+	.nice-studio-case-meta-bar {
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.nice-studio-case-meta-bar dt,
+	.nice-studio-nav-card__body small {
+		color: var(--nice-studio-muted);
+		font-family: var(--nice-font-label, "Helvetica Neue", Helvetica, Arial, sans-serif);
+		font-size: 0.6875rem;
+		font-weight: 700;
+		letter-spacing: 0;
+		text-transform: uppercase;
+	}
+
+	.nice-studio-case-meta-bar dd {
+		font-size: 0.9375rem;
+		font-weight: 600;
+		margin-top: 0.25rem;
+	}
+
+	.nice-case-hero-media-wrap {
+		background: var(--nice-studio-canvas);
+		padding-block: 2.5rem;
+	}
+
+	.nice-case-hero-media {
+		width: 100%;
+	}
+
+	.nice-studio-project-proof {
+		background: var(--nice-studio-black);
+		color: var(--nice-studio-surface);
+		padding-block: 4.5rem;
+	}
+
+	.nice-studio-project-proof__value {
+		font-family: var(--nice-font-heading, "NICE Condensed", "Arial Narrow", Arial, sans-serif);
+		font-size: 4rem;
+		font-weight: 500;
+		letter-spacing: 0;
+		line-height: 0.9;
+	}
+
+	.nice-studio-project-proof h2 {
+		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-size: 1.5rem;
+		font-weight: 400;
+		letter-spacing: 0;
+		line-height: 1.3;
+	}
+
+	.nice-studio-project-navigation {
+		border-color: var(--nice-studio-border);
+		gap: 1px;
+		padding-block: 2.5rem;
+	}
+
+	.nice-studio-nav-card {
+		background: var(--nice-studio-surface);
+		border-color: var(--nice-studio-border);
+		min-height: 7.5rem;
+		padding: 1.5rem;
+	}
+
+	.nice-studio-nav-card:hover {
+		border-color: var(--nice-studio-red);
+		transform: translateY(-2px);
+	}
+
+	.nice-studio-nav-card__title {
+		font-family: var(--nice-font-heading, "NICE Condensed", "Arial Narrow", Arial, sans-serif);
+		font-size: 1.5rem;
+		font-weight: 500;
+		letter-spacing: 0;
+		line-height: 1;
+		text-transform: uppercase;
+	}
+
+	.nice-studio-client-directory__list {
+		background: var(--nice-studio-border);
+		border-color: var(--nice-studio-border);
+		grid-template-columns: 1fr;
+	}
+
+	.nice-studio-client {
+		align-content: center;
+		background: var(--nice-studio-surface);
+		justify-items: start;
+		min-height: 8rem;
+		padding: 1.5rem;
+		text-align: left;
+	}
+
+	.nice-studio-client h3,
+	.nice-studio-team-member h3 {
+		font-family: var(--nice-font-heading, "NICE Condensed", "Arial Narrow", Arial, sans-serif);
+		font-size: 1.5rem;
+		font-weight: 500;
+		letter-spacing: 0;
+		line-height: 1;
+		text-transform: uppercase;
+	}
+
+	.nice-studio-team-directory__list {
+		gap: 2rem;
+	}
+
+	.nice-studio-team-member__portrait {
+		background: var(--nice-studio-placeholder);
+	}
+
+	.nice-studio-empty-state {
+		background: var(--nice-studio-surface);
+		border-color: var(--nice-studio-border);
+		padding: 2rem;
+		text-align: left;
+	}
+
+	.nice-studio-empty-state--feature {
+		max-width: 50rem;
+		padding: 3rem 2rem;
+	}
+
+	.nice-studio-empty-state--feature p:last-child {
+		color: var(--nice-studio-muted);
+		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-size: 1rem;
+		line-height: 1.55;
+	}
+
+	.nice-studio-contact-page__actions {
+		gap: 0;
+		max-width: none;
+	}
+
+	.nice-studio-contact-page__actions a {
+		background: transparent;
+		border: 0;
+		border-top: 1px solid var(--nice-studio-border);
+		gap: 1rem;
+		padding: 1.5rem 0;
+	}
+
+	.nice-studio-contact-page__actions a:last-child {
+		border-bottom: 1px solid var(--nice-studio-border);
+	}
+
+	.nice-studio-contact-page__actions a:hover {
+		border-color: var(--nice-studio-red);
+		transform: translateX(4px);
+	}
+
+	.nice-studio-contact-page__actions small {
+		color: var(--nice-studio-red);
+		letter-spacing: 0;
+	}
+
+	.nice-studio-inner-cta {
+		background: var(--nice-studio-black);
+		color: var(--nice-studio-surface);
+		padding-block: 4.5rem;
+	}
+
+	.nice-studio-inner-cta__lead h2 {
+		color: var(--nice-studio-surface);
+		font-size: 3rem;
+	}
+
+	.nice-studio-inner :where(a, button):focus-visible {
+		outline: 2px solid var(--nice-studio-red);
+		outline-offset: 4px;
+	}
+
+	@media (min-width: 48rem) {
+		.nice-studio-inner .nice-wide {
+			padding-inline: 2.5rem;
+		}
+
+		.nice-studio-inner-section,
+		.nice-studio-case-group,
+		.nice-studio-case-quote,
+		.nice-studio-project-proof,
+		.nice-studio-inner-cta {
+			padding-block: 6rem;
+		}
+
+		.nice-studio-inner-hero {
+			min-height: 25rem;
+		}
+
+		.nice-studio-inner-hero__content {
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			padding-bottom: 3.5rem;
+			padding-top: 7.5rem;
+		}
+
+		.nice-studio-inner-hero .nice-eyebrow,
+		.nice-studio-inner-hero h1 {
+			grid-column: 1 / 8;
+		}
+
+		.nice-studio-inner-hero h1 {
+			font-size: 4.5rem;
+		}
+
+		.nice-studio-inner-hero__content > p:last-child {
+			align-self: end;
+			font-size: 1.25rem;
+			grid-column: 8 / 13;
+			grid-row: 1 / 3;
+		}
+
+		.nice-studio-service-row__content {
+			grid-template-columns: 3rem minmax(12rem, 0.75fr) minmax(18rem, 1.25fr) auto;
+		}
+
+		.nice-studio-case-list {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.nice-studio-case-meta-bar {
+			grid-template-columns: repeat(5, minmax(0, 1fr));
+		}
+
+		.nice-studio-project-navigation {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.nice-studio-client-directory__list {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.nice-studio-team-directory__list {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.nice-studio-inner-cta__content {
+			align-items: end;
+			grid-template-columns: 7fr 5fr;
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.nice-studio-case-list {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.nice-studio-client-directory__list {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+
+		.nice-studio-team-directory__list {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
 }
 
 @layer motion {
