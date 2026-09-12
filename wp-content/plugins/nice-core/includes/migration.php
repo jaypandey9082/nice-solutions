@@ -353,10 +353,19 @@ function nice_source_url_is_specific( $source_url, $origin = '' ) {
  * @return bool
  */
 function nice_case_study_source_is_approvable( $post_id ) {
-	return nice_source_url_is_specific(
-		get_post_meta( $post_id, '_nice_source_url', true ),
-		get_post_meta( $post_id, '_nice_source_origin', true )
-	);
+	$source_url = get_post_meta( $post_id, '_nice_source_url', true );
+	$origin     = (string) get_post_meta( $post_id, '_nice_source_origin', true );
+
+	/*
+	 * A record seeded before the origin was recorded still carries a LinkedIn
+	 * address, so infer from it rather than treating the record as having no
+	 * known provenance.
+	 */
+	if ( '' === $origin && nice_host_is_linkedin( wp_parse_url( (string) $source_url, PHP_URL_HOST ) ) ) {
+		$origin = 'linkedin';
+	}
+
+	return nice_source_url_is_specific( $source_url, $origin );
 }
 
 function nice_get_linkedin_case_study_draft_manifest() {
@@ -642,7 +651,19 @@ function nice_migrate_linkedin_case_study_drafts() {
 	$service_types = nice_get_approved_service_types();
 
 	foreach ( nice_get_linkedin_case_study_draft_manifest() as $record ) {
-		if ( nice_find_migrated_post( $record['slug'], 'nice_case_study' ) ) {
+		$existing = nice_find_migrated_post( $record['slug'], 'nice_case_study' );
+
+		if ( $existing ) {
+			/*
+			 * Backfill the origin on candidates seeded before it was recorded.
+			 * Without it a record could be cleared by pasting any specific page,
+			 * when what it needs is the LinkedIn post it was written from. The
+			 * rest of the record is left exactly as the editor has it.
+			 */
+			if ( ! get_post_meta( $existing->ID, '_nice_source_origin', true ) ) {
+				update_post_meta( $existing->ID, '_nice_source_origin', 'linkedin' );
+			}
+
 			++$summary['skipped'];
 			continue;
 		}
