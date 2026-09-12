@@ -8,6 +8,80 @@
 		border-radius: 0;
 	}
 
+	/* ── Gateway previews ── */
+	/*
+	 * Auto-fit rather than a fixed three-column track: unpublishing one preview
+	 * has to leave the remaining two reading as a deliberate pair, not as a
+	 * three-column grid with a hole in it.
+	 */
+	.nice-gateway-projects {
+		background: var(--nice-canvas);
+		border-bottom: 1px solid var(--nice-subtle-border);
+	}
+
+	.nice-gateway-projects__grid {
+		box-sizing: border-box;
+		display: grid;
+		gap: 1.5rem;
+		grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+		margin-inline: auto;
+		max-width: 75rem;
+		padding-block: 1.5rem 3rem;
+		width: 100%;
+	}
+
+	.nice-gateway-project {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.nice-gateway-project__media {
+		aspect-ratio: 16 / 9;
+		background: var(--nice-surface-container);
+		border: 1px solid var(--nice-subtle-border);
+		margin-bottom: 0.5rem;
+		overflow: hidden;
+	}
+
+	.nice-gateway-project__media img {
+		height: 100%;
+		object-fit: cover;
+		width: 100%;
+	}
+
+	.nice-gateway-project__division {
+		color: var(--nice-muted);
+		font-family: var(--nice-font-label);
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		margin: 0;
+		text-transform: uppercase;
+	}
+
+	.nice-gateway-project__title {
+		color: var(--nice-black);
+		font-family: var(--nice-font-heading);
+		font-size: 1.5rem;
+		font-weight: 500;
+		line-height: 1.1;
+		margin: 0;
+	}
+
+	.nice-gateway-project__summary {
+		color: var(--nice-muted);
+		font-family: var(--nice-font-body);
+		font-size: 1rem;
+		line-height: 1.45;
+		margin: 0;
+	}
+
+	.nice-gateway-project__link {
+		margin-top: auto;
+		padding-top: 0.5rem;
+	}
+
 	/* ── Section 01: Hero ── */
 	.nice-landing-hero {
 		background: var(--nice-canvas);
