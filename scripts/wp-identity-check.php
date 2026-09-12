@@ -172,6 +172,28 @@ nice_identity_as(
 		nice_identity_assert( 'foreign' === nice_initialize_studio_hero_media()['status'], 'Events: imports no Studio hero.' );
 		nice_identity_assert( array( 'events' ) === nice_get_local_division_slugs(), 'Events: owns exactly one division.' );
 
+		/*
+		 * A sibling record that reached this database another way must not show
+		 * up in a public listing. Queried directly rather than through the theme
+		 * helpers, because those already ask for one division by name.
+		 */
+		$visible = get_posts(
+			array(
+				'post_type'      => 'nice_case_study',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+			)
+		);
+		$studio_visible = array_filter(
+			$visible,
+			static function ( $post_id ) {
+				return has_term( 'studio', 'nice_division', $post_id );
+			}
+		);
+		nice_identity_assert( array() === $studio_visible, 'Events: no Studio record appears in a public listing.' );
+		nice_identity_assert( count( $visible ) > 0, 'Events: its own records still appear.' );
+
 		$team = array_filter(
 			nice_get_team_member_draft_manifest(),
 			static function ( $record ) {

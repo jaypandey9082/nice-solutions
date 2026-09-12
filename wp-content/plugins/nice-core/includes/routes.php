@@ -228,3 +228,57 @@ function nice_filter_unapproved_canonical_guesses( $redirect_url, $requested_url
 	return $redirect_url;
 }
 add_filter( 'redirect_canonical', 'nice_filter_unapproved_canonical_guesses', 10, 2 );
+
+/**
+ * Keep a sibling division's records out of every public listing.
+ *
+ * Route enforcement already 404s a sibling's page, but a record that reached
+ * the database another way — a full database copy taken before the split, an
+ * import, an editor moving a record between divisions — would still surface in
+ * search results, the sitemap and REST collections. Each of those is a way for
+ * one hostname to advertise work that belongs to another.
+ *
+ * Deliberately front-end only. An administrator has to be able to see a stray
+ * record in wp-admin in order to move or delete it.
+ *
+ * @param WP_Query $query Query about to run.
+ */
+function nice_restrict_query_to_local_divisions( $query ) {
+	if ( is_admin() || ! nice_is_division_site() ) {
+		return;
+	}
+
+	$post_types = (array) $query->get( 'post_type' );
+	$divisional = array_intersect( $post_types, array( 'nice_service', 'nice_case_study', 'nice_team_member' ) );
+
+	if ( ! $divisional && ! $query->is_search() ) {
+		return;
+	}
+
+	$foreign = array_values( array_diff( nice_get_division_slugs(), nice_get_local_division_slugs() ) );
+
+	if ( ! $foreign ) {
+		return;
+	}
+
+	/*
+	 * Excluding the sibling rather than requiring the local division, because a
+	 * search spans every public type: an IN clause on a taxonomy that Pages do
+	 * not use would drop every Page from the results. NOT IN keeps anything
+	 * carrying no division at all.
+	 */
+	$tax_query   = (array) $query->get( 'tax_query' );
+	$tax_query[] = array(
+		'taxonomy' => 'nice_division',
+		'field'    => 'slug',
+		'terms'    => $foreign,
+		'operator' => 'NOT IN',
+	);
+
+	if ( count( $tax_query ) > 1 ) {
+		$tax_query['relation'] = 'AND';
+	}
+
+	$query->set( 'tax_query', $tax_query );
+}
+add_action( 'pre_get_posts', 'nice_restrict_query_to_local_divisions' );
