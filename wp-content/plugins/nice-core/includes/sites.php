@@ -32,6 +32,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Divisions this codebase knows about.
  *
+ * This is the content vocabulary. It is deliberately separate from the set of
+ * site identities below, because 'main' is an installation that owns no
+ * division content at all.
+ *
  * @return string[]
  */
 function nice_get_division_slugs() {
@@ -39,26 +43,77 @@ function nice_get_division_slugs() {
 }
 
 /**
- * Return the division this installation serves.
+ * Identities an installation may declare.
  *
- * An empty string means the combined site, which serves every division behind
- * its path prefix. That is the default and the repository's own configuration.
+ * 'main' is the gateway: it publishes curated previews and links out, and owns
+ * none of the division content itself.
  *
- * @return string Division slug, or an empty string for the combined site.
+ * @return string[]
  */
-function nice_get_site_division() {
-	$division = defined( 'NICE_SITE_DIVISION' ) ? sanitize_key( (string) NICE_SITE_DIVISION ) : '';
+function nice_get_site_identities() {
+	return array( 'main', 'events', 'studio' );
+}
 
-	if ( ! in_array( $division, nice_get_division_slugs(), true ) ) {
-		$division = '';
+/**
+ * Return the identity this installation serves.
+ *
+ * An empty string means the combined development site, which serves every
+ * division behind its path prefix. Production installations always declare
+ * themselves: 'main' for the gateway, or a division slug.
+ *
+ * @return string Identity, or an empty string for the combined site.
+ */
+function nice_get_site_identity() {
+	$identity = defined( 'NICE_SITE_DIVISION' ) ? sanitize_key( (string) NICE_SITE_DIVISION ) : '';
+
+	if ( '' !== $identity && ! in_array( $identity, nice_get_site_identities(), true ) ) {
+		/*
+		 * Falling back silently would hand a typo the combined site, which on a
+		 * production host publishes both divisions from one installation.
+		 */
+		_doing_it_wrong(
+			__FUNCTION__,
+			sprintf(
+				/* translators: 1: configured value, 2: accepted values. */
+				esc_html__( 'NICE_SITE_DIVISION is set to "%1$s", which is not recognised. Use one of: %2$s. Falling back to the combined site.', 'nice-core' ),
+				esc_html( $identity ),
+				esc_html( implode( ', ', nice_get_site_identities() ) )
+			),
+			'1.2.0'
+		);
+
+		$identity = '';
 	}
 
 	/**
-	 * Filter the division this installation serves.
+	 * Filter the identity this installation serves.
 	 *
-	 * @param string $division Division slug, or an empty string for the combined site.
+	 * @param string $identity 'main', a division slug, or an empty string for the combined site.
 	 */
-	return (string) apply_filters( 'nice_site_division', $division );
+	return (string) apply_filters( 'nice_site_division', $identity );
+}
+
+/**
+ * Return the division this installation serves.
+ *
+ * The gateway serves no division, so it reports an empty string here just as
+ * the combined site does. Use nice_is_gateway_site() to tell them apart.
+ *
+ * @return string Division slug, or an empty string.
+ */
+function nice_get_site_division() {
+	$identity = nice_get_site_identity();
+
+	return in_array( $identity, nice_get_division_slugs(), true ) ? $identity : '';
+}
+
+/**
+ * Report whether this installation is the gateway.
+ *
+ * @return bool
+ */
+function nice_is_gateway_site() {
+	return 'main' === nice_get_site_identity();
 }
 
 /**
@@ -73,8 +128,12 @@ function nice_is_division_site() {
 /**
  * Report whether a division's content is served by this installation.
  *
- * The combined site serves both. A division site serves only its own, and links
- * to the other one by absolute URL.
+ * The combined site serves both. A division site serves only its own. The
+ * gateway serves neither, and links to both by absolute URL.
+ *
+ * This predicate is the single gate for rewrite rules, route enforcement, page
+ * provisioning and cross-site URL resolution, so the whole gateway behaviour
+ * follows from the one branch below.
  *
  * @param string $division Division slug.
  * @return bool
@@ -83,6 +142,10 @@ function nice_division_is_local( $division ) {
 	$division = sanitize_key( $division );
 
 	if ( ! in_array( $division, nice_get_division_slugs(), true ) ) {
+		return false;
+	}
+
+	if ( nice_is_gateway_site() ) {
 		return false;
 	}
 

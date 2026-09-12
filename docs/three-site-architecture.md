@@ -23,14 +23,22 @@ The codebase supports both shapes. NICE Core reads which division an
 installation serves from wp-config.php and derives every path from it:
 
 ```php
-define( 'NICE_SITE_DIVISION', 'events' );          // omit on the Main gateway
+define( 'NICE_SITE_DIVISION', 'main' );             // on the gateway
+define( 'NICE_SITE_DIVISION', 'events' );          // on the Events installation
 define( 'NICE_MAIN_SITE_URL', 'https://nicesolutions.in' );
 define( 'NICE_EVENTS_SITE_URL', 'https://events.nicesolutions.in' );
 define( 'NICE_STUDIO_SITE_URL', 'https://studios.nicesolutions.in' );
 ```
 
-With nothing defined the behaviour is the combined development site, so
-`nice-solutions.local` needs no configuration and stays the reference.
+Every production installation declares itself, including the gateway. Omitting the
+constant means the combined development site, which is why `nice-solutions.local`
+needs no configuration and stays the reference. Omitting it in production would
+publish both divisions from one database.
+
+The gateway owns no division content: it registers no division routes, provisions
+no division pages, refuses `wp nice migrate-content`, and resolves Events and
+Studio links against `NICE_EVENTS_SITE_URL` and `NICE_STUDIO_SITE_URL`. Its landing
+page is static and curated, so it needs no division records at all.
 
 A division installation registers its rewrite rules without the prefix, resolves
 its own content against its own host, links the sibling division by absolute
