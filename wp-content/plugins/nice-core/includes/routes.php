@@ -171,9 +171,16 @@ function nice_enforce_content_routes() {
 	$request_path     = trailingslashit( $raw_request_path );
 	$canonical_path   = trailingslashit( (string) wp_parse_url( $canonical, PHP_URL_PATH ) );
 
-	// Disallow raw CPT URLs or cross-division requests (return 404, not 301 redirect).
-	$division_prefix = nice_get_division_path_prefix( $division );
-	if ( ! str_starts_with( $request_path, $division_prefix ) ) {
+	/*
+	 * Disallow raw CPT URLs and cross-division requests (404, not a 301).
+	 *
+	 * This compares against the canonical directory rather than the division
+	 * prefix, because on a dedicated division installation the prefix is "/" and
+	 * every path would match it, letting raw /nice_service/{slug}/ URLs redirect
+	 * to the canonical page instead of being refused.
+	 */
+	$canonical_directory = trailingslashit( dirname( untrailingslashit( $canonical_path ) ) );
+	if ( ! str_starts_with( $request_path, $canonical_directory ) ) {
 		nice_set_content_request_404();
 		return;
 	}
@@ -205,11 +212,16 @@ function nice_filter_unapproved_canonical_guesses( $redirect_url, $requested_url
 
 	$post = get_queried_object();
 	if ( $post instanceof WP_Post && in_array( $post->post_type, array( 'nice_service', 'nice_case_study' ), true ) ) {
-		$division = nice_get_content_division( $post );
-		$prefix   = $division ? trim( nice_get_division_path_prefix( $division ), '/' ) : '';
+		$division  = nice_get_content_division( $post );
+		$canonical = $division ? nice_get_content_url( $post ) : '';
 
-		if ( $division && $prefix && ! str_starts_with( $path, $prefix . '/' ) ) {
-			return false;
+		if ( $canonical ) {
+			/* Same reasoning as above: match the canonical directory, not the prefix. */
+			$canonical_directory = trim( dirname( untrailingslashit( (string) wp_parse_url( $canonical, PHP_URL_PATH ) ) ), '/' );
+
+			if ( $canonical_directory && ! str_starts_with( $path, $canonical_directory . '/' ) ) {
+				return false;
+			}
 		}
 	}
 

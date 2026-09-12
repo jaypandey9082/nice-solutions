@@ -78,11 +78,18 @@ if ( $nice_is_events ) {
 				<?php else : ?>
 					<a href="<?php echo $nice_contact_url; ?>">Contact</a>
 					<?php
-					$nice_set           = $nice_channel_sets[0];
-					$nice_division_attr = $nice_set['division'] ? ' data-nice-contact-division="' . esc_attr( $nice_set['division'] ) . '"' : '';
-					?>
-					<?php if ( $nice_set['whatsapp_url'] ) : ?><a href="<?php echo esc_url( $nice_set['whatsapp_url'] ); ?>" data-nice-contact-channel="whatsapp"<?php echo $nice_division_attr; ?>>WhatsApp</a><?php endif; ?>
-					<?php if ( $nice_set['email_address'] ) : ?><a href="<?php echo esc_url( 'mailto:' . $nice_set['email_address'] ); ?>" data-nice-contact-channel="email"<?php echo $nice_division_attr; ?>>Email</a><?php endif; ?>
+					/*
+					 * A fresh installation has no approved channels at all, so the
+					 * set can be empty. The contact page link above still stands;
+					 * only the direct channels are conditional.
+					 */
+					if ( $nice_channel_sets ) :
+						$nice_set           = $nice_channel_sets[0];
+						$nice_division_attr = $nice_set['division'] ? ' data-nice-contact-division="' . esc_attr( $nice_set['division'] ) . '"' : '';
+						?>
+						<?php if ( $nice_set['whatsapp_url'] ) : ?><a href="<?php echo esc_url( $nice_set['whatsapp_url'] ); ?>" data-nice-contact-channel="whatsapp"<?php echo $nice_division_attr; ?>>WhatsApp</a><?php endif; ?>
+						<?php if ( $nice_set['email_address'] ) : ?><a href="<?php echo esc_url( 'mailto:' . $nice_set['email_address'] ); ?>" data-nice-contact-channel="email"<?php echo $nice_division_attr; ?>>Email</a><?php endif; ?>
+					<?php endif; ?>
 				<?php endif; ?>
 			</nav>
 			<?php if ( $nice_social_profiles ) : ?>
