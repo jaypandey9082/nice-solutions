@@ -280,3 +280,123 @@ function nice_get_division_path_prefix( $division ) {
 
 	return $prefix ? '/' . $prefix . '/' : '/';
 }
+
+/**
+ * Return a human-readable label for an identity.
+ *
+ * @param string $identity Identity slug, or an empty string for the combined site.
+ * @return string
+ */
+function nice_get_site_identity_label( $identity = null ) {
+	$identity = null === $identity ? nice_get_site_identity() : sanitize_key( (string) $identity );
+
+	$labels = array(
+		''       => __( 'Combined development site', 'nice-core' ),
+		'main'   => __( 'Main gateway', 'nice-core' ),
+		'events' => __( 'NICE Events', 'nice-core' ),
+		'studio' => __( 'NICE Studio', 'nice-core' ),
+	);
+
+	return $labels[ $identity ] ?? __( 'Unrecognised', 'nice-core' );
+}
+
+/**
+ * Report whether this host should be treated as production.
+ *
+ * The combined site is a legitimate configuration locally and a serious
+ * misconfiguration on a live host, so the two have to be told apart before the
+ * setup screen decides whether to refuse.
+ *
+ * @return bool
+ */
+function nice_is_production_environment() {
+	$environment = function_exists( 'wp_get_environment_type' ) ? wp_get_environment_type() : 'production';
+
+	/**
+	 * Filter whether this installation counts as production.
+	 *
+	 * @param bool   $is_production Whether the environment is production.
+	 * @param string $environment   Resolved WordPress environment type.
+	 */
+	return (bool) apply_filters( 'nice_is_production_environment', 'production' === $environment || 'staging' === $environment, $environment );
+}
+
+/**
+ * Describe anything wrong with this installation's identity configuration.
+ *
+ * Returns an empty array when the installation is safe to set up. Each entry is
+ * a fatal problem: the setup routine must refuse rather than guess.
+ *
+ * @return string[]
+ */
+function nice_get_site_identity_problems() {
+	$problems = array();
+	$declared = defined( 'NICE_SITE_DIVISION' ) ? sanitize_key( (string) NICE_SITE_DIVISION ) : '';
+
+	if ( $declared && ! in_array( $declared, nice_get_site_identities(), true ) ) {
+		$problems[] = sprintf(
+			/* translators: 1: configured value, 2: accepted values. */
+			__( 'NICE_SITE_DIVISION is set to "%1$s", which is not one of: %2$s.', 'nice-core' ),
+			$declared,
+			implode( ', ', nice_get_site_identities() )
+		);
+
+		return $problems;
+	}
+
+	if ( '' === nice_get_site_identity() && nice_is_production_environment() ) {
+		$problems[] = __( 'NICE_SITE_DIVISION is not defined. Without it this installation runs as the combined development site and would publish every division from one database. Define it in wp-config.php as main, events, or studio.', 'nice-core' );
+	}
+
+	return $problems;
+}
+
+/**
+ * Describe configuration that is missing but not fatal.
+ *
+ * Cross-site links fall back to the combined-site shape when a sibling URL is
+ * absent, which is wrong on production but does not make setup unsafe.
+ *
+ * @return string[]
+ */
+function nice_get_site_identity_warnings() {
+	$warnings = array();
+
+	if ( '' === nice_get_site_identity() ) {
+		return $warnings;
+	}
+
+	$urls   = nice_get_division_site_urls();
+	$labels = array(
+		'main'   => 'NICE_MAIN_SITE_URL',
+		'events' => 'NICE_EVENTS_SITE_URL',
+		'studio' => 'NICE_STUDIO_SITE_URL',
+	);
+
+	foreach ( $labels as $key => $constant ) {
+		if ( $key === nice_get_site_identity() ) {
+			continue;
+		}
+
+		if ( empty( $urls[ $key ] ) ) {
+			$warnings[] = sprintf(
+				/* translators: %s: wp-config constant name. */
+				__( '%s is not defined, so links to that installation fall back to a path on this host.', 'nice-core' ),
+				$constant
+			);
+		}
+	}
+
+	return $warnings;
+}
+
+/**
+ * Return the divisions whose content this installation owns.
+ *
+ * The combined site owns both, a division site owns one, the gateway owns none.
+ *
+ * @return string[]
+ */
+function nice_get_local_division_slugs() {
+	return array_values( array_filter( nice_get_division_slugs(), 'nice_division_is_local' ) );
+}

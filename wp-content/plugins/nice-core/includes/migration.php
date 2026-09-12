@@ -250,31 +250,100 @@ function nice_get_linkedin_company_feed_url() {
 }
 
 /**
- * Report whether a source URL identifies a specific post rather than a feed.
+ * Report whether a host belongs to LinkedIn.
  *
- * Seeded candidates all carry the company feed, which records where they came
- * from but not which post each one came from. Approving on that basis would
- * clear wording nobody can trace back, so a feed-level URL is treated as
- * missing provenance.
- *
- * @param string $source_url Stored source URL.
+ * @param string $host Host from a parsed URL.
  * @return bool
  */
-function nice_source_url_is_specific( $source_url ) {
+function nice_host_is_linkedin( $host ) {
+	return (bool) preg_match( '#(^|\.)linkedin\.com$#i', (string) $host );
+}
+
+/**
+ * Return the LinkedIn path shapes that identify one individual post.
+ *
+ * Anything outside this list is a feed, a profile, a company page or a search
+ * result: it says where the account is, not which post a claim came from.
+ *
+ * @return string[] Regular expressions matched against the URL path.
+ */
+function nice_get_linkedin_post_path_patterns() {
+	return array(
+		/* https://www.linkedin.com/posts/n-i-c-e-solutions_slug-activity-123-abcd */
+		'#^/posts/[^/]+$#i',
+		/* https://www.linkedin.com/feed/update/urn:li:activity:123456789/ */
+		'#^/(?:embed/)?feed/update/urn:li:(?:activity|share|ugcPost):[0-9]+$#i',
+		/* https://www.linkedin.com/pulse/article-slug */
+		'#^/pulse/[^/]+$#i',
+		/* https://www.linkedin.com/company/name/posts/slug — rare, but specific. */
+		'#^/(?:company|school|showcase)/[^/]+/posts/[^/]+$#i',
+	);
+}
+
+/**
+ * Explain why a source URL cannot support approval, or return an empty string.
+ *
+ * Approval records that a reviewer checked the wording against its source, so
+ * the URL has to lead to that source and nothing else. A company feed reorders
+ * as new posts go up and a site root leads nowhere in particular; neither can
+ * be checked against, and neither may clear a record for publication.
+ *
+ * @param string $source_url Stored source URL.
+ * @param string $origin     Where the record came from; 'linkedin' for a seeded candidate.
+ * @return string Empty when the URL is usable, otherwise the reason it is not.
+ */
+function nice_get_source_url_problem( $source_url, $origin = '' ) {
 	$source_url = trim( (string) $source_url );
+	$origin     = sanitize_key( (string) $origin );
 
-	if ( ! $source_url ) {
-		return false;
+	if ( '' === $source_url ) {
+		return __( 'A Source URL is required before a record can be approved.', 'nice-core' );
 	}
 
-	if ( untrailingslashit( $source_url ) === untrailingslashit( nice_get_linkedin_company_feed_url() ) ) {
-		return false;
+	$parts = wp_parse_url( $source_url );
+
+	if ( ! is_array( $parts ) || empty( $parts['host'] ) ) {
+		return __( 'The Source URL is not a valid address.', 'nice-core' );
 	}
 
-	$path = (string) wp_parse_url( $source_url, PHP_URL_PATH );
+	if ( 'https' !== strtolower( (string) ( $parts['scheme'] ?? '' ) ) ) {
+		return __( 'The Source URL must use https.', 'nice-core' );
+	}
 
-	/* A company or feed root is not a citation; an individual post has a deeper path. */
-	return (bool) preg_match( '#/(posts|feed|activity|pulse)/[^/]+#i', $path ) || ! preg_match( '#/company/[^/]+/?(posts/?)?$#i', $path );
+	$path       = untrailingslashit( (string) ( $parts['path'] ?? '' ) );
+	$is_linkedin = nice_host_is_linkedin( $parts['host'] );
+
+	if ( ! $is_linkedin ) {
+		if ( 'linkedin' === $origin ) {
+			return __( 'This record was derived from LinkedIn, so its Source URL must be the LinkedIn post it came from.', 'nice-core' );
+		}
+
+		/* A bare domain is a publisher, not a citation. */
+		if ( '' === $path ) {
+			return __( 'The Source URL points at a site rather than at a specific page.', 'nice-core' );
+		}
+
+		return '';
+	}
+
+	foreach ( nice_get_linkedin_post_path_patterns() as $pattern ) {
+		if ( preg_match( $pattern, $path ) ) {
+			return '';
+		}
+	}
+
+	return __( 'The Source URL must identify one LinkedIn post, such as https://www.linkedin.com/posts/... or a /feed/update/urn:li:activity: permalink. A company page or feed does not say which post the wording came from.', 'nice-core' );
+}
+
+/**
+ * Report whether a source URL identifies a specific post rather than a feed.
+ *
+ * @param string $source_url Stored source URL.
+ * @param string $origin     Where the record came from; 'linkedin' for a seeded candidate.
+ * @return bool
+ */
+function nice_source_url_is_specific( $source_url, $origin = '' ) {
+	return '' === nice_get_source_url_problem( $source_url, $origin );
 }
 
 /**
@@ -284,7 +353,10 @@ function nice_source_url_is_specific( $source_url ) {
  * @return bool
  */
 function nice_case_study_source_is_approvable( $post_id ) {
-	return nice_source_url_is_specific( get_post_meta( $post_id, '_nice_source_url', true ) );
+	return nice_source_url_is_specific(
+		get_post_meta( $post_id, '_nice_source_url', true ),
+		get_post_meta( $post_id, '_nice_source_origin', true )
+	);
 }
 
 function nice_get_linkedin_case_study_draft_manifest() {
@@ -397,40 +469,48 @@ function nice_get_events_page_manifest() {
  * @return array{created: int, skipped: int, errors: string[]}
  */
 function nice_provision_division_pages( $division, $parent_title, $manifest ) {
-	$summary = array( 'created' => 0, 'skipped' => 0, 'errors' => array() );
+	$summary = array( 'created' => 0, 'skipped' => 0, 'errors' => array(), 'home_page_id' => 0 );
 
 	if ( ! nice_division_is_local( $division ) ) {
 		return $summary;
 	}
 
-	$prefix    = nice_get_division_prefix( $division );
-	$parent_id = 0;
+	$prefix = nice_get_division_prefix( $division );
 
-	if ( $prefix ) {
-		$parent = get_page_by_path( $prefix, OBJECT, 'page' );
+	/*
+	 * The landing page exists in both shapes. On the combined site it also acts
+	 * as the parent that puts the section pages behind /events/ or /studio/; on a
+	 * division installation it is the page an administrator selects as the front
+	 * page, and the section pages sit at the root beside it. Its slug stays the
+	 * division either way, because the hero metadata and the page-{slug} template
+	 * are both keyed to it.
+	 */
+	$home = get_page_by_path( $division, OBJECT, 'page' );
 
-		if ( ! $parent instanceof WP_Post ) {
-			$new_parent_id = wp_insert_post(
-				array(
-					'post_type'   => 'page',
-					'post_status' => 'publish',
-					'post_name'   => $prefix,
-					'post_title'  => $parent_title,
-				),
-				true
-			);
+	if ( ! $home instanceof WP_Post ) {
+		$new_home_id = wp_insert_post(
+			array(
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+				'post_name'   => $division,
+				'post_title'  => $parent_title,
+			),
+			true
+		);
 
-			if ( is_wp_error( $new_parent_id ) ) {
-				$summary['errors'][] = $new_parent_id->get_error_message();
-				return $summary;
-			}
-
-			$parent = get_post( $new_parent_id );
-			++$summary['created'];
+		if ( is_wp_error( $new_home_id ) ) {
+			$summary['errors'][] = $new_home_id->get_error_message();
+			return $summary;
 		}
 
-		$parent_id = $parent->ID;
+		$home = get_post( $new_home_id );
+		++$summary['created'];
+	} else {
+		++$summary['skipped'];
 	}
+
+	$summary['home_page_id'] = $home->ID;
+	$parent_id               = $prefix ? $home->ID : 0;
 
 	foreach ( $manifest as $record ) {
 		$path = $prefix ? $prefix . '/' . $record['slug'] : $record['slug'];
@@ -553,6 +633,12 @@ function nice_migrate_linkedin_case_study_drafts() {
 		'skipped' => 0,
 		'errors'  => array(),
 	);
+
+	/* Every candidate is an Events record, so an installation that does not own Events seeds none. */
+	if ( ! nice_division_is_local( 'events' ) ) {
+		return $summary;
+	}
+
 	$service_types = nice_get_approved_service_types();
 
 	foreach ( nice_get_linkedin_case_study_draft_manifest() as $record ) {
@@ -610,6 +696,8 @@ function nice_migrate_linkedin_case_study_drafts() {
 		update_post_meta( $post_id, '_nice_source_url', nice_sanitize_https_url( $record['source_url'] ?? '' ) );
 		update_post_meta( $post_id, '_nice_source_note', sanitize_textarea_field( $record['source_note'] ?? '' ) );
 		update_post_meta( $post_id, '_nice_source_approval_status', 'draft' );
+		/* Records where the wording came from, so approval can insist on a post from there. */
+		update_post_meta( $post_id, '_nice_source_origin', 'linkedin' );
 		++$summary['created'];
 	}
 
@@ -665,6 +753,11 @@ function nice_migrate_team_member_drafts() {
 	$divisions = nice_get_approved_divisions();
 
 	foreach ( nice_get_team_member_draft_manifest() as $record ) {
+		/* A division installation seeds its own roster only; the gateway seeds none. */
+		if ( ! nice_division_is_local( $record['division'] ?? '' ) ) {
+			continue;
+		}
+
 		if ( nice_find_migrated_post( $record['slug'], 'nice_team_member' ) ) {
 			++$summary['skipped'];
 			continue;
@@ -786,6 +879,12 @@ function nice_initialize_studio_hero_media() {
 		'attachment_id' => 0,
 		'message'       => '',
 	);
+	if ( ! nice_division_is_local( 'studio' ) ) {
+		$summary['status']  = 'foreign';
+		$summary['message'] = 'Studio is served by another installation.';
+		return $summary;
+	}
+
 	$studio = get_page_by_path( 'studio', OBJECT, 'page' );
 
 	if ( ! $studio instanceof WP_Post ) {
@@ -837,7 +936,14 @@ function nice_initialize_studio_hero_media() {
  */
 function nice_initialize_events_hero_media() {
 	$summary = array( 'status' => 'skipped', 'attachment_id' => 0, 'message' => '' );
-	$events  = get_page_by_path( 'events', OBJECT, 'page' );
+
+	if ( ! nice_division_is_local( 'events' ) ) {
+		$summary['status']  = 'foreign';
+		$summary['message'] = 'Events is served by another installation.';
+		return $summary;
+	}
+
+	$events = get_page_by_path( 'events', OBJECT, 'page' );
 	if ( ! $events instanceof WP_Post || ! nice_is_events_home_page( $events->ID ) ) {
 		$summary['status']  = 'unavailable';
 		$summary['message'] = 'The Events Page is unavailable.';
@@ -950,6 +1056,23 @@ function nice_enrich_migrated_content( $post_type, $record ) {
 }
 
 /**
+ * Return the division a manifest record belongs to.
+ *
+ * Services and Case Studies carry a Service Type, and every approved Service
+ * Type belongs to exactly one division, so the record's owner is derivable
+ * rather than something the manifest has to repeat.
+ *
+ * @param array<string, mixed> $record Manifest record.
+ * @return string Division slug, or an empty string when the record has no division.
+ */
+function nice_get_manifest_record_division( $record ) {
+	$service_type = sanitize_title( $record['service_type'] ?? '' );
+	$definitions  = nice_get_approved_service_types();
+
+	return $definitions[ $service_type ]['division'] ?? '';
+}
+
+/**
  * Run the complete approved content migration.
  *
  * @return array<string, mixed>|WP_Error
@@ -973,9 +1096,10 @@ function nice_run_content_migration() {
 		'terms'        => nice_ensure_default_terms(),
 		'pages'        => nice_provision_events_pages(),
 		'studio_page'  => nice_provision_studio_page(),
-		'clients'      => array( 'created' => 0, 'skipped' => 0 ),
-		'services'     => array( 'created' => 0, 'skipped' => 0 ),
-		'case_studies' => array( 'created' => 0, 'skipped' => 0 ),
+		'clients'      => array( 'created' => 0, 'skipped' => 0, 'foreign' => 0 ),
+		/* 'foreign' counts records that belong to the sibling installation. */
+		'services'     => array( 'created' => 0, 'skipped' => 0, 'foreign' => 0 ),
+		'case_studies' => array( 'created' => 0, 'skipped' => 0, 'foreign' => 0 ),
 		'source_drafts' => array( 'created' => 0, 'skipped' => 0, 'errors' => array() ),
 		'team_drafts'   => array( 'created' => 0, 'skipped' => 0, 'errors' => array() ),
 		'media'        => array( 'linked' => 0, 'errors' => array() ),
@@ -1022,6 +1146,16 @@ function nice_run_content_migration() {
 	}
 
 	foreach ( $manifest['services'] as $record ) {
+		/*
+		 * An installation imports only the divisions it owns. Seeding a sibling's
+		 * services here would put the same record on two hostnames, each claiming
+		 * to be canonical.
+		 */
+		if ( ! nice_division_is_local( nice_get_manifest_record_division( $record ) ) ) {
+			++$summary['services']['foreign'];
+			continue;
+		}
+
 		$result = nice_migrate_content_post( 'nice_service', $record );
 		if ( is_wp_error( $result ) ) {
 			return $result;
@@ -1044,6 +1178,11 @@ function nice_run_content_migration() {
 	}
 
 	foreach ( $manifest['case_studies'] as $record ) {
+		if ( ! nice_division_is_local( nice_get_manifest_record_division( $record ) ) ) {
+			++$summary['case_studies']['foreign'];
+			continue;
+		}
+
 		$result = nice_migrate_content_post( 'nice_case_study', $record );
 		if ( is_wp_error( $result ) ) {
 			return $result;
@@ -1096,13 +1235,16 @@ function nice_cli_migrate_content() {
 	foreach ( array( 'clients', 'services', 'case_studies' ) as $content_type ) {
 		WP_CLI::log(
 			sprintf(
-				'%s: %d created, %d skipped',
+				'%s: %d created, %d skipped, %d owned by another installation',
 				ucwords( str_replace( '_', ' ', $content_type ) ),
 				$result[ $content_type ]['created'],
-				$result[ $content_type ]['skipped']
+				$result[ $content_type ]['skipped'],
+				$result[ $content_type ]['foreign']
 			)
 		);
 	}
+
+	WP_CLI::log( sprintf( 'Installation identity: %s', nice_get_site_identity_label() ) );
 
 	WP_CLI::log( sprintf( 'Terms: %d created, %d existing', $result['terms']['created'], $result['terms']['existing'] ) );
 	WP_CLI::log( sprintf( 'Events pages: %d created, %d existing', $result['pages']['created'], $result['pages']['skipped'] ) );

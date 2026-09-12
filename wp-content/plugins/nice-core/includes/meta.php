@@ -104,6 +104,11 @@ function nice_register_content_meta() {
 	nice_register_post_meta_field( 'nice_case_study', '_nice_source_note', 'string', 'sanitize_textarea_field', '', 'nice_authorize_case_study_source_meta', false );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_source_approval_status', 'string', 'nice_sanitize_case_study_approval_status', 'draft', 'nice_authorize_case_study_source_meta', false );
 	/*
+	 * Where the wording came from. A record seeded from LinkedIn has to cite a
+	 * LinkedIn post, so swapping in an unrelated address cannot clear it.
+	 */
+	nice_register_post_meta_field( 'nice_case_study', '_nice_source_origin', 'string', 'sanitize_key', '', 'nice_authorize_case_study_source_meta', false );
+	/*
 	 * Deliberately separate from the source approval above. That one clears the
 	 * wording and its provenance; this one clears the right to publish the
 	 * attached photograph. Migrated records carry deck imagery that has not been

@@ -65,6 +65,18 @@ function nice_add_content_meta_boxes() {
 		'normal',
 		'default'
 	);
+
+	if ( function_exists( 'nice_site_owns_gateway_projects' ) && nice_site_owns_gateway_projects() ) {
+		remove_meta_box( 'postcustom', 'nice_gateway_project', 'normal' );
+		add_meta_box(
+			'nice-gateway-project-details',
+			__( 'Gateway Preview Details', 'nice-core' ),
+			'nice_render_gateway_project_meta_box',
+			'nice_gateway_project',
+			'normal',
+			'high'
+		);
+	}
 }
 add_action( 'add_meta_boxes', 'nice_add_content_meta_boxes' );
 
@@ -392,6 +404,8 @@ function nice_render_case_study_source_meta_box( $post ) {
 	$source_note     = get_post_meta( $post->ID, '_nice_source_note', true );
 	$approval_status = nice_sanitize_case_study_approval_status( get_post_meta( $post->ID, '_nice_source_approval_status', true ) );
 	$media_approved  = rest_sanitize_boolean( get_post_meta( $post->ID, '_nice_media_approved', true ) );
+	$source_origin   = (string) get_post_meta( $post->ID, '_nice_source_origin', true );
+	$source_problem  = function_exists( 'nice_get_source_url_problem' ) ? nice_get_source_url_problem( $source_url, $source_origin ) : '';
 	?>
 	<p class="description"><?php esc_html_e( 'Private editorial fields. They are not exposed through the public REST API.', 'nice-core' ); ?></p>
 	<p>
@@ -411,8 +425,11 @@ function nice_render_case_study_source_meta_box( $post ) {
 		</select>
 	</p>
 	<p class="description"><?php esc_html_e( 'Approval here records editorial clearance of the wording and its source. It does not clear the image.', 'nice-core' ); ?></p>
-	<?php if ( function_exists( 'nice_source_url_is_specific' ) && ! nice_source_url_is_specific( $source_url ) ) : ?>
-		<p class="description"><strong><?php esc_html_e( 'Approval is blocked: the Source URL must identify the individual post, not the company feed.', 'nice-core' ); ?></strong></p>
+	<?php if ( $source_problem ) : ?>
+		<p class="description"><strong><?php
+			/* translators: %s: reason the source URL cannot support approval. */
+			echo esc_html( sprintf( __( 'Approval is blocked. %s', 'nice-core' ), $source_problem ) );
+		?></strong></p>
 	<?php endif; ?>
 	<p>
 		<label for="nice-media-approved">
@@ -480,6 +497,58 @@ function nice_render_team_member_meta_box( $post ) {
 }
 
 /**
+ * Render Gateway Project fields.
+ *
+ * @param WP_Post $post Current Gateway Project.
+ */
+function nice_render_gateway_project_meta_box( $post ) {
+	nice_render_content_meta_nonce();
+
+	$summary       = (string) get_post_meta( $post->ID, '_nice_gateway_summary', true );
+	$division      = sanitize_key( (string) get_post_meta( $post->ID, '_nice_gateway_division', true ) );
+	$destination   = (string) get_post_meta( $post->ID, '_nice_gateway_destination_url', true );
+	$display_order = (int) get_post_meta( $post->ID, '_nice_display_order', true );
+	$media_approved = rest_sanitize_boolean( get_post_meta( $post->ID, '_nice_media_approved', true ) );
+	$problem       = nice_get_gateway_destination_problem( $destination, $division );
+	?>
+	<p class="description"><?php esc_html_e( 'This preview appears on the gateway home page and sends the reader to the installation that owns the work. It publishes nothing by itself.', 'nice-core' ); ?></p>
+	<p>
+		<label for="nice-gateway-summary"><strong><?php esc_html_e( 'Summary', 'nice-core' ); ?></strong></label><br>
+		<textarea class="widefat" rows="3" id="nice-gateway-summary" name="nice_gateway_summary"><?php echo esc_textarea( $summary ); ?></textarea>
+	</p>
+	<p>
+		<label for="nice-gateway-division"><strong><?php esc_html_e( 'Division', 'nice-core' ); ?></strong></label><br>
+		<select id="nice-gateway-division" name="nice_gateway_division">
+			<option value=""><?php esc_html_e( 'Select a division', 'nice-core' ); ?></option>
+			<?php foreach ( nice_get_approved_divisions() as $slug => $name ) : ?>
+				<option value="<?php echo esc_attr( $slug ); ?>" <?php selected( $division, $slug ); ?>><?php echo esc_html( $name ); ?></option>
+			<?php endforeach; ?>
+		</select>
+	</p>
+	<p>
+		<label for="nice-gateway-destination"><strong><?php esc_html_e( 'Destination URL', 'nice-core' ); ?></strong></label><br>
+		<input class="widefat" type="url" id="nice-gateway-destination" name="nice_gateway_destination_url" value="<?php echo esc_attr( $destination ); ?>">
+	</p>
+	<?php if ( $problem ) : ?>
+		<p class="description"><strong><?php echo esc_html( $problem ); ?></strong></p>
+	<?php else : ?>
+		<p class="description"><?php esc_html_e( 'Only a case study on the selected division can be stored here.', 'nice-core' ); ?></p>
+	<?php endif; ?>
+	<p>
+		<label for="nice-display-order"><strong><?php esc_html_e( 'Display Order', 'nice-core' ); ?></strong></label><br>
+		<input class="small-text" type="number" id="nice-display-order" name="nice_display_order" value="<?php echo esc_attr( $display_order ); ?>">
+	</p>
+	<p>
+		<label for="nice-gateway-media-approved">
+			<input type="checkbox" id="nice-gateway-media-approved" name="nice_media_approved" value="1" <?php checked( $media_approved ); ?>>
+			<strong><?php esc_html_e( 'Media cleared for publication', 'nice-core' ); ?></strong>
+		</label>
+	</p>
+	<p class="description"><?php esc_html_e( 'Tick this only when NICE holds the right to publish the featured image. Until then the preview renders without it.', 'nice-core' ); ?></p>
+	<?php
+}
+
+/**
  * Save a value or remove empty optional metadata.
  *
  * @param int    $post_id  Post ID.
@@ -502,7 +571,7 @@ function nice_save_or_delete_meta( $post_id, $meta_key, $value ) {
  * @param WP_Post $post    Current post.
  */
 function nice_save_content_meta( $post_id, $post ) {
-	if ( ! in_array( $post->post_type, array( 'nice_service', 'nice_case_study', 'nice_client', 'nice_team_member' ), true ) ) {
+	if ( ! in_array( $post->post_type, array( 'nice_service', 'nice_case_study', 'nice_client', 'nice_team_member', 'nice_gateway_project' ), true ) ) {
 		return;
 	}
 	if ( wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) ) {
@@ -553,10 +622,13 @@ function nice_save_content_meta( $post_id, $post ) {
 		 * can trace, so hold the record at review until a specific post URL is in.
 		 */
 		if ( 'approved' === $approval_status
-			&& function_exists( 'nice_source_url_is_specific' )
-			&& ! nice_source_url_is_specific( $source_url ) ) {
-			$approval_status = 'review';
-			set_transient( 'nice_source_approval_blocked_' . $post_id, 1, 60 );
+			&& function_exists( 'nice_get_source_url_problem' ) ) {
+			$source_problem = nice_get_source_url_problem( $source_url, get_post_meta( $post_id, '_nice_source_origin', true ) );
+
+			if ( $source_problem ) {
+				$approval_status = 'review';
+				set_transient( 'nice_source_approval_blocked_' . $post_id, $source_problem, 60 );
+			}
 		}
 
 		update_post_meta( $post_id, '_nice_source_approval_status', $approval_status );
@@ -570,6 +642,22 @@ function nice_save_content_meta( $post_id, $post ) {
 		nice_save_or_delete_meta( $post_id, '_nice_client_url', $url );
 		update_post_meta( $post_id, '_nice_featured', empty( $_POST['nice_featured'] ) ? 0 : 1 );
 		update_post_meta( $post_id, '_nice_display_order', nice_sanitize_integer( wp_unslash( $_POST['nice_display_order'] ?? 0 ) ) );
+	}
+
+	if ( 'nice_gateway_project' === $post->post_type ) {
+		$division  = sanitize_key( wp_unslash( $_POST['nice_gateway_division'] ?? '' ) );
+		$divisions = nice_get_approved_divisions();
+
+		nice_save_or_delete_meta( $post_id, '_nice_gateway_summary', sanitize_textarea_field( wp_unslash( $_POST['nice_gateway_summary'] ?? '' ) ) );
+		nice_save_or_delete_meta( $post_id, '_nice_gateway_division', isset( $divisions[ $division ] ) ? $division : '' );
+		/*
+		 * The meta sanitizer drops a destination outside the division's case
+		 * studies, so an unusable address is stored as nothing rather than kept
+		 * and quietly ignored at render time.
+		 */
+		nice_save_or_delete_meta( $post_id, '_nice_gateway_destination_url', nice_sanitize_gateway_destination_url( wp_unslash( $_POST['nice_gateway_destination_url'] ?? '' ) ) );
+		update_post_meta( $post_id, '_nice_display_order', nice_sanitize_integer( wp_unslash( $_POST['nice_display_order'] ?? 0 ) ) );
+		update_post_meta( $post_id, '_nice_media_approved', empty( $_POST['nice_media_approved'] ) ? 0 : 1 );
 	}
 
 	if ( 'nice_team_member' === $post->post_type ) {
@@ -726,12 +814,20 @@ add_action( 'admin_notices', 'nice_render_title_required_notice' );
  */
 function nice_render_source_approval_blocked_notice() {
 	$post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only notice.
+	$reason  = $post_id ? get_transient( 'nice_source_approval_blocked_' . $post_id ) : '';
 
-	if ( ! $post_id || ! get_transient( 'nice_source_approval_blocked_' . $post_id ) ) {
+	if ( ! $reason ) {
 		return;
 	}
 
 	delete_transient( 'nice_source_approval_blocked_' . $post_id );
-	echo '<div class="notice notice-warning is-dismissible"><p>' . esc_html__( 'This record was held at Review. Its Source URL is the LinkedIn company feed, which does not identify the post the wording came from. Paste the individual post URL, then approve.', 'nice-core' ) . '</p></div>';
+	printf(
+		'<div class="notice notice-warning is-dismissible"><p>%s</p></div>',
+		esc_html( sprintf(
+			/* translators: %s: reason the source URL cannot support approval. */
+			__( 'This record was held at Review. %s', 'nice-core' ),
+			is_string( $reason ) ? $reason : __( 'Its Source URL does not identify the post the wording came from.', 'nice-core' )
+		) )
+	);
 }
 add_action( 'admin_notices', 'nice_render_source_approval_blocked_notice' );
