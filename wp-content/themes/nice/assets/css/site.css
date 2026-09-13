@@ -471,29 +471,37 @@
 		display: none !important;
 	}
 
+	/*
+	 * Bare rule strokes, no disc. The button keeps its full 2.75rem hit area:
+	 * the circle was the visible edge of the target, not the target itself, so
+	 * removing it must not shrink what a thumb has to land on.
+	 */
 	.nice-menu-toggle {
 		align-items: center;
 		appearance: none;
-		background: var(--nice-black) !important;
+		background: transparent !important;
 		border: 0 !important;
-		border-radius: 50% !important;
-		color: var(--nice-canvas) !important;
+		border-radius: 0 !important;
+		color: var(--nice-black) !important;
 		cursor: pointer;
 		display: inline-flex !important;
 		height: 2.75rem;
 		justify-content: center;
 		padding: 0;
 		position: relative;
-		transition:
-			background-color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing),
-			transform var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
+		transition: color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
 		width: 2.75rem;
 	}
 
 	.nice-menu-toggle:hover,
 	.nice-menu-toggle:focus-visible {
-		background: var(--nice-red) !important;
-		transform: scale(1.04);
+		color: var(--nice-red) !important;
+	}
+
+	/* The focus ring was the disc; without it the keyboard needs its own. */
+	.nice-menu-toggle:focus-visible {
+		outline: 2px solid var(--nice-black);
+		outline-offset: 2px;
 	}
 
 	.nice-menu-icon,
