@@ -50,16 +50,6 @@
 		width: 100%;
 	}
 
-	.nice-gateway-project__division {
-		color: var(--nice-muted);
-		font-family: var(--nice-font-label);
-		font-size: 0.75rem;
-		font-weight: 600;
-		letter-spacing: 0.1em;
-		margin: 0;
-		text-transform: uppercase;
-	}
-
 	.nice-gateway-project__title {
 		color: var(--nice-black);
 		font-family: var(--nice-font-heading);
@@ -117,6 +107,7 @@
 
 	.nice-pip {
 		background: var(--nice-red);
+		border-radius: 50%;
 		display: inline-block;
 		flex-shrink: 0;
 		height: 0.375rem;
@@ -233,34 +224,6 @@
 		background: var(--nice-surface-container-low);
 	}
 
-	.nice-door__header {
-		align-items: center;
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 1.25rem;
-	}
-
-	.nice-door__division {
-		color: var(--nice-muted);
-		font-family: var(--nice-font-label);
-		font-size: 0.75rem;
-		font-weight: 600;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-	}
-
-	.nice-door__pip {
-		background: var(--nice-subtle-border);
-		display: inline-block;
-		height: 0.375rem;
-		transition: background-color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
-		width: 0.375rem;
-	}
-
-	.nice-door:hover .nice-door__pip {
-		background: var(--nice-red);
-	}
-
 	.nice-door__media {
 		aspect-ratio: 16 / 9;
 		background: var(--nice-surface-container);
@@ -290,9 +253,13 @@
 
 	.nice-door__body {
 		flex-grow: 1;
-		margin-bottom: 1.5rem;
+		margin-bottom: 0.5rem;
 	}
 
+	/*
+	 * The title now leads the card, above the image, so its margins belong to
+	 * that position rather than to a block sitting under the picture.
+	 */
 	.nice-door__title {
 		color: var(--nice-black) !important;
 		font-family: var(--nice-font-heading) !important;
@@ -300,7 +267,7 @@
 		font-weight: 500 !important;
 		letter-spacing: 0 !important;
 		line-height: 0.95 !important;
-		margin-block-end: 0.75rem !important;
+		margin-block-end: 1.25rem !important;
 		margin-block-start: 0 !important;
 		text-transform: uppercase;
 	}
@@ -316,8 +283,23 @@
 	}
 
 	.nice-door__action {
-		border-top: 1px solid var(--nice-subtle-border);
-		padding-top: 1rem;
+		padding-top: 0;
+	}
+
+	/*
+	 * The whole card is the link. The overlay belongs to the anchor rather than
+	 * to a click handler, so it stays a real link: cmd-click and middle-click
+	 * open a new tab, the status bar shows the destination, and there is still
+	 * exactly one focusable thing in the card rather than a card and a link
+	 * announced separately.
+	 *
+	 * The cost is that text inside the card can no longer be selected.
+	 */
+	.nice-door__link::after {
+		content: "";
+		inset: 0;
+		position: absolute;
+		z-index: 1;
 	}
 
 	.nice-door__link {
@@ -342,8 +324,19 @@
 
 	.nice-door__link:hover,
 	.nice-door__link:focus-visible,
-	.nice-door:hover .nice-door__link {
+	.nice-door:hover .nice-door__link,
+	.nice-door:focus-within .nice-door__link {
 		color: var(--nice-red);
+	}
+
+	/* Focus lands on the link but reads as the whole card, which is the target. */
+	.nice-door:focus-within {
+		outline: 2px solid var(--nice-black);
+		outline-offset: 3px;
+	}
+
+	.nice-door__link:focus-visible {
+		outline: none;
 	}
 
 	.nice-door__link:hover .nice-door__arrow,

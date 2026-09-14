@@ -150,7 +150,9 @@ function nice_render_events_inner_hero( $eyebrow, $title, $intro, $post_id = 0 )
 	?>
 	<header class="nice-events-inner-hero">
 		<div class="nice-wide nice-events-inner-hero__content" data-nice-reveal>
-			<p class="nice-eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
+			<?php if ( $eyebrow ) : ?>
+				<p class="nice-eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
+			<?php endif; ?>
 			<h1><?php echo esc_html( $title ); ?></h1>
 			<?php if ( $intro ) : ?>
 				<p><?php echo esc_html( $intro ); ?></p>
@@ -270,7 +272,7 @@ function nice_render_events_services_index() {
 
 	ob_start();
 	nice_render_events_inner_hero(
-		'NICE / Events',
+		'',
 		'Events services',
 		'An integral part of brand communication, Events is where our heart is. Thoughtful planning and execution carry each brief forward.',
 		0
@@ -290,7 +292,7 @@ function nice_render_events_services_index() {
 						?>
 						<article class="nice-events-service-row" data-nice-reveal>
 							<div class="nice-events-service-row__content">
-								<span class="nice-events-service-row__index"><?php echo esc_html( sprintf( '%02d', $index + 1 ) ); ?></span>
+								<span class="nice-events-service-row__index nice-index-dot" aria-hidden="true"></span>
 								<h3><?php echo esc_html( $service->post_title ); ?></h3>
 								<p><?php echo esc_html( $description ); ?></p>
 								<?php if ( $url ) : ?><a class="nice-link" href="<?php echo esc_url( $url ); ?>">Explore <?php echo esc_html( $service->post_title ); ?> <span aria-hidden="true">-&gt;</span></a><?php endif; ?>
@@ -391,7 +393,7 @@ function nice_render_events_case_studies_index() {
 
 	ob_start();
 	nice_render_events_inner_hero(
-		'NICE / Events',
+		'',
 		'Case studies',
 		'Published work from across NICE Events, organised by the service behind each experience.',
 		0
@@ -601,7 +603,7 @@ function nice_render_events_clients_index() {
 	$clients = function_exists( 'nice_get_clients' ) ? nice_get_clients() : array();
 
 	ob_start();
-	nice_render_events_inner_hero( 'NICE / Events', 'Clients', 'A shared NICE client list, presented across the Events and Studio divisions without duplicate records.' );
+	nice_render_events_inner_hero( '', 'Clients', 'A shared NICE client list, presented across the Events and Studio divisions without duplicate records.' );
 	?>
 	<section class="nice-events-inner-section nice-events-client-directory" aria-labelledby="nice-client-directory-title">
 		<div class="nice-wide">
@@ -637,7 +639,7 @@ function nice_render_events_team_index() {
 	$team = function_exists( 'nice_get_team_members_by_division' ) ? nice_get_team_members_by_division( 'events' ) : array();
 
 	ob_start();
-	nice_render_events_inner_hero( 'NICE / Events', 'Events team', 'The people behind each brief bring planning, production and execution together.' );
+	nice_render_events_inner_hero( '', 'Events team', 'The people behind each brief bring planning, production and execution together.' );
 	?>
 	<section class="nice-events-inner-section nice-events-team-directory" aria-labelledby="nice-team-directory-title">
 		<div class="nice-wide">
@@ -681,17 +683,17 @@ function nice_render_events_contact_page() {
 	$actions  = array();
 
 	if ( ! empty( $settings['whatsapp_url'] ) ) {
-		$actions[] = array( 'label' => 'WhatsApp', 'value' => 'Start a WhatsApp conversation', 'url' => $settings['whatsapp_url'] );
+		$actions[] = array( 'label' => 'WhatsApp', 'icon' => 'whatsapp', 'value' => 'Start a WhatsApp conversation', 'url' => $settings['whatsapp_url'] );
 	}
 	if ( ! empty( $settings['email_address'] ) ) {
-		$actions[] = array( 'label' => 'Email', 'value' => $settings['email_address'], 'url' => 'mailto:' . $settings['email_address'] );
+		$actions[] = array( 'label' => 'Email', 'icon' => 'email', 'value' => $settings['email_address'], 'url' => 'mailto:' . $settings['email_address'] );
 	}
 	if ( ! empty( $settings['phone_url'] ) && ! empty( $settings['phone'] ) ) {
-		$actions[] = array( 'label' => 'Phone', 'value' => $settings['phone'], 'url' => $settings['phone_url'] );
+		$actions[] = array( 'label' => 'Phone', 'icon' => 'phone', 'value' => $settings['phone'], 'url' => $settings['phone_url'] );
 	}
 
 	ob_start();
-	nice_render_events_inner_hero( 'NICE / Events', "Let's make something NICE.", 'A direct place to begin an Events conversation. Approved contact channels appear here when they are ready for publication.' );
+	nice_render_events_inner_hero( '', "Let's make something NICE.", 'A direct place to begin an Events conversation. Approved contact channels appear here when they are ready for publication.' );
 	?>
 	<section class="nice-events-inner-section nice-events-contact-page" aria-labelledby="nice-events-contact-options-title">
 		<div class="nice-wide">
@@ -699,7 +701,7 @@ function nice_render_events_contact_page() {
 				<header class="nice-events-inner-heading" data-nice-reveal><p class="nice-eyebrow">Contact NICE Events</p><h2 id="nice-events-contact-options-title">Choose a channel.</h2></header>
 				<div class="nice-events-contact-page__actions">
 					<?php foreach ( $actions as $action ) : ?>
-						<a href="<?php echo esc_url( $action['url'] ); ?>" data-nice-contact-channel="<?php echo esc_attr( strtolower( $action['label'] ) ); ?>"><small><?php echo esc_html( $action['label'] ); ?></small><span><?php echo esc_html( $action['value'] ); ?></span><span aria-hidden="true">-&gt;</span></a>
+						<a href="<?php echo esc_url( $action['url'] ); ?>" data-nice-contact-channel="<?php echo esc_attr( strtolower( $action['label'] ) ); ?>"><?php nice_render_icon( $action['icon'] ?? '' ); ?><small><?php echo esc_html( $action['label'] ); ?></small><span><?php echo esc_html( $action['value'] ); ?></span><span aria-hidden="true">-&gt;</span></a>
 					<?php endforeach; ?>
 				</div>
 			<?php else : ?>
@@ -707,6 +709,26 @@ function nice_render_events_contact_page() {
 					<p class="nice-eyebrow">Publication pending</p>
 					<h2 id="nice-events-contact-options-title">Contact details are being prepared.</h2>
 					<p>Approved WhatsApp, email and phone details will appear here when they are ready for publication.</p>
+				</div>
+			<?php endif; ?>
+			<?php
+			$nice_office = function_exists( 'nice_get_office_details' ) ? nice_get_office_details() : array( 'address_lines' => array(), 'map_url' => '' );
+			if ( ! empty( $nice_office['address_lines'] ) ) :
+				?>
+				<div class="nice-office" data-nice-reveal>
+					<h3 class="nice-office__heading"><?php nice_render_icon( 'location' ); ?>Visit the studio</h3>
+					<address class="nice-office__address">
+						<?php foreach ( $nice_office['address_lines'] as $nice_line ) : ?>
+							<span><?php echo esc_html( $nice_line ); ?></span>
+						<?php endforeach; ?>
+					</address>
+					<?php if ( $nice_office['map_url'] ) : ?>
+						<a class="nice-link nice-office__directions" href="<?php echo esc_url( $nice_office['map_url'] ); ?>" rel="noopener" target="_blank">
+							Get directions
+							<span class="nice-sr-only">(opens Google Maps in a new tab)</span>
+							<span aria-hidden="true">&#8599;</span>
+						</a>
+					<?php endif; ?>
 				</div>
 			<?php endif; ?>
 		</div>

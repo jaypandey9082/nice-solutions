@@ -9,7 +9,7 @@
 	.nice-events-home p { font-family: var(--nice-font-body); font-size: 17px; line-height: 1.5; }
 	.nice-events-home .nice-eyebrow, .nice-events-home .nice-events-project__client, .nice-events-home .nice-events-service__index { font-family: var(--nice-font-label); font-size: 12px; font-weight: 600; line-height: 1.4; text-transform: uppercase; }
 	.nice-events-home .nice-eyebrow { display: flex; align-items: center; gap: 10px; }
-	.nice-events-home .nice-eyebrow::before { content: ''; flex: 0 0 5px; height: 5px; background: var(--nice-red); }
+	.nice-events-home .nice-eyebrow::before { content: ''; flex: 0 0 5px; height: 5px; background: var(--nice-red); border-radius: 50%; }
 	.nice-events-home section[id] { scroll-margin-top: 104px; }
 	.nice-events-home .nice-events-section { padding-block: 48px; }
 	.nice-events-home .nice-events-section-heading { display: grid; gap: 20px; margin-bottom: 32px; align-items: start; }
@@ -21,9 +21,18 @@
 	.nice-events-home .nice-events-hero__media::after { content: ''; position: absolute; inset: 0; background: rgb(18 18 19 / 48%); }
 	.nice-events-home .nice-events-hero__image { width: 100%; height: 100%; object-fit: cover; }
 	.nice-events-home .nice-events-hero__inner { display: flex; flex-direction: column; justify-content: flex-end; gap: 20px; min-height: 420px; position: relative; padding-top: 104px; padding-bottom: 28px; }
-	.nice-events-home .nice-events-hero__topline { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+	/* The breadcrumb used to hold the left end of this row; the badge stays right. */
+	.nice-events-home .nice-events-hero__topline { display: flex; justify-content: flex-end; gap: 12px; align-items: center; }
 	.nice-events-home .nice-events-hero__reference { font: 10px/1.4 var(--nice-font-label); text-transform: uppercase; }
 	.nice-events-home .nice-events-hero h1 { font-size: 56px !important; line-height: .96 !important; color: inherit; }
+	/*
+	 * Wraps to two lines on a phone so Events reads as a sibling of Studio, which
+	 * wraps on its own because the word is wider. A <br> would force the break at
+	 * every width, including the desktop one where the line fits and reads better
+	 * whole.
+	 */
+	.nice-events-home .nice-events-hero__title-line { display: block; }
+	@media (min-width: 48rem) { .nice-events-home .nice-events-hero__title-line { display: inline; } }
 	.nice-events-home .nice-events-hero__message { display: grid; gap: 14px; }
 	.nice-events-home .nice-events-hero__statement { font: 26px/1.12 var(--nice-font-body); max-width: 26ch; }
 	.nice-events-home .nice-events-hero__support { font: 14px/1.5 var(--nice-font-label); max-width: 48ch; color: inherit; }

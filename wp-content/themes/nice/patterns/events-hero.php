@@ -20,7 +20,6 @@ $nice_events_contact_url       = esc_url( nice_theme_division_url( 'events', 'co
 	<img class="nice-events-hero__media" src="<?php echo $nice_events_hero_image_mobile; ?>" srcset="<?php echo $nice_events_hero_image_mobile; ?> 480w, <?php echo $nice_events_hero_image; ?> 700w" sizes="100vw" width="700" height="377" alt="" decoding="async" fetchpriority="high">
 	<div class="nice-wide nice-events-hero__inner">
 		<div class="nice-events-hero__title" data-nice-reveal>
-			<p class="nice-eyebrow">NICE / Events</p>
 			<h1 id="nice-events-title">Events</h1>
 		</div>
 		<div class="nice-events-hero__message" data-nice-editorial-reveal>

@@ -30,11 +30,11 @@ $nice_capabilities = array(
 			<?php foreach ( $nice_capabilities as $nice_division => $nice_services ) : ?>
 				<section class="nice-capability-group" aria-labelledby="nice-<?php echo esc_attr( strtolower( $nice_division ) ); ?>-capabilities" data-nice-reveal>
 					<h3 id="nice-<?php echo esc_attr( strtolower( $nice_division ) ); ?>-capabilities"><?php echo esc_html( $nice_division ); ?></h3>
-					<ol>
-						<?php foreach ( $nice_services as $nice_index => $nice_service ) : ?>
-							<li><span><?php echo esc_html( sprintf( '%02d', $nice_index + 1 ) ); ?></span><?php echo esc_html( $nice_service ); ?></li>
+					<ul class="nice-capability-list">
+						<?php foreach ( $nice_services as $nice_service ) : ?>
+							<li><span class="nice-index-dot" aria-hidden="true"></span><?php echo esc_html( $nice_service ); ?></li>
 						<?php endforeach; ?>
-					</ol>
+					</ul>
 				</section>
 			<?php endforeach; ?>
 		</div>

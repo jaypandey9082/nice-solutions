@@ -68,10 +68,10 @@ function nice_render_events_home() {
 				<div class="nice-events-hero__media" data-nice-events-hero-empty aria-hidden="true"></div>
 			<?php endif; ?>
 			<div class="nice-wide nice-events-hero__inner">
-				<div class="nice-events-hero__topline"><p class="nice-eyebrow">NICE / Events</p>
+				<div class="nice-events-hero__topline">
 					<?php if ( $hero && get_post_meta( $page_id, '_nice_events_hero_reference', true ) ) : ?><span class="nice-events-hero__reference">Reference imagery</span><?php endif; ?>
 				</div>
-				<h1 id="nice-events-title">NICE Events</h1>
+				<h1 id="nice-events-title">NICE <span class="nice-events-hero__title-line">Events</span></h1>
 				<div class="nice-events-hero__message">
 					<p class="nice-events-hero__statement">We create experiences people remember.</p>
 					<p class="nice-events-hero__support">Corporate events, exhibitions, conferences and activations planned around the brief and carried through to execution.</p>
@@ -85,11 +85,11 @@ function nice_render_events_home() {
 		<?php echo nice_render_philosophy_strip(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shared static markup. ?>
 		<section class="nice-events-section nice-events-services" id="events-services" aria-labelledby="nice-events-services-title">
 			<div class="nice-wide">
-				<header class="nice-events-section-heading" data-nice-reveal><p class="nice-eyebrow">01 / Services</p><h2 id="nice-events-services-title">Built around<br>the experience.</h2></header>
+				<header class="nice-events-section-heading" data-nice-reveal><p class="nice-eyebrow">Services</p><h2 id="nice-events-services-title">Built around<br>the experience.</h2></header>
 				<div class="nice-events-services__list">
 					<?php foreach ( $services as $index => $service ) : ?>
 						<article class="nice-events-service" data-nice-reveal>
-							<span class="nice-events-service__index"><?php echo esc_html( sprintf( '%02d', $index + 1 ) ); ?></span>
+							<span class="nice-events-service__index nice-index-dot" aria-hidden="true"></span>
 							<h3><?php echo esc_html( $service['name'] ); ?></h3>
 							<p><?php echo esc_html( $service['description'] ); ?></p>
 							<a class="nice-link" href="<?php echo esc_url( nice_theme_division_url( 'events', 'services/' . $service['slug'] ) ); ?>" aria-label="<?php echo esc_attr( 'Explore ' . $service['name'] ); ?>">Explore <span aria-hidden="true">&#8599;</span></a>
@@ -100,13 +100,13 @@ function nice_render_events_home() {
 		</section>
 		<section class="nice-events-section nice-events-work" id="events-work" aria-labelledby="nice-events-work-title">
 			<div class="nice-wide">
-				<header class="nice-events-section-heading" data-nice-reveal><p class="nice-eyebrow">02 / Selected work</p><h2 id="nice-events-work-title">Made for<br>the moment.</h2><a class="nice-link" href="<?php echo esc_url( nice_theme_division_url( 'events', 'case-studies/' ) ); ?>">All case studies <span aria-hidden="true">&#8599;</span></a></header>
+				<header class="nice-events-section-heading" data-nice-reveal><p class="nice-eyebrow">Selected work</p><h2 id="nice-events-work-title">Made for<br>the moment.</h2><a class="nice-link" href="<?php echo esc_url( nice_theme_division_url( 'events', 'case-studies/' ) ); ?>">All case studies <span aria-hidden="true">&#8599;</span></a></header>
 				<div class="nice-events-work__grid">
 					<?php foreach ( $projects as $project ) : ?>
 						<article class="nice-events-project" data-nice-reveal>
-							<div class="nice-events-project__media" aria-hidden="true"></div>
 							<p class="nice-events-project__client"><?php echo esc_html( $project['client'] ); ?></p>
 							<h3><?php echo esc_html( $project['title'] ); ?></h3>
+							<div class="nice-events-project__media" aria-hidden="true"></div>
 							<p><?php echo esc_html( $project['description'] ); ?></p>
 							<?php if ( ! empty( $project['url'] ) ) : ?><a class="nice-link" href="<?php echo esc_url( $project['url'] ); ?>">View case study <span aria-hidden="true">&#8599;</span></a><?php endif; ?>
 						</article>
@@ -116,7 +116,7 @@ function nice_render_events_home() {
 		</section>
 		<section class="nice-events-section nice-events-method" aria-labelledby="nice-events-method-title">
 			<div class="nice-wide">
-				<header class="nice-events-section-heading" data-nice-reveal><p class="nice-eyebrow">03 / Our approach</p><h2 id="nice-events-method-title">From possibility<br>to participation.</h2></header>
+				<header class="nice-events-section-heading" data-nice-reveal><p class="nice-eyebrow">Our approach</p><h2 id="nice-events-method-title">From possibility<br>to participation.</h2></header>
 				<ol class="nice-events-method__steps">
 					<?php foreach ( array( 'Emagine' => 'Understand the brand, the audience and what the event needs to achieve.', 'Explore' => 'Develop the format, communication and experience around those objectives.', 'Execute' => 'Bring the plan to life through coordinated production and on-ground delivery.' ) as $step => $description ) : ?>
 						<li data-nice-reveal><h3><?php echo esc_html( $step ); ?></h3><p><?php echo esc_html( $description ); ?></p></li>
@@ -126,7 +126,7 @@ function nice_render_events_home() {
 		</section>
 		<section class="nice-events-section nice-events-clients" id="events-clients" aria-labelledby="nice-events-clients-title">
 			<div class="nice-wide">
-				<header class="nice-events-section-heading" data-nice-reveal><p class="nice-eyebrow">04 / Collaborations</p><h2 id="nice-events-clients-title">Shared experiences.</h2><a class="nice-link" href="<?php echo esc_url( nice_theme_division_url( 'events', 'clients/' ) ); ?>">Client list <span aria-hidden="true">&#8599;</span></a></header>
+				<header class="nice-events-section-heading" data-nice-reveal><p class="nice-eyebrow">Collaborations</p><h2 id="nice-events-clients-title">Shared experiences.</h2><a class="nice-link" href="<?php echo esc_url( nice_theme_division_url( 'events', 'clients/' ) ); ?>">Client list <span aria-hidden="true">&#8599;</span></a></header>
 				<ul class="nice-events-clients__list" data-nice-reveal><?php foreach ( $clients as $client ) : ?><li><?php echo esc_html( $client ); ?></li><?php endforeach; ?></ul>
 				<?php if ( $proof ) : ?><div class="nice-events-proof__grid">
 					<?php foreach ( $proof as $item ) : ?><article data-nice-reveal><p class="nice-events-proof__number"><?php echo esc_html( $item['value'] ); ?></p><h3><?php echo esc_html( $item['title'] ); ?></h3><p><?php echo esc_html( $item['label'] ); ?></p></article><?php endforeach; ?>

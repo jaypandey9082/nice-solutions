@@ -38,7 +38,7 @@ $nice_service_sizes       = '(min-width: 1320px) 612px, (min-width: 768px) calc(
 						<?php endif; ?>
 					</div>
 					<div class="nice-events-service__content">
-						<span class="nice-events-service__index"><?php echo esc_html( sprintf( '%02d', $nice_index + 1 ) ); ?></span>
+						<span class="nice-events-service__index nice-index-dot" aria-hidden="true"></span>
 						<h3><?php echo esc_html( $nice_service['name'] ); ?></h3>
 						<p><?php echo esc_html( $nice_service['description'] ); ?></p>
 						<a class="nice-link" href="<?php echo $nice_service_url; ?>">Explore service <span aria-hidden="true">-&gt;</span></a>

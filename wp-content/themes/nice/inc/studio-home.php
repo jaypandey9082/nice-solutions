@@ -110,7 +110,6 @@ function nice_render_studio_home() {
 			<?php endif; ?>
 			<div class="nice-wide nice-studio-hero__inner">
 				<div class="nice-studio-hero__topline">
-					<p class="nice-eyebrow">NICE / Studio</p>
 					<?php if ( $hero_reference ) : ?><span class="nice-studio-hero__reference">Reference imagery</span><?php endif; ?>
 				</div>
 				<h1 id="nice-studio-title">NICE Studio</h1>
@@ -138,7 +137,7 @@ function nice_render_studio_home() {
 							$service_url = nice_theme_division_url( 'studio', 'services/' . $service->post_name );
 							?>
 							<article class="nice-studio-service" data-nice-studio-service="<?php echo esc_attr( $service->post_name ); ?>" data-nice-reveal>
-								<span class="nice-studio-service__index"><?php echo esc_html( sprintf( '%02d', $index + 1 ) ); ?></span>
+								<span class="nice-studio-service__index nice-index-dot" aria-hidden="true"></span>
 								<h3><?php echo esc_html( $service->post_title ); ?></h3>
 								<p><?php echo esc_html( $service->post_excerpt ?: wp_trim_words( wp_strip_all_tags( $service->post_content ), 28 ) ); ?></p>
 								<a class="nice-studio-service__link" href="<?php echo esc_url( $service_url ); ?>" aria-label="<?php echo esc_attr( sprintf( 'Explore %s', $service->post_title ) ); ?>">Explore <span aria-hidden="true">&#8594;</span></a>
@@ -165,15 +164,14 @@ function nice_render_studio_home() {
 							$project_url  = nice_theme_division_url( 'studio', 'case-studies/' . $case_study->post_name );
 						?>
 							<article class="nice-studio-project" data-nice-studio-project="<?php echo esc_attr( $case_study->post_name ); ?>" data-nice-reveal>
-				<a class="nice-studio-project__media nice-studio-project__media--empty" data-nice-project-media-placeholder href="<?php echo esc_url( $project_url ); ?>" aria-label="<?php echo esc_attr( sprintf( 'View %s case study', $case_study->post_title ) ); ?>">
-									<span class="nice-sr-only">Approved project image pending.</span>
-								</a>
 								<div class="nice-studio-project__meta">
-									<span><?php echo esc_html( sprintf( '%02d', $index + 1 ) ); ?></span>
 									<?php if ( $service_name ) : ?><span><?php echo esc_html( $service_name ); ?></span><?php endif; ?>
 									<?php if ( $client ) : ?><span><?php echo esc_html( $client ); ?></span><?php endif; ?>
 								</div>
 								<h3><?php echo esc_html( $case_study->post_title ); ?></h3>
+				<a class="nice-studio-project__media nice-studio-project__media--empty" data-nice-project-media-placeholder href="<?php echo esc_url( $project_url ); ?>" aria-label="<?php echo esc_attr( sprintf( 'View %s case study', $case_study->post_title ) ); ?>">
+									<span class="nice-sr-only">Approved project image pending.</span>
+								</a>
 								<p><?php echo esc_html( $case_study->post_excerpt ?: wp_trim_words( wp_strip_all_tags( $case_study->post_content ), 30 ) ); ?></p>
 								<a class="nice-studio-project__link" href="<?php echo esc_url( $project_url ); ?>">View project <span aria-hidden="true">&#8594;</span></a>
 							</article>
