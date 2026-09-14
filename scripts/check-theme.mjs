@@ -360,7 +360,12 @@ for (const requiredMarkup of [
 	'aria-expanded="false"',
 	'aria-hidden="true"',
 	'data-nice-menu-open',
-	'data-nice-menu-close',
+	/*
+	 * The close affordance is the bar's own toggle now, rather than a second
+	 * button inside the panel: it carries both labels and swaps between them.
+	 * Still asserted, just in its new place.
+	 */
+	'data-label-close',
 	'inert',
 ]) {
 	if (!header.includes(requiredMarkup)) {

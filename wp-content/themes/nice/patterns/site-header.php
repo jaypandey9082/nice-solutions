@@ -102,20 +102,25 @@ if ( $nice_is_events ) {
 				</div>
 			</div>
 		<?php endif; ?>
-		<button class="nice-menu-toggle" type="button" aria-expanded="false" aria-controls="nice-mobile-menu" aria-label="<?php esc_attr_e( 'Open menu', 'nice' ); ?>" data-nice-menu-open>
+		<?php
+		/*
+		 * One control for both directions: the three rules become a cross while
+		 * the panel is open, so the button a thumb just pressed is the button
+		 * that closes it. The panel therefore carries no close button of its own.
+		 */
+		?>
+		<button class="nice-menu-toggle" type="button" aria-expanded="false" aria-controls="nice-mobile-menu" aria-label="<?php esc_attr_e( 'Open menu', 'nice' ); ?>" data-label-open="<?php esc_attr_e( 'Open menu', 'nice' ); ?>" data-label-close="<?php esc_attr_e( 'Close menu', 'nice' ); ?>" data-nice-menu-open>
 			<span class="nice-menu-icon" aria-hidden="true"></span>
 		</button>
 	</nav>
-	<div class="nice-mobile-menu" id="nice-mobile-menu" data-state="closed" data-nice-mobile-menu role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Site navigation', 'nice' ); ?>" aria-hidden="true" inert>
-		<?php
-		/*
-		 * No logo here. The panel hangs directly under the bar, which already
-		 * shows one; repeating it put two identical marks in a vertical line.
-		 */
-		?>
-		<div class="nice-mobile-menu__top">
-			<button class="nice-menu-close" type="button" aria-label="<?php esc_attr_e( 'Close menu', 'nice' ); ?>" data-nice-menu-close></button>
-		</div>
+	<?php
+	/*
+	 * A disclosure, not a modal. Its control is the bar's toggle, which sits
+	 * outside the panel: aria-modal would tell a screen reader to ignore
+	 * everything outside, including the only way to close this.
+	 */
+	?>
+	<div class="nice-mobile-menu" id="nice-mobile-menu" data-state="closed" data-nice-mobile-menu aria-label="<?php esc_attr_e( 'Site navigation', 'nice' ); ?>" aria-hidden="true" inert>
 		<div class="nice-mobile-menu__links">
 			<?php if ( $nice_is_events ) : ?>
 				<a href="<?php echo $nice_home_url; ?>">NICE</a>

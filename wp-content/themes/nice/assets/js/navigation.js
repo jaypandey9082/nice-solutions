@@ -8,13 +8,11 @@
 	}
 
 	const openButton = header.querySelector('[data-nice-menu-open]');
-	const closeButton = header.querySelector('[data-nice-menu-close]');
 	const menu = header.querySelector('[data-nice-mobile-menu]');
 	const desktopQuery = window.matchMedia('(min-width: 56.25rem)');
 	let condensed = false;
 	let scrollFrame = 0;
 	let returnFocus = null;
-	const inertedElements = new Map();
 
 	const updateHeader = () => {
 		const scrollPosition = window.scrollY;
@@ -39,62 +37,26 @@
 	window.addEventListener('scroll', requestHeaderUpdate, { passive: true });
 	updateHeader();
 
-	if (!openButton || !closeButton || !menu) {
+	if (!openButton || !menu) {
 		return;
 	}
 
-	const focusableSelector = [
-		'a[href]',
-		'button:not([disabled])',
-		'[tabindex]:not([tabindex="-1"])',
-	].join(',');
-
 	const isOpen = () => menu.dataset.state === 'open';
 
-	const setBackgroundInert = (shouldInert) => {
-		if (!shouldInert) {
-			inertedElements.forEach((wasInert, element) => {
-				if (!wasInert) {
-					element.removeAttribute('inert');
-				}
-			});
-			inertedElements.clear();
-			return;
-		}
-
-		let activeBranch = menu;
-		while (activeBranch.parentElement) {
-			const parent = activeBranch.parentElement;
-
-			[...parent.children].forEach((sibling) => {
-				if (
-					sibling === activeBranch ||
-					sibling.tagName === 'SCRIPT' ||
-					sibling.tagName === 'STYLE'
-				) {
-					return;
-				}
-
-				inertedElements.set(sibling, sibling.hasAttribute('inert'));
-				sibling.setAttribute('inert', '');
-			});
-
-			activeBranch = parent;
-			if (parent === document.body) {
-				break;
-			}
-		}
-	};
-
+	/*
+	 * The bar's toggle is the only control: three rules while shut, a cross
+	 * while open. That rules out making the background inert, because the
+	 * header is part of the background — inerting it would disable the very
+	 * button a visitor reaches for to close the panel. So this is a disclosure
+	 * rather than a modal, and the panel says nothing about being one.
+	 */
 	const openMenu = () => {
-		returnFocus = document.activeElement;
 		menu.dataset.state = 'open';
 		menu.removeAttribute('inert');
 		menu.setAttribute('aria-hidden', 'false');
 		openButton.setAttribute('aria-expanded', 'true');
+		openButton.setAttribute('aria-label', openButton.dataset.labelClose || 'Close menu');
 		document.body.classList.add('nice-menu-is-open');
-		setBackgroundInert(true);
-		closeButton.focus();
 	};
 
 	const closeMenu = (restoreFocus = true) => {
@@ -102,47 +64,43 @@
 		menu.setAttribute('inert', '');
 		menu.setAttribute('aria-hidden', 'true');
 		openButton.setAttribute('aria-expanded', 'false');
+		openButton.setAttribute('aria-label', openButton.dataset.labelOpen || 'Open menu');
 		document.body.classList.remove('nice-menu-is-open');
-		setBackgroundInert(false);
 
-		if (restoreFocus && returnFocus instanceof HTMLElement) {
-			returnFocus.focus();
+		/*
+		 * Focus belongs on the toggle either way: it is where the visitor
+		 * pressed, and it is what they press again to reopen.
+		 */
+		if (restoreFocus) {
+			openButton.focus();
 		}
 	};
 
-	const trapFocus = (event) => {
-		if (event.key === 'Escape') {
+	openButton.addEventListener('click', () => {
+		if (isOpen()) {
 			closeMenu();
 			return;
 		}
 
-		if (event.key !== 'Tab') {
+		openMenu();
+		openButton.focus();
+	});
+
+	document.addEventListener('keydown', (event) => {
+		if ('Escape' === event.key && isOpen()) {
+			closeMenu();
+		}
+	});
+
+	/* Tapping the page behind the panel dismisses it, as a dropdown should. */
+	document.addEventListener('click', (event) => {
+		if (!isOpen() || menu.contains(event.target) || openButton.contains(event.target)) {
 			return;
 		}
 
-		const focusable = [...menu.querySelectorAll(focusableSelector)].filter(
-			(element) => !element.hasAttribute('disabled') && element.offsetParent !== null
-		);
+		closeMenu(false);
+	});
 
-		if (!focusable.length) {
-			return;
-		}
-
-		const first = focusable[0];
-		const last = focusable[focusable.length - 1];
-
-		if (event.shiftKey && document.activeElement === first) {
-			event.preventDefault();
-			last.focus();
-		} else if (!event.shiftKey && document.activeElement === last) {
-			event.preventDefault();
-			first.focus();
-		}
-	};
-
-	openButton.addEventListener('click', openMenu);
-	closeButton.addEventListener('click', () => closeMenu());
-	menu.addEventListener('keydown', trapFocus);
 	menu.querySelectorAll('a[href]').forEach((link) => {
 		link.addEventListener('click', () => closeMenu(false));
 	});
