@@ -73,10 +73,27 @@
 	}
 
 	/* ── Section 01: Hero ── */
+	/*
+	 * Dark, like the Events and Studio heroes, so the floating bar has something
+	 * to float over on all three sites.
+	 *
+	 * Those two heroes are dark because a photograph sits under a 48% veil. The
+	 * gateway has no hero image of its own, and borrowing a division's would
+	 * quietly pick a side, so this is the same flat ground with no image over
+	 * it. Deliberately not a gradient: check-theme.mjs bans them outright, and
+	 * the flat editorial surface is the point of the system rather than an
+	 * omission.
+	 */
 	.nice-landing-hero {
-		background: var(--nice-canvas);
-		border-bottom: 1px solid var(--nice-subtle-border);
+		background: var(--nice-black);
+		color: var(--nice-surface-container-low);
+		overflow: hidden;
 		position: relative;
+	}
+
+	.nice-landing-hero__inner {
+		position: relative;
+		z-index: 1;
 	}
 
 	.nice-landing-hero__inner {
@@ -115,7 +132,8 @@
 	}
 
 	.nice-overline-text {
-		color: var(--nice-muted);
+		/* Muted against the dark ground rather than the old cream one. */
+		color: color-mix(in srgb, var(--nice-surface-container-low) 70%, transparent);
 		font-family: var(--nice-font-label);
 		font-size: 0.75rem;
 		font-weight: 600;
@@ -129,7 +147,7 @@
 	}
 
 	.nice-hero-headline {
-		color: var(--nice-black) !important;
+		color: var(--nice-surface-container-low) !important;
 		font-family: var(--nice-font-heading) !important;
 		font-size: 2.5rem !important;
 		font-weight: 500 !important;
@@ -148,7 +166,7 @@
 	}
 
 	.nice-hero-support {
-		color: var(--nice-muted);
+		color: color-mix(in srgb, var(--nice-surface-container-low) 82%, transparent);
 		font-family: var(--nice-font-body);
 		font-size: 1.25rem;
 		font-weight: 400;
