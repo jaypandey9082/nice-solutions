@@ -524,7 +524,9 @@
 			align-items: center;
 			display: flex !important;
 			gap: 1.75rem;
-			margin-inline: auto;
+			/* Pushes the links and everything after them to the right of the bar. */
+			margin-left: auto;
+			margin-right: 1.75rem;
 		}
 
 		.nice-desktop-nav a {
@@ -611,6 +613,15 @@
 			top: calc(100% + 0.625rem);
 			white-space: nowrap;
 			z-index: 130;
+		}
+
+		/*
+		 * display: grid above beats the user agent's [hidden] { display: none },
+		 * because an author rule wins over a UA rule at equal specificity. Without
+		 * this the disclosure rendered permanently open.
+		 */
+		.nice-nav-connect__menu[hidden] {
+			display: none;
 		}
 
 		.nice-nav-connect__menu a {
