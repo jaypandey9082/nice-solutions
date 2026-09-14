@@ -95,52 +95,40 @@ if ( $nice_is_events ) {
 		<div class="nice-mobile-menu__links">
 			<?php if ( $nice_is_events ) : ?>
 				<a href="<?php echo $nice_home_url; ?>">NICE</a>
-				<a href="<?php echo $nice_events_url; ?>">Events Home</a>
+				<a href="<?php echo $nice_events_url; ?>">Events</a>
 				<a href="<?php echo $nice_services_url; ?>">Services</a>
 				<a href="<?php echo $nice_work_url; ?>">Work</a>
 				<a href="<?php echo $nice_clients_url; ?>">Clients</a>
-				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( nice_theme_division_url( 'events', 'team/' ) ); ?>">Team</a><?php endif; ?>
 				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
-				<a href="<?php echo $nice_studio_url; ?>">Studio</a>
 			<?php elseif ( $nice_is_studio ) : ?>
 				<a href="<?php echo $nice_home_url; ?>">NICE</a>
-				<a href="<?php echo $nice_studio_url; ?>">Studio Home</a>
+				<a href="<?php echo $nice_studio_url; ?>">Studio</a>
 				<a href="<?php echo $nice_services_url; ?>">Services</a>
 				<a href="<?php echo $nice_work_url; ?>">Work</a>
 				<a href="<?php echo $nice_clients_url; ?>">Clients</a>
-				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( nice_theme_division_url( 'studio', 'team/' ) ); ?>">Team</a><?php endif; ?>
 				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
-				<a href="<?php echo $nice_events_url; ?>">Events</a>
 			<?php else : ?>
 				<a href="<?php echo $nice_events_url; ?>">Events</a>
 				<a href="<?php echo $nice_studio_url; ?>">Studio</a>
 				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
 			<?php endif; ?>
 		</div>
-		<?php if ( $nice_channel_sets ) : ?>
+		<?php if ( $nice_label_channels ) : ?>
+			<?php
+			/*
+			 * Only on the gateway, where a bare "Contact" link cannot say whose
+			 * contact it is. A division's menu already names its own Contact page,
+			 * and its WhatsApp and email now live there and on the floating action
+			 * rather than being repeated in the drawer.
+			 */
+			?>
 			<div class="nice-mobile-menu__actions" aria-label="<?php esc_attr_e( 'Contact options', 'nice' ); ?>">
-				<?php if ( $nice_label_channels ) : ?>
-					<?php
-					/*
-					 * Outside a division, a raw WhatsApp button cannot say whose it
-					 * is. Offer one clear choice per division instead and let the
-					 * contact page present that division's channels.
-					 */
-					foreach ( $nice_channel_sets as $nice_set ) :
-						?>
-						<a class="nice-button nice-button--secondary" href="<?php echo esc_url( $nice_set['contact_url'] ); ?>" data-nice-contact-division="<?php echo esc_attr( $nice_set['division'] ); ?>"><?php
-							/* translators: %s: division label. */
-							echo esc_html( sprintf( __( 'Talk to %s', 'nice' ), $nice_set['label'] ) );
-						?></a>
-					<?php endforeach; ?>
-				<?php else : ?>
-					<?php
-					$nice_set           = $nice_channel_sets[0];
-					$nice_division_attr = $nice_set['division'] ? ' data-nice-contact-division="' . esc_attr( $nice_set['division'] ) . '"' : '';
-					?>
-					<?php if ( $nice_set['whatsapp_url'] ) : ?><a class="nice-button nice-button--primary" href="<?php echo esc_url( $nice_set['whatsapp_url'] ); ?>" data-nice-contact-channel="whatsapp"<?php echo $nice_division_attr; ?>>WhatsApp</a><?php endif; ?>
-					<?php if ( $nice_set['email_address'] ) : ?><a class="nice-button nice-button--secondary" href="<?php echo esc_url( 'mailto:' . $nice_set['email_address'] ); ?>" data-nice-contact-channel="email"<?php echo $nice_division_attr; ?>>Email</a><?php endif; ?>
-				<?php endif; ?>
+				<?php foreach ( $nice_channel_sets as $nice_set ) : ?>
+					<a class="nice-button nice-button--secondary" href="<?php echo esc_url( $nice_set['contact_url'] ); ?>" data-nice-contact-division="<?php echo esc_attr( $nice_set['division'] ); ?>"><?php
+						/* translators: %s: division label. */
+						echo esc_html( sprintf( __( 'Talk to %s', 'nice' ), $nice_set['label'] ) );
+					?></a>
+				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>
 	</div>

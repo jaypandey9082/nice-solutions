@@ -12,6 +12,11 @@ async (page) => {
   ];
   const expectedProjectPaths = expectedProjects.map((slug) => `/studio/case-studies/${slug}/`);
   // Services now precedes Work in the consolidated division nav.
+  /*
+   * NICE trimmed the drawer to the gateway plus this division's own five. The
+   * cross-division link and the WhatsApp and email buttons were removed with it:
+   * a division's channels now live on its contact page and its floating action.
+   */
   const expectedMenuPaths = [
     "/",
     "/studio/",
@@ -19,7 +24,6 @@ async (page) => {
     "/studio/case-studies/",
     "/studio/clients/",
     "/studio/contact/",
-    "/events/",
   ];
   const expectedRoutes = [
     "/studio/",
