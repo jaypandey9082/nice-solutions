@@ -154,4 +154,56 @@
 	});
 
 	closeMenu(false);
+
+	/*
+	 * The gateway's Contact disclosure.
+	 *
+	 * A disclosure rather than a menu widget: the two children are ordinary
+	 * links, so the button only needs to say whether they are showing. Present
+	 * on the gateway alone, hence the early return everywhere else.
+	 */
+	const connect = document.querySelector('[data-nice-connect]');
+
+	if (!connect) {
+		return;
+	}
+
+	const connectToggle = connect.querySelector('[data-nice-connect-toggle]');
+	const connectMenu = connect.querySelector('[data-nice-connect-menu]');
+
+	if (!connectToggle || !connectMenu) {
+		return;
+	}
+
+	const setConnect = (expanded) => {
+		connectToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+		connectMenu.hidden = !expanded;
+	};
+
+	connectToggle.addEventListener('click', () => {
+		setConnect(connectToggle.getAttribute('aria-expanded') !== 'true');
+	});
+
+	/* Clicking away closes it, which is what a disclosure in a bar should do. */
+	document.addEventListener('click', (event) => {
+		if (!connect.contains(event.target)) {
+			setConnect(false);
+		}
+	});
+
+	connect.addEventListener('keydown', (event) => {
+		if ('Escape' !== event.key) {
+			return;
+		}
+
+		setConnect(false);
+		connectToggle.focus();
+	});
+
+	/* Leaving the disclosure by keyboard closes it too. */
+	connect.addEventListener('focusout', (event) => {
+		if (!connect.contains(event.relatedTarget)) {
+			setConnect(false);
+		}
+	});
 })();

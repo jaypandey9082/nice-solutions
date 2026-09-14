@@ -56,40 +56,64 @@ if ( $nice_is_events ) {
 		<a class="nice-brand-link" href="<?php echo $nice_home_url; ?>" aria-label="<?php esc_attr_e( 'NICE home', 'nice' ); ?>">
 			<img class="nice-logo nice-logo--nav" src="<?php echo $nice_logo_url; ?>" width="1080" height="369" alt="NICE" fetchpriority="auto">
 		</a>
+		<?php
+		/*
+		 * The bar's own navigation, shown from 64rem up where the hamburger is
+		 * hidden. Deliberately shorter than the drawer: the logo already links
+		 * to the gateway, so a "NICE" link here would be the same destination
+		 * twice, and Team is omitted for the same reason it is omitted there.
+		 */
+		?>
 		<div class="nice-desktop-nav">
 			<?php if ( $nice_is_events ) : ?>
-				<a href="<?php echo $nice_home_url; ?>">NICE</a>
-				<a href="<?php echo $nice_events_url; ?>"<?php echo is_page( 'events' ) ? ' aria-current="page"' : ''; ?>>Events Home</a>
-				<a href="<?php echo $nice_services_url; ?>"<?php echo $nice_is_services ? ' aria-current="page"' : ''; ?>>Services</a>
-				<a href="<?php echo $nice_work_url; ?>"<?php echo $nice_is_work ? ' aria-current="page"' : ''; ?>>Work</a>
-				<a href="<?php echo $nice_clients_url; ?>"<?php echo $nice_is_clients ? ' aria-current="page"' : ''; ?>>Clients</a>
-				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( nice_theme_division_url( 'events', 'team/' ) ); ?>"<?php echo is_page( 'team' ) ? ' aria-current="page"' : ''; ?>>Team</a><?php endif; ?>
-				<a href="<?php echo $nice_contact_url; ?>"<?php echo $nice_is_contact ? ' aria-current="page"' : ''; ?>>Contact</a>
-				<a href="<?php echo $nice_studio_url; ?>">Studio</a>
+				<a href="<?php echo $nice_events_url; ?>"<?php echo is_page( 'events' ) ? ' aria-current="page"' : ''; ?>>Events</a>
 			<?php elseif ( $nice_is_studio ) : ?>
-				<a href="<?php echo $nice_home_url; ?>">NICE</a>
-				<a href="<?php echo $nice_studio_url; ?>"<?php echo $nice_is_studio_home ? ' aria-current="page"' : ''; ?>>Studio Home</a>
+				<a href="<?php echo $nice_studio_url; ?>"<?php echo $nice_is_studio_home ? ' aria-current="page"' : ''; ?>>Studio</a>
+			<?php endif; ?>
+			<?php if ( $nice_is_events || $nice_is_studio ) : ?>
 				<a href="<?php echo $nice_services_url; ?>"<?php echo $nice_is_services ? ' aria-current="page"' : ''; ?>>Services</a>
 				<a href="<?php echo $nice_work_url; ?>"<?php echo $nice_is_work ? ' aria-current="page"' : ''; ?>>Work</a>
 				<a href="<?php echo $nice_clients_url; ?>"<?php echo $nice_is_clients ? ' aria-current="page"' : ''; ?>>Clients</a>
-				<?php if ( $nice_has_team ) : ?><a href="<?php echo esc_url( nice_theme_division_url( 'studio', 'team/' ) ); ?>"<?php echo is_page( 'team' ) ? ' aria-current="page"' : ''; ?>>Team</a><?php endif; ?>
-				<a href="<?php echo $nice_contact_url; ?>"<?php echo $nice_is_contact ? ' aria-current="page"' : ''; ?>>Contact</a>
-				<a href="<?php echo $nice_events_url; ?>">Events</a>
 			<?php else : ?>
 				<a href="<?php echo $nice_events_url; ?>">Events</a>
 				<a href="<?php echo $nice_studio_url; ?>">Studio</a>
 			<?php endif; ?>
 		</div>
-		<a class="nice-button nice-button--primary nice-nav-cta" href="<?php echo $nice_contact_url; ?>"><?php esc_html_e( 'Contact', 'nice' ); ?></a>
+		<?php if ( $nice_is_events || $nice_is_studio ) : ?>
+			<a class="nice-button nice-button--primary nice-nav-cta" href="<?php echo $nice_contact_url; ?>"<?php echo $nice_is_contact ? ' aria-current="page"' : ''; ?>><?php esc_html_e( 'Contact', 'nice' ); ?></a>
+		<?php else : ?>
+			<?php
+			/*
+			 * The gateway owns no contact page, so its button asks which
+			 * division first rather than guessing. A disclosure rather than a
+			 * link: the choice belongs to the reader, and sending them to Events
+			 * by default -- the fallback $nice_contact_url holds here -- would be
+			 * picking for them.
+			 */
+			?>
+			<div class="nice-nav-connect" data-nice-connect>
+				<button class="nice-button nice-button--primary nice-nav-cta nice-nav-connect__button" type="button" aria-expanded="false" aria-controls="nice-connect-menu" data-nice-connect-toggle>
+					<?php esc_html_e( 'Contact', 'nice' ); ?>
+					<span class="nice-nav-connect__chevron" aria-hidden="true"></span>
+				</button>
+				<div class="nice-nav-connect__menu" id="nice-connect-menu" data-nice-connect-menu hidden>
+					<a href="<?php echo esc_url( nice_theme_division_url( 'events', 'contact/' ) ); ?>"><?php esc_html_e( 'Connect to Events', 'nice' ); ?></a>
+					<a href="<?php echo esc_url( nice_theme_division_url( 'studio', 'contact/' ) ); ?>"><?php esc_html_e( 'Connect to Studio', 'nice' ); ?></a>
+				</div>
+			</div>
+		<?php endif; ?>
 		<button class="nice-menu-toggle" type="button" aria-expanded="false" aria-controls="nice-mobile-menu" aria-label="<?php esc_attr_e( 'Open menu', 'nice' ); ?>" data-nice-menu-open>
 			<span class="nice-menu-icon" aria-hidden="true"></span>
 		</button>
 	</nav>
 	<div class="nice-mobile-menu" id="nice-mobile-menu" data-state="closed" data-nice-mobile-menu role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Site navigation', 'nice' ); ?>" aria-hidden="true" inert>
+		<?php
+		/*
+		 * No logo here. The panel hangs directly under the bar, which already
+		 * shows one; repeating it put two identical marks in a vertical line.
+		 */
+		?>
 		<div class="nice-mobile-menu__top">
-			<a class="nice-brand-link" href="<?php echo $nice_home_url; ?>" aria-label="<?php esc_attr_e( 'NICE home', 'nice' ); ?>">
-				<img class="nice-logo nice-logo--menu" src="<?php echo $nice_logo_url; ?>" width="1080" height="369" alt="NICE">
-			</a>
 			<button class="nice-menu-close" type="button" aria-label="<?php esc_attr_e( 'Close menu', 'nice' ); ?>" data-nice-menu-close></button>
 		</div>
 		<div class="nice-mobile-menu__links">
@@ -126,7 +150,8 @@ if ( $nice_is_events ) {
 				<?php foreach ( $nice_channel_sets as $nice_set ) : ?>
 					<a class="nice-button nice-button--secondary" href="<?php echo esc_url( $nice_set['contact_url'] ); ?>" data-nice-contact-division="<?php echo esc_attr( $nice_set['division'] ); ?>"><?php
 						/* translators: %s: division label. */
-						echo esc_html( sprintf( __( 'Talk to %s', 'nice' ), $nice_set['label'] ) );
+						/* translators: %s: division label. */
+						echo esc_html( sprintf( __( 'Connect to %s', 'nice' ), $nice_set['label'] ) );
 					?></a>
 				<?php endforeach; ?>
 			</div>

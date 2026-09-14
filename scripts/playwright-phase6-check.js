@@ -89,7 +89,11 @@ async (page) => {
           // Division navigation now lives in the shared pill header rather
           // than a per-page sub-navigation bar.
           hasEventsNavigation: Boolean(document.querySelector(".nice-nav-shell .nice-desktop-nav")),
-          activeNavigationCount: document.querySelectorAll('.nice-desktop-nav [aria-current="page"]').length,
+          // The CTA is part of the bar but outside .nice-desktop-nav, and it is
+          // what marks the contact page as current.
+          activeNavigationCount: document.querySelectorAll(
+            '.nice-desktop-nav [aria-current="page"], .nice-nav-cta[aria-current="page"]',
+          ).length,
           hasHorizontalOverflow: root.scrollWidth > root.clientWidth,
           headingsFit: headings.every((heading) => heading.scrollWidth <= heading.clientWidth + 1),
           imagesHaveDimensions: images.every(

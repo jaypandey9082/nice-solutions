@@ -146,7 +146,9 @@ async (page) => {
       )],
       sectionRoutes: [...document.querySelectorAll('[data-nice-future-route="true"]')].map((link) => link.pathname),
       // The per-page hero nav was consolidated into the shared pill header.
-      eventsNavRoutes: [...document.querySelectorAll(".nice-desktop-nav a")]
+      // Contact is the bar's CTA button, which sits beside .nice-desktop-nav
+      // rather than inside it, so the bar is both selectors together.
+      eventsNavRoutes: [...document.querySelectorAll(".nice-desktop-nav a, .nice-nav-cta")]
         .map((link) => link.pathname)
         .filter((path) => path.startsWith("/events/")),
       hasGlobalTeamRoute: [...document.querySelectorAll(".nice-site-header a, .nice-site-footer a")].some(
