@@ -242,6 +242,21 @@
 		width: 0.375rem;
 	}
 
+	/*
+	 * The marker earns its place only in the wide layout, where it sits in a
+	 * left-hand column and lines the rows up against each other. Below that
+	 * breakpoint the grid collapses to one column and the dot becomes a row of
+	 * its own -- a lone red speck floating above the heading, marking nothing,
+	 * since the hairline between rows already separates them. It is decorative
+	 * and already hidden from assistive technology, so nothing is lost by
+	 * dropping it here, and the heading gets the vertical space back.
+	 */
+	@media (max-width: 47.9375rem) {
+		.nice-index-dot {
+			display: none;
+		}
+	}
+
 	.nice-eyebrow {
 		color: var(--wp--preset--color--action-red);
 		font-size: var(--wp--preset--font-size--label);

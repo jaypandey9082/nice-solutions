@@ -1254,7 +1254,31 @@
 	.nice-studio-inner-hero h1 {
 		color: var(--nice-studio-surface);
 		font-family: var(--nice-font-heading, "NICE Condensed", "Arial Narrow", Arial, sans-serif) !important;
-		font-size: 3.25rem;
+		/*
+		 * A ceiling, not a size. ENTERTAINMENT at the heading-1 preset is wider
+		 * than a 360px phone column, so the heading broke mid-word and left a
+		 * stranded "T" on a line of its own. The vw term only binds when the
+		 * preset would not fit -- below roughly a 400px viewport, or when a
+		 * reader has turned up Android's text scaling -- so the type scale is
+		 * unchanged everywhere it already worked.
+		 *
+		 * !important for the same reason the font-family above carries it:
+		 * theme.json's element styles are emitted unlayered, and an unlayered
+		 * declaration outranks every layer no matter how specific the selector.
+		 * Reading the preset back keeps this a cap rather than a second opinion
+		 * about how big the heading should be.
+		 */
+		font-size: min(var(--wp--preset--font-size--heading-1), 12vw) !important;
+		/*
+		 * The measure cap is what actually split the word. ENTERTAINMENT is about
+		 * 15ch wide, so a 13ch ceiling meant the longest word could never sit on
+		 * one line at any size or any viewport -- it broke mid-word and stranded a
+		 * "T", on desktop as much as on a phone. min-content lets the box grow to
+		 * the longest word when it has to, while max-width still sets the measure
+		 * for every heading that fits. The vw cap above keeps that growth inside
+		 * the column on a narrow screen.
+		 */
+		min-width: min-content;
 		font-weight: 500;
 		letter-spacing: 0;
 		line-height: 0.92;
@@ -1301,7 +1325,9 @@
 
 	.nice-studio-service-row__content h3 {
 		font-family: var(--nice-font-heading, "NICE Condensed", "Arial Narrow", Arial, sans-serif);
-		font-size: 2rem;
+		/* Same guard as the hero: see the note there. */
+		font-size: min(var(--wp--preset--font-size--heading-3), 10vw) !important;
+		min-width: min-content;
 		font-weight: 500;
 		letter-spacing: 0;
 		line-height: 1;

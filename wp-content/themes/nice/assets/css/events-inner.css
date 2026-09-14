@@ -70,7 +70,25 @@
 
 	.nice-events-inner-hero h1 {
 		font-family: var(--nice-events-display) !important;
-		font-size: 3rem;
+		/*
+		 * A ceiling, not a size: one long word must not outgrow a phone column
+		 * and break mid-word. The vw term binds only where the preset would not
+		 * fit, so the type scale is unchanged everywhere it already worked.
+		 * !important because theme.json's element styles are unlayered, and an
+		 * unlayered declaration outranks every layer -- the same reason the
+		 * font-family above carries it.
+		 */
+		font-size: min(var(--wp--preset--font-size--heading-1), 12vw) !important;
+		/*
+		 * The measure cap is what actually split the word. ENTERTAINMENT is about
+		 * 15ch wide, so a 13ch ceiling meant the longest word could never sit on
+		 * one line at any size or any viewport -- it broke mid-word and stranded a
+		 * "T", on desktop as much as on a phone. min-content lets the box grow to
+		 * the longest word when it has to, while max-width still sets the measure
+		 * for every heading that fits. The vw cap above keeps that growth inside
+		 * the column on a narrow screen.
+		 */
+		min-width: min-content;
 		font-weight: 500;
 		letter-spacing: 0;
 		line-height: 0.92;
@@ -162,7 +180,9 @@
 	}
 
 	.nice-events-service-row__content h3 {
-		font-size: 2.25rem;
+		/* Same guard as the hero: see the note there. */
+		font-size: min(var(--wp--preset--font-size--heading-3), 10vw) !important;
+		min-width: min-content;
 		max-width: 18ch;
 		text-transform: uppercase;
 	}
