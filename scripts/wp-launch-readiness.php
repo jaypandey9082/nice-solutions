@@ -178,8 +178,8 @@ foreach ( nice_get_local_division_slugs() as $nice_division ) {
 		sprintf( '%s team', $nice_label ),
 		true,
 		$nice_team
-			? sprintf( '%d published. The Team link appears in navigation.', $nice_team )
-			: 'No published profiles, so the Team link stays hidden. That is the intended state until real people are approved.'
+			? sprintf( '%d published on the About page.', $nice_team )
+			: 'No published profiles, so the About page shows three sample cards instead. That is the intended state until real people are approved.'
 	);
 
 	$nice_hero_page = get_page_by_path( $nice_division, OBJECT, 'page' );

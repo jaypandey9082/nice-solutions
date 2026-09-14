@@ -453,7 +453,7 @@ function nice_get_events_page_manifest() {
 		array( 'slug' => 'services', 'title' => 'Events Services', 'template' => 'page-events-services' ),
 		array( 'slug' => 'case-studies', 'title' => 'Events Case Studies', 'template' => 'page-events-case-studies' ),
 		array( 'slug' => 'clients', 'title' => 'Events Clients', 'template' => 'page-events-clients' ),
-		array( 'slug' => 'team', 'title' => 'Events Team', 'template' => 'page-events-team' ),
+		array( 'slug' => 'about', 'title' => 'Events About', 'template' => 'page-events-about' ),
 		array( 'slug' => 'contact', 'title' => 'Events Contact', 'template' => 'page-events-contact' ),
 	);
 }
@@ -465,6 +465,60 @@ function nice_get_events_page_manifest() {
  *
  * @return array{created: int, skipped: int, errors: string[]}
  */
+/**
+ * Carry an existing Team page over to its About replacement.
+ *
+ * The About page took the Team page's place rather than sitting beside it, so a
+ * site provisioned before the change already holds a "team" page that may carry
+ * edited copy. Creating "about" alongside it would strand that content behind a
+ * URL nothing links to, so the existing page is renamed in place: the post keeps
+ * its ID, its revisions and whatever an editor wrote, and only its slug, title
+ * and template move.
+ *
+ * Renaming runs only when there is no About page yet. Once one exists the Team
+ * page is somebody's deliberate creation, not a leftover, and is left alone.
+ *
+ * @param string $division Division slug.
+ * @return bool Whether a page was renamed.
+ */
+function nice_migrate_division_team_page_to_about( $division ) {
+	$prefix     = nice_get_division_prefix( $division );
+	$team_path  = $prefix ? $prefix . '/team' : 'team';
+	$about_path = $prefix ? $prefix . '/about' : 'about';
+
+	if ( get_page_by_path( $about_path, OBJECT, 'page' ) instanceof WP_Post ) {
+		return false;
+	}
+
+	$team = get_page_by_path( $team_path, OBJECT, 'page' );
+
+	if ( ! $team instanceof WP_Post ) {
+		return false;
+	}
+
+	$titles = array(
+		'events' => __( 'Events About', 'nice-core' ),
+		'studio' => __( 'Studio About', 'nice-core' ),
+	);
+
+	$updated = wp_update_post(
+		array(
+			'ID'         => $team->ID,
+			'post_name'  => 'about',
+			'post_title' => $titles[ $division ] ?? $team->post_title,
+		),
+		true
+	);
+
+	if ( is_wp_error( $updated ) ) {
+		return false;
+	}
+
+	update_post_meta( $team->ID, '_wp_page_template', 'page-' . $division . '-about' );
+
+	return true;
+}
+
 /**
  * Provision one division's section pages at the path this installation uses.
  *
@@ -494,6 +548,8 @@ function nice_provision_division_pages( $division, $parent_title, $manifest ) {
 	 * division either way, because the hero metadata and the page-{slug} template
 	 * are both keyed to it.
 	 */
+	nice_migrate_division_team_page_to_about( $division );
+
 	$home = get_page_by_path( $division, OBJECT, 'page' );
 
 	if ( ! $home instanceof WP_Post ) {
@@ -575,7 +631,7 @@ function nice_get_studio_page_manifest() {
 		array( 'slug' => 'services', 'title' => 'Studio Services', 'template' => 'page-studio-services' ),
 		array( 'slug' => 'case-studies', 'title' => 'Studio Case Studies', 'template' => 'page-studio-case-studies' ),
 		array( 'slug' => 'clients', 'title' => 'Studio Clients', 'template' => 'page-studio-clients' ),
-		array( 'slug' => 'team', 'title' => 'Studio Team', 'template' => 'page-studio-team' ),
+		array( 'slug' => 'about', 'title' => 'Studio About', 'template' => 'page-studio-about' ),
 		array( 'slug' => 'contact', 'title' => 'Studio Contact', 'template' => 'page-studio-contact' ),
 	);
 }

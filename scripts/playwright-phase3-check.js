@@ -152,7 +152,7 @@ async (page) => {
     headerLabels: [...document.querySelectorAll(".nice-desktop-nav a")].map((link) => link.textContent.trim()),
     mobileLabels: [...document.querySelectorAll(".nice-mobile-menu__links a")].map((link) => link.textContent.trim()),
     hasGlobalTeamRoute: [...document.querySelectorAll(".nice-site-header a, .nice-site-footer a")].some(
-      (link) => link.pathname === "/team/",
+      (link) => link.pathname === "/team/" || link.pathname === "/about/",
     ),
     contactActions: [...document.querySelectorAll(".nice-contact-band__actions a")].map((link) => ({
       channel: link.dataset.niceContactChannel,

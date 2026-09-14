@@ -473,6 +473,9 @@ function nice_render_team_member_meta_box( $post ) {
 	nice_render_content_meta_nonce();
 	$role           = get_post_meta( $post->ID, '_nice_role', true );
 	$display_order  = (int) get_post_meta( $post->ID, '_nice_display_order', true );
+	$linkedin       = get_post_meta( $post->ID, '_nice_linkedin_url', true );
+	$instagram      = get_post_meta( $post->ID, '_nice_instagram_url', true );
+	$public_email   = get_post_meta( $post->ID, '_nice_public_email', true );
 	$division_terms = wp_get_object_terms( $post->ID, 'nice_division', array( 'fields' => 'slugs' ) );
 	$division       = $division_terms[0] ?? '';
 	?>
@@ -492,6 +495,19 @@ function nice_render_team_member_meta_box( $post ) {
 	<p>
 		<label for="nice-display-order"><strong><?php esc_html_e( 'Display Order', 'nice-core' ); ?></strong></label><br>
 		<input class="small-text" type="number" id="nice-display-order" name="nice_display_order" value="<?php echo esc_attr( $display_order ); ?>">
+	</p>
+	<p class="description"><?php esc_html_e( 'Anything entered below is published on the division About page. Leave a field empty to omit that link.', 'nice-core' ); ?></p>
+	<p>
+		<label for="nice-linkedin-url"><strong><?php esc_html_e( 'LinkedIn Profile URL', 'nice-core' ); ?></strong></label><br>
+		<input class="widefat" type="url" id="nice-linkedin-url" name="nice_linkedin_url" value="<?php echo esc_attr( $linkedin ); ?>" placeholder="https://">
+	</p>
+	<p>
+		<label for="nice-instagram-url"><strong><?php esc_html_e( 'Instagram Profile URL', 'nice-core' ); ?></strong></label><br>
+		<input class="widefat" type="url" id="nice-instagram-url" name="nice_instagram_url" value="<?php echo esc_attr( $instagram ); ?>" placeholder="https://">
+	</p>
+	<p>
+		<label for="nice-public-email"><strong><?php esc_html_e( 'Public Email Address', 'nice-core' ); ?></strong></label><br>
+		<input class="widefat" type="email" id="nice-public-email" name="nice_public_email" value="<?php echo esc_attr( $public_email ); ?>">
 	</p>
 	<?php
 }
@@ -667,6 +683,16 @@ function nice_save_content_meta( $post_id, $post ) {
 
 		nice_save_or_delete_meta( $post_id, '_nice_role', $role );
 		update_post_meta( $post_id, '_nice_display_order', nice_sanitize_integer( wp_unslash( $_POST['nice_display_order'] ?? 0 ) ) );
+
+		/*
+		 * Each contact point is stored or deleted, never stored empty: the
+		 * About page decides whether to draw a link by asking whether the meta
+		 * exists, so an empty string left behind would render a dead icon.
+		 */
+		nice_save_or_delete_meta( $post_id, '_nice_linkedin_url', nice_sanitize_https_url( wp_unslash( $_POST['nice_linkedin_url'] ?? '' ) ) );
+		nice_save_or_delete_meta( $post_id, '_nice_instagram_url', nice_sanitize_https_url( wp_unslash( $_POST['nice_instagram_url'] ?? '' ) ) );
+		nice_save_or_delete_meta( $post_id, '_nice_public_email', sanitize_email( wp_unslash( $_POST['nice_public_email'] ?? '' ) ) );
+
 		wp_set_object_terms( $post_id, isset( $divisions[ $division ] ) ? $division : array(), 'nice_division', false );
 	}
 }

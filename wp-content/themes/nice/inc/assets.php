@@ -98,6 +98,20 @@ function nice_theme_enqueue_assets() {
 		);
 	}
 
+	/*
+	 * Both divisions' About pages share one stylesheet, so it is enqueued on
+	 * the page rather than on the division, and it depends on whichever inner
+	 * sheet is already loading so its rules land after the division's.
+	 */
+	if ( is_page( 'about' ) && ( $nice_is_events_inner || $nice_is_studio_context ) ) {
+		wp_enqueue_style(
+			'nice-about',
+			get_theme_file_uri( '/assets/css/about.css' ),
+			array( $nice_is_events_inner ? 'nice-events-inner' : 'nice-studio' ),
+			nice_theme_asset_version( '/assets/css/about.css' )
+		);
+	}
+
 	if ( $nice_is_events_page ) {
 		wp_enqueue_style( 'nice-events-home', get_theme_file_uri( '/assets/css/events-home.css' ), array( 'nice-editorial-foundation' ), nice_theme_asset_version( '/assets/css/events-home.css' ) );
 	}

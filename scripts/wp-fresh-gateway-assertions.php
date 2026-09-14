@@ -50,7 +50,7 @@ foreach ( array( 'nice_service', 'nice_case_study', 'nice_team_member' ) as $pos
 nice_gateway_assert( is_wp_error( nice_run_content_migration() ), 'The content migration refuses to run here.' );
 
 /* No division pages were provisioned. */
-foreach ( array( 'events', 'studio', 'services', 'case-studies', 'clients', 'team', 'contact' ) as $slug ) {
+foreach ( array( 'events', 'studio', 'services', 'case-studies', 'clients', 'team', 'about', 'contact' ) as $slug ) {
 	nice_gateway_assert( null === get_page_by_path( $slug, OBJECT, 'page' ), sprintf( 'No /%s/ page was created.', $slug ) );
 }
 

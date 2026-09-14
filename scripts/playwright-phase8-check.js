@@ -21,7 +21,7 @@ async (page) => {
     ["/studio/services/", "Studio services"],
     ["/studio/case-studies/", "Case studies"],
     ["/studio/clients/", "Clients"],
-    ["/studio/team/", "Studio team"],
+    ["/studio/about/", "Rooted in film and storytelling"],
     ["/studio/contact/", "Let's create something NICE."],
   ];
 
@@ -33,7 +33,7 @@ async (page) => {
     ["/events/case-studies/", "Case studies"],
     ["/events/case-studies/voltas-fam-tastic-fiesta/", "Voltas Fam-Tastic Fiesta"],
     ["/events/clients/", "Clients"],
-    ["/events/team/", "Events team"],
+    ["/events/about/", "Events is where our heart is"],
     ["/events/contact/", "Let's make something NICE."],
   ];
 
@@ -111,7 +111,7 @@ async (page) => {
       ["/studio/case-studies/", "Case studies"],
       ["/studio/case-studies/krish-e/", "Krish-e"],
       ["/studio/clients/", "Clients"],
-      ["/studio/team/", "Studio team"],
+      ["/studio/about/", "Rooted in film and storytelling"],
       ["/studio/contact/", "Let's create something NICE."],
     ]) {
       const response = await page.goto(origin + path, { waitUntil: "networkidle" });
@@ -149,7 +149,7 @@ async (page) => {
               .filter((href) => href.includes("/nice_service/") || href.includes("/nice_case_study/")),
             globalTeamLinks: links
               .map((link) => link.getAttribute("href") || "")
-              .filter((href) => href === "/team/" || href.endsWith("/team/")),
+              .filter((href) => ["/team/", "/about/"].includes(href)),
             hasEditorialSerif: Boolean(document.querySelector(".nice-editorial")),
           };
         },
@@ -193,13 +193,25 @@ async (page) => {
     };
   });
 
-  // 5. Studio Team Pending State Inspection
-  await page.goto(origin + "/studio/team/", { waitUntil: "networkidle" });
-  const teamData = await page.evaluate(() => ({
-    memberCount: document.querySelectorAll(".nice-studio-team-member").length,
-    isPending: Boolean(document.querySelector(".nice-studio-empty-state")),
-    pendingTitle: document.querySelector(".nice-studio-empty-state h2")?.textContent?.trim(),
+  // 5. Studio About Page Inspection
+  await page.goto(origin + "/studio/about/", { waitUntil: "networkidle" });
+  const aboutData = await page.evaluate(() => ({
+    /* The hero's strip is the only one; the manifesto carries its own class. */
+    stripCount: document.querySelectorAll(".nice-philosophy-strip").length,
+    stepWords: [...document.querySelectorAll(".nice-philosophy-manifesto__step h3")].map((h) => h.textContent.trim()).join(","),
+    memberCount: document.querySelectorAll(".nice-team-member").length,
+    sampleCount: document.querySelectorAll(".nice-team-member--sample").length,
+    sampleLinkCount: document.querySelectorAll(".nice-team-member--sample a").length,
+    hasSampleNotice: Boolean(document.querySelector(".nice-team-directory__notice")),
+    hasOffice: Boolean(document.querySelector(".nice-about-connect .nice-office")),
   }));
+
+  /* Team became About, so its old path redirects rather than 404ing. */
+  const retiredTeamResponse = await page.goto(origin + "/studio/team/", { waitUntil: "networkidle" });
+  const retiredTeamPath = {
+    status: retiredTeamResponse?.status() ?? 0,
+    pathname: new URL(page.url()).pathname,
+  };
 
   // 6. Studio Contact Form-Free Inspection
   await page.goto(origin + "/studio/contact/", { waitUntil: "networkidle" });
@@ -270,7 +282,7 @@ async (page) => {
     ["/studio/case-studies/", "case-studies"],
     ["/studio/case-studies/krish-e/", "case-study-detail"],
     ["/studio/clients/", "clients"],
-    ["/studio/team/", "team"],
+    ["/studio/about/", "about"],
     ["/studio/contact/", "contact"],
   ];
 
@@ -301,7 +313,11 @@ async (page) => {
   if (servicesData.count !== 3) failures.push("Studio services count");
   if (caseStudiesData.totalCases !== 5) failures.push("Studio case studies count");
   if (clientsData.count !== 10) failures.push("Studio clients shared count");
-  if (teamData.memberCount !== 0 || !teamData.isPending) failures.push("Studio team empty state");
+  if (aboutData.stripCount !== 1) failures.push("Studio About philosophy strip count");
+  if (aboutData.stepWords !== "Emagine,Explore,Execute") failures.push("Studio About philosophy steps");
+  if (aboutData.memberCount !== 3 || aboutData.sampleCount !== 3 || aboutData.sampleLinkCount !== 0 || !aboutData.hasSampleNotice) failures.push("Studio About team samples");
+  if (!aboutData.hasOffice) failures.push("Studio About connect block");
+  if (retiredTeamPath.status !== 200 || retiredTeamPath.pathname !== "/studio/about/") failures.push("Studio retired team path redirect");
   if (contactData.formCount > 0 || !contactData.hasActionsOrPending) failures.push("Studio contact form-free state");
   if (invalidResults.some((r) => r.status !== 404)) failures.push("404 and cross-division isolation");
   if (regressionResults.some((r) => r.status !== 200 || r.h1Count !== 1)) failures.push("Events/Landing regression");
@@ -319,7 +335,8 @@ async (page) => {
     servicesData,
     caseStudiesData,
     clientsData,
-    teamData,
+    aboutData,
+    retiredTeamPath,
     contactData,
     invalidResults,
     regressionResults,

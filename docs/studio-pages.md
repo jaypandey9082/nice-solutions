@@ -19,7 +19,7 @@ motion styling without introducing external libraries or framework dependencies.
 /studio/case-studies/crisil-financial-literacy-content/
 /studio/case-studies/jayanti/
 /studio/clients/
-/studio/team/
+/studio/about/
 /studio/contact/
 ```
 
@@ -27,7 +27,9 @@ The three Studio Service and five approved Studio Case Study detail URLs are
 generated from their published NICE Core slugs. Unknown detail slugs, cross-division
 requests (e.g. requesting an Events case study via a Studio URL or vice-versa),
 raw CPT paths (`/nice_service/`, `/nice_case_study/`), and the unapproved global
-`/team/` route strictly return the shared NICE `404` template.
+`/team/` and `/about/` routes strictly return the shared NICE `404` template.
+`/studio/team/` is the one exception: About replaced the Team page, so the
+retired path `301`s to `/studio/about/`.
 
 ## Template Architecture
 
@@ -74,7 +76,8 @@ reflect immediately on the frontend without template edits.
 
 - Canonical URLs are strictly enforced: `/studio/services/{slug}/` and `/studio/case-studies/{slug}/`.
 - Cross-division requests return 404 (Events posts requested via Studio URLs or Studio posts via Events URLs).
-- Raw CPT URLs (`/nice_service/`, `/nice_case_study/`) and global `/team/` return 404.
+- Raw CPT URLs (`/nice_service/`, `/nice_case_study/`) and the global `/team/` and `/about/` routes return 404.
+- `/studio/team/` `301`s to `/studio/about/`; the page was renamed rather than replaced, so edited copy follows it.
 - `nice_provision_studio_pages()` automatically provisions the 5 child pages under `/studio/` on plugin activation or through `wp nice migrate-content`.
 
 ## Visual Language & Editorial Polish

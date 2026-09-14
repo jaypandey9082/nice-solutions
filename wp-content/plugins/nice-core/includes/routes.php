@@ -193,6 +193,45 @@ function nice_enforce_content_routes() {
 add_action( 'template_redirect', 'nice_enforce_content_routes', 1 );
 
 /**
+ * Send the retired Team path to the About page that replaced it.
+ *
+ * About took Team's place rather than sitting beside it, so /events/team/ and
+ * /studio/team/ are now former URLs. WordPress does store an old slug when a
+ * page is renamed, but wp_old_slug_redirect() is unreliable for hierarchical
+ * pages and would leave the behaviour to chance, so the mapping is written out
+ * and covered by a test instead.
+ *
+ * Only a division this installation actually serves is redirected. A bare
+ * /team/ was never a real route and still 404s, and a sibling division's path
+ * is still refused by the route enforcement above -- neither becomes reachable
+ * by way of this redirect.
+ */
+function nice_redirect_retired_team_path() {
+	$path = trim( (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ?? '/' ), PHP_URL_PATH ), '/' );
+
+	if ( '' === $path ) {
+		return;
+	}
+
+	foreach ( nice_get_local_division_slugs() as $division ) {
+		$prefix = nice_get_division_prefix( $division );
+		$team   = $prefix ? $prefix . '/team' : 'team';
+
+		if ( $path !== $team ) {
+			continue;
+		}
+
+		$about = nice_get_division_url( $division, 'about/' );
+
+		if ( $about ) {
+			wp_safe_redirect( $about, 301 );
+			exit;
+		}
+	}
+}
+add_action( 'template_redirect', 'nice_redirect_retired_team_path', 0 );
+
+/**
  * Prevent WordPress from guessing unapproved global or raw CPT routes, or cross-division redirects.
  *
  * @param string|false $redirect_url  Proposed canonical URL.

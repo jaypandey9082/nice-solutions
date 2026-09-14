@@ -1,0 +1,375 @@
+/*
+ * The About pages: the philosophy manifesto, the team directory and the
+ * connect block.
+ *
+ * One stylesheet for both divisions. Events and Studio resolved to the same
+ * cream palette and the same condensed display face, so writing this twice
+ * would have been two copies to keep in step for no visible difference. The
+ * few things that do differ are set through the local tokens below, which each
+ * division's wrapper overrides.
+ */
+
+@layer tokens {
+	.nice-events-inner,
+	.nice-studio-inner {
+		--nice-about-canvas: #E7E3D8;
+		--nice-about-surface: #F4F2ED;
+		--nice-about-ink: #121213;
+		--nice-about-muted: #565249;
+		--nice-about-border: #C7C1B2;
+		--nice-about-media: #DAD5C8;
+		--nice-about-red: #EF233C;
+		--nice-about-display: "NICE Condensed", "Arial Narrow", Arial, sans-serif;
+		--nice-about-editorial: "NICE Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+		--nice-about-label: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		--nice-about-space: 4.5rem;
+	}
+}
+
+@layer components {
+	.nice-about-section,
+	.nice-philosophy-manifesto {
+		padding-block: var(--nice-about-space, 4.5rem);
+	}
+
+	.nice-about-heading,
+	.nice-philosophy-manifesto__intro {
+		display: grid;
+		gap: 0.75rem;
+		margin-bottom: 2.5rem;
+		max-width: 46rem;
+	}
+
+	.nice-about-heading h2,
+	.nice-philosophy-manifesto__intro h2 {
+		font-family: var(--nice-about-display);
+		font-size: 2.5rem;
+		font-weight: 500;
+		letter-spacing: 0;
+		line-height: 0.98;
+		margin: 0;
+		text-transform: uppercase;
+	}
+
+	.nice-philosophy-manifesto__intro p,
+	.nice-about-story__grid p {
+		color: var(--nice-about-muted);
+		font-family: var(--nice-about-editorial);
+		font-size: 1.0625rem;
+		line-height: 1.6;
+		margin: 0;
+	}
+
+	.nice-about-story__grid {
+		display: grid;
+		gap: 1.5rem;
+	}
+
+	.nice-about-story__grid strong {
+		color: var(--nice-about-ink);
+		font-weight: 600;
+	}
+
+	/* The three steps ------------------------------------------------ */
+
+	.nice-philosophy-manifesto__steps {
+		display: grid;
+		gap: 1px;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	/*
+	 * A one-pixel grid gap over the border colour draws the hairlines between
+	 * cards, so no card needs a border of its own and no doubled line appears
+	 * where two cards meet.
+	 */
+	.nice-philosophy-manifesto__steps {
+		background: var(--nice-about-border);
+		border: 1px solid var(--nice-about-border);
+	}
+
+	.nice-philosophy-manifesto__step {
+		background: var(--nice-about-surface);
+		display: grid;
+		gap: 0.625rem;
+		padding: 2rem 1.5rem;
+	}
+
+	.nice-philosophy-manifesto__count {
+		color: var(--nice-about-red);
+		font-family: var(--nice-about-label);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+	}
+
+	.nice-philosophy-manifesto__step h3 {
+		font-family: var(--nice-about-display);
+		font-size: 1.75rem;
+		font-weight: 500;
+		letter-spacing: 0;
+		line-height: 1;
+		margin: 0;
+		text-transform: uppercase;
+	}
+
+	.nice-philosophy-manifesto__step p {
+		color: var(--nice-about-muted);
+		font-family: var(--nice-about-editorial);
+		font-size: 1rem;
+		line-height: 1.6;
+		margin: 0;
+	}
+
+	.nice-philosophy-manifesto__belief {
+		border-left: 3px solid var(--nice-about-red);
+		margin: 2.5rem 0 0;
+		padding-left: 1.5rem;
+	}
+
+	.nice-philosophy-manifesto__belief p {
+		font-family: var(--nice-about-display);
+		font-size: 1.5rem;
+		font-weight: 500;
+		letter-spacing: 0;
+		line-height: 1.15;
+		margin: 0;
+		max-width: 32ch;
+		text-transform: uppercase;
+	}
+
+	.nice-philosophy-manifesto__belief strong {
+		color: var(--nice-about-red);
+		font-weight: 500;
+	}
+
+	/* The team ------------------------------------------------------- */
+
+	.nice-team-directory__notice {
+		border-top: 1px solid var(--nice-about-border);
+		color: var(--nice-about-muted);
+		font-family: var(--nice-about-label);
+		font-size: 0.8125rem;
+		letter-spacing: 0.04em;
+		margin: 0 0 2rem;
+		padding-top: 1rem;
+	}
+
+	.nice-team-directory__list {
+		display: grid;
+		gap: 2.5rem 1.5rem;
+	}
+
+	.nice-team-member {
+		display: grid;
+		gap: 1rem;
+	}
+
+	.nice-team-member__portrait {
+		aspect-ratio: 4 / 5;
+		background: var(--nice-about-media);
+		border: 1px solid var(--nice-about-border);
+		overflow: hidden;
+	}
+
+	.nice-team-member__portrait img {
+		display: block;
+		height: 100%;
+		object-fit: cover;
+		width: 100%;
+	}
+
+	.nice-team-member__portrait--empty {
+		align-items: center;
+		display: grid;
+		justify-items: center;
+	}
+
+	.nice-team-member__portrait-note {
+		color: var(--nice-about-muted);
+		font-family: var(--nice-about-label);
+		font-size: 0.6875rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		opacity: 0.7;
+		text-transform: uppercase;
+	}
+
+	.nice-team-member__body {
+		display: grid;
+		gap: 0.5rem;
+	}
+
+	.nice-team-member__body h3 {
+		font-family: var(--nice-about-display);
+		font-size: 1.5rem;
+		font-weight: 500;
+		letter-spacing: 0;
+		line-height: 1;
+		margin: 0;
+		text-transform: uppercase;
+	}
+
+	.nice-team-member__role {
+		color: var(--nice-about-red);
+		font-family: var(--nice-about-label);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		margin: 0;
+		text-transform: uppercase;
+	}
+
+	.nice-team-member__bio p {
+		color: var(--nice-about-muted);
+		font-family: var(--nice-about-editorial);
+		font-size: 0.9375rem;
+		line-height: 1.6;
+		margin: 0;
+	}
+
+	.nice-team-member__links {
+		display: flex;
+		gap: 0.5rem;
+		list-style: none;
+		margin: 0.25rem 0 0;
+		padding: 0;
+	}
+
+	.nice-team-member__links a,
+	.nice-team-member__links span {
+		align-items: center;
+		border: 1px solid var(--nice-about-border);
+		color: var(--nice-about-muted);
+		display: inline-flex;
+		height: 2.25rem;
+		justify-content: center;
+		width: 2.25rem;
+	}
+
+	.nice-team-member__links a {
+		transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+	}
+
+	.nice-team-member__links a:hover,
+	.nice-team-member__links a:focus-visible {
+		background: var(--nice-about-ink);
+		border-color: var(--nice-about-ink);
+		color: var(--nice-about-surface);
+	}
+
+	.nice-team-member__links .nice-icon {
+		height: 1rem;
+		width: 1rem;
+	}
+
+	/*
+	 * The sample row is drawn, not clickable. Dimming it keeps it from reading
+	 * as three controls a visitor could press.
+	 */
+	.nice-team-member__links--sample span {
+		opacity: 0.45;
+	}
+
+	/* Connect -------------------------------------------------------- */
+
+	.nice-about-connect {
+		background: var(--nice-about-surface);
+		border-top: 1px solid var(--nice-about-border);
+	}
+
+	.nice-about-connect__grid {
+		display: grid;
+		gap: 2.5rem;
+	}
+
+	.nice-about-connect__social h3 {
+		align-items: center;
+		display: flex;
+		font-family: var(--nice-about-label);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		margin: 0 0 1rem;
+		text-transform: uppercase;
+	}
+
+	.nice-about-connect__links {
+		display: grid;
+		gap: 0;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.nice-about-connect__links a {
+		align-items: center;
+		border-top: 1px solid var(--nice-about-border);
+		color: var(--nice-about-ink);
+		display: flex;
+		font-family: var(--nice-about-display);
+		font-size: 1.25rem;
+		gap: 0.75rem;
+		letter-spacing: 0;
+		min-height: 3rem;
+		text-decoration: none;
+		text-transform: uppercase;
+		transition: color 0.2s ease;
+	}
+
+	.nice-about-connect__links li:last-child a {
+		border-bottom: 1px solid var(--nice-about-border);
+	}
+
+	.nice-about-connect__links a:hover,
+	.nice-about-connect__links a:focus-visible {
+		color: var(--nice-about-red);
+	}
+
+	@media (min-width: 48rem) {
+		.nice-about-section,
+		.nice-philosophy-manifesto {
+			--nice-about-space: 6rem;
+		}
+
+		.nice-about-heading h2,
+		.nice-philosophy-manifesto__intro h2 {
+			font-size: 3.25rem;
+		}
+
+		.nice-about-story__grid {
+			gap: 2.5rem;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.nice-philosophy-manifesto__steps {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.nice-philosophy-manifesto__belief p {
+			font-size: 2rem;
+		}
+
+		.nice-team-directory__list {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.nice-about-connect__grid {
+			gap: 4rem;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.nice-team-directory__list {
+			gap: 3rem 2rem;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.nice-philosophy-manifesto__step {
+			padding: 2.5rem 2rem;
+		}
+	}
+}

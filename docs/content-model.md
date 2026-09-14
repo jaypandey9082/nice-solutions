@@ -108,16 +108,30 @@ Client logos use the core featured-image attachment ID.
 | --- | --- | --- |
 | `_nice_role` | string | Role/title |
 | `_nice_display_order` | integer | Stable editorial ordering |
+| `_nice_linkedin_url` | string | Public LinkedIn profile, HTTPS only |
+| `_nice_instagram_url` | string | Public Instagram profile, HTTPS only |
+| `_nice_public_email` | string | Publishable address |
+
+The address field is `_nice_public_email` rather than `_nice_email` on purpose:
+the company profile lists each director's personal work address, and the name is
+there to say out loud that whatever is stored gets published. Each of the three
+is stored or deleted, never stored empty, because the card decides whether to
+draw an icon by asking whether the meta exists.
 
 Division comes from the `nice_division` taxonomy and is capped at one term per
-member. A member with no division appears on neither team page.
+member. A member with no division appears on neither About page.
 
 Portraits use the core featured-image attachment ID and are optional; a member
-without one renders as role and name rather than an empty image box. The content
-migration seeds six placeholder drafts, three per division, so the structure is
-editable before approved names, roles, and portraits are supplied. Drafts are
-never public, and the Team navigation link stays hidden until a division has at
-least one published member.
+without one renders as role and name rather than an empty image box. Note that
+team portraits do **not** pass through the `_nice_media_approved` gate that Case
+Study media does — a portrait publishes the moment it is set as the featured
+image.
+
+The content migration seeds six placeholder drafts, three per division, so the
+structure is editable before approved names, roles, and portraits are supplied.
+Drafts are never public. While a division has no published member its About page
+renders three sample cards instead, marked as a layout preview; they disappear
+on their own as soon as one real member is published.
 
 ## Contact Settings
 

@@ -63,7 +63,7 @@ if ( $studio_case ) {
  * the assertion had been failing against its own repository ever since; it now
  * says what the Phase 7 check says.
  */
-foreach ( array( 'services', 'case-studies', 'clients', 'team', 'contact' ) as $inner_slug ) {
+foreach ( array( 'services', 'case-studies', 'clients', 'about', 'contact' ) as $inner_slug ) {
 	$inner_page = get_page_by_path( 'studio/' . $inner_slug, OBJECT, 'page' );
 	nice_phase7_1_assert( $inner_page instanceof WP_Post && 'publish' === $inner_page->post_status, "Studio Page is missing: {$inner_slug}" );
 }

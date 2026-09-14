@@ -14,7 +14,7 @@ const ROUTES = [
   { name: "events-case-studies", path: "/events/case-studies/" },
   { name: "events-case-study-detail", path: "/events/case-studies/voltas-fam-tastic-fiesta/" },
   { name: "events-clients", path: "/events/clients/" },
-  { name: "events-team", path: "/events/team/" },
+  { name: "events-about", path: "/events/about/" },
   { name: "events-contact", path: "/events/contact/" },
   { name: "studio-home", path: "/studio/" },
   { name: "studio-services", path: "/studio/services/" },
@@ -22,7 +22,7 @@ const ROUTES = [
   { name: "studio-case-studies", path: "/studio/case-studies/" },
   { name: "studio-case-study-detail", path: "/studio/case-studies/strata-geosystems-factory-shoot/" },
   { name: "studio-clients", path: "/studio/clients/" },
-  { name: "studio-team", path: "/studio/team/" },
+  { name: "studio-about", path: "/studio/about/" },
   { name: "studio-contact", path: "/studio/contact/" },
 ];
 

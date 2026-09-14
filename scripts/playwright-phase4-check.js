@@ -152,7 +152,7 @@ async (page) => {
         .map((link) => link.pathname)
         .filter((path) => path.startsWith("/events/")),
       hasGlobalTeamRoute: [...document.querySelectorAll(".nice-site-header a, .nice-site-footer a")].some(
-        (link) => link.pathname === "/team/",
+        (link) => link.pathname === "/team/" || link.pathname === "/about/",
       ),
       heroMedia: {
         priority: heroImage?.getAttribute("fetchpriority"),
@@ -212,8 +212,9 @@ async (page) => {
 
   const expectedServices = "Corporate Events,Exhibitions & Conferences,Activations & Promotions";
   const expectedServiceRoutes = "/events/services/corporate-events/,/events/services/exhibitions-conferences/,/events/services/activations-promotions/";
-  // Team is gated on a division having a published member, so it is optional.
-  const expectedNavRoutes = "/events/,/events/services/,/events/case-studies/,/events/clients/,/events/contact/";
+  // About replaced Team, which was never in the nav because nothing linked to it.
+  // About always is, so the bar carries it on every Events page in source order.
+  const expectedNavRoutes = "/events/,/events/services/,/events/case-studies/,/events/clients/,/events/about/,/events/contact/";
   const validationFailures = [];
 
   if (viewportResults.some((result) => result.hasHorizontalOverflow)) validationFailures.push("horizontal overflow");

@@ -18,8 +18,13 @@
       "postTypes": ["page"]
     },
     {
-      "name": "page-events-team",
-      "title": "Events Team",
+      "name": "page-events-about",
+      "title": "Events About",
+      "postTypes": ["page"]
+    },
+    {
+      "name": "page-studio-about",
+      "title": "Studio About",
       "postTypes": ["page"]
     },
     {

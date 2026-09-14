@@ -560,43 +560,38 @@ function nice_render_studio_clients_index() {
 }
 
 /**
- * Render the Studio Team page and its safe empty state.
+ * Render the Studio About page: the philosophy, then the team.
+ *
+ * Same philosophy as Events, because it is the company's and not a division's.
+ * The voice around it, and the roster beneath it, are Studio's own.
  *
  * @return string
  */
-function nice_render_studio_team_index() {
-	$team = function_exists( 'nice_get_team_members_by_division' ) ? nice_get_team_members_by_division( 'studio' ) : array();
-
+function nice_render_studio_about_page() {
 	ob_start();
-	nice_render_studio_inner_hero( '', 'Studio team', 'The creative and production rosters behind each piece of content.' );
+	nice_render_studio_inner_hero(
+		'About us',
+		'Rooted in film and storytelling',
+		'Nucleus Integrated Communication and Entertainment is an audiovisual and entertainment production house working across film, television and digital storytelling.'
+	);
+
+	echo nice_render_philosophy_manifesto( 'studio' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shared static markup.
 	?>
-	<section class="nice-studio-inner-section nice-studio-team-directory" aria-labelledby="nice-team-directory-title">
+	<section class="nice-about-section nice-about-story" aria-labelledby="nice-about-story-title">
 		<div class="nice-wide">
-			<?php if ( $team ) : ?>
-				<header class="nice-studio-inner-heading" data-nice-reveal><p class="nice-eyebrow">Studio team</p><h2 id="nice-team-directory-title">Meet the team.</h2></header>
-				<div class="nice-studio-team-directory__list">
-					<?php foreach ( $team as $member ) :
-						$image = nice_theme_get_featured_image( $member->ID, '(min-width: 48rem) 360px, calc(100vw - 40px)' );
-						$role  = get_post_meta( $member->ID, '_nice_role', true );
-						?>
-						<article class="nice-studio-team-member" data-nice-reveal>
-							<?php if ( $image ) : ?><div class="nice-studio-team-member__portrait"><?php echo $image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div><?php endif; ?>
-							<?php if ( $role ) : ?><p class="nice-eyebrow"><?php echo esc_html( $role ); ?></p><?php endif; ?>
-							<h3><?php echo esc_html( $member->post_title ); ?></h3>
-							<div><?php echo wp_kses_post( apply_filters( 'the_content', $member->post_content ) ); ?></div>
-						</article>
-					<?php endforeach; ?>
-				</div>
-			<?php else : ?>
-				<div class="nice-studio-empty-state nice-studio-empty-state--feature" data-nice-reveal>
-					<p class="nice-eyebrow">Publication pending</p>
-					<h2 id="nice-team-directory-title">Our creative and production rosters are currently being updated for publication.</h2>
-					<p>Approved Studio team profiles will appear here when they are ready for publication.</p>
-				</div>
-			<?php endif; ?>
+			<header class="nice-about-heading" data-nice-reveal>
+				<p class="nice-eyebrow">What we make</p>
+				<h2 id="nice-about-story-title">From conception to screen.</h2>
+			</header>
+			<div class="nice-about-story__grid">
+				<p data-nice-reveal>Corporate films and product AVs, motion graphics and 2D animation, documentary, photography and end-to-end film production. Creative production, design and content strategy sit in one place, so a script and the way it is shot are decided by the same people.</p>
+				<p data-nice-reveal>The division marked its move into film production as Executive Producers of the Marathi feature <strong>Jayanti</strong>, the first Marathi release after the lockdown. Beyond the production the team ran marketing, promotions and the theatrical rollout, which carried a twelve-week run, a Star TV deal and streaming on Amazon Prime Video.</p>
+			</div>
 		</div>
 	</section>
 	<?php
+	nice_render_about_team_section( 'studio', 'Studio team', 'Meet the team.' );
+	nice_render_about_connect_section( 'studio' );
 	nice_render_studio_inner_contact_cta();
 
 	return (string) ob_get_clean();
@@ -677,7 +672,7 @@ function nice_register_studio_page_blocks() {
 		'nice/studio-case-studies-index' => 'nice_render_studio_case_studies_index',
 		'nice/studio-case-study-detail'  => 'nice_render_studio_case_study_detail',
 		'nice/studio-clients-index'      => 'nice_render_studio_clients_index',
-		'nice/studio-team-index'         => 'nice_render_studio_team_index',
+		'nice/studio-about-page'         => 'nice_render_studio_about_page',
 		'nice/studio-contact-page'       => 'nice_render_studio_contact_page',
 	);
 

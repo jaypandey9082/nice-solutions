@@ -91,7 +91,7 @@
     },
     {
       "width": 320,
-      "route": "/events/team/",
+      "route": "/events/about/",
       "h1Count": 1,
       "stripCount": 1,
       "hasLegacySubnav": false,
@@ -168,7 +168,7 @@
     },
     {
       "width": 320,
-      "route": "/studio/team/",
+      "route": "/studio/about/",
       "h1Count": 1,
       "stripCount": 1,
       "hasLegacySubnav": false,
@@ -278,7 +278,7 @@
     },
     {
       "width": 390,
-      "route": "/events/team/",
+      "route": "/events/about/",
       "h1Count": 1,
       "stripCount": 1,
       "hasLegacySubnav": false,
@@ -355,7 +355,7 @@
     },
     {
       "width": 390,
-      "route": "/studio/team/",
+      "route": "/studio/about/",
       "h1Count": 1,
       "stripCount": 1,
       "hasLegacySubnav": false,
@@ -465,7 +465,7 @@
     },
     {
       "width": 768,
-      "route": "/events/team/",
+      "route": "/events/about/",
       "h1Count": 1,
       "stripCount": 1,
       "hasLegacySubnav": false,
@@ -542,7 +542,7 @@
     },
     {
       "width": 768,
-      "route": "/studio/team/",
+      "route": "/studio/about/",
       "h1Count": 1,
       "stripCount": 1,
       "hasLegacySubnav": false,
@@ -652,7 +652,7 @@
     },
     {
       "width": 1024,
-      "route": "/events/team/",
+      "route": "/events/about/",
       "h1Count": 1,
       "stripCount": 1,
       "hasLegacySubnav": false,
@@ -729,7 +729,7 @@
     },
     {
       "width": 1024,
-      "route": "/studio/team/",
+      "route": "/studio/about/",
       "h1Count": 1,
       "stripCount": 1,
       "hasLegacySubnav": false,
@@ -839,7 +839,7 @@
     },
     {
       "width": 1440,
-      "route": "/events/team/",
+      "route": "/events/about/",
       "h1Count": 1,
       "stripCount": 1,
       "hasLegacySubnav": false,
@@ -916,7 +916,7 @@
     },
     {
       "width": 1440,
-      "route": "/studio/team/",
+      "route": "/studio/about/",
       "h1Count": 1,
       "stripCount": 1,
       "hasLegacySubnav": false,

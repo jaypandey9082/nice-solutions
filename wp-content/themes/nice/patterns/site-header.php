@@ -25,7 +25,7 @@ $nice_is_services = is_singular( 'nice_service' ) || is_page( 'services' );
 $nice_is_work     = is_singular( 'nice_case_study' ) || is_page( 'case-studies' );
 $nice_is_clients  = is_page( 'clients' );
 $nice_is_contact  = is_page( 'contact' );
-$nice_has_team    = false;
+$nice_is_about    = is_page( 'about' );
 
 $nice_division = 'global';
 if ( $nice_is_events ) {
@@ -34,19 +34,20 @@ if ( $nice_is_events ) {
 	$nice_services_url = esc_url( nice_theme_division_url( 'events', 'services/' ) );
 	$nice_contact_url  = esc_url( nice_theme_division_url( 'events', 'contact/' ) );
 	$nice_clients_url  = esc_url( nice_theme_division_url( 'events', 'clients/' ) );
-	$nice_has_team     = function_exists( 'nice_get_team_members_by_division' ) && ! empty( nice_get_team_members_by_division( 'events' ) );
+	$nice_about_url    = esc_url( nice_theme_division_url( 'events', 'about/' ) );
 } elseif ( $nice_is_studio ) {
 	$nice_division     = 'studio';
 	$nice_work_url     = esc_url( nice_theme_division_url( 'studio', 'case-studies/' ) );
 	$nice_services_url = esc_url( nice_theme_division_url( 'studio', 'services/' ) );
 	$nice_contact_url  = esc_url( nice_theme_division_url( 'studio', 'contact/' ) );
 	$nice_clients_url  = esc_url( nice_theme_division_url( 'studio', 'clients/' ) );
-	$nice_has_team     = function_exists( 'nice_get_team_members_by_division' ) && ! empty( nice_get_team_members_by_division( 'studio' ) );
+	$nice_about_url    = esc_url( nice_theme_division_url( 'studio', 'about/' ) );
 } else {
 	$nice_work_url     = esc_url( nice_theme_division_url( 'events', 'case-studies/' ) );
 	$nice_services_url = esc_url( nice_theme_division_url( 'events', 'services/' ) );
 	$nice_contact_url  = esc_url( nice_theme_division_url( 'events', 'contact/' ) );
 	$nice_clients_url  = esc_url( nice_theme_division_url( 'events', 'clients/' ) );
+	$nice_about_url    = esc_url( nice_theme_division_url( 'events', 'about/' ) );
 }
 ?>
 <!-- wp:html -->
@@ -61,7 +62,7 @@ if ( $nice_is_events ) {
 		 * The bar's own navigation, shown from 64rem up where the hamburger is
 		 * hidden. Deliberately shorter than the drawer: the logo already links
 		 * to the gateway, so a "NICE" link here would be the same destination
-		 * twice, and Team is omitted for the same reason it is omitted there.
+		 * twice.
 		 */
 		?>
 		<div class="nice-desktop-nav">
@@ -74,6 +75,7 @@ if ( $nice_is_events ) {
 				<a href="<?php echo $nice_services_url; ?>"<?php echo $nice_is_services ? ' aria-current="page"' : ''; ?>>Services</a>
 				<a href="<?php echo $nice_work_url; ?>"<?php echo $nice_is_work ? ' aria-current="page"' : ''; ?>>Work</a>
 				<a href="<?php echo $nice_clients_url; ?>"<?php echo $nice_is_clients ? ' aria-current="page"' : ''; ?>>Clients</a>
+				<a href="<?php echo $nice_about_url; ?>"<?php echo $nice_is_about ? ' aria-current="page"' : ''; ?>>About</a>
 			<?php else : ?>
 				<a href="<?php echo $nice_events_url; ?>">Events</a>
 				<a href="<?php echo $nice_studio_url; ?>">Studio</a>
@@ -128,6 +130,7 @@ if ( $nice_is_events ) {
 				<a href="<?php echo $nice_services_url; ?>">Services</a>
 				<a href="<?php echo $nice_work_url; ?>">Work</a>
 				<a href="<?php echo $nice_clients_url; ?>">Clients</a>
+				<a href="<?php echo $nice_about_url; ?>">About</a>
 				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
 			<?php elseif ( $nice_is_studio ) : ?>
 				<a href="<?php echo $nice_home_url; ?>">NICE</a>
@@ -135,6 +138,7 @@ if ( $nice_is_events ) {
 				<a href="<?php echo $nice_services_url; ?>">Services</a>
 				<a href="<?php echo $nice_work_url; ?>">Work</a>
 				<a href="<?php echo $nice_clients_url; ?>">Clients</a>
+				<a href="<?php echo $nice_about_url; ?>">About</a>
 				<a href="<?php echo $nice_contact_url; ?>">Contact</a>
 			<?php else : ?>
 				<a href="<?php echo $nice_events_url; ?>">Events</a>

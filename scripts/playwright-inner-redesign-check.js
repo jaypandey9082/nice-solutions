@@ -16,14 +16,14 @@ const routes = [
 	'/events/case-studies/',
 	'/events/case-studies/voltas-fam-tastic-fiesta/',
 	'/events/clients/',
-	'/events/team/',
+	'/events/about/',
 	'/events/contact/',
 	'/studio/services/',
 	'/studio/services/corporate-videos/',
 	'/studio/case-studies/',
 	'/studio/case-studies/strata-geosystems-factory-shoot/',
 	'/studio/clients/',
-	'/studio/team/',
+	'/studio/about/',
 	'/studio/contact/',
 ];
 /*

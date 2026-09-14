@@ -42,7 +42,7 @@ nice_fresh_assert( array() === nice_get_site_identity_problems(), 'The identity 
 nice_fresh_assert( array() === nice_get_site_identity_warnings(), 'Every sibling URL is configured.' );
 
 /* Section pages sit at the root, not under /events/. */
-foreach ( array( 'services', 'case-studies', 'clients', 'team', 'contact' ) as $slug ) {
+foreach ( array( 'services', 'case-studies', 'clients', 'about', 'contact' ) as $slug ) {
 	$page = get_page_by_path( $slug, OBJECT, 'page' );
 	nice_fresh_assert( $page instanceof WP_Post && 'publish' === $page->post_status, "The /{$slug}/ page exists at the root." );
 }

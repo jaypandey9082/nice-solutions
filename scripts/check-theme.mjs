@@ -31,6 +31,7 @@ const requiredFiles = [
 	'assets/css/philosophy.css',
 	'assets/css/studio-home.css',
 	'assets/css/studio.css',
+	'assets/css/about.css',
 	'assets/css/editor.css',
 	'assets/js/navigation.js',
 	'assets/js/motion.js',
@@ -59,12 +60,12 @@ const requiredFiles = [
 	'templates/page-studio-services.html',
 	'templates/page-studio-case-studies.html',
 	'templates/page-studio-clients.html',
-	'templates/page-studio-team.html',
+	'templates/page-studio-about.html',
 	'templates/page-studio-contact.html',
 	'templates/page-events-services.html',
 	'templates/page-events-case-studies.html',
 	'templates/page-events-clients.html',
-	'templates/page-events-team.html',
+	'templates/page-events-about.html',
 	'templates/page-events-contact.html',
 	'templates/single-nice_service.html',
 	'templates/single-nice_case_study.html',
@@ -160,6 +161,7 @@ const css = [
 	readFileSync(resolve(themeDirectory, 'assets/css/philosophy.css'), 'utf8'),
 	readFileSync(resolve(themeDirectory, 'assets/css/studio-home.css'), 'utf8'),
 	readFileSync(resolve(themeDirectory, 'assets/css/studio.css'), 'utf8'),
+	readFileSync(resolve(themeDirectory, 'assets/css/about.css'), 'utf8'),
 ].join('\n');
 const header = readFileSync(resolve(themeDirectory, 'patterns/site-header.php'), 'utf8');
 const footer = readFileSync(resolve(themeDirectory, 'patterns/site-footer.php'), 'utf8');
@@ -280,7 +282,7 @@ for (const block of [
 	'nice/events-case-studies-index',
 	'nice/events-case-study-detail',
 	'nice/events-clients-index',
-	'nice/events-team-index',
+	'nice/events-about-page',
 	'nice/events-contact-page',
 ]) {
 	if (!eventsPages.includes(`'${block}'`)) {
@@ -299,7 +301,7 @@ for (const block of [
 	'nice/studio-case-studies-index',
 	'nice/studio-case-study-detail',
 	'nice/studio-clients-index',
-	'nice/studio-team-index',
+	'nice/studio-about-page',
 	'nice/studio-contact-page',
 ]) {
 	if (!studioPages.includes(`'${block}'`)) {
@@ -327,8 +329,20 @@ if (!header.includes('assets/images/nice-logo.png')) {
 	fail('Global header must use the supplied NICE logo asset.');
 }
 
-if ([header, footer].some((markup) => /home_url\(\s*['"]\/team\/|nice_theme_division_url\(\s*['"]{2}\s*,\s*['"]team\//.test(markup))) {
-	fail('Team must remain division-specific and cannot be exposed as a global route.');
+/*
+ * Team moved under About, so the rule follows it: neither path may be published
+ * as a global route. A division link has to name its division, because on the
+ * combined site /about/ belongs to nobody and on a division install it would
+ * point at whichever division happened to answer.
+ */
+for (const route of ['team', 'about']) {
+	const globalRoute = new RegExp(
+		`home_url\\(\\s*['"]\\/${route}\\/|nice_theme_division_url\\(\\s*['"]{2}\\s*,\\s*['"]${route}\\/`
+	);
+
+	if ([header, footer].some((markup) => globalRoute.test(markup))) {
+		fail(`${route} must remain division-specific and cannot be exposed as a global route.`);
+	}
 }
 
 for (const destination of ["nice_theme_division_url( 'events' )", "nice_theme_division_url( 'studio' )"]) {

@@ -17,7 +17,7 @@ async (page) => {
     ["/events/services/", "Events services"],
     ["/events/case-studies/", "Case studies"],
     ["/events/clients/", "Clients"],
-    ["/events/team/", "Events team"],
+    ["/events/about/", "Events is where our heart is"],
     ["/events/contact/", "Let's make something NICE."],
   ];
   const routes = [...indexRoutes, ...serviceRoutes, ...caseStudyRoutes];
@@ -160,10 +160,22 @@ async (page) => {
       .filter((image) => image.complete && !image.naturalWidth).length,
   }));
 
-  await page.goto(origin + "/events/team/", { waitUntil: "networkidle" });
-  const team = await page.evaluate(() => ({
-    cardCount: document.querySelectorAll(".nice-events-team-member").length,
-    pending: document.querySelector(".nice-events-empty-state--feature")?.textContent.includes("Team details are being prepared"),
+  await page.goto(origin + "/events/about/", { waitUntil: "networkidle" });
+  const about = await page.evaluate(() => ({
+    /*
+     * The hero emits the three-word strip on every inner page. The manifesto is
+     * a separate section with its own class precisely so it does not add a
+     * second one, and this asserts that separation holds.
+     */
+    stripCount: document.querySelectorAll(".nice-philosophy-strip").length,
+    stepCount: document.querySelectorAll(".nice-philosophy-manifesto__step").length,
+    stepWords: [...document.querySelectorAll(".nice-philosophy-manifesto__step h3")].map((heading) => heading.textContent.trim()).join(","),
+    memberCount: document.querySelectorAll(".nice-team-member").length,
+    sampleCount: document.querySelectorAll(".nice-team-member--sample").length,
+    /* Sample icons are drawn chrome, so none of them may be a link. */
+    sampleLinkCount: document.querySelectorAll(".nice-team-member--sample a").length,
+    hasSampleNotice: Boolean(document.querySelector(".nice-team-directory__notice")),
+    hasOffice: Boolean(document.querySelector(".nice-about-connect .nice-office")),
   }));
 
   await page.goto(origin + "/events/contact/", { waitUntil: "networkidle" });
@@ -193,6 +205,17 @@ async (page) => {
     }), path);
     invalidRoutes.push({ ...result, status: response?.status() ?? 0 });
   }
+
+  /*
+   * Team became About rather than disappearing, so its old path has to land on
+   * the new page instead of 404ing. A bare /team/ is a different case and stays
+   * in the invalid list above: it was never a real route.
+   */
+  const retiredTeamResponse = await page.goto(origin + "/events/team/", { waitUntil: "networkidle" });
+  const retiredTeamPath = {
+    status: retiredTeamResponse?.status() ?? 0,
+    pathname: new URL(page.url()).pathname,
+  };
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(origin + "/events/services/exhibitions-conferences/", { waitUntil: "networkidle" });
@@ -234,8 +257,8 @@ async (page) => {
   const caseStudyImagesLoaded = await page.evaluate(() => [...document.images].every((image) => image.complete && image.naturalWidth > 0));
   await page.screenshot({ path: "output/playwright/nice-phase6-case-study-desktop.png", fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto(origin + "/events/team/", { waitUntil: "networkidle" });
-  await page.screenshot({ path: "output/playwright/nice-phase6-team-mobile.png", fullPage: true });
+  await page.goto(origin + "/events/about/", { waitUntil: "networkidle" });
+  await page.screenshot({ path: "output/playwright/nice-phase6-about-mobile.png", fullPage: true });
   await page.goto(origin + "/events/contact/", { waitUntil: "networkidle" });
   await page.screenshot({ path: "output/playwright/nice-phase6-contact-mobile.png", fullPage: true });
 
@@ -243,10 +266,10 @@ async (page) => {
   if (viewportResults.some((result) => result.status !== 200)) failures.push("approved route status");
   if (viewportResults.some((result) => result.title !== result.expectedTitle || result.h1Count !== 1)) failures.push("logical H1");
   if (viewportResults.some((result) => !result.hasMain || !result.hasFooter || !result.hasEventsNavigation)) failures.push("semantic landmarks");
-  // Exactly one nav item marks the current page. /events/team/ is the
-  // exception: its link stays hidden until the division publishes a member, so
-  // there is correctly nothing to mark.
-  if (viewportResults.some((result) => result.activeNavigationCount !== (result.path === "/events/team/" ? 0 : 1))) failures.push("Events navigation context");
+  // Exactly one nav item marks the current page, on every route. The old
+  // exception was /events/team/, which had no nav link to mark; About replaced
+  // it and is in the nav, so there is no longer anything to exempt.
+  if (viewportResults.some((result) => result.activeNavigationCount !== 1)) failures.push("Events navigation context");
   if (viewportResults.some((result) => result.hasHorizontalOverflow || !result.headingsFit)) failures.push("responsive overflow");
   if (viewportResults.some((result) => !result.imagesHaveDimensions || !result.imagesStayInBounds)) failures.push("responsive media");
   if (viewportResults.some((result) => result.cumulativeLayoutShift > 0.1)) failures.push("layout shift");
@@ -258,7 +281,12 @@ async (page) => {
   if (detailChecks.some((result) => result.title !== result.expectedTitle || result.canonical !== origin + result.path || !result.hasEditorContent || !result.hasRelatedContent)) failures.push("detail content");
   if (detailChecks.filter((result) => result.path.includes("/case-studies/")).some((result) => result.division !== "Events")) failures.push("Case Study division");
   if (clients.count !== 10 || clients.brokenLogoCount) failures.push("Client directory");
-  if (team.cardCount !== 0 || !team.pending) failures.push("Team empty state");
+  if (about.stripCount !== 1) failures.push("About philosophy strip count");
+  if (about.stepCount !== 3 || about.stepWords !== "Emagine,Explore,Execute") failures.push("About philosophy steps");
+  // No member is published, so the three sample cards stand in and none of them links anywhere.
+  if (about.memberCount !== 3 || about.sampleCount !== 3 || about.sampleLinkCount !== 0 || !about.hasSampleNotice) failures.push("About team samples");
+  if (!about.hasOffice) failures.push("About connect block");
+  if (retiredTeamPath.status !== 200 || retiredTeamPath.pathname !== "/events/about/") failures.push("retired team path redirect");
   // Contact is published, so actions render and the pending copy is gone. The
   // page must still never grow a form.
   if (contact.actionCount === 0 || contact.formCount !== 0 || contact.pending) failures.push("Contact publication state");
@@ -280,7 +308,8 @@ async (page) => {
     services,
     caseStudies,
     clients,
-    team,
+    about,
+    retiredTeamPath,
     contact,
     invalidRoutes,
     menuOpen,

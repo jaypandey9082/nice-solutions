@@ -86,10 +86,10 @@ and return `404` without redirecting to Events:
 - `/studio/case-studies/`
 - `/studio/case-studies/{case-study}/`
 - `/studio/clients/`
-- `/studio/team/`
+- `/studio/about/`
 - `/studio/contact/`
 
-No global `/team/` route is created. Studio Home exposes no live link to a future
+No global `/team/` or `/about/` route is created. Studio Home exposes no live link to a future
 route; service-detail destinations are represented as disabled editorial text.
 
 ## Media Boundary

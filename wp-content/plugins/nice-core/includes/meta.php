@@ -122,4 +122,21 @@ function nice_register_content_meta() {
 
 	nice_register_post_meta_field( 'nice_team_member', '_nice_role', 'string', 'sanitize_text_field', '' );
 	nice_register_post_meta_field( 'nice_team_member', '_nice_display_order', 'integer', 'nice_sanitize_integer', 0 );
+
+	/*
+	 * Per-person contact points shown on the About page.
+	 *
+	 * The address field is named _nice_public_email rather than _nice_email on
+	 * purpose. The company profile lists each director's personal work address,
+	 * and a field called "email" invites an editor to paste one in without
+	 * weighing that up. The name says out loud that whatever is stored here
+	 * gets published.
+	 *
+	 * The two profile URLs reuse the HTTPS-only sanitizer the company social
+	 * map already uses, so a person's links are held to the same standard as
+	 * the site-wide ones.
+	 */
+	nice_register_post_meta_field( 'nice_team_member', '_nice_linkedin_url', 'string', 'nice_sanitize_https_url', '' );
+	nice_register_post_meta_field( 'nice_team_member', '_nice_instagram_url', 'string', 'nice_sanitize_https_url', '' );
+	nice_register_post_meta_field( 'nice_team_member', '_nice_public_email', 'string', 'sanitize_email', '' );
 }

@@ -39,13 +39,15 @@ reference image is respected by later migration runs.
 /events/case-studies/
 /events/case-studies/{case-study}/
 /events/clients/
-/events/team/
+/events/about/
 /events/contact/
 ```
 
 The three Service and five current Case Study detail URLs are generated from
 their published NICE Core slugs. Unknown detail slugs, raw CPT paths, and the
-unapproved global `/team/` route return the shared NICE `404` template.
+unapproved global `/team/` and `/about/` routes return the shared NICE `404`
+template. `/events/team/` is the one exception: About replaced the Team page, so
+the retired path `301`s to `/events/about/`.
 
 ## Template Architecture
 
@@ -67,7 +69,9 @@ edits appear without editing a template. They add no frontend JavaScript.
   Division, display order, featured state, and optional project proof.
 - Clients: the single shared Client dataset, optional featured image/logo, and
   approved external URL.
-- Team: Events-filtered Team Members only.
+- About: the shared Emagine/Explore/Execute philosophy, an Events-specific
+  introduction, Events-filtered Team Members, and the company social profiles
+  and office address.
 - Contact: NICE Contact settings only; there is no form.
 
 Events Home also queries the current featured Case Studies and Clients. Existing

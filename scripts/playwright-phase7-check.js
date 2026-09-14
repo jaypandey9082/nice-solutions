@@ -13,9 +13,10 @@ async (page) => {
   const expectedProjectPaths = expectedProjects.map((slug) => `/studio/case-studies/${slug}/`);
   // Services now precedes Work in the consolidated division nav.
   /*
-   * NICE trimmed the drawer to the gateway plus this division's own five. The
+   * NICE trimmed the drawer to the gateway plus this division's own pages. The
    * cross-division link and the WhatsApp and email buttons were removed with it:
    * a division's channels now live on its contact page and its floating action.
+   * About joined the list when it replaced the unreachable Team page.
    */
   const expectedMenuPaths = [
     "/",
@@ -23,6 +24,7 @@ async (page) => {
     "/studio/services/",
     "/studio/case-studies/",
     "/studio/clients/",
+    "/studio/about/",
     "/studio/contact/",
   ];
   const expectedRoutes = [
@@ -32,7 +34,7 @@ async (page) => {
     "/studio/case-studies/",
     ...expectedProjectPaths,
     "/studio/clients/",
-    "/studio/team/",
+    "/studio/about/",
     "/studio/contact/",
   ];
   /* Kept in step with retiredMedia in playwright-inner-redesign-check.js. */
