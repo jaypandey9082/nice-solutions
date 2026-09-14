@@ -1264,7 +1264,7 @@
 
 	.nice-studio-inner-hero__content > p:last-child {
 		color: #d9d6cf;
-		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-family: var(--nice-font-body, sans-serif);
 		font-size: 1.125rem;
 		line-height: 1.45;
 		max-width: 38rem;
@@ -1310,7 +1310,7 @@
 
 	.nice-studio-service-row__content > p {
 		color: var(--nice-studio-muted);
-		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-family: var(--nice-font-body, sans-serif);
 		font-size: 1rem;
 		line-height: 1.55;
 		max-width: 36rem;
@@ -1333,7 +1333,7 @@
 
 	.nice-studio-editor-content {
 		color: var(--nice-studio-muted);
-		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-family: var(--nice-font-body, sans-serif);
 		font-size: 1.125rem;
 		line-height: 1.65;
 		max-width: 46rem;
@@ -1470,7 +1470,7 @@
 
 	.nice-studio-case-preview__body > p:not(.nice-eyebrow):not(.nice-studio-meta-line) {
 		color: var(--nice-studio-muted);
-		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-family: var(--nice-font-body, sans-serif);
 		font-size: 1rem;
 		line-height: 1.5;
 	}
@@ -1494,7 +1494,7 @@
 	}
 
 	.nice-studio-case-quote p {
-		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-family: var(--nice-font-body, sans-serif);
 		font-size: 2rem;
 		font-weight: 400;
 		letter-spacing: 0;
@@ -1554,7 +1554,7 @@
 	}
 
 	.nice-studio-project-proof h2 {
-		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-family: var(--nice-font-body, sans-serif);
 		font-size: 1.5rem;
 		font-weight: 400;
 		letter-spacing: 0;
@@ -1635,7 +1635,7 @@
 
 	.nice-studio-empty-state--feature p:last-child {
 		color: var(--nice-studio-muted);
-		font-family: var(--nice-font-body, Georgia, "Times New Roman", serif);
+		font-family: var(--nice-font-body, sans-serif);
 		font-size: 1rem;
 		line-height: 1.55;
 	}

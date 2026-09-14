@@ -16,7 +16,7 @@
 		--nice-events-media: #DAD5C8;
 		--nice-events-red: #EF233C;
 		--nice-events-display: "NICE Condensed", "Arial Narrow", Arial, sans-serif;
-		--nice-events-editorial: Georgia, "Times New Roman", serif;
+		--nice-events-editorial: "NICE Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 		--nice-events-label: "Helvetica Neue", Helvetica, Arial, sans-serif;
 		--nice-events-section-space: 4.5rem;
 	}

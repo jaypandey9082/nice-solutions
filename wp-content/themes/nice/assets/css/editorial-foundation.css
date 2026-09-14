@@ -1,5 +1,13 @@
 @font-face {
 	font-display: swap;
+	font-family: "NICE Sans";
+	font-style: normal;
+	font-weight: 400 600;
+	src: url("../fonts/open-sans-latin.woff2") format("woff2");
+}
+
+@font-face {
+	font-display: swap;
 	font-family: "NICE Condensed";
 	font-style: normal;
 	font-weight: 400 500;
@@ -17,7 +25,14 @@
 		--nice-surface-container-low: #F4F2ED;
 		--nice-red: #EF233C;
 		--nice-font-heading: "NICE Condensed", "Arial Narrow", Arial, sans-serif;
-		--nice-font-body: Georgia, "Times New Roman", serif;
+		/*
+		 * Open Sans, self-hosted, replacing the Georgia serif. Named the way the
+		 * heading face is, so the family names describe their role rather than
+		 * their supplier. Cabin was the alternative, but nothing was bundling it
+		 * and a named-but-absent family silently becomes the visitor's system
+		 * sans instead.
+		 */
+		--nice-font-body: "NICE Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 		--nice-font-label: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	}
 }
