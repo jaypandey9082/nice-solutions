@@ -107,4 +107,44 @@ if ( $nice_is_events ) {
 		</div>
 	</div>
 </footer>
+<?php
+/*
+ * The floating WhatsApp action.
+ *
+ * Rendered from the footer so it reaches every page without touching each
+ * template. It belongs to a division: the gateway publishes no number of its
+ * own and links out instead, so it never appears there. When a division has no
+ * approved WhatsApp channel nothing renders at all rather than a dead button.
+ */
+$nice_float_division = '';
+if ( $nice_is_events ) {
+	$nice_float_division = 'events';
+} elseif ( $nice_is_studio ) {
+	$nice_float_division = 'studio';
+}
+
+$nice_float_channels = $nice_float_division && function_exists( 'nice_theme_get_contact_channels' )
+	? nice_theme_get_contact_channels( $nice_float_division )
+	: array();
+
+if ( ! empty( $nice_float_channels['whatsapp_url'] ) ) :
+	$nice_float_label = sprintf(
+		/* translators: %s: division label. */
+		__( 'Message NICE %s on WhatsApp', 'nice' ),
+		ucfirst( $nice_float_division )
+	);
+	?>
+	<a
+		class="nice-whatsapp-float"
+		href="<?php echo esc_url( $nice_float_channels['whatsapp_url'] ); ?>"
+		rel="noopener"
+		target="_blank"
+		data-nice-whatsapp-float="<?php echo esc_attr( $nice_float_division ); ?>"
+	>
+		<?php nice_render_icon( 'whatsapp' ); ?>
+		<span class="nice-sr-only"><?php echo esc_html( $nice_float_label ); ?></span>
+	</a>
+	<?php
+endif;
+?>
 <!-- /wp:html -->

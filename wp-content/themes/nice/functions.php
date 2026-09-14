@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once get_theme_file_path( '/inc/setup.php' );
 require_once get_theme_file_path( '/inc/divisions.php' );
+require_once get_theme_file_path( '/inc/icons.php' );
 require_once get_theme_file_path( '/inc/contact.php' );
 require_once get_theme_file_path( '/inc/landing-data.php' );
 require_once get_theme_file_path( '/inc/gateway-projects.php' );

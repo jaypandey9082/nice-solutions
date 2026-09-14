@@ -69,6 +69,7 @@ function nice_get_stored_contact_settings() {
 				'social_urls' => array(),
 				'social'      => array(),
 				'divisions'   => array(),
+				'office'      => nice_get_office_defaults(),
 			)
 		)
 	);
@@ -86,9 +87,83 @@ function nice_get_stored_contact_settings() {
 		$settings['divisions'][ $division ] = wp_parse_args( $branch, $defaults );
 	}
 
+	$office = isset( $settings['office'] ) && is_array( $settings['office'] ) ? $settings['office'] : array();
+	$settings['office'] = wp_parse_args( $office, nice_get_office_defaults() );
+
 	$settings['social_urls'] = (array) $settings['social_urls'];
 
 	return $settings;
+}
+
+/**
+ * Return the office fields and their defaults.
+ *
+ * One office serves the whole company, so this sits beside the division
+ * branches rather than inside them: duplicating the same address under Events
+ * and Studio would invite the two copies to drift apart.
+ *
+ * @return array{address: string, map_url: string}
+ */
+function nice_get_office_defaults() {
+	return array(
+		'address' => '',
+		'map_url' => '',
+	);
+}
+
+/**
+ * Return the office address and a link that opens directions to it.
+ *
+ * A stored map URL wins, so NICE can point at their own Google Business listing
+ * and keep that listing's traffic. With none stored the link is derived from the
+ * address, which always resolves even if nobody ever fills the field in.
+ *
+ * @return array{address: string, address_lines: string[], map_url: string}
+ */
+function nice_get_office_details() {
+	$settings = nice_get_stored_contact_settings();
+	$office   = is_array( $settings['office'] ?? null ) ? $settings['office'] : nice_get_office_defaults();
+	$address  = trim( (string) ( $office['address'] ?? '' ) );
+	$map_url  = nice_sanitize_https_url( $office['map_url'] ?? '' );
+
+	if ( ! $map_url && $address ) {
+		$map_url = 'https://www.google.com/maps/dir/?api=1&destination=' . rawurlencode( preg_replace( '/\s+/', ' ', $address ) );
+	}
+
+	$lines = array_values( array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', $address ) ) ) );
+
+	return array(
+		'address'       => $address,
+		'address_lines' => $lines,
+		'map_url'       => $address ? $map_url : '',
+	);
+}
+
+/**
+ * Keep only a usable address and directions link.
+ *
+ * @param mixed $input    Submitted office branch.
+ * @param mixed $previous Previously approved office branch.
+ * @return array{address: string, map_url: string}
+ */
+function nice_sanitize_contact_office( $input, $previous ) {
+	$input    = is_array( $input ) ? $input : array();
+	$previous = is_array( $previous ) ? $previous : array();
+	$output   = nice_get_office_defaults();
+
+	$output['address'] = sanitize_textarea_field( (string) ( $input['address'] ?? '' ) );
+
+	$map_url = trim( (string) ( $input['map_url'] ?? '' ) );
+	if ( $map_url ) {
+		$output['map_url'] = nice_sanitize_https_url( $map_url );
+
+		if ( ! $output['map_url'] ) {
+			$output['map_url'] = nice_sanitize_https_url( $previous['map_url'] ?? '' );
+			add_settings_error( 'nice_contact_settings', 'nice_invalid_map_url', __( 'The directions link must be a valid HTTPS URL.', 'nice-core' ) );
+		}
+	}
+
+	return $output;
 }
 
 /**
@@ -431,6 +506,7 @@ function nice_sanitize_contact_settings( $input ) {
 	$output['social_urls'] = array();
 	$output['social']      = nice_sanitize_contact_social_map( $input['social'] ?? array(), $previous['social'] ?? array() );
 	$output['divisions']   = array();
+	$output['office']      = nice_sanitize_contact_office( $input['office'] ?? array(), $previous['office'] ?? array() );
 
 	foreach ( array_keys( nice_get_contact_division_labels() ) as $division ) {
 		$output['divisions'][ $division ] = nice_sanitize_contact_channel_set(
@@ -509,6 +585,27 @@ function nice_register_contact_settings() {
 			'nice-contact',
 			'nice_contact_channels',
 			array( 'key' => $key )
+		);
+	}
+
+	add_settings_section(
+		'nice_contact_office',
+		__( 'Office', 'nice-core' ),
+		'nice_render_contact_office_description',
+		'nice-contact'
+	);
+
+	foreach ( array(
+		'address' => __( 'Postal address', 'nice-core' ),
+		'map_url' => __( 'Directions link', 'nice-core' ),
+	) as $key => $label ) {
+		add_settings_field(
+			'nice_contact_office_' . $key,
+			$label,
+			'nice_render_contact_setting_field',
+			'nice-contact',
+			'nice_contact_office',
+			array( 'key' => $key, 'group' => 'office' )
 		);
 	}
 
@@ -617,7 +714,11 @@ function nice_render_contact_setting_field( $args ) {
 	$division = $args['division'] ?? '';
 	$group    = $args['group'] ?? '';
 
-	if ( 'social' === $group ) {
+	if ( 'office' === $group ) {
+		$value = $stored['office'][ $key ] ?? '';
+		$name  = 'nice_contact_settings[office][' . $key . ']';
+		$id    = 'nice-contact-office-' . $key;
+	} elseif ( 'social' === $group ) {
 		$value = $stored['social'][ $key ] ?? '';
 		$name  = 'nice_contact_settings[social][' . $key . ']';
 		$id    = 'nice-contact-social-' . $key;
@@ -629,6 +730,17 @@ function nice_render_contact_setting_field( $args ) {
 		$value = $stored[ $key ] ?? '';
 		$name  = 'nice_contact_settings[' . $key . ']';
 		$id    = 'nice-contact-' . $key;
+	}
+
+	if ( 'office' === $group && 'address' === $key ) {
+		printf(
+			'<textarea class="large-text" rows="4" id="%1$s" name="%2$s">%3$s</textarea><p class="description">%4$s</p>',
+			esc_attr( $id ),
+			esc_attr( $name ),
+			esc_textarea( (string) $value ),
+			esc_html__( 'One line per line of the address. It appears on the Events and Studio contact pages.', 'nice-core' )
+		);
+		return;
 	}
 
 	if ( 'social_urls' === $key ) {
@@ -655,6 +767,17 @@ function nice_render_contact_setting_field( $args ) {
 	if ( 'whatsapp_url' === $key ) {
 		echo '<p class="description">' . esc_html__( 'Leave blank to derive a wa.me link from the phone number. Deriving needs a country code, for example +91 9930900393.', 'nice-core' ) . '</p>';
 	}
+
+	if ( 'office' === $group && 'map_url' === $key ) {
+		echo '<p class="description">' . esc_html__( 'Leave blank to derive directions from the address. Paste the Google Business listing link here instead to send that traffic to the listing.', 'nice-core' ) . '</p>';
+	}
+}
+
+/**
+ * Describe the office section.
+ */
+function nice_render_contact_office_description() {
+	echo '<p>' . esc_html__( 'One address for the company, shown on both divisions\' contact pages.', 'nice-core' ) . '</p>';
 }
 
 /**
