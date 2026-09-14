@@ -30,8 +30,8 @@ npm run build:release
 
 Produces in `output/releases/`:
 
-- `nice-theme-0.8.0.zip`
-- `nice-core-1.3.0.zip`
+- `nice-theme-0.9.0.zip`
+- `nice-core-1.4.0.zip`
 - `SHA256SUMS.txt` — verify with `shasum -a 256 -c SHA256SUMS.txt`
 - `RELEASE-CHECKLIST.md`
 
@@ -56,8 +56,8 @@ Then, in wp-admin:
 2. **Settings → Permalinks**: choose **Post name** and save. Do this *before*
    setup. A fresh WordPress uses Plain permalinks, under which every NICE route
    404s; the setup screen warns if it finds them still set that way.
-3. **Plugins → Add New → Upload**: `nice-core-1.3.0.zip`, activate.
-4. **Appearance → Themes → Add New → Upload**: `nice-theme-0.8.0.zip`, activate.
+3. **Plugins → Add New → Upload**: `nice-core-1.4.0.zip`, activate.
+4. **Appearance → Themes → Add New → Upload**: `nice-theme-0.9.0.zip`, activate.
 5. **Tools → NICE Setup**. It shows the identity it resolved — confirm it says
    *NICE Events* before running. It refuses outright if the constant is missing
    or misspelled. Leave *set the generated home page as the front page* ticked.
@@ -105,6 +105,24 @@ define( 'NICE_STUDIO_SITE_URL', 'https://studios.nicesolutions.in' );
    published the home page simply carries no preview section.
 6. Remove Elementor, Pagelayer and the expired SoftWP components **only** after
    confirming nothing else uses them, and only with the rollback backup in hand.
+
+## Upgrading an installation that already ran an earlier release
+
+The division Team page became the About page in theme 0.9.0 / NICE Core 1.4.0.
+Setup carries the existing page over rather than creating a second one: the post
+keeps its ID, its revisions and anything an editor wrote, and only its slug,
+title and template change. `/events/team/` and `/studio/team/` then `301` to
+`/…/about/`.
+
+That rename only runs while there is no About page yet, so a rerun is safe. If
+an installation somehow ends up with both, the Team page is the leftover — check
+which one holds the real copy before deleting either.
+
+Confirm after Setup:
+
+- [ ] `/…/about/` returns 200 and shows the philosophy, then the team section.
+- [ ] `/…/team/` redirects to it rather than 404ing.
+- [ ] "About" appears in the navigation bar and the phone menu.
 
 ## After each launch
 

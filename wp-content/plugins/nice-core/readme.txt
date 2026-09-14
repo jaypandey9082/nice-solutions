@@ -3,7 +3,7 @@ Contributors: nicesolutions
 Tags: content, portfolio, services, clients, team
 Requires at least: 6.6
 Requires PHP: 8.2
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 
 NICE Solutions content types, taxonomies, metadata, contact settings, and query helpers.
@@ -215,6 +215,10 @@ misrepresent the team. Replace or delete them as real people are added; reruns
 skip any slug that already exists and never overwrite editor changes.
 
 == Changelog ==
+
+= 1.4.0 =
+* Replace each division's Team page with an About page, carrying the existing page over rather than orphaning it, and redirect the retired path.
+* Add LinkedIn, Instagram and publishable email fields to Team Members.
 
 = 1.3.0 =
 * Scope setup to the installation's declared identity, add Gateway Projects, and add Tools -> NICE Setup.
