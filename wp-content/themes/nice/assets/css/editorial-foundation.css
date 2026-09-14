@@ -41,15 +41,20 @@
 		border-color: var(--nice-subtle-border);
 	}
 
+	/*
+	 * The drawer links keep the body face at their normal weight and case. This
+	 * block used to re-apply the heading face, weight 500 and uppercase on every
+	 * context the drawer appears in, which is all of them.
+	 */
 	.home .nice-mobile-menu__links a,
 	.nice-is-studio-page .nice-mobile-menu__links a,
 	.nice-is-studio-context .nice-mobile-menu__links a,
 	.nice-is-events-page .nice-mobile-menu__links a,
 	.nice-is-events-context .nice-mobile-menu__links a {
-		font-family: var(--nice-font-heading);
-		font-weight: 500;
+		font-family: var(--nice-font-body);
+		font-weight: 400;
 		letter-spacing: 0;
-		text-transform: uppercase;
+		text-transform: none;
 	}
 
 	.home .nice-main,

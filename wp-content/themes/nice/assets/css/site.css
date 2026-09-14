@@ -508,9 +508,143 @@
 		width: 7.5rem;
 	}
 
+	/*
+	 * Below 64rem the bar is a logo and a hamburger, as before. From 64rem the
+	 * links come into the bar and the hamburger goes, so there is one way to
+	 * navigate at any given width rather than two.
+	 */
 	.nice-desktop-nav,
-	.nice-nav-cta {
+	.nice-nav-cta,
+	.nice-nav-connect {
 		display: none !important;
+	}
+
+	@media (min-width: 64rem) {
+		.nice-desktop-nav {
+			align-items: center;
+			display: flex !important;
+			gap: 1.75rem;
+			margin-inline: auto;
+		}
+
+		.nice-desktop-nav a {
+			color: var(--nice-black);
+			font-family: var(--nice-font-label);
+			font-size: 0.75rem;
+			font-weight: 600;
+			letter-spacing: 0.08em;
+			line-height: 1;
+			text-decoration: none;
+			text-transform: uppercase;
+			transition: color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
+			white-space: nowrap;
+		}
+
+		.nice-desktop-nav a:hover,
+		.nice-desktop-nav a:focus-visible {
+			color: var(--nice-red);
+		}
+
+		.nice-desktop-nav a[aria-current="page"] {
+			color: var(--nice-red);
+		}
+
+		.nice-nav-cta {
+			align-items: center;
+			background: var(--nice-black) !important;
+			border: 0 !important;
+			border-radius: 0.625rem !important;
+			color: var(--nice-canvas) !important;
+			display: inline-flex !important;
+			font-family: var(--nice-font-label);
+			font-size: 0.75rem;
+			font-weight: 600;
+			letter-spacing: 0.08em;
+			line-height: 1;
+			padding: 0.75rem 1.125rem !important;
+			text-decoration: none;
+			text-transform: uppercase;
+			transition: background-color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
+			white-space: nowrap;
+		}
+
+		.nice-nav-cta:hover,
+		.nice-nav-cta:focus-visible {
+			background: var(--nice-red) !important;
+		}
+
+		.nice-nav-connect {
+			display: block !important;
+			position: relative;
+		}
+
+		.nice-nav-connect__chevron {
+			border-bottom: 2px solid currentColor;
+			border-right: 2px solid currentColor;
+			display: inline-block;
+			height: 0.375rem;
+			margin-left: 0.5rem;
+			transform: translateY(-0.125rem) rotate(45deg);
+			transition: transform var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
+			width: 0.375rem;
+		}
+
+		[aria-expanded="true"] .nice-nav-connect__chevron {
+			transform: translateY(0.0625rem) rotate(-135deg);
+		}
+
+		/*
+		 * Hangs under the button, aligned to its right edge, in the same card
+		 * language as the bar and the drawer.
+		 */
+		.nice-nav-connect__menu {
+			background: var(--nice-canvas);
+			border: 1px solid var(--nice-subtle-border);
+			border-radius: 0.75rem;
+			box-shadow: 0 0.75rem 2rem color-mix(in srgb, var(--nice-black) 14%, transparent);
+			display: grid;
+			gap: 0.125rem;
+			min-width: 100%;
+			padding: 0.375rem;
+			position: absolute;
+			right: 0;
+			top: calc(100% + 0.625rem);
+			white-space: nowrap;
+			z-index: 130;
+		}
+
+		.nice-nav-connect__menu a {
+			align-items: center;
+			border-radius: 0.5rem;
+			color: var(--nice-black);
+			display: flex;
+			font-family: var(--nice-font-label);
+			font-size: 0.75rem;
+			font-weight: 600;
+			letter-spacing: 0.08em;
+			min-height: 2.75rem;
+			padding-inline: 0.875rem;
+			text-decoration: none;
+			text-transform: uppercase;
+			transition: background-color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
+		}
+
+		.nice-nav-connect__menu a:hover,
+		.nice-nav-connect__menu a:focus-visible {
+			background: var(--nice-surface-container);
+			color: var(--nice-red);
+		}
+
+		/*
+		 * The drawer is unnecessary once the links are in the bar.
+		 *
+		 * Scoped to the shell deliberately: .nice-menu-toggle carries
+		 * display: inline-flex !important further down this file, and an equally
+		 * specific rule placed earlier would lose to it on source order.
+		 */
+		.nice-nav-shell .nice-menu-toggle {
+			display: none !important;
+		}
 	}
 
 	/*
@@ -571,29 +705,31 @@
 		transform: translateY(0.35rem);
 	}
 
+	/*
+	 * A plain mark rather than a filled black disc. The disc was as heavy as the
+	 * logo and took a whole row at the top of the panel; the target stays 2.75rem
+	 * while only the ink changes.
+	 */
 	.nice-menu-close {
 		align-items: center;
 		appearance: none;
-		background: var(--nice-black);
+		background: transparent;
 		border: 0;
-		border-radius: 50%;
-		color: var(--nice-canvas);
+		border-radius: 0;
+		color: var(--nice-black);
 		cursor: pointer;
 		display: inline-flex;
 		height: 2.75rem;
 		justify-content: center;
 		padding: 0;
 		position: relative;
-		transition:
-			background-color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing),
-			transform var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
+		transition: color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
 		width: 2.75rem;
 	}
 
 	.nice-menu-close:hover,
 	.nice-menu-close:focus-visible {
-		background: var(--nice-red);
-		transform: scale(1.04);
+		color: var(--nice-red);
 	}
 
 	.nice-menu-close::before,
@@ -613,53 +749,93 @@
 		transform: rotate(-45deg);
 	}
 
+	/*
+	 * A panel that hangs below the nav bar and slides in from the right, rather
+	 * than a card that fades in over the middle of the page.
+	 *
+	 * The offset is a token so the panel and the bar cannot drift apart: the bar
+	 * is 51px tall under 20px of header padding, so the panel starts where the
+	 * bar ends. Anything that changes the bar's height changes this one value.
+	 */
+	/*
+	 * A card that hangs below the bar, matching it exactly: same inset from the
+	 * screen edges, same width, same corner radius. Measured against the
+	 * reference at 390px, where the bar and the panel are both 360 wide, inset
+	 * 15px, with a 15px radius. A full-bleed square panel under a floating
+	 * rounded bar reads as two unrelated objects.
+	 */
 	.nice-mobile-menu {
+		--nice-menu-offset: 4.4375rem;
+		--nice-menu-gap: 0.5rem;
+		/* Mirrors .nice-nav-shell's max-width so the two edges stay together. */
+		--nice-bar-max: 40rem;
+
 		background: var(--nice-canvas);
 		border: 1px solid var(--nice-subtle-border);
-		border-radius: 1.5rem;
-		box-shadow: 0 1.5rem 3rem color-mix(in srgb, var(--nice-black) 16%, transparent);
+		border-radius: 0.9375rem;
+		box-shadow: 0 1rem 3rem color-mix(in srgb, var(--nice-black) 14%, transparent);
 		box-sizing: border-box;
 		display: grid !important;
-		grid-template-rows: auto 1fr auto;
-		inset: 1.5rem;
+		grid-template-rows: auto auto auto;
 		margin-inline: auto;
-		max-height: calc(100dvh - 3rem);
-		max-width: 44rem;
-		opacity: 0;
+		max-height: calc(100dvh - var(--nice-menu-offset) - var(--nice-menu-gap) - 1rem);
+		max-width: 26rem;
 		overflow-y: auto;
-		padding: 1.5rem 2rem;
+		padding: 0.75rem 1.25rem 1.25rem;
 		pointer-events: none;
 		position: fixed;
-		transform: translateY(-0.75rem);
+		/*
+		 * Aligned to the bar's right edge, not the viewport's. The bar is centred
+		 * inside a max-width, so once the screen is wider than that the two edges
+		 * part company: at 768px the panel sat 48px past the end of the bar.
+		 */
+		right: max(1rem, calc((100% - var(--nice-bar-max)) / 2));
+		top: calc(var(--nice-menu-offset) + var(--nice-menu-gap));
+		transform: translateX(calc(100% + 1rem));
 		transition:
-			opacity var(--wp--custom--motion--duration-menu) var(--wp--custom--motion--easing),
 			transform var(--wp--custom--motion--duration-menu) var(--wp--custom--motion--easing),
 			visibility 0s linear var(--wp--custom--motion--duration-menu);
 		visibility: hidden;
+		width: calc(100% - 2rem);
 		z-index: 120;
 	}
 
-	@media (max-width: 47.9375rem) {
+	@media (min-width: 64rem) {
 		.nice-mobile-menu {
-			border-radius: 1rem;
-			inset: 0.75rem;
-			max-height: calc(100dvh - 1.5rem);
-			padding: 1.25rem;
+			--nice-bar-max: 40.375rem;
+
+			right: max(1.5rem, calc((100% - var(--nice-bar-max)) / 2));
+			width: calc(100% - 3rem);
 		}
 	}
 
 	.nice-mobile-menu[data-state="open"] {
-		opacity: 1;
 		pointer-events: auto;
-		transform: translateY(0);
+		transform: translateX(0);
 		transition-delay: 0s;
 		visibility: visible;
+	}
+
+	/* The close control is a mark in the corner, not a filled disc on its own row. */
+	.nice-mobile-menu__top {
+		margin-bottom: 0.25rem;
+	}
+
+	/*
+	 * The panel travels; with reduced motion it simply appears. Visibility still
+	 * carries the delay so the panel is not tabbable on the way out.
+	 */
+	@media (prefers-reduced-motion: reduce) {
+		.nice-mobile-menu {
+			transition: visibility 0s linear var(--wp--custom--motion--duration-menu);
+		}
 	}
 
 	.nice-mobile-menu__top {
 		align-items: center;
 		display: flex;
-		justify-content: space-between;
+		/* The close button is the only thing left in this row. */
+		justify-content: flex-end;
 	}
 
 	.nice-mobile-menu__links {
@@ -671,25 +847,25 @@
 		align-content: start;
 		display: grid;
 		gap: 0.125rem;
-		padding-block: 1rem;
+		padding-block: 0.25rem 1rem;
 	}
 
 	/*
-	 * Compact means less air, not smaller targets: the type and the row padding
-	 * come down, and min-height holds every row at 44px for a thumb.
+	 * Calm, not shouty: six items used to fill the screen in bold uppercase
+	 * with a rule under every row. Lighter and smaller reads better in a narrow
+	 * panel, and min-height still holds each row at 44px for a thumb.
 	 */
 	.nice-mobile-menu__links a {
 		align-items: center;
-		border-bottom: 1px solid var(--nice-subtle-border);
 		color: var(--nice-black);
 		display: flex;
-		font-family: var(--nice-font-heading);
-		font-size: clamp(1.5rem, 3.5vw, 2rem);
-		font-weight: 700;
+		font-family: var(--nice-font-body);
+		font-size: 1.1875rem;
+		font-weight: 400;
 		letter-spacing: 0;
-		line-height: 1.1;
+		line-height: 1.2;
 		min-height: 2.75rem;
-		padding-block: 0.4375rem;
+		padding-block: 0.375rem;
 		text-decoration: none;
 		transition: color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
 	}
@@ -706,7 +882,14 @@
 		padding-top: var(--wp--preset--spacing--md);
 	}
 
+	.nice-mobile-menu__actions {
+		display: grid;
+		gap: 0.5rem;
+	}
+
 	.nice-mobile-menu__actions .nice-button {
+		justify-content: center;
+		width: 100%;
 		border-radius: 0 !important;
 		font-family: var(--nice-font-label) !important;
 		font-size: 0.8125rem !important;
