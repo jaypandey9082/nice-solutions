@@ -23,10 +23,7 @@ $nice_studio_url          = esc_url( nice_theme_division_url( 'studio' ) );
 	<div class="nice-wide nice-doors-grid">
 		<!-- Section 02: Events -->
 		<article class="nice-door nice-door--events nice-pathway" id="events" data-nice-reveal>
-			<div class="nice-door__header">
-				<span class="nice-door__division">01 // Division</span>
-				<span class="nice-door__pip" aria-hidden="true"></span>
-			</div>
+			<h2 class="nice-door__title">Events</h2>
 			<div class="nice-door__media">
 				<img
 					src="<?php echo $nice_events_image_mobile; ?>"
@@ -40,7 +37,6 @@ $nice_studio_url          = esc_url( nice_theme_division_url( 'studio' ) );
 				>
 			</div>
 			<div class="nice-door__body">
-				<h2 class="nice-door__title">Events</h2>
 				<p class="nice-door__description">
 					Turnkey live staging, spatial architecture, and immense scale environments engineered for enduring collective memory.
 				</p>
@@ -55,10 +51,7 @@ $nice_studio_url          = esc_url( nice_theme_division_url( 'studio' ) );
 
 		<!-- Section 03: Studio -->
 		<article class="nice-door nice-door--studio nice-pathway" id="studio" data-nice-reveal>
-			<div class="nice-door__header">
-				<span class="nice-door__division">02 // Division</span>
-				<span class="nice-door__pip" aria-hidden="true"></span>
-			</div>
+			<h2 class="nice-door__title">Studio</h2>
 			<div class="nice-door__media">
 				<img
 					src="<?php echo $nice_studio_image_mobile; ?>"
@@ -72,7 +65,6 @@ $nice_studio_url          = esc_url( nice_theme_division_url( 'studio' ) );
 				>
 			</div>
 			<div class="nice-door__body">
-				<h2 class="nice-door__title">Studio</h2>
 				<p class="nice-door__description">
 					Cinematic films, digital craft, real-time virtual volumes, and moving images crafted with narrative precision.
 				</p>

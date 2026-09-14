@@ -25,6 +25,7 @@ if ( $nice_gateway_projects ) :
 		<div class="nice-gateway-projects__grid" data-nice-count="<?php echo esc_attr( (string) count( $nice_gateway_projects ) ); ?>">
 			<?php foreach ( $nice_gateway_projects as $nice_project ) : ?>
 				<article class="nice-gateway-project" data-nice-reveal>
+					<h3 class="nice-gateway-project__title"><?php echo esc_html( $nice_project['title'] ); ?></h3>
 					<?php if ( $nice_project['attachment_id'] && $nice_project['media_approved'] ) : ?>
 						<div class="nice-gateway-project__media">
 							<?php
@@ -41,10 +42,6 @@ if ( $nice_gateway_projects ) :
 							?>
 						</div>
 					<?php endif; ?>
-					<?php if ( $nice_project['division_label'] ) : ?>
-						<p class="nice-gateway-project__division"><?php echo esc_html( $nice_project['division_label'] ); ?></p>
-					<?php endif; ?>
-					<h3 class="nice-gateway-project__title"><?php echo esc_html( $nice_project['title'] ); ?></h3>
 					<?php if ( $nice_project['summary'] ) : ?>
 						<p class="nice-gateway-project__summary"><?php echo esc_html( $nice_project['summary'] ); ?></p>
 					<?php endif; ?>

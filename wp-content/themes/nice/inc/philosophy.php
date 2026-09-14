@@ -15,11 +15,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function nice_render_philosophy_strip() {
+	/*
+	 * The separators are drawn, not typed, and hidden from assistive technology:
+	 * a screen reader announced the old hyphens, so the strip read as "Emagine
+	 * hyphen Explore hyphen Execute". The words keep their real capitalisation
+	 * in the markup and are uppercased by CSS, so what is copied and what is
+	 * announced stays "Emagine", not "EMAGINE".
+	 */
 	return '<div class="nice-philosophy-strip"><p class="nice-philosophy-strip__text">'
-		. '<span class="nice-philosophy-strip__item">Emagine</span> '
-		. '<span class="nice-philosophy-strip__separator">-</span> '
-		. '<span class="nice-philosophy-strip__item">Explore</span> '
-		. '<span class="nice-philosophy-strip__separator">-</span> '
+		. '<span class="nice-philosophy-strip__item">Emagine</span>'
+		. '<span class="nice-philosophy-strip__separator" aria-hidden="true"></span>'
+		. '<span class="nice-philosophy-strip__item">Explore</span>'
+		. '<span class="nice-philosophy-strip__separator" aria-hidden="true"></span>'
 		. '<span class="nice-philosophy-strip__item">Execute</span>'
 		. '</p></div>';
 }

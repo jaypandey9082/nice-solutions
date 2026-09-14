@@ -17,17 +17,24 @@
 		font-family: var(--nice-font-label, Arial, sans-serif);
 		font-size: 0.875rem;
 		font-weight: 600;
-		letter-spacing: 0;
+		/* Uppercase needs air between the letters to stay readable. */
+		letter-spacing: 0.08em;
 		line-height: 1.5;
 		margin: 0;
 		overflow-wrap: anywhere;
 		text-align: center;
-		text-transform: none;
+		text-transform: uppercase;
 	}
 
+	/* A drawn dot, so its size holds steady whatever the font does with a bullet. */
 	.nice-philosophy-strip__separator {
-		color: #EF233C;
-		margin-inline: 0.375em;
+		background: #EF233C;
+		border-radius: 50%;
+		display: inline-block;
+		height: 0.3125rem;
+		margin-inline: 0.75em;
+		vertical-align: 0.15em;
+		width: 0.3125rem;
 	}
 
 	@media (min-width: 48rem) {
