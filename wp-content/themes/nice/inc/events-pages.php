@@ -701,7 +701,7 @@ function nice_render_events_contact_page() {
 				<header class="nice-events-inner-heading" data-nice-reveal><p class="nice-eyebrow">Contact NICE Events</p><h2 id="nice-events-contact-options-title">Choose a channel.</h2></header>
 				<div class="nice-events-contact-page__actions">
 					<?php foreach ( $actions as $action ) : ?>
-						<a href="<?php echo esc_url( $action['url'] ); ?>" data-nice-contact-channel="<?php echo esc_attr( strtolower( $action['label'] ) ); ?>"><?php nice_render_icon( $action['icon'] ?? '' ); ?><small><?php echo esc_html( $action['label'] ); ?></small><span><?php echo esc_html( $action['value'] ); ?></span><span aria-hidden="true">-&gt;</span></a>
+						<a href="<?php echo esc_url( $action['url'] ); ?>" data-nice-contact-channel="<?php echo esc_attr( strtolower( $action['label'] ) ); ?>"><?php nice_render_icon( $action['icon'] ?? '' ); ?><small><?php echo esc_html( $action['label'] ); ?></small><span class="nice-contact-row__value"><?php echo esc_html( $action['value'] ); ?></span></a>
 					<?php endforeach; ?>
 				</div>
 			<?php else : ?>

@@ -1075,7 +1075,8 @@
 		text-transform: uppercase;
 	}
 
-	.nice-studio-contact-page__actions span {
+	/* Narrowed to the value: this used to catch the trailing arrow too. */
+	.nice-studio-contact-page__actions .nice-contact-row__value {
 		font-weight: 600;
 	}
 
@@ -1644,12 +1645,36 @@
 		max-width: none;
 	}
 
+	/*
+	 * Icon and label on the first line, value beneath, matching Events. The base
+	 * rule is flex with space-between, where the trailing arrow was what pushed
+	 * the value to the right edge; with the arrow gone that distribution spread
+	 * the remaining three children across the row.
+	 */
 	.nice-studio-contact-page__actions a {
+		align-items: center;
 		background: transparent;
 		border: 0;
 		border-top: 1px solid var(--nice-studio-border);
-		gap: 1rem;
+		column-gap: 0.625rem;
+		display: grid;
+		grid-template-columns: auto 1fr;
 		padding: 1.5rem 0;
+		row-gap: 0.5rem;
+	}
+
+	.nice-studio-contact-page__actions small {
+		grid-column: 2;
+	}
+
+	.nice-studio-contact-page__actions .nice-contact-row__value {
+		font-family: var(--nice-font-heading);
+		font-size: 1.6rem;
+		font-weight: 500;
+		grid-column: 1 / -1;
+		line-height: 1.05;
+		overflow-wrap: anywhere;
+		text-transform: uppercase;
 	}
 
 	.nice-studio-contact-page__actions a:last-child {
