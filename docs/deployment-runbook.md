@@ -2,8 +2,11 @@
 
 One page per installation, in launch order: **Events, then Studio, then Main**.
 
-Nothing here requires shell access. Every step is a file upload, a wp-config
-edit, or a click in wp-admin.
+Nothing here requires shell access, but it is not all wp-admin either: the
+wp-config edit needs the hosting panel's File Manager, FTP or SSH, because
+WordPress has no editor for that file. Do it first on each site — **Tools → NICE
+Setup refuses to run without `NICE_SITE_DIVISION`**, by design, so that a
+misconfigured install cannot provision the wrong division's content.
 
 ## Before touching any of them
 
@@ -12,9 +15,24 @@ edit, or a click in wp-admin.
 2. **Back up files and database for all three**, at host level rather than
    through the expired Backuply licence, and **restore one of them somewhere** to
    prove the backup works. An untested backup is not a rollback plan.
-3. **Fix DNS and SSL** so all three hostnames load over HTTPS with no warning.
-   `events.nicesolutions.in` currently serves an invalid certificate and
-   `studios.nicesolutions.in` is not reliably reachable.
+3. **Re-issue the certificate to cover the subdomains.** Checked 15 Sep 2026:
+   DNS is fine — all three hostnames resolve to `103.133.215.103`, and both
+   subdomains already answer with `200`. The certificate is a valid Let's
+   Encrypt one, good until 20 Nov 2026, but its names are only:
+
+   ```
+   DNS:nicesolutions.in, DNS:www.nicesolutions.in
+   ```
+
+   So `events.` and `studios.` fail verification on a **name mismatch**, not an
+   expiry — which is why Chrome says "Not Secure" on a certificate that has not
+   run out. Re-run AutoSSL in the hosting panel with both subdomains included,
+   or issue a wildcard for `*.nicesolutions.in`. Confirm with:
+
+   ```bash
+   echo | openssl s_client -connect events.nicesolutions.in:443 \
+     -servername events.nicesolutions.in 2>/dev/null | openssl x509 -noout -ext subjectAltName
+   ```
 4. **Leave the Main Under Construction page up.** Main is launched last.
 
 Do not change the WordPress Address or Site Address. Events and Studio run
