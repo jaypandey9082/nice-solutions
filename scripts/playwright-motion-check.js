@@ -120,6 +120,18 @@ const assert = (ok, message) => {
 		await page.goto(`${base}/events/`, { waitUntil: "load" });
 
 		/*
+		 * Travel is cancelled on visibilitychange when the document is hidden --
+		 * deliberately, because a visitor who switched tabs is not still
+		 * travelling. A page Playwright has just created can be in the
+		 * background, so without this the suite occasionally measured that
+		 * cancellation and reported it as a jump: the hash moved, the scroll
+		 * never did. Roughly one run in ten, and nothing to do with the code
+		 * under test.
+		 */
+		await page.bringToFront();
+		await page.waitForFunction(() => document.visibilityState === "visible");
+
+		/*
 		 * The published design currently carries no visible in-page anchor — the
 		 * only one is the skip link, which is deliberately off-screen. The
 		 * behaviour still has to be correct for the moment one is added, so the
@@ -165,12 +177,35 @@ const assert = (ok, message) => {
 		if (!anchor) {
 			assert(false, "a same-page anchor exists to test");
 		} else {
-			const samples = [];
-			await page.evaluate(() => { window.__samples = []; const t = setInterval(() => window.__samples.push(window.scrollY), 60); setTimeout(() => clearInterval(t), 1200); });
-			/* Dispatched in the page: this exercises the delegated handler, not Playwright's scrolling. */
-			await page.evaluate(() => document.querySelector('[data-nice-motion-probe]').click());
-			await page.waitForTimeout(1100);
-			samples.push(...(await page.evaluate(() => window.__samples)));
+			/*
+			 * Sampling and the click happen in one evaluate, and the sampler
+			 * decides when to stop rather than a fixed wait deciding for it.
+			 * Split across two calls with a 1100ms timeout, a loaded machine
+			 * could start sampling after the 650ms travel had already finished
+			 * and report a jump that never happened -- this failed about one run
+			 * in five while the animation itself was working.
+			 */
+			const samples = await page.evaluate(() => new Promise((resolve) => {
+				const collected = [];
+				let settled = 0;
+
+				const tick = setInterval(() => {
+					collected.push(window.scrollY);
+
+					const count = collected.length;
+					const isStill = count > 1 && collected[count - 1] === collected[count - 2];
+					settled = isStill ? settled + 1 : 0;
+
+					/* Four still samples, or a two-second ceiling so a stuck page still reports. */
+					if ((settled >= 4 && count > 6) || count > 50) {
+						clearInterval(tick);
+						resolve(collected);
+					}
+				}, 40);
+
+				/* Dispatched in the page: this exercises the delegated handler, not Playwright's scrolling. */
+				document.querySelector('[data-nice-motion-probe]').click();
+			}));
 
 			const moved = samples.filter((v, i) => i && v !== samples[i - 1]).length;
 			assert(moved >= 3, `travel is animated rather than a jump (${moved} intermediate positions)`);

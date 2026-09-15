@@ -2,25 +2,30 @@
 /**
  * Which division this installation serves, and where the others live.
  *
- * The repository install is a single combined site: Events and Studio content
- * sits under the /events/ and /studio/ path prefixes. Production splits the same
- * code across three installations, where each division owns its own hostname and
- * its content sits at the root with no prefix at all.
+ * Two shapes, one codebase. Everything that builds or matches a division path
+ * reads from here, so they differ by configuration rather than by code.
  *
- * Everything that builds or matches a division path reads from here, so the two
- * shapes differ by configuration rather than by code.
+ * COMBINED -- one installation serves everything, with Events and Studio behind
+ * the /events/ and /studio/ path prefixes:
  *
- * Configure a division installation in wp-config.php:
+ *     define( 'NICE_SITE_DIVISION', 'combined' );
  *
- *     define( 'NICE_SITE_DIVISION', 'events' );
+ * That is all it needs. There are no siblings to point at, because there are no
+ * siblings: every link resolves to a path on this host.
  *
- * and tell it where its siblings live, so cross-site links resolve:
+ * SPLIT -- three installations, each owning a hostname, each division's content
+ * at its own root with no prefix:
+ *
+ *     define( 'NICE_SITE_DIVISION', 'events' );   // or 'studio', or 'main'
  *
  *     define( 'NICE_MAIN_SITE_URL', 'https://nicesolutions.in' );
  *     define( 'NICE_EVENTS_SITE_URL', 'https://events.nicesolutions.in' );
  *     define( 'NICE_STUDIO_SITE_URL', 'https://studios.nicesolutions.in' );
  *
- * With nothing defined the behaviour is the combined site, unchanged.
+ * Declaring nothing still yields the combined shape, which is what the local
+ * development site relies on. On a production host that silence is refused
+ * instead: an installation that has never been told what it is should not be
+ * guessed at, and 'combined' exists so the answer can be given explicitly.
  *
  * @package NiceCore
  */
@@ -45,13 +50,29 @@ function nice_get_division_slugs() {
 /**
  * Identities an installation may declare.
  *
+ * 'combined' serves every division from one installation behind path prefixes.
  * 'main' is the gateway: it publishes curated previews and links out, and owns
- * none of the division content itself.
+ * none of the division content itself. The other two each own one division.
  *
  * @return string[]
  */
 function nice_get_site_identities() {
-	return array( 'main', 'events', 'studio' );
+	return array( 'combined', 'main', 'events', 'studio' );
+}
+
+/**
+ * Report whether this installation serves every division from one database.
+ *
+ * True both for an explicit 'combined' and for an installation that has
+ * declared nothing, because the two behave identically -- they differ only in
+ * whether a production host will run setup for them.
+ *
+ * @return bool
+ */
+function nice_is_combined_site() {
+	$identity = nice_get_site_identity();
+
+	return '' === $identity || 'combined' === $identity;
 }
 
 /**
@@ -299,10 +320,11 @@ function nice_get_site_identity_label( $identity = null ) {
 	$identity = null === $identity ? nice_get_site_identity() : sanitize_key( (string) $identity );
 
 	$labels = array(
-		''       => __( 'Combined development site', 'nice-core' ),
-		'main'   => __( 'Main gateway', 'nice-core' ),
-		'events' => __( 'NICE Events', 'nice-core' ),
-		'studio' => __( 'NICE Studio', 'nice-core' ),
+		''         => __( 'Combined site (identity not declared)', 'nice-core' ),
+		'combined' => __( 'Combined site, Events and Studio under /events/ and /studio/', 'nice-core' ),
+		'main'     => __( 'Main gateway', 'nice-core' ),
+		'events'   => __( 'NICE Events', 'nice-core' ),
+		'studio'   => __( 'NICE Studio', 'nice-core' ),
 	);
 
 	return $labels[ $identity ] ?? __( 'Unrecognised', 'nice-core' );
@@ -352,8 +374,15 @@ function nice_get_site_identity_problems() {
 		return $problems;
 	}
 
+	/*
+	 * An undeclared identity is refused on production, but an explicit
+	 * 'combined' is not. The risk was never the combined shape itself -- it is
+	 * a supported way to run NICE -- but publishing both divisions from one
+	 * database by accident, because nobody had said what the installation was.
+	 * Saying so removes the accident.
+	 */
 	if ( '' === nice_get_site_identity() && nice_is_production_environment() ) {
-		$problems[] = __( 'NICE_SITE_DIVISION is not defined. Without it this installation runs as the combined development site and would publish every division from one database. Define it in wp-config.php as main, events, or studio.', 'nice-core' );
+		$problems[] = __( 'NICE_SITE_DIVISION is not defined, so this installation has not been told what it serves. Define it in wp-config.php: combined for one site serving Events and Studio under /events/ and /studio/, or main, events or studio for a separate installation per hostname.', 'nice-core' );
 	}
 
 	return $problems;
@@ -370,8 +399,12 @@ function nice_get_site_identity_problems() {
 function nice_get_site_identity_warnings() {
 	$warnings = array();
 
-	if ( '' === nice_get_site_identity() ) {
-		return $warnings;
+	/*
+	 * A combined site has no siblings, so a missing sibling URL is not a missing
+	 * setting. Its permalink check still runs below.
+	 */
+	if ( nice_is_combined_site() ) {
+		return nice_get_permalink_warnings();
 	}
 
 	$urls   = nice_get_division_site_urls();
@@ -395,16 +428,24 @@ function nice_get_site_identity_warnings() {
 		}
 	}
 
-	/*
-	 * A fresh WordPress uses plain permalinks, under which none of the content
-	 * routes can ever match. The site would come up looking installed and then
-	 * 404 every service, project and section page.
-	 */
-	if ( ! get_option( 'permalink_structure' ) ) {
-		$warnings[] = __( 'Permalinks are set to Plain. Every NICE route needs a pretty permalink structure: choose Post name under Settings > Permalinks and save, then run setup again.', 'nice-core' );
+	return array_merge( $warnings, nice_get_permalink_warnings() );
+}
+
+/**
+ * Warn when permalinks would stop every NICE route from matching.
+ *
+ * A fresh WordPress uses plain permalinks, under which none of the content
+ * routes can ever match. The site would come up looking installed and then 404
+ * every service, project and section page.
+ *
+ * @return string[]
+ */
+function nice_get_permalink_warnings() {
+	if ( get_option( 'permalink_structure' ) ) {
+		return array();
 	}
 
-	return $warnings;
+	return array( __( 'Permalinks are set to Plain. Every NICE route needs a pretty permalink structure: choose Post name under Settings > Permalinks and save, then run setup again.', 'nice-core' ) );
 }
 
 /**

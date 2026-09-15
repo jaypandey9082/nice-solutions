@@ -98,11 +98,14 @@ nice_identity_assert( 0 === $nice_services[''], 'Every manifest service resolves
 nice_identity_assert( 0 === $nice_cases[''], 'Every manifest case study resolves to a division.' );
 nice_identity_assert( $nice_services['events'] > 0 && $nice_services['studio'] > 0, 'Both divisions own services.' );
 
-/* ── The combined development site ───────────────────────────────────────── */
+/* ── The combined site, declared explicitly ──────────────────────────────── */
 
 nice_identity_as(
-	'',
+	'combined',
 	static function () {
+		nice_identity_assert( 'combined' === nice_get_site_identity(), 'Combined: the identity is declared.' );
+		nice_identity_assert( nice_is_combined_site(), 'Combined: reports as combined.' );
+		nice_identity_assert( array() === nice_get_site_identity_problems(), 'Combined: setup runs on a production host.' );
 		nice_identity_assert( '' === nice_get_site_division(), 'Combined: no single division.' );
 		nice_identity_assert( ! nice_is_gateway_site(), 'Combined: not the gateway.' );
 		nice_identity_assert( nice_division_is_local( 'events' ) && nice_division_is_local( 'studio' ), 'Combined: serves both divisions.' );
@@ -113,6 +116,28 @@ nice_identity_as(
 		);
 		nice_identity_assert( nice_site_owns_gateway_projects(), 'Combined: gateway previews are editable here.' );
 		nice_identity_assert( array( 'events', 'studio' ) === nice_get_local_division_slugs(), 'Combined: owns both divisions.' );
+	}
+);
+
+/* ── An undeclared identity: the same shape, refused on production ───────── */
+
+nice_identity_as(
+	'',
+	static function () {
+		nice_identity_assert( nice_is_combined_site(), 'Undeclared: behaves as the combined site.' );
+		nice_identity_assert( nice_division_is_local( 'events' ) && nice_division_is_local( 'studio' ), 'Undeclared: serves both divisions.' );
+		nice_identity_assert( 'events' === nice_get_division_prefix( 'events' ), 'Undeclared: Events keeps its path prefix.' );
+
+		/*
+		 * The one difference that matters, and the reason 'combined' exists: an
+		 * installation nobody has described is refused on a live host rather
+		 * than guessed at.
+		 */
+		add_filter( 'nice_is_production_environment', '__return_true', 99 );
+		$problems = nice_get_site_identity_problems();
+		remove_filter( 'nice_is_production_environment', '__return_true', 99 );
+
+		nice_identity_assert( array() !== $problems, 'Undeclared: still refused on a production host.' );
 	}
 );
 

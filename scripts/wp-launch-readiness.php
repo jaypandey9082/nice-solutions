@@ -78,9 +78,11 @@ nice_readiness_row(
 
 $nice_warnings = nice_get_site_identity_warnings();
 nice_readiness_row(
-	'Sibling site URLs',
+	nice_is_combined_site() ? 'Configuration' : 'Sibling site URLs',
 	! $nice_warnings,
-	$nice_warnings ? implode( ' ', $nice_warnings ) : 'All configured.'
+	$nice_warnings
+		? implode( ' ', $nice_warnings )
+		: ( nice_is_combined_site() ? 'Nothing outstanding. A combined site has no siblings to point at.' : 'All configured.' )
 );
 
 if ( nice_is_division_site() ) {

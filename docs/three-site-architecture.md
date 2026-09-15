@@ -1,39 +1,60 @@
-# NICE Three-Site Architecture
+# NICE Site Architecture
 
-The confirmed production platform consists of three independent WordPress
-installations:
+**The launch shape is one installation.** `nicesolutions.in` serves everything,
+with each division behind a path prefix:
 
-| Identity | Host | Content owner |
-| --- | --- | --- |
-| Main | `nicesolutions.in` | Gateway content and curated division previews |
-| Events | `events.nicesolutions.in` | Events services, projects, clients, people, and contact |
-| Studio | `studios.nicesolutions.in` | Studio services, projects, clients, people, and contact |
+| Path | Content |
+| --- | --- |
+| `nicesolutions.in/` | Landing page and curated division previews |
+| `nicesolutions.in/events/` | Events services, projects, clients, people, contact |
+| `nicesolutions.in/studio/` | Studio services, projects, clients, people, contact |
 
-The Studio brand remains **NICE Studio**. The hostname uses **studios**, plural.
+The Studio brand remains **NICE Studio**. Its path is **studio**, singular.
 
-## Development Reference
+This is the same shape `nice-solutions.local` has always run, which is why the
+development site is also the production reference rather than an approximation
+of it: one database, one certificate, one set of plugins to keep current.
 
-`nice-solutions.local` intentionally keeps the combined paths `/events/` and
-`/studio/`. It is the design, CMS, accessibility, and regression reference. Its
-path structure must not be treated as the final production canonical structure.
+## The split shape, still supported
+
+The codebase also supports three independent installations, one per hostname
+(`nicesolutions.in`, `events.nicesolutions.in`, `studios.nicesolutions.in`), and
+that shape is fully tested. It is not what is being launched. The subdomains stay
+in place untouched, and can later redirect to the paths above.
+
+Keeping both shapes costs one configuration constant, so nothing was removed when
+the launch plan changed.
 
 ## Configuring an Installation
 
 The codebase supports both shapes. NICE Core reads which division an
 installation serves from wp-config.php and derives every path from it:
 
+The combined site — what `nicesolutions.in` runs — needs one line:
+
 ```php
-define( 'NICE_SITE_DIVISION', 'main' );             // on the gateway
-define( 'NICE_SITE_DIVISION', 'events' );          // on the Events installation
+define( 'NICE_SITE_DIVISION', 'combined' );
+```
+
+No sibling URLs, because there are no siblings: every link is a path on this
+host.
+
+The split shape needs an identity per installation plus the three addresses, so
+cross-site links resolve:
+
+```php
+define( 'NICE_SITE_DIVISION', 'main' );    // or 'events', or 'studio'
 define( 'NICE_MAIN_SITE_URL', 'https://nicesolutions.in' );
 define( 'NICE_EVENTS_SITE_URL', 'https://events.nicesolutions.in' );
 define( 'NICE_STUDIO_SITE_URL', 'https://studios.nicesolutions.in' );
 ```
 
-Every production installation declares itself, including the gateway. Omitting the
-constant means the combined development site, which is why `nice-solutions.local`
-needs no configuration and stays the reference. Omitting it in production would
-publish both divisions from one database.
+**Every production installation declares itself.** Omitting the constant still
+yields the combined shape — which is why `nice-solutions.local` needs no
+configuration — but on a production or staging host Setup refuses to run until
+an identity is declared. The risk was never the combined shape itself; it was
+serving both divisions from one database because nobody had said that was the
+intention. `'combined'` is how that intention is stated.
 
 The gateway owns no division content: it registers no division routes, provisions
 no division pages, refuses `wp nice migrate-content`, and resolves Events and

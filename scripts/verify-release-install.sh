@@ -84,9 +84,15 @@ verify_identity() {
 	# likely to use. Activation must not create content before it knows the shape.
 	echo "==> Declaring the installation identity"
 	wp config set NICE_SITE_DIVISION "$identity" --quiet
-	wp config set NICE_MAIN_SITE_URL https://nicesolutions.in --quiet
-	wp config set NICE_EVENTS_SITE_URL https://events.nicesolutions.in --quiet
-	wp config set NICE_STUDIO_SITE_URL https://studios.nicesolutions.in --quiet
+
+	# A combined site has no siblings, so it is verified without any sibling URL
+	# configured. Setting them here would hide the case the production site
+	# actually runs: one hostname, every link a path on it.
+	if [ "$identity" != "combined" ]; then
+		wp config set NICE_MAIN_SITE_URL https://nicesolutions.in --quiet
+		wp config set NICE_EVENTS_SITE_URL https://events.nicesolutions.in --quiet
+		wp config set NICE_STUDIO_SITE_URL https://studios.nicesolutions.in --quiet
+	fi
 
 	# The runbook sets this before setup; a plain-permalink site routes nothing.
 	wp rewrite structure '/%postname%/' --quiet
@@ -136,10 +142,11 @@ theme_zip="$(ls "$project_root"/output/releases/nice-theme-*.zip | tail -1)"
 plugin_zip="$(ls "$project_root"/output/releases/nice-core-*.zip | tail -1)"
 [ -f "$theme_zip" ] && [ -f "$plugin_zip" ] || { echo "Run npm run build:release first." >&2; exit 1; }
 
+verify_identity combined wp-fresh-combined-assertions.php
 verify_identity events wp-fresh-install-assertions.php
 verify_identity main wp-fresh-gateway-assertions.php
 
 rm -rf "$wp_dir"
 
 echo
-echo "Verified $(basename "$theme_zip") and $(basename "$plugin_zip") on fresh Events and gateway installations."
+echo "Verified $(basename "$theme_zip") and $(basename "$plugin_zip") on fresh combined, Events and gateway installations."
