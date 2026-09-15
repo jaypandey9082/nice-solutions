@@ -249,12 +249,27 @@
 				return;
 			}
 
-			const elapsed = now - began;
+			/*
+			 * A frame is stamped with the moment it began, which can be a little
+			 * before the click that asked for this travel: a callback requested
+			 * while a frame is already under way still runs in that frame, at
+			 * that frame's time. Unclamped, the negative elapsed time runs the
+			 * curve backwards and the first frame moves the page the wrong way.
+			 */
+			const elapsed = Math.max(0, now - began);
 			const progress = Math.min(1, elapsed / ANCHOR_DURATION);
 			const position = Math.round(start + distance * easeOutQuint(progress));
 
 			window.scrollTo(0, position);
-			travel.last = position;
+
+			/*
+			 * Where the page actually went, not where it was asked to go. At the
+			 * top and the bottom the browser clamps the request, and a position
+			 * it never reached would read as the visitor taking over on the very
+			 * next frame — ending the travel after one frame, leaving the
+			 * fragment changed and the page still.
+			 */
+			travel.last = window.scrollY;
 
 			if (progress < 1) {
 				travel.frame = window.requestAnimationFrame(step);

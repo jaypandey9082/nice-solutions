@@ -123,10 +123,13 @@ const assert = (ok, message) => {
 		 * Travel is cancelled on visibilitychange when the document is hidden --
 		 * deliberately, because a visitor who switched tabs is not still
 		 * travelling. A page Playwright has just created can be in the
-		 * background, so without this the suite occasionally measured that
-		 * cancellation and reported it as a jump: the hash moved, the scroll
-		 * never did. Roughly one run in ten, and nothing to do with the code
-		 * under test.
+		 * background, so the travel is measured on a page known to be visible.
+		 *
+		 * This is not what caused the intermittent "0 intermediate positions"
+		 * failure this block used to report; that was a real bug in motion.js,
+		 * where a frame stamped just before the click ran the easing curve
+		 * backwards and the resulting clamped scroll ended the travel after one
+		 * frame. Fixed in assets/js/motion.js.
 		 */
 		await page.bringToFront();
 		await page.waitForFunction(() => document.visibilityState === "visible");
