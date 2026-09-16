@@ -40,7 +40,15 @@
 	.nice-events-home .nice-events-services { background: var(--nice-surface-container-low); }
 	.nice-events-home .nice-events-services__list { display: grid; gap: 0; }
 	.nice-events-home .nice-events-service { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; padding-block: 24px; border-top: 1px solid var(--nice-subtle-border); }
-	.nice-events-home .nice-events-service > p, .nice-events-home .nice-events-service > a { grid-column: 2; }
+	/*
+	 * The heading is placed explicitly, like the paragraph and the link beside
+	 * it. It used to rely on auto-placement landing it in column 2 because the
+	 * marker dot filled column 1 first -- so when the dot was hidden on small
+	 * screens the heading dropped into the 24px marker column instead and broke
+	 * into a vertical stack of single letters. Placement should not depend on a
+	 * decorative element being present.
+	 */
+	.nice-events-home .nice-events-service > h3, .nice-events-home .nice-events-service > p, .nice-events-home .nice-events-service > a { grid-column: 2; }
 	.nice-events-home .nice-events-service__index { padding-top: 6px; color: var(--nice-muted); }
 	.nice-events-home .nice-events-service p { color: var(--nice-muted); }
 	.nice-events-home .nice-events-work__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; align-items: start; }
@@ -84,7 +92,7 @@
 	}
 	@media (min-width: 1024px) {
 		.nice-events-home .nice-events-service { grid-template-columns: 32px minmax(0, 1fr) minmax(0, 1.3fr) auto; align-items: start; gap: 24px; }
-		.nice-events-home .nice-events-service > p, .nice-events-home .nice-events-service > a { grid-column: auto; }
+		.nice-events-home .nice-events-service > h3, .nice-events-home .nice-events-service > p, .nice-events-home .nice-events-service > a { grid-column: auto; }
 		.nice-events-home .nice-events-section-heading { grid-template-columns: 1fr 2fr auto; }
 		.nice-events-home .nice-events-section-heading > a { grid-column: auto; align-self: end; }
 	}
