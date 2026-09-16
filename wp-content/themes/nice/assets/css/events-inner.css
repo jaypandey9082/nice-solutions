@@ -183,6 +183,15 @@
 		/* Same guard as the hero: see the note there. */
 		font-size: min(var(--wp--preset--font-size--heading-3), 10vw) !important;
 		min-width: min-content;
+		/*
+		 * The backstop. site.css sets overflow-wrap: break-word on every heading,
+		 * which is right for body copy and wrong for a word set in display type:
+		 * when it does not fit it produces a vertical column of single letters
+		 * rather than anything a reader can parse. Turning it off means the worst
+		 * case is a heading that overruns its column -- visible, obviously wrong,
+		 * and diagnosable -- instead of one that quietly shatters.
+		 */
+		overflow-wrap: normal;
 		max-width: 18ch;
 		text-transform: uppercase;
 	}
@@ -760,30 +769,6 @@
 			font-size: 3.75rem;
 		}
 
-		.nice-events-service-row__content {
-			align-items: start;
-			gap: 2rem;
-			grid-template-columns: repeat(12, minmax(0, 1fr));
-		}
-
-		.nice-events-service-row__index {
-			grid-column: 1 / 2;
-		}
-
-		.nice-events-service-row__content h3 {
-			font-size: 3rem;
-			grid-column: 2 / 6;
-		}
-
-		.nice-events-service-row__content p {
-			grid-column: 6 / 10;
-		}
-
-		.nice-events-service-row__content .nice-link {
-			grid-column: 10 / 13;
-			margin-top: 0;
-		}
-
 		.nice-events-work-filter {
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
@@ -891,6 +876,55 @@
 		.nice-events-client:nth-child(3n) {
 			border-right: 0;
 			padding-right: 0;
+		}
+	}
+
+	/*
+	 * The four-part service row -- marker, title, description, link -- needs
+	 * real width, so it starts here rather than at 48rem. At 48rem the title's
+	 * four-column span is about 220px, and CORPORATE in the condensed face
+	 * needs 232px once a reader turns up Android's text scaling; overflow-wrap
+	 * then shattered it into a column of single letters. At 64rem the same span
+	 * is over 300px, which holds even at 200% scaling.
+	 *
+	 * Below this the row stacks, exactly as it does on a phone. Capping the font
+	 * size against the viewport could not have fixed this: at tablet width 10vw
+	 * is 82px while the track is 220px, so the constraint was never the viewport
+	 * -- it was the track.
+	 */
+	@media (min-width: 64rem) {
+		.nice-events-service-row__content {
+			align-items: start;
+			gap: 2rem;
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+		}
+
+		.nice-events-service-row__index {
+			grid-column: 1 / 2;
+		}
+
+		.nice-events-service-row__content h3 {
+			/*
+			 * !important because the base rule carries one, to beat theme.json's
+			 * unlayered element styles; without it this would lose and the heading
+			 * would stay at the mobile size on desktop.
+			 *
+			 * The vw term is sized to the track rather than the viewport: the title
+			 * spans four of twelve columns, so CORPORATE fits while the size stays
+			 * under about a fifteenth of the container. 5.5vw holds from 64rem up,
+			 * including at 200%% text scaling, and never binds at normal size.
+			 */
+			font-size: min(3rem, 5.5vw) !important;
+			grid-column: 2 / 6;
+		}
+
+		.nice-events-service-row__content p {
+			grid-column: 6 / 10;
+		}
+
+		.nice-events-service-row__content .nice-link {
+			grid-column: 10 / 13;
+			margin-top: 0;
 		}
 	}
 }

@@ -45,5 +45,5 @@
 	--wp--custom--motion--duration-page-out: 220ms;
 	--wp--custom--motion--duration-page-in: 360ms;
 	--wp--custom--motion--easing: cubic-bezier(0.22, 1, 0.36, 1);
-	--wp--custom--motion--scroll-ease: 0.1;
+	--wp--custom--motion--scroll-ease: 0.2;
 }

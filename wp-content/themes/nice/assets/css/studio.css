@@ -1328,6 +1328,8 @@
 		/* Same guard as the hero: see the note there. */
 		font-size: min(var(--wp--preset--font-size--heading-3), 10vw) !important;
 		min-width: min-content;
+		/* Never shatter a display word into single letters; see events-inner.css. */
+		overflow-wrap: normal;
 		font-weight: 500;
 		letter-spacing: 0;
 		line-height: 1;

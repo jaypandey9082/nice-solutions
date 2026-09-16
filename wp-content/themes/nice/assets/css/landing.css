@@ -380,7 +380,13 @@
 	@media (min-width: 48rem) {
 		.home .nice-footer-grid {
 			gap: 3rem;
-			grid-template-columns: 2fr 1fr 1fr 1fr;
+			/*
+			 * Reflows rather than insisting on four columns, for the same reason
+			 * as the shared footer in site.css: a fixed column count plus
+			 * rem-based gaps cannot shrink when a reader turns their text size
+			 * up, and the footer then forces the whole page to scroll sideways.
+			 */
+			grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
 		}
 	}
 

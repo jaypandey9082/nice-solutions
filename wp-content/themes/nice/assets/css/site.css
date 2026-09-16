@@ -1206,7 +1206,23 @@
 
 	@media (min-width: 48rem) {
 		.nice-footer-grid {
-			grid-template-columns: minmax(12rem, 1.2fr) repeat(3, minmax(8rem, 0.5fr));
+			/*
+			 * The track minimums are capped against the container as well as set
+			 * in rem, because rem scales with the reader's text size while the
+			 * viewport does not. At 200% text scaling the old minimums came to
+			 * 24rem + 3x16rem = 1152px of track the grid was not allowed to
+			 * shrink below, so the footer forced horizontal scroll on every page.
+			 *
+			 * Capping the minimums against the container was not enough on its
+			 * own, because the gaps are rem-based too and scale with the text.
+			 * auto-fit sidesteps the arithmetic entirely: it fits as many
+			 * columns as there is room for and folds to three, two or one as the
+			 * text grows, instead of insisting on four and overflowing.
+			 *
+			 * At normal text size there is room for all four, so the footer
+			 * looks exactly as it did.
+			 */
+			grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
 		}
 	}
 }
