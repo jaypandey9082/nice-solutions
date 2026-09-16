@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-09-16T16:22:50.419Z",
+  "timestamp": "2026-09-16T16:43:51.226Z",
   "routesTested": 17,
   "routes": {
     "landing": {
       "url": "http://nice-solutions.local/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 73,
-          "fcp": 80,
+          "loadTimeMs": 105,
+          "fcp": 100,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "64px",
@@ -20,8 +20,8 @@
           "screenshot": "output/playwright/after/landing-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 71,
-          "fcp": 72,
+          "loadTimeMs": 74,
+          "fcp": 80,
           "cls": 0.0005348059601951024,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "40px",
@@ -39,8 +39,8 @@
       "url": "http://nice-solutions.local/events/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 100,
-          "fcp": 112,
+          "loadTimeMs": 119,
+          "fcp": 132,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "80px",
@@ -53,7 +53,7 @@
           "screenshot": "output/playwright/after/events-home-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 103,
+          "loadTimeMs": 100,
           "fcp": 104,
           "cls": 0.000257009224687399,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
@@ -72,8 +72,8 @@
       "url": "http://nice-solutions.local/events/services/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 82,
-          "fcp": 84,
+          "loadTimeMs": 79,
+          "fcp": 88,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "48px",
@@ -86,7 +86,7 @@
           "screenshot": "output/playwright/after/events-services-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 76,
+          "loadTimeMs": 75,
           "fcp": 80,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
@@ -106,8 +106,8 @@
       "viewports": {
         "desktop-1440": {
           "loadTimeMs": 80,
-          "fcp": 80,
-          "cls": 0.0011784576039255402,
+          "fcp": 84,
+          "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "48px",
           "hasEditorialFont": true,
@@ -119,7 +119,7 @@
           "screenshot": "output/playwright/after/events-service-detail-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 83,
+          "loadTimeMs": 81,
           "fcp": 84,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
@@ -138,8 +138,8 @@
       "url": "http://nice-solutions.local/events/case-studies/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 81,
-          "fcp": 84,
+          "loadTimeMs": 82,
+          "fcp": 92,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "48px",
@@ -152,7 +152,7 @@
           "screenshot": "output/playwright/after/events-case-studies-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 77,
+          "loadTimeMs": 85,
           "fcp": 84,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
@@ -172,7 +172,7 @@
       "viewports": {
         "desktop-1440": {
           "loadTimeMs": 86,
-          "fcp": 88,
+          "fcp": 84,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "48px",
@@ -185,9 +185,9 @@
           "screenshot": "output/playwright/after/events-case-study-detail-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 78,
-          "fcp": 88,
-          "cls": 0,
+          "loadTimeMs": 128,
+          "fcp": 124,
+          "cls": 0.03994683985560833,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "46.8px",
           "hasEditorialFont": true,
@@ -204,9 +204,9 @@
       "url": "http://nice-solutions.local/events/clients/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 73,
-          "fcp": 72,
-          "cls": 0.001750791548112783,
+          "loadTimeMs": 81,
+          "fcp": 80,
+          "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "48px",
           "hasEditorialFont": true,
@@ -218,8 +218,8 @@
           "screenshot": "output/playwright/after/events-clients-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 79,
-          "fcp": 84,
+          "loadTimeMs": 80,
+          "fcp": 88,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "46.8px",
@@ -237,8 +237,8 @@
       "url": "http://nice-solutions.local/events/about/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 104,
-          "fcp": 108,
+          "loadTimeMs": 114,
+          "fcp": 116,
           "cls": 0.0009754774305555555,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "48px",
@@ -251,9 +251,9 @@
           "screenshot": "output/playwright/after/events-about-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 102,
-          "fcp": 104,
-          "cls": 0.014251964662743423,
+          "loadTimeMs": 100,
+          "fcp": 100,
+          "cls": 0.01430785472024438,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "46.8px",
           "hasEditorialFont": true,
@@ -270,8 +270,8 @@
       "url": "http://nice-solutions.local/events/contact/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 92,
-          "fcp": 96,
+          "loadTimeMs": 100,
+          "fcp": 108,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "48px",
@@ -284,8 +284,8 @@
           "screenshot": "output/playwright/after/events-contact-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 93,
-          "fcp": 96,
+          "loadTimeMs": 89,
+          "fcp": 92,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "46.8px",
@@ -303,8 +303,8 @@
       "url": "http://nice-solutions.local/studio/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 76,
-          "fcp": 80,
+          "loadTimeMs": 89,
+          "fcp": 92,
           "cls": 0.00006380529835390947,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "96px",
@@ -317,8 +317,8 @@
           "screenshot": "output/playwright/after/studio-home-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 85,
-          "fcp": 88,
+          "loadTimeMs": 89,
+          "fcp": 92,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "64px",
@@ -336,7 +336,7 @@
       "url": "http://nice-solutions.local/studio/services/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 74,
+          "loadTimeMs": 76,
           "fcp": 80,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
@@ -370,7 +370,7 @@
       "viewports": {
         "desktop-1440": {
           "loadTimeMs": 81,
-          "fcp": 84,
+          "fcp": 88,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "48px",
@@ -383,8 +383,8 @@
           "screenshot": "output/playwright/after/studio-service-detail-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 82,
-          "fcp": 84,
+          "loadTimeMs": 84,
+          "fcp": 88,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "46.8px",
@@ -402,9 +402,9 @@
       "url": "http://nice-solutions.local/studio/case-studies/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 70,
-          "fcp": 72,
-          "cls": 0.0014961673438303755,
+          "loadTimeMs": 82,
+          "fcp": 80,
+          "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "48px",
           "hasEditorialFont": true,
@@ -416,8 +416,8 @@
           "screenshot": "output/playwright/after/studio-case-studies-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 78,
-          "fcp": 76,
+          "loadTimeMs": 74,
+          "fcp": 84,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "46.8px",
@@ -435,8 +435,8 @@
       "url": "http://nice-solutions.local/studio/case-studies/strata-geosystems-factory-shoot/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 87,
-          "fcp": 88,
+          "loadTimeMs": 92,
+          "fcp": 96,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "48px",
@@ -449,7 +449,7 @@
           "screenshot": "output/playwright/after/studio-case-study-detail-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 76,
+          "loadTimeMs": 87,
           "fcp": 88,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
@@ -468,7 +468,7 @@
       "url": "http://nice-solutions.local/studio/clients/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 76,
+          "loadTimeMs": 79,
           "fcp": 80,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
@@ -482,8 +482,8 @@
           "screenshot": "output/playwright/after/studio-clients-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 74,
-          "fcp": 76,
+          "loadTimeMs": 79,
+          "fcp": 80,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "46.8px",
@@ -501,9 +501,9 @@
       "url": "http://nice-solutions.local/studio/about/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 90,
-          "fcp": 96,
-          "cls": 0.0016623906893004114,
+          "loadTimeMs": 96,
+          "fcp": 100,
+          "cls": 0.0007831790123456789,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "48px",
           "hasEditorialFont": true,
@@ -515,7 +515,7 @@
           "screenshot": "output/playwright/after/studio-about-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 84,
+          "loadTimeMs": 74,
           "fcp": 84,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
@@ -534,8 +534,8 @@
       "url": "http://nice-solutions.local/studio/contact/",
       "viewports": {
         "desktop-1440": {
-          "loadTimeMs": 73,
-          "fcp": 76,
+          "loadTimeMs": 77,
+          "fcp": 80,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "48px",
@@ -548,8 +548,8 @@
           "screenshot": "output/playwright/after/studio-contact-desktop-1440.png"
         },
         "mobile-390": {
-          "loadTimeMs": 74,
-          "fcp": 80,
+          "loadTimeMs": 67,
+          "fcp": 72,
           "cls": 0,
           "h1Font": "\"NICE Condensed\", \"Arial Narrow\", Arial, sans-serif",
           "h1FontSize": "46.8px",

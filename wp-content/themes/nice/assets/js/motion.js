@@ -53,17 +53,31 @@
 	 */
 	/*
 	 * The fraction of the remaining distance covered each frame. Lower is
-	 * heavier and slower to settle; higher approaches a native jump. Tunable
-	 * from theme.json without touching this file.
+	 * heavier and slower to settle; higher approaches a native jump; zero hands
+	 * the wheel back to the platform entirely. Tunable from theme.json without
+	 * touching this file.
 	 */
 	const SCROLL_EASE = (() => {
 		const value = Number.parseFloat(
 			getComputedStyle(root).getPropertyValue('--wp--custom--motion--scroll-ease')
 		);
 
-		return Number.isFinite(value) && value > 0 && value <= 1 ? value : 0.1;
+		return Number.isFinite(value) && value >= 0 && value <= 1 ? value : 0.1;
 	})();
-	const canSmoothWheel = window.matchMedia('(pointer: fine)').matches;
+
+	/*
+	 * Zero turns the wheel handling off: the page is never preventDefault()ed and
+	 * the platform scrolls it, which is what a phone has always had because
+	 * pointer: fine is false on touch.
+	 *
+	 * Measured on the Events home page, a burst of wheel ticks travelling the
+	 * same distance: easing at 0.2 reached first movement in 94ms and settled in
+	 * 642ms, against 49ms and 297ms without it. That lag is the whole of what the
+	 * layer added -- the distance was identical either way. A trackpad and a
+	 * modern browser already smooth a gesture; easing on top of that is a second
+	 * pass over something already done, and it reads as the page lagging the hand.
+	 */
+	const canSmoothWheel = SCROLL_EASE > 0 && window.matchMedia('(pointer: fine)').matches;
 
 	let wheelTarget = window.scrollY;
 	let wheelFrame = 0;

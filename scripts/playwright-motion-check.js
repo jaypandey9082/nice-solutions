@@ -30,22 +30,60 @@ const assert = (ok, message) => {
 		const scrollBehavior = await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior);
 		assert(scrollBehavior === "auto", `html scroll-behavior stays auto (is ${scrollBehavior})`);
 
-		/* A single wheel gesture should glide rather than jump. */
+		/*
+		 * Wheel easing is a setting, so this asserts whichever mode is
+		 * configured rather than one of them. theme.json's scroll-ease is the
+		 * switch: a fraction eases the wheel, zero hands it to the platform.
+		 * Either way the gesture has to land where it was aimed, and either way
+		 * the page must never be left unable to scroll.
+		 */
+		const ease = await page.evaluate(() => Number.parseFloat(
+			getComputedStyle(document.documentElement).getPropertyValue("--wp--custom--motion--scroll-ease")
+		) || 0);
+
 		await page.evaluate(() => { window.__s = []; const t = setInterval(() => window.__s.push(Math.round(window.scrollY)), 50); setTimeout(() => clearInterval(t), 1500); });
 		await page.mouse.move(700, 450);
 		await page.mouse.wheel(0, 600);
 		await page.waitForTimeout(1200);
 
 		const samples = [...new Set(await page.evaluate(() => window.__s))];
-		assert(samples.length >= 5, `a wheel gesture eases over several frames (${samples.length} positions)`);
-		assert(samples[0] < 300, `it starts moving immediately (first sample ${samples[0]})`);
 		const landed = samples[samples.length - 1];
-		assert(Math.abs(landed - 600) <= 40, `and lands where the gesture asked (${landed} of 600)`);
+		assert(Math.abs(landed - 600) <= 40, `a wheel gesture lands where it was aimed (${landed} of 600)`);
 
-		/* Deceleration, not a constant slide. */
-		const firstStep = samples[1] - samples[0];
-		const lastStep = samples[samples.length - 1] - samples[samples.length - 2];
-		assert(firstStep > lastStep, `it decelerates (${firstStep}px then ${lastStep}px per frame)`);
+		if (ease > 0) {
+			assert(samples.length >= 5, `it eases over several frames (${samples.length} positions)`);
+			assert(samples[0] < 300, `and starts moving immediately (first sample ${samples[0]})`);
+
+			/* Deceleration, not a constant slide. */
+			const firstStep = samples[1] - samples[0];
+			const lastStep = samples[samples.length - 1] - samples[samples.length - 2];
+			assert(firstStep > lastStep, `it decelerates (${firstStep}px then ${lastStep}px per frame)`);
+		} else {
+			/*
+			 * With easing off the wheel must not be touched at all: no
+			 * preventDefault, so the platform's own scrolling and its overscroll
+			 * behaviour are left intact.
+			 */
+			/*
+			 * The listener is armed first and read afterwards. Awaiting a promise
+			 * inside evaluate() would block until it resolved, which happens
+			 * before the wheel is ever dispatched -- the assertion would then
+			 * pass having observed nothing at all.
+			 */
+			await page.evaluate(() => {
+				window.__wheelSeen = null;
+				window.addEventListener("wheel", (event) => {
+					if (null === window.__wheelSeen) {
+						window.__wheelSeen = event.defaultPrevented;
+					}
+				}, { passive: true });
+			});
+			await page.mouse.wheel(0, 120);
+			await page.waitForTimeout(120);
+
+			const intercepted = await page.evaluate(() => window.__wheelSeen);
+			assert(intercepted === false, `the wheel reaches the page unprevented, so the platform scrolls it (defaultPrevented: ${intercepted})`);
+		}
 		await page.close();
 	}
 
