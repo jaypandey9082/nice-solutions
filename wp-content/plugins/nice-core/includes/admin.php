@@ -49,6 +49,15 @@ function nice_add_content_meta_boxes() {
 		'side',
 		'default'
 	);
+
+	add_meta_box(
+		'nice-case-study-gallery',
+		__( 'Project Gallery', 'nice-core' ),
+		'nice_render_case_study_gallery_meta_box',
+		'nice_case_study',
+		'normal',
+		'default'
+	);
 	add_meta_box(
 		'nice-client-details',
 		__( 'Client Details', 'nice-core' ),
@@ -225,6 +234,54 @@ function nice_render_studio_hero_meta_box( $post, $division = 'studio' ) {
 	<p class="description"><?php esc_html_e( 'Reference imagery is identified on the public page and must not be presented as evidence of a NICE project.', 'nice-core' ); ?></p>
 	<?php
 }
+
+/**
+ * Load the gallery picker on the Case Study editor.
+ *
+ * @param string $hook_suffix Current admin screen hook.
+ */
+function nice_enqueue_case_study_gallery_assets( $hook_suffix ) {
+	if ( ! in_array( $hook_suffix, array( 'post.php', 'post-new.php' ), true ) ) {
+		return;
+	}
+
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+
+	if ( ! $screen || 'nice_case_study' !== $screen->post_type ) {
+		return;
+	}
+
+	wp_enqueue_media();
+	wp_enqueue_style(
+		'nice-core-case-study-gallery',
+		plugins_url( 'assets/admin-case-study-gallery.css', NICE_CORE_FILE ),
+		array(),
+		NICE_CORE_VERSION
+	);
+	wp_enqueue_script(
+		'nice-core-case-study-gallery',
+		plugins_url( 'assets/admin-case-study-gallery.js', NICE_CORE_FILE ),
+		array( 'media-editor' ),
+		NICE_CORE_VERSION,
+		true
+	);
+	wp_localize_script(
+		'nice-core-case-study-gallery',
+		'niceGalleryStrings',
+		array(
+			'frameTitle'  => __( 'Add images to this project', 'nice-core' ),
+			'frameButton' => __( 'Add to gallery', 'nice-core' ),
+			'altSet'      => __( 'Alt text set', 'nice-core' ),
+			'altMissing'  => __( 'No alt text', 'nice-core' ),
+			'moveEarlier' => __( 'Move earlier', 'nice-core' ),
+			'moveLater'   => __( 'Move later', 'nice-core' ),
+			'remove'      => __( 'Remove image', 'nice-core' ),
+			/* translators: 1: images chosen, 2: maximum allowed. */
+			'count'       => __( '%1$d of %2$d', 'nice-core' ),
+		)
+	);
+}
+add_action( 'admin_enqueue_scripts', 'nice_enqueue_case_study_gallery_assets' );
 
 /**
  * Load shared native media controls on the Studio and Events home editors.
@@ -442,6 +499,69 @@ function nice_render_case_study_source_meta_box( $post ) {
 }
 
 /**
+ * Render the Case Study gallery picker.
+ *
+ * The ids travel in one hidden field as a comma-separated list. A list of
+ * inputs named gallery[] would post in DOM order, which is fine until an editor
+ * reorders and the browser disagrees about what that order was; one field means
+ * the order that was on screen is the order that arrives.
+ *
+ * @param WP_Post $post Current Case Study.
+ */
+function nice_render_case_study_gallery_meta_box( $post ) {
+	nice_render_content_meta_nonce();
+
+	$ids      = nice_sanitize_gallery_ids( get_post_meta( $post->ID, '_nice_gallery_ids', true ) );
+	$approved = rest_sanitize_boolean( get_post_meta( $post->ID, '_nice_media_approved', true ) );
+	?>
+	<p class="description">
+		<?php
+		printf(
+			/* translators: %d: maximum number of images. */
+			esc_html__( 'Up to %d images, shown on the project page in the order below. Alt text comes from the Media Library, so set it there.', 'nice-core' ),
+			(int) NICE_GALLERY_MAX
+		);
+		?>
+	</p>
+
+	<?php if ( ! $approved ) : ?>
+		<p class="notice notice-warning inline" style="padding:8px 12px;">
+			<?php esc_html_e( 'These images stay hidden until "Media cleared for publication" is ticked, in the Source and Approval panel. That one tick governs the hero image and the gallery together.', 'nice-core' ); ?>
+		</p>
+	<?php endif; ?>
+
+	<div class="nice-gallery-control" data-nice-gallery data-max="<?php echo esc_attr( (int) NICE_GALLERY_MAX ); ?>">
+		<input type="hidden" name="nice_gallery_ids" value="<?php echo esc_attr( implode( ',', $ids ) ); ?>" data-nice-gallery-value>
+
+		<ul class="nice-gallery-items" data-nice-gallery-list>
+			<?php foreach ( $ids as $id ) : ?>
+				<li class="nice-gallery-item" data-nice-gallery-item data-id="<?php echo esc_attr( $id ); ?>">
+					<?php echo wp_get_attachment_image( $id, 'thumbnail' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Core markup. ?>
+					<span class="nice-gallery-item__alt <?php echo get_post_meta( $id, '_wp_attachment_image_alt', true ) ? 'is-set' : 'is-missing'; ?>">
+						<?php echo get_post_meta( $id, '_wp_attachment_image_alt', true ) ? esc_html__( 'Alt text set', 'nice-core' ) : esc_html__( 'No alt text', 'nice-core' ); ?>
+					</span>
+					<span class="nice-gallery-item__controls">
+						<button type="button" class="button-link" data-nice-gallery-move="-1" aria-label="<?php esc_attr_e( 'Move earlier', 'nice-core' ); ?>">&larr;</button>
+						<button type="button" class="button-link" data-nice-gallery-move="1" aria-label="<?php esc_attr_e( 'Move later', 'nice-core' ); ?>">&rarr;</button>
+						<button type="button" class="button-link button-link-delete" data-nice-gallery-remove aria-label="<?php esc_attr_e( 'Remove image', 'nice-core' ); ?>">&times;</button>
+					</span>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+
+		<p class="nice-gallery-empty" data-nice-gallery-empty <?php echo $ids ? 'hidden' : ''; ?>>
+			<?php esc_html_e( 'No images yet.', 'nice-core' ); ?>
+		</p>
+
+		<p>
+			<button type="button" class="button" data-nice-gallery-add><?php esc_html_e( 'Add images', 'nice-core' ); ?></button>
+			<span class="nice-gallery-count" data-nice-gallery-count></span>
+		</p>
+	</div>
+	<?php
+}
+
+/**
  * Render Client fields.
  *
  * @param WP_Post $post Current Client.
@@ -651,6 +771,14 @@ function nice_save_content_meta( $post_id, $post ) {
 		update_post_meta( $post_id, '_nice_media_approved', empty( $_POST['nice_media_approved'] ) ? 0 : 1 );
 		update_post_meta( $post_id, '_nice_featured', empty( $_POST['nice_featured'] ) ? 0 : 1 );
 		update_post_meta( $post_id, '_nice_display_order', nice_sanitize_integer( wp_unslash( $_POST['nice_display_order'] ?? 0 ) ) );
+		/*
+		 * isset rather than empty: an editor removing the last image posts an
+		 * empty string, which has to clear the gallery rather than be read as
+		 * "no field submitted" and leave the old ids in place.
+		 */
+		if ( isset( $_POST['nice_gallery_ids'] ) ) {
+			update_post_meta( $post_id, '_nice_gallery_ids', nice_sanitize_gallery_ids( wp_unslash( $_POST['nice_gallery_ids'] ) ) );
+		}
 	}
 
 	if ( 'nice_client' === $post->post_type ) {

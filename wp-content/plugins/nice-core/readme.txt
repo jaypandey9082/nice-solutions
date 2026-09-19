@@ -3,7 +3,7 @@ Contributors: nicesolutions
 Tags: content, portfolio, services, clients, team
 Requires at least: 6.6
 Requires PHP: 8.2
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 License: GPLv2 or later
 
 NICE Solutions content types, taxonomies, metadata, contact settings, and query helpers.
@@ -215,6 +215,9 @@ misrepresent the team. Replace or delete them as real people are added; reruns
 skip any slug that already exists and never overwrite editor changes.
 
 == Changelog ==
+
+= 1.6.0 =
+* Add a project gallery to Case Studies: up to ten images, ordered by the editor, behind the existing media approval tick.
 
 = 1.5.0 =
 * Add an explicit 'combined' identity so one installation can serve Events and Studio under /events/ and /studio/ on a production host.

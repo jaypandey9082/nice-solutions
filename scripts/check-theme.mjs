@@ -32,6 +32,7 @@ const requiredFiles = [
 	'assets/css/studio-home.css',
 	'assets/css/studio.css',
 	'assets/css/about.css',
+	'assets/css/gallery.css',
 	'assets/css/editor.css',
 	'assets/js/navigation.js',
 	'assets/js/motion.js',
@@ -162,6 +163,7 @@ const css = [
 	readFileSync(resolve(themeDirectory, 'assets/css/studio-home.css'), 'utf8'),
 	readFileSync(resolve(themeDirectory, 'assets/css/studio.css'), 'utf8'),
 	readFileSync(resolve(themeDirectory, 'assets/css/about.css'), 'utf8'),
+	readFileSync(resolve(themeDirectory, 'assets/css/gallery.css'), 'utf8'),
 ].join('\n');
 const header = readFileSync(resolve(themeDirectory, 'patterns/site-header.php'), 'utf8');
 const footer = readFileSync(resolve(themeDirectory, 'patterns/site-footer.php'), 'utf8');

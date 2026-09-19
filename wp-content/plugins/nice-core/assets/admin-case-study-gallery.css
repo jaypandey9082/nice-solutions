@@ -1,0 +1,58 @@
+.nice-gallery-items {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	list-style: none;
+	margin: 12px 0;
+	padding: 0;
+}
+
+.nice-gallery-item {
+	border: 1px solid #c3c4c7;
+	display: grid;
+	gap: 4px;
+	justify-items: center;
+	margin: 0;
+	padding: 8px;
+	width: 150px;
+}
+
+.nice-gallery-item img {
+	display: block;
+	height: 120px;
+	object-fit: cover;
+	width: 100%;
+}
+
+.nice-gallery-item__alt {
+	font-size: 11px;
+	line-height: 1.4;
+	text-align: center;
+}
+
+/* Missing alt text is a publication problem, so it is coloured like one. */
+.nice-gallery-item__alt.is-missing {
+	color: #b32d2e;
+	font-weight: 600;
+}
+
+.nice-gallery-item__alt.is-set {
+	color: #50575e;
+}
+
+.nice-gallery-item__controls {
+	display: flex;
+	gap: 10px;
+}
+
+.nice-gallery-item__controls button {
+	cursor: pointer;
+	font-size: 16px;
+	line-height: 1;
+	text-decoration: none;
+}
+
+.nice-gallery-count {
+	color: #50575e;
+	margin-left: 10px;
+}

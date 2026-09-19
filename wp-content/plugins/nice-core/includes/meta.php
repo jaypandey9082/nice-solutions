@@ -19,17 +19,27 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param mixed    $default   Default value.
  * @param callable $authorize    Authorization callback.
  * @param bool     $show_in_rest Whether the field is exposed through REST.
+ * @param array|null $items    Item schema, for an array field.
  */
-function nice_register_post_meta_field( $post_type, $meta_key, $type, $sanitize, $default, $authorize = 'nice_authorize_post_meta', $show_in_rest = true ) {
+function nice_register_post_meta_field( $post_type, $meta_key, $type, $sanitize, $default, $authorize = 'nice_authorize_post_meta', $show_in_rest = true, $items = null ) {
 	$rest_schema = false;
 
 	if ( $show_in_rest ) {
-		$rest_schema = array(
-			'schema' => array(
-				'type'    => $type,
-				'default' => $default,
-			),
+		$schema = array(
+			'type'    => $type,
+			'default' => $default,
 		);
+
+		/*
+		 * An array has to describe what it holds or REST rejects the field. Only
+		 * the array case needs this, so it stays optional rather than becoming a
+		 * parameter every scalar registration has to pass.
+		 */
+		if ( 'array' === $type && $items ) {
+			$schema['items'] = $items;
+		}
+
+		$rest_schema = array( 'schema' => $schema );
 	}
 
 	register_post_meta(
@@ -44,6 +54,51 @@ function nice_register_post_meta_field( $post_type, $meta_key, $type, $sanitize,
 			'show_in_rest'      => $rest_schema,
 		)
 	);
+}
+
+/**
+ * Keep a gallery to real images, in the editor's order, within the cap.
+ *
+ * Every id is checked against the media library rather than trusted: an id that
+ * no longer resolves to an image is a deleted attachment or a guess, and either
+ * way it would render as a broken frame on a published page.
+ *
+ * Order is the editor's and is preserved. Duplicates are dropped, because the
+ * same photograph twice in one gallery is a mistake every time.
+ *
+ * @param mixed $value Candidate attachment ids.
+ * @return int[]
+ */
+function nice_sanitize_gallery_ids( $value ) {
+	if ( is_string( $value ) ) {
+		$value = explode( ',', $value );
+	}
+
+	if ( ! is_array( $value ) ) {
+		return array();
+	}
+
+	$ids = array();
+
+	foreach ( $value as $candidate ) {
+		$id = absint( $candidate );
+
+		if ( ! $id || in_array( $id, $ids, true ) ) {
+			continue;
+		}
+
+		if ( 'attachment' !== get_post_type( $id ) || ! wp_attachment_is_image( $id ) ) {
+			continue;
+		}
+
+		$ids[] = $id;
+
+		if ( count( $ids ) >= NICE_GALLERY_MAX ) {
+			break;
+		}
+	}
+
+	return $ids;
 }
 
 /**
@@ -115,6 +170,22 @@ function nice_register_content_meta() {
 	 * cleared, so approving the copy must never publish the picture with it.
 	 */
 	nice_register_post_meta_field( 'nice_case_study', '_nice_media_approved', 'boolean', 'rest_sanitize_boolean', false, 'nice_authorize_case_study_source_meta', false );
+
+	/*
+	 * The gallery shares the hero image's approval gate rather than carrying its
+	 * own. One tick governs every photograph on the record, so there is no state
+	 * where a hero is cleared and the gallery beneath it is not.
+	 */
+	nice_register_post_meta_field(
+		'nice_case_study',
+		'_nice_gallery_ids',
+		'array',
+		'nice_sanitize_gallery_ids',
+		array(),
+		'nice_authorize_post_meta',
+		true,
+		array( 'type' => 'integer' )
+	);
 
 	nice_register_post_meta_field( 'nice_client', '_nice_client_url', 'string', 'nice_sanitize_https_url', '' );
 	nice_register_post_meta_field( 'nice_client', '_nice_display_order', 'integer', 'nice_sanitize_integer', 0 );

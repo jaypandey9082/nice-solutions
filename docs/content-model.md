@@ -91,6 +91,7 @@ keeps each Service/Case Study on one Service Type and its matching Division.
 | `_nice_reference_url` | HTTPS string | Optional approved external reference |
 | `_nice_proof_value` | string | Optional project-specific source-approved metric |
 | `_nice_proof_label` | string | Context that keeps the metric attached to its project |
+| `_nice_gallery_ids` | integer[] | Project gallery, up to 10 attachment ids in the editor's order |
 
 ### Clients
 
@@ -132,6 +133,20 @@ structure is editable before approved names, roles, and portraits are supplied.
 Drafts are never public. While a division has no published member its About page
 renders three sample cards instead, marked as a layout preview; they disappear
 on their own as soon as one real member is published.
+
+### Project Gallery
+
+A Case Study may carry up to ten gallery images in `_nice_gallery_ids`, ordered
+by the editor. They share the hero image's `_nice_media_approved` gate rather
+than carrying one of their own, so a single tick governs every photograph on the
+record and there is no state where a hero is cleared and the gallery beneath it
+is not. An unapproved record renders no gallery at all, rather than a row of
+placeholders.
+
+Ids are validated against the media library on save: anything that no longer
+resolves to an image is dropped, as are duplicates, and the list is cut at ten.
+Alt text is read from the attachment, so it is set once in the Media Library and
+follows the image everywhere it appears.
 
 ## Contact Settings
 

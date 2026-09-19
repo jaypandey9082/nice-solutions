@@ -547,6 +547,9 @@ function nice_render_events_case_study_detail() {
 			</div>
 		</div>
 	</section>
+	<?php
+	nice_render_case_study_gallery( $case_study->ID, 'events' );
+	?>
 	<?php if ( $related ) : ?>
 		<section class="nice-events-inner-section nice-events-related-work" aria-labelledby="nice-related-work-title">
 			<div class="nice-wide">

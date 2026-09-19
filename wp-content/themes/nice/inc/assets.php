@@ -112,6 +112,26 @@ function nice_theme_enqueue_assets() {
 		);
 	}
 
+	/*
+	 * Both divisions' case study pages share one gallery stylesheet, so it is
+	 * enqueued on the record rather than on the division, and it depends on
+	 * whichever inner sheet is already loading so its rules land after.
+	 *
+	 * Asked of the record itself, not just the route: a project with no approved
+	 * gallery renders no gallery, and should not carry the stylesheet for one.
+	 */
+	if ( is_singular( 'nice_case_study' )
+		&& ( $nice_is_events_inner || $nice_is_studio_context )
+		&& function_exists( 'nice_theme_get_case_study_gallery' )
+		&& nice_theme_get_case_study_gallery( get_queried_object_id() ) ) {
+		wp_enqueue_style(
+			'nice-gallery',
+			get_theme_file_uri( '/assets/css/gallery.css' ),
+			array( $nice_is_events_inner ? 'nice-events-inner' : 'nice-studio' ),
+			nice_theme_asset_version( '/assets/css/gallery.css' )
+		);
+	}
+
 	if ( $nice_is_events_page ) {
 		wp_enqueue_style( 'nice-events-home', get_theme_file_uri( '/assets/css/events-home.css' ), array( 'nice-editorial-foundation' ), nice_theme_asset_version( '/assets/css/events-home.css' ) );
 	}

@@ -443,7 +443,19 @@ function nice_render_studio_case_study_detail() {
 			)
 		)
 		: '';
-	$video_url = $case_media_approved ? $video_url : '';
+	/*
+	 * Read from the record, not from a variable that was never set. This line
+	 * used to hand $video_url back to itself, so it emitted an undefined-variable
+	 * warning -- but only once media was approved, which is why it stayed hidden:
+	 * no Studio project had been approved yet. It would have surfaced on the
+	 * public page the first time NICE ticked one.
+	 *
+	 * Gated on the same approval as the hero image, so a video cannot reach a
+	 * page that its photography is not cleared for.
+	 */
+	$video_url = $case_media_approved
+		? (string) get_post_meta( $case_study->ID, '_nice_hero_video_url', true )
+		: '';
 	?>
 	<section class="nice-case-hero-media-wrap" aria-label="<?php esc_attr_e( 'Project visual', 'nice' ); ?>">
 		<div class="nice-wide">
@@ -477,6 +489,9 @@ function nice_render_studio_case_study_detail() {
 			</div>
 		</div>
 	</section>
+	<?php
+	nice_render_case_study_gallery( $case_study->ID, 'studio' );
+	?>
 	<?php if ( $related ) : ?>
 		<section class="nice-studio-inner-section nice-studio-related-work" aria-labelledby="nice-related-work-title">
 			<div class="nice-wide">

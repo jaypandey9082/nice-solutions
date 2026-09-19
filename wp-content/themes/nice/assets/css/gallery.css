@@ -1,0 +1,69 @@
+/*
+ * The Case Study project gallery.
+ *
+ * One stylesheet for both divisions. They resolved to the same cream palette and
+ * the same media placeholder tone, so writing this twice would be two copies to
+ * keep in step for no visible difference.
+ *
+ * Deliberately not a masonry or a lightbox. These are photographs of work, and
+ * the job is to show them large and in the order the editor chose -- a single
+ * column on a phone, two side by side once there is room for two to be worth
+ * looking at.
+ */
+
+@layer components {
+	.nice-project-gallery {
+		padding-block: 0 4.5rem;
+	}
+
+	.nice-project-gallery__list {
+		display: grid;
+		gap: 1rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.nice-project-gallery__item {
+		background: #DAD5C8;
+		margin: 0;
+		overflow: hidden;
+	}
+
+	/*
+	 * A fixed ratio rather than the file's own: a gallery of mixed portrait and
+	 * landscape shots otherwise reads as a ragged column, and object-fit keeps
+	 * every frame the same shape without distorting what is inside it.
+	 */
+	.nice-project-gallery__item img {
+		aspect-ratio: 3 / 2;
+		display: block;
+		height: 100%;
+		object-fit: cover;
+		width: 100%;
+	}
+
+	@media (min-width: 48rem) {
+		.nice-project-gallery {
+			padding-block: 0 6rem;
+		}
+
+		.nice-project-gallery__list {
+			gap: 1.5rem;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		/*
+		 * The first image runs full width. It is the one an editor puts first,
+		 * and a gallery that opens on a wide frame reads as a considered
+		 * sequence rather than a contact sheet.
+		 */
+		.nice-project-gallery__item:first-child {
+			grid-column: 1 / -1;
+		}
+
+		.nice-project-gallery__item:first-child img {
+			aspect-ratio: 16 / 9;
+		}
+	}
+}
