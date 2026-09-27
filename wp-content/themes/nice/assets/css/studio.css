@@ -765,11 +765,25 @@
 		overflow: hidden;
 	}
 
-	.nice-studio-case-preview__media img {
+	/*
+	 * align-self/justify-self stretch, because these frames are grids with
+	 * place-items: end start -- set so a placeholder wordmark sits in the bottom
+	 * corner. A photograph inherits that and is not stretched, so height: 100%
+	 * measures a row the picture sized itself and the card shows the bottom strip
+	 * of a portrait shot rather than a centred crop. .nice-case-media is in here
+	 * because the feature media had no image rule of its own at all.
+	 */
+	.nice-studio-case-preview__media img,
+	.nice-case-media img {
+		align-self: stretch;
 		height: 100%;
+		justify-self: stretch;
 		object-fit: cover;
-		transition: transform var(--wp--custom--motion--duration-image-hover) var(--wp--custom--motion--easing);
 		width: 100%;
+	}
+
+	.nice-studio-case-preview__media img {
+		transition: transform var(--wp--custom--motion--duration-image-hover) var(--wp--custom--motion--easing);
 	}
 
 	.nice-studio-case-preview:hover .nice-studio-case-preview__media img {
@@ -1411,6 +1425,12 @@
 		box-sizing: border-box;
 		color: var(--nice-studio-muted);
 		display: grid;
+		/*
+		 * The row is pinned to the frame. Left to itself it sizes to its content,
+		 * so a portrait photograph made a 528px row inside a 198px box and was
+		 * clipped to its bottom edge -- aspect-ratio sets the box, not the track.
+		 */
+		grid-template-rows: minmax(0, 1fr);
 		min-height: 0;
 		overflow: hidden;
 		place-items: end start;

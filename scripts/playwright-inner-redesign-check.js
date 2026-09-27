@@ -87,6 +87,29 @@ const assert = (condition, message) => {
 					/* The write-up is the hero description now; the section that
 					   used to repeat it below the details is gone. */
 					bodySections: document.querySelectorAll('.nice-events-case-intro, .nice-studio-case-intro').length,
+					/*
+					 * A photograph must be held to its frame, never the other way
+					 * round. An Events home card once grew to a portrait shot's own
+					 * 1024px because the only rule sizing it lived in a stylesheet
+					 * that page does not load.
+					 */
+					unheldMedia: [...document.querySelectorAll('[class*="__media"], .nice-case-media, .nice-project-gallery__item')]
+						.filter((frame) => {
+							const image = frame.querySelector('img');
+							if (!image) return false;
+							/*
+							 * offset*, not getBoundingClientRect: the reveal animation
+							 * scales media by 1.018, and a rect measured mid-flight
+							 * reads as an overflow the frame is already clipping.
+							 * Layout size is the question being asked.
+							 */
+							return (
+								image.offsetHeight > frame.offsetHeight + 1 ||
+								image.offsetWidth > frame.offsetWidth + 1 ||
+								getComputedStyle(image).objectFit !== 'cover'
+							);
+						})
+						.map((frame) => frame.className.toString().slice(0, 40)),
 					heroIntroWords: (document.querySelector('.nice-events-inner-hero__content p:not(.nice-eyebrow), .nice-studio-inner-hero__content p:not(.nice-eyebrow)')?.textContent || '').trim().split(/\s+/).filter(Boolean).length,
 				}));
 
@@ -98,6 +121,7 @@ const assert = (condition, message) => {
 				if (route.endsWith('/contact/')) assert(!state.hasForm, `${route} must remain form-free`);
 				assert(state.proofBands === 0, `${route} still renders a project proof band`);
 				assert(state.bodySections === 0, `${route} still repeats its description below the details`);
+				assert(state.unheldMedia.length === 0, `${route} lets a picture size its own frame at ${width}px: ${state.unheldMedia.join(', ')}`);
 				if (route.match(/\/case-studies\/[^/]+\/$/)) {
 					assert(state.heroIntroWords >= 12, `${route} hero description is only ${state.heroIntroWords} words; it should carry the project write-up`);
 				}

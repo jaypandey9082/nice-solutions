@@ -55,7 +55,15 @@
 	/* minmax(0, 1fr): without it the implicit column sizes to the image's own
 	   1024px and the card blows through its track at phone widths. */
 	.nice-events-home .nice-events-project { display: grid; gap: 12px; grid-column: auto; grid-template-columns: minmax(0, 1fr); }
-	.nice-events-home .nice-events-project__media { width: 100%; aspect-ratio: 16 / 9; background: var(--nice-surface-container); border: 1px solid var(--nice-subtle-border); }
+	/*
+	 * overflow and the img rule both live here, not in events.css: that sheet is
+	 * deliberately not loaded on the Events home, so the card had an aspect-ratio
+	 * and nothing to hold the picture to it. A portrait photograph pushed the box
+	 * to its own full height.
+	 */
+	.nice-events-home .nice-events-project__media { width: 100%; aspect-ratio: 16 / 9; background: var(--nice-surface-container); border: 1px solid var(--nice-subtle-border); overflow: hidden; }
+	.nice-events-home .nice-events-project__media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform var(--wp--custom--motion--duration-image-hover) var(--wp--custom--motion--easing); }
+	.nice-events-home .nice-events-project:hover .nice-events-project__media img { transform: scale(1.018); }
 	.nice-events-home .nice-events-project__client { color: var(--nice-muted); margin-top: 4px; }
 	.nice-events-home .nice-events-project h3 { font-family: var(--nice-font-heading); font-size: 28px; }
 	.nice-events-home .nice-events-project > p:not(.nice-events-project__client) { color: var(--nice-muted); }
@@ -97,5 +105,17 @@
 		.nice-events-home .nice-events-service > h3, .nice-events-home .nice-events-service > p, .nice-events-home .nice-events-service > a { grid-column: auto; }
 		.nice-events-home .nice-events-section-heading { grid-template-columns: 1fr 2fr auto; }
 		.nice-events-home .nice-events-section-heading > a { grid-column: auto; align-self: end; }
+	}
+}
+
+@layer motion {
+	@media (prefers-reduced-motion: reduce) {
+		.nice-events-home .nice-events-project__media img {
+			transition: none;
+		}
+
+		.nice-events-home .nice-events-project:hover .nice-events-project__media img {
+			transform: none;
+		}
 	}
 }
