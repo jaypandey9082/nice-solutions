@@ -91,7 +91,13 @@ keeps each Service/Case Study on one Service Type and its matching Division.
 | `_nice_reference_url` | HTTPS string | Optional approved external reference |
 | `_nice_proof_value` | string | Optional project-specific source-approved metric |
 | `_nice_proof_label` | string | Context that keeps the metric attached to its project |
+| `_nice_feature_media_type` | string | What a Studio project leads with: `image`, `video-file` or `video-link` |
+| `_nice_feature_video_id` | integer | Attachment id of an uploaded MP4 or WebM |
+| `_nice_feature_video_url` | HTTPS string | A YouTube or Vimeo link identifying one video |
 | `_nice_gallery_ids` | integer[] | Project gallery, up to 10 attachment ids in the editor's order |
+| `_nice_quote_text` | string | Registered and rendered; no editor field yet, see below |
+| `_nice_quote_author` | string | Registered and rendered; no editor field yet, see below |
+| `_nice_hero_video_url` | HTTPS string | Legacy, superseded by the three feature-media fields; no longer rendered |
 
 ### Clients
 
@@ -147,6 +153,37 @@ Ids are validated against the media library on save: anything that no longer
 resolves to an image is dropped, as are duplicates, and the list is cut at ten.
 Alt text is read from the attachment, so it is set once in the Media Library and
 follows the image everywhere it appears.
+
+### Feature Media
+
+A **Studio** project leads with one visual above its gallery, chosen in the
+Feature Media panel: the record's featured image, an uploaded MP4 or WebM, or a
+YouTube or Vimeo link. An **Events** project has no feature media -- it leads
+with the write-up and lets the gallery be the picture -- so the panel says so
+rather than hiding itself, because a new draft has no division term yet.
+
+All three sit behind the same `_nice_media_approved` tick as the hero image and
+the gallery. One tick still governs every picture on the record.
+
+An uploaded film is served lazily: the page ships a poster frame and no `src`,
+and the file is only fetched once a reader scrolls near it. The poster is the
+record's featured image, so a video-led project still needs one.
+
+A link is stored only if it identifies **one** video. A channel, a playlist or a
+search result says where a video lives, not which one to play, so it is rejected
+at save, the project falls back to its featured image, and the editor is told.
+Plain-HTTP addresses are rejected with everything else that is not HTTPS.
+
+A linked video renders as the featured image with a play button over it. Nothing
+is requested from YouTube or Vimeo until a reader presses it; the player is then
+loaded from `youtube-nocookie.com` or with Vimeo's `dnt=1`.
+
+### Client quotes
+
+`_nice_quote_text` and `_nice_quote_author` are registered and rendered -- below
+the project write-up, when set -- but deliberately have **no editor field yet**.
+The section they create was not part of the approved page design, so the fields
+wait until it is. They are reachable through REST in the meantime.
 
 ## Contact Settings
 

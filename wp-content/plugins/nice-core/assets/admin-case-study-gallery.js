@@ -175,3 +175,121 @@
 		render();
 	});
 })();
+
+/*
+ * The Feature Media panel.
+ *
+ * Two jobs that look like one: showing whichever dependent field the chooser
+ * selected, and picking a video file. They share a screen with the gallery above
+ * and nothing else, which is why they ride the same handle rather than carrying
+ * a second enqueue for sixty lines.
+ *
+ * The panels are hidden by PHP from the stored value, not by this file on load.
+ * Without JavaScript an editor still sees the group that is currently in use,
+ * and can still change the chooser, save, and be shown the other one.
+ */
+(() => {
+	'use strict';
+
+	const strings = window.niceFeatureMedia || {};
+	const chooser = document.querySelector('[data-nice-feature-media-type]');
+
+	if (chooser) {
+		const panels = document.querySelectorAll('[data-nice-feature-media-panel]');
+
+		chooser.addEventListener('change', () => {
+			panels.forEach((panel) => {
+				panel.hidden = panel.dataset.niceFeatureMediaPanel !== chooser.value;
+			});
+		});
+	}
+
+	document.querySelectorAll('[data-nice-video-control]').forEach((control) => {
+		const field = control.querySelector('[data-nice-video-id]');
+		const preview = control.querySelector('[data-nice-video-preview]');
+		const name = control.querySelector('[data-nice-video-name]');
+		const selectButton = control.querySelector('[data-nice-video-select]');
+		const removeButton = control.querySelector('[data-nice-video-remove]');
+
+		if (!field || !preview || !selectButton || !window.wp?.media) {
+			return;
+		}
+
+		let frame;
+
+		/**
+		 * Reflect a selection, or the absence of one, across the whole control.
+		 *
+		 * @param {string} id       Attachment id, or an empty string.
+		 * @param {string} url      Playable URL, or an empty string.
+		 * @param {string} fileName File name to show.
+		 */
+		const apply = (id, url, fileName) => {
+			field.value = id;
+			control.dataset.empty = id ? 'false' : 'true';
+			selectButton.textContent = id
+				? selectButton.dataset.replaceLabel
+				: selectButton.dataset.selectLabel;
+
+			if (removeButton) {
+				removeButton.hidden = !id;
+			}
+
+			preview.querySelector('video')?.remove();
+
+			if (url) {
+				const video = document.createElement('video');
+				video.src = url;
+				video.muted = true;
+				video.playsInline = true;
+				video.preload = 'metadata';
+				preview.prepend(video);
+			}
+
+			if (name) {
+				name.textContent = fileName || strings.videoEmpty || 'No video selected';
+			}
+		};
+
+		selectButton.addEventListener('click', () => {
+			if (!frame) {
+				frame = window.wp.media({
+					title: strings.videoFrameTitle || 'Choose a video file',
+					button: { text: strings.videoFrameButton || 'Use this video' },
+					library: { type: 'video' },
+					multiple: false,
+				});
+
+				frame.on('select', () => {
+					const attachment = frame.state().get('selection').first();
+
+					if (!attachment) {
+						return;
+					}
+
+					const chosen = attachment.toJSON();
+
+					/*
+					 * Refused here rather than in the sanitizer. A .mov already on
+					 * a record should keep playing for whoever it plays for; a new
+					 * one should not be offered as though every browser will take
+					 * it.
+					 */
+					if (!['video/mp4', 'video/webm'].includes(chosen.mime)) {
+						window.alert(strings.videoFormat || 'Use an MP4 or WebM file.');
+						return;
+					}
+
+					apply(String(chosen.id), chosen.url || '', chosen.filename || '');
+				});
+			}
+
+			frame.open();
+		});
+
+		removeButton?.addEventListener('click', () => {
+			apply('', '', '');
+			selectButton.focus();
+		});
+	});
+})();

@@ -850,52 +850,6 @@
 		margin: 0;
 	}
 
-	.nice-studio-project-proof {
-		background: #0f0f11;
-		color: #ffffff;
-		padding-block: var(--nice-section-space);
-	}
-
-	.nice-studio-project-proof__content {
-		align-items: end;
-		display: grid;
-		gap: var(--wp--preset--spacing--xl);
-	}
-
-	.nice-studio-project-proof__value {
-		color: var(--wp--preset--color--surface);
-		font-family: var(--nice-type-editorial);
-		font-size: clamp(3.5rem, 8vw, 6.5rem);
-		font-weight: 400;
-		letter-spacing: -0.03em;
-		line-height: 0.9;
-		margin: 0;
-	}
-
-	.nice-studio-project-proof .nice-eyebrow {
-		color: var(--wp--preset--color--brand-red);
-		margin-bottom: var(--wp--preset--spacing--sm);
-	}
-
-	.nice-studio-project-proof h2 {
-		color: #ffffff;
-		font-family: var(--nice-type-editorial);
-		font-size: 2rem;
-		font-weight: 400;
-		letter-spacing: -0.02em;
-		line-height: 1.1;
-		max-width: 23ch;
-	}
-
-	.nice-studio-case-intro {
-		padding-block: var(--nice-section-space);
-	}
-
-	.nice-studio-case-intro__grid {
-		margin-inline: auto;
-		max-width: 52rem;
-	}
-
 	/* Studio Navigation Cards */
 	.nice-studio-project-navigation {
 		border-top: 1px solid var(--wp--preset--color--border);
@@ -1138,11 +1092,6 @@
 			grid-column: 8 / 13;
 		}
 
-		.nice-studio-project-proof__content {
-			align-items: center;
-			grid-template-columns: auto 1fr;
-		}
-
 		.nice-studio-project-navigation {
 			grid-template-columns: 1fr 1fr;
 		}
@@ -1226,7 +1175,7 @@
 
 	.nice-studio-inner .nice-eyebrow {
 		font-family: var(--nice-font-label, "Helvetica Neue", Helvetica, Arial, sans-serif);
-		font-size: 0.75rem;
+		font-size: var(--nice-eyebrow-size);
 		font-weight: 700;
 		letter-spacing: 0;
 		line-height: 1.4;
@@ -1354,7 +1303,6 @@
 	}
 
 	.nice-studio-service-story,
-	.nice-studio-case-intro,
 	.nice-studio-contact-page {
 		background: var(--nice-studio-surface);
 	}
@@ -1457,7 +1405,7 @@
 	}
 
 	.nice-studio-case-preview__media,
-	.nice-case-hero-media {
+	.nice-case-media {
 		aspect-ratio: 16 / 9;
 		background: var(--nice-studio-placeholder);
 		box-sizing: border-box;
@@ -1558,35 +1506,25 @@
 		margin-top: 0.25rem;
 	}
 
-	.nice-case-hero-media-wrap {
+	.nice-case-media-wrap {
 		background: var(--nice-studio-canvas);
 		padding-block: 2.5rem;
 	}
 
-	.nice-case-hero-media {
+	.nice-case-media {
 		width: 100%;
 	}
 
-	.nice-studio-project-proof {
-		background: var(--nice-studio-black);
-		color: var(--nice-studio-surface);
-		padding-block: 4.5rem;
-	}
-
-	.nice-studio-project-proof__value {
-		font-family: var(--nice-font-heading, "NICE Condensed", "Arial Narrow", Arial, sans-serif);
-		font-size: 4rem;
-		font-weight: 500;
-		letter-spacing: 0;
-		line-height: 0.9;
-	}
-
-	.nice-studio-project-proof h2 {
-		font-family: var(--nice-font-body, sans-serif);
-		font-size: 1.5rem;
-		font-weight: 400;
-		letter-spacing: 0;
-		line-height: 1.3;
+	/*
+	 * .nice-video is a near-black rounded frame by default, which suits a video
+	 * dropped into an editor's page. A project's feature film sits on the cream
+	 * canvas with everything else, so it borrows the placeholder tone and the
+	 * square corner the media frames beside it use.
+	 */
+	.nice-video--case {
+		background: var(--nice-studio-placeholder);
+		border-radius: 0;
+		width: 100%;
 	}
 
 	.nice-studio-project-navigation {
@@ -1743,7 +1681,6 @@
 		.nice-studio-inner-section,
 		.nice-studio-case-group,
 		.nice-studio-case-quote,
-		.nice-studio-project-proof,
 		.nice-studio-inner-cta {
 			padding-block: 6rem;
 		}

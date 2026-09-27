@@ -27,6 +27,13 @@
 
 @layer tokens {
 	:root {
+		/*
+		 * Every uppercase section label on the site. It was set to the label
+		 * preset in one place and then restated as 0.75rem, 12px and 0.6875rem
+		 * in seven others, so making them all a step bigger meant finding all
+		 * eight. One token now; the overrides point at it.
+		 */
+		--nice-eyebrow-size: 0.8125rem;
 		--nice-type-display: var(--wp--preset--font-size--display);
 		--nice-type-h1: var(--wp--preset--font-size--heading-1);
 		--nice-type-h2: var(--wp--preset--font-size--heading-2);
@@ -57,6 +64,7 @@
 
 	@media (min-width: 48rem) {
 		:root {
+			--nice-eyebrow-size: 0.875rem;
 			--nice-type-display: 5.5rem;
 			--nice-type-h1: 4rem;
 			--nice-type-h2: 3rem;
@@ -259,7 +267,7 @@
 
 	.nice-eyebrow {
 		color: var(--wp--preset--color--action-red);
-		font-size: var(--wp--preset--font-size--label);
+		font-size: var(--nice-eyebrow-size);
 		font-weight: 700;
 		letter-spacing: 0;
 		line-height: 1.3;
@@ -1089,6 +1097,11 @@
 		position: relative;
 	}
 
+	/*
+	 * img is in the list so that a click-to-play poster and the iframe that
+	 * replaces it occupy one identical box. Without it the swap moves the page.
+	 */
+	.nice-video img,
 	.nice-video video,
 	.nice-video iframe {
 		border: 0;
@@ -1097,6 +1110,45 @@
 		object-fit: cover;
 		position: absolute;
 		width: 100%;
+	}
+
+	.nice-video__play {
+		align-items: center;
+		background: rgb(18 18 19 / 0.72);
+		border: 0;
+		border-radius: 50%;
+		color: #FFFFFF;
+		cursor: pointer;
+		display: flex;
+		height: 4rem;
+		inset: 50% auto auto 50%;
+		justify-content: center;
+		min-height: 44px;
+		min-width: 44px;
+		padding: 0;
+		position: absolute;
+		transform: translate(-50%, -50%);
+		transition: background-color var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing), transform var(--wp--custom--motion--duration-fast) var(--wp--custom--motion--easing);
+		width: 4rem;
+		z-index: 1;
+	}
+
+	.nice-video__play:hover,
+	.nice-video__play:focus-visible {
+		background: rgb(18 18 19 / 0.92);
+		transform: translate(-50%, -50%) scale(1.06);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.nice-video__play {
+			transition: none;
+		}
+
+		/* The centring transform stays; only the growth goes. */
+		.nice-video__play:hover,
+		.nice-video__play:focus-visible {
+			transform: translate(-50%, -50%);
+		}
 	}
 
 	.wp-block-image.is-style-nice-editorial img {

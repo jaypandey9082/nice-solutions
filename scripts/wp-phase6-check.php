@@ -87,7 +87,7 @@ try {
 	nice_phase6_assert( empty( $contact['whatsapp_url'] ) && empty( $contact['email_address'] ) && empty( $contact['phone_url'] ), 'Contact settings are no longer publication-pending.' );
 
 	$registry = WP_Block_Type_Registry::get_instance();
-	foreach ( array( 'nice/events-services-index', 'nice/events-service-detail', 'nice/events-case-studies-index', 'nice/events-case-study-detail', 'nice/events-clients-index', 'nice/events-team-index', 'nice/events-contact-page' ) as $block ) {
+	foreach ( array( 'nice/events-services-index', 'nice/events-service-detail', 'nice/events-case-studies-index', 'nice/events-case-study-detail', 'nice/events-clients-index', 'nice/events-about-page', 'nice/events-contact-page' ) as $block ) {
 		nice_phase6_assert( $registry->is_registered( $block ), "Missing server-rendered block: {$block}" );
 	}
 

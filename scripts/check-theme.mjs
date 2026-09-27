@@ -12,6 +12,7 @@ const requiredFiles = [
 	'style.css',
 	'theme.json',
 	'functions.php',
+	'inc/case-study.php',
 	'inc/contact.php',
 	'inc/events-data.php',
 	'inc/events-home.php',

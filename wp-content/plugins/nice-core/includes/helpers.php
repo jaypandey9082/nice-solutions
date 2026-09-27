@@ -87,6 +87,168 @@ function nice_sanitize_hero_image_id( $value ) {
 }
 
 /**
+ * Accept only existing video attachments, or zero for an empty selection.
+ *
+ * The playable-format policy -- MP4 or WebM -- belongs in the picker, not here.
+ * A .mov that is already stored should keep rendering rather than disappear from
+ * a page the day this sanitizer next runs over it.
+ *
+ * @param mixed $value Candidate attachment ID.
+ * @return int
+ */
+function nice_sanitize_video_attachment_id( $value ) {
+	if ( ! is_int( $value ) && ! is_string( $value ) ) {
+		return 0;
+	}
+	$id = filter_var( $value, FILTER_VALIDATE_INT, array( 'options' => array( 'min_range' => 1 ) ) );
+
+	return $id && 'attachment' === get_post_type( $id ) && wp_attachment_is( 'video', $id ) ? $id : 0;
+}
+
+/**
+ * Return the provider and id for a supported video link, or null.
+ *
+ * A path-shape allowlist, the same reasoning as the LinkedIn source patterns: a
+ * channel, a playlist or a search result says where a video lives, not which
+ * video it is. Only a shape that identifies one video is accepted, because the
+ * page has one frame to put it in.
+ *
+ * @param mixed $value Candidate URL.
+ * @return array{provider:string,id:string,hash:string}|null
+ */
+function nice_parse_embed_video_url( $value ) {
+	$url = nice_sanitize_https_url( $value );
+
+	if ( '' === $url ) {
+		return null;
+	}
+
+	$parts = wp_parse_url( $url );
+	$host  = strtolower( (string) ( isset( $parts['host'] ) ? $parts['host'] : '' ) );
+	$path  = untrailingslashit( (string) ( isset( $parts['path'] ) ? $parts['path'] : '' ) );
+
+	if ( preg_match( '#(^|\.)(?:youtube\.com|youtube-nocookie\.com)$#i', $host ) ) {
+		if ( preg_match( '#^/(?:embed|shorts|live|v)/([A-Za-z0-9_-]{11})$#', $path, $matches ) ) {
+			return array(
+				'provider' => 'youtube',
+				'id'       => $matches[1],
+				'hash'     => '',
+			);
+		}
+
+		if ( '/watch' === $path ) {
+			$query = array();
+			parse_str( (string) ( isset( $parts['query'] ) ? $parts['query'] : '' ), $query );
+
+			if ( isset( $query['v'] ) && preg_match( '#^[A-Za-z0-9_-]{11}$#', (string) $query['v'] ) ) {
+				return array(
+					'provider' => 'youtube',
+					'id'       => (string) $query['v'],
+					'hash'     => '',
+				);
+			}
+		}
+
+		return null;
+	}
+
+	if ( preg_match( '#(^|\.)youtu\.be$#i', $host )
+		&& preg_match( '#^/([A-Za-z0-9_-]{11})$#', $path, $matches ) ) {
+		return array(
+			'provider' => 'youtube',
+			'id'       => $matches[1],
+			'hash'     => '',
+		);
+	}
+
+	/* An unlisted Vimeo video carries a privacy hash as a second segment. */
+	if ( preg_match( '#(^|\.)vimeo\.com$#i', $host )
+		&& preg_match( '#^/(?:video/)?([0-9]{6,12})(?:/([A-Za-z0-9]{6,20}))?$#', $path, $matches ) ) {
+		return array(
+			'provider' => 'vimeo',
+			'id'       => $matches[1],
+			'hash'     => isset( $matches[2] ) ? $matches[2] : '',
+		);
+	}
+
+	return null;
+}
+
+/**
+ * Explain why a video link cannot be used, or return an empty string.
+ *
+ * @param mixed $value Candidate URL.
+ * @return string
+ */
+function nice_get_embed_video_problem( $value ) {
+	$value = trim( (string) $value );
+
+	if ( '' === $value || nice_parse_embed_video_url( $value ) ) {
+		return '';
+	}
+
+	return __( 'The link has to identify one YouTube or Vimeo video, such as https://www.youtube.com/watch?v=..., https://youtu.be/... or https://vimeo.com/123456789. A channel, a playlist or a search result says where a video lives, not which one to play.', 'nice-core' );
+}
+
+/**
+ * Return a supported video link, or an empty string.
+ *
+ * @param mixed $value Candidate URL.
+ * @return string
+ */
+function nice_sanitize_embed_video_url( $value ) {
+	return nice_parse_embed_video_url( $value ) ? nice_sanitize_https_url( $value ) : '';
+}
+
+/**
+ * Build the player URL for a parsed video.
+ *
+ * The privacy-preserving hosts in both cases. They matter less than they look:
+ * nothing requests either one until a reader presses play, because the page
+ * renders a poster frame rather than an embed.
+ *
+ * @param array $video    Parsed video, from nice_parse_embed_video_url().
+ * @param bool  $autoplay Whether the player should start on load.
+ * @return string
+ */
+function nice_get_embed_video_src( $video, $autoplay = false ) {
+	if ( empty( $video['provider'] ) || empty( $video['id'] ) ) {
+		return '';
+	}
+
+	if ( 'youtube' === $video['provider'] ) {
+		return add_query_arg(
+			array_filter(
+				array(
+					'rel'            => 0,
+					'modestbranding' => 1,
+					'playsinline'    => 1,
+					'autoplay'       => $autoplay ? 1 : null,
+				),
+				static function ( $item ) {
+					return null !== $item;
+				}
+			),
+			'https://www.youtube-nocookie.com/embed/' . rawurlencode( $video['id'] )
+		);
+	}
+
+	return add_query_arg(
+		array_filter(
+			array(
+				'h'        => empty( $video['hash'] ) ? null : $video['hash'],
+				'dnt'      => 1,
+				'autoplay' => $autoplay ? 1 : null,
+			),
+			static function ( $item ) {
+				return null !== $item;
+			}
+		),
+		'https://player.vimeo.com/video/' . rawurlencode( $video['id'] )
+	);
+}
+
+/**
  * Restrict Events hero REST edits to editors of the top-level Events Page.
  *
  * @param bool   $allowed   Existing decision.

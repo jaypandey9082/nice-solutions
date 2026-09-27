@@ -118,7 +118,12 @@ async (page) => {
 
       const evaluation = await page.evaluate(
         ({ expectedTitle, path }) => {
-          const headings = [...document.querySelectorAll("h1, h2, h3")];
+          // A visually hidden heading is clipped to a 1px box on purpose, so its
+          // scrollWidth always exceeds its clientWidth. Measuring one asks
+          // whether text fits in a box built to show none of it.
+          const headings = [...document.querySelectorAll("h1, h2, h3")].filter(
+            (heading) => !heading.closest(".nice-sr-only, .screen-reader-text"),
+          );
           const images = [...document.images];
           const links = [...document.querySelectorAll("a[href]")];
           const heroImage = document.querySelector(".nice-studio-inner-hero__media img, .nice-studio-hero__media img");

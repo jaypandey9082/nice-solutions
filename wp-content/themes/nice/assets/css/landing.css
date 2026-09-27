@@ -403,7 +403,7 @@
 		color: var(--nice-muted);
 		display: block;
 		font-family: var(--nice-font-label);
-		font-size: 0.6875rem;
+		font-size: var(--nice-eyebrow-size);
 		font-weight: 600;
 		letter-spacing: 0.1em;
 		margin-bottom: 0.75rem;

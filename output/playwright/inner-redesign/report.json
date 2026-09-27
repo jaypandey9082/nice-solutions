@@ -10,7 +10,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 320,
@@ -21,7 +25,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 320,
@@ -32,7 +40,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 320,
@@ -43,7 +55,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 20
     },
     {
       "width": 320,
@@ -54,7 +70,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 12
     },
     {
       "width": 320,
@@ -65,7 +85,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 13
     },
     {
       "width": 320,
@@ -76,7 +100,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 33
     },
     {
       "width": 320,
@@ -87,7 +115,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 320,
@@ -98,7 +130,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 28
     },
     {
       "width": 320,
@@ -109,7 +145,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 320,
@@ -120,7 +160,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 14
     },
     {
       "width": 320,
@@ -131,7 +175,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 16
     },
     {
       "width": 320,
@@ -142,7 +190,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 320,
@@ -153,7 +205,26 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 32
+    },
+    {
+      "width": 320,
+      "route": "/studio/case-studies/krish-e/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 33
     },
     {
       "width": 320,
@@ -164,7 +235,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 320,
@@ -175,7 +250,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 320,
@@ -186,7 +265,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 390,
@@ -197,7 +280,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 390,
@@ -208,7 +295,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 390,
@@ -219,7 +310,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 390,
@@ -230,7 +325,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 20
     },
     {
       "width": 390,
@@ -241,7 +340,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 12
     },
     {
       "width": 390,
@@ -252,7 +355,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 13
     },
     {
       "width": 390,
@@ -263,7 +370,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 33
     },
     {
       "width": 390,
@@ -274,7 +385,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 390,
@@ -285,7 +400,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 28
     },
     {
       "width": 390,
@@ -296,7 +415,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 390,
@@ -307,7 +430,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 14
     },
     {
       "width": 390,
@@ -318,7 +445,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 16
     },
     {
       "width": 390,
@@ -329,7 +460,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 390,
@@ -340,7 +475,26 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 32
+    },
+    {
+      "width": 390,
+      "route": "/studio/case-studies/krish-e/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 33
     },
     {
       "width": 390,
@@ -351,7 +505,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 390,
@@ -362,7 +520,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 390,
@@ -373,7 +535,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 768,
@@ -384,7 +550,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 768,
@@ -395,7 +565,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 768,
@@ -406,7 +580,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 768,
@@ -417,7 +595,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 20
     },
     {
       "width": 768,
@@ -428,7 +610,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 12
     },
     {
       "width": 768,
@@ -439,7 +625,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 13
     },
     {
       "width": 768,
@@ -450,7 +640,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 33
     },
     {
       "width": 768,
@@ -461,7 +655,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 768,
@@ -472,7 +670,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 28
     },
     {
       "width": 768,
@@ -483,7 +685,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 768,
@@ -494,7 +700,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 14
     },
     {
       "width": 768,
@@ -505,7 +715,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 16
     },
     {
       "width": 768,
@@ -516,7 +730,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 768,
@@ -527,7 +745,26 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 32
+    },
+    {
+      "width": 768,
+      "route": "/studio/case-studies/krish-e/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 33
     },
     {
       "width": 768,
@@ -538,7 +775,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 768,
@@ -549,7 +790,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 768,
@@ -560,7 +805,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 1024,
@@ -571,7 +820,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 1024,
@@ -582,7 +835,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 1024,
@@ -593,7 +850,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 1024,
@@ -604,7 +865,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 20
     },
     {
       "width": 1024,
@@ -615,7 +880,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 12
     },
     {
       "width": 1024,
@@ -626,7 +895,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 13
     },
     {
       "width": 1024,
@@ -637,7 +910,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 33
     },
     {
       "width": 1024,
@@ -648,7 +925,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 1024,
@@ -659,7 +940,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 28
     },
     {
       "width": 1024,
@@ -670,7 +955,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 1024,
@@ -681,7 +970,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 14
     },
     {
       "width": 1024,
@@ -692,7 +985,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 16
     },
     {
       "width": 1024,
@@ -703,7 +1000,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 1024,
@@ -714,7 +1015,26 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 32
+    },
+    {
+      "width": 1024,
+      "route": "/studio/case-studies/krish-e/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 33
     },
     {
       "width": 1024,
@@ -725,7 +1045,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 1024,
@@ -736,7 +1060,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 1024,
@@ -747,7 +1075,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 1440,
@@ -758,7 +1090,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 1440,
@@ -769,7 +1105,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 1440,
@@ -780,7 +1120,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 0
     },
     {
       "width": 1440,
@@ -791,7 +1135,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 20
     },
     {
       "width": 1440,
@@ -802,7 +1150,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 12
     },
     {
       "width": 1440,
@@ -813,7 +1165,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 13
     },
     {
       "width": 1440,
@@ -824,7 +1180,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 33
     },
     {
       "width": 1440,
@@ -835,7 +1195,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 1440,
@@ -846,7 +1210,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 28
     },
     {
       "width": 1440,
@@ -857,7 +1225,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 1440,
@@ -868,7 +1240,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 14
     },
     {
       "width": 1440,
@@ -879,7 +1255,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 16
     },
     {
       "width": 1440,
@@ -890,7 +1270,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 1440,
@@ -901,7 +1285,26 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 32
+    },
+    {
+      "width": 1440,
+      "route": "/studio/case-studies/krish-e/",
+      "h1Count": 1,
+      "stripCount": 1,
+      "hasLegacySubnav": false,
+      "hasOverflow": false,
+      "hasMain": true,
+      "hasFooter": true,
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 33
     },
     {
       "width": 1440,
@@ -912,7 +1315,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 15
     },
     {
       "width": 1440,
@@ -923,7 +1330,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     },
     {
       "width": 1440,
@@ -934,7 +1345,11 @@
       "hasOverflow": false,
       "hasMain": true,
       "hasFooter": true,
-      "hasForm": false
+      "hasForm": false,
+      "proofBands": 0,
+      "caseMedia": 0,
+      "bodySections": 0,
+      "heroIntroWords": 19
     }
   ]
 }

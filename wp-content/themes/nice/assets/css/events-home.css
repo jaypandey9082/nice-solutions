@@ -7,7 +7,7 @@
 	.nice-events-home h2 { font-size: 36px !important; line-height: 1.04 !important; max-width: 23ch; }
 	.nice-events-home h3 { font-size: 28px !important; line-height: 1.1 !important; }
 	.nice-events-home p { font-family: var(--nice-font-body); font-size: 17px; line-height: 1.5; }
-	.nice-events-home .nice-eyebrow, .nice-events-home .nice-events-project__client, .nice-events-home .nice-events-service__index { font-family: var(--nice-font-label); font-size: 12px; font-weight: 600; line-height: 1.4; text-transform: uppercase; }
+	.nice-events-home .nice-eyebrow, .nice-events-home .nice-events-project__client, .nice-events-home .nice-events-service__index { font-family: var(--nice-font-label); font-size: var(--nice-eyebrow-size); font-weight: 600; line-height: 1.4; text-transform: uppercase; }
 	.nice-events-home .nice-eyebrow { display: flex; align-items: center; gap: 10px; }
 	.nice-events-home .nice-eyebrow::before { content: ''; flex: 0 0 5px; height: 5px; background: var(--nice-red); border-radius: 50%; }
 	.nice-events-home section[id] { scroll-margin-top: 104px; }
@@ -52,7 +52,9 @@
 	.nice-events-home .nice-events-service__index { padding-top: 6px; color: var(--nice-muted); }
 	.nice-events-home .nice-events-service p { color: var(--nice-muted); }
 	.nice-events-home .nice-events-work__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; align-items: start; }
-	.nice-events-home .nice-events-project { display: grid; gap: 12px; grid-column: auto; }
+	/* minmax(0, 1fr): without it the implicit column sizes to the image's own
+	   1024px and the card blows through its track at phone widths. */
+	.nice-events-home .nice-events-project { display: grid; gap: 12px; grid-column: auto; grid-template-columns: minmax(0, 1fr); }
 	.nice-events-home .nice-events-project__media { width: 100%; aspect-ratio: 16 / 9; background: var(--nice-surface-container); border: 1px solid var(--nice-subtle-border); }
 	.nice-events-home .nice-events-project__client { color: var(--nice-muted); margin-top: 4px; }
 	.nice-events-home .nice-events-project h3 { font-family: var(--nice-font-heading); font-size: 28px; }

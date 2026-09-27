@@ -51,6 +51,15 @@ function nice_add_content_meta_boxes() {
 	);
 
 	add_meta_box(
+		'nice-case-feature-media',
+		__( 'Feature Media', 'nice-core' ),
+		'nice_render_case_study_feature_media_meta_box',
+		'nice_case_study',
+		'normal',
+		'default'
+	);
+
+	add_meta_box(
 		'nice-case-study-gallery',
 		__( 'Project Gallery', 'nice-core' ),
 		'nice_render_case_study_gallery_meta_box',
@@ -176,6 +185,98 @@ function nice_render_studio_media_control( $field_name, $attachment_id, $label, 
 }
 
 /**
+ * Render the video file picker for a Case Study's feature media.
+ *
+ * A sibling of nice_render_studio_media_control() rather than a reuse of it:
+ * that one hardcodes an img preview and "Select image" throughout, and a control
+ * that says "image" while asking for a film is worse than one more function.
+ *
+ * @param string $field_name    Form field name.
+ * @param int    $attachment_id Selected attachment ID.
+ */
+function nice_render_case_study_video_control( $field_name, $attachment_id ) {
+	$video_src = $attachment_id ? wp_get_attachment_url( $attachment_id ) : '';
+	$file_name = $attachment_id ? basename( (string) get_attached_file( $attachment_id ) ) : '';
+	?>
+	<div class="nice-video-control" data-nice-video-control data-empty="<?php echo $video_src ? 'false' : 'true'; ?>">
+		<input type="hidden" name="<?php echo esc_attr( $field_name ); ?>" value="<?php echo esc_attr( $attachment_id ); ?>" data-nice-video-id>
+		<div class="nice-video-preview" data-nice-video-preview>
+			<?php if ( $video_src ) : ?>
+				<video src="<?php echo esc_url( $video_src ); ?>" muted playsinline preload="metadata"></video>
+			<?php endif; ?>
+			<span data-nice-video-name>
+				<?php echo $file_name ? esc_html( $file_name ) : esc_html__( 'No video selected', 'nice-core' ); ?>
+			</span>
+		</div>
+		<p>
+			<button type="button" class="button button-secondary" data-nice-video-select
+				data-select-label="<?php esc_attr_e( 'Select video', 'nice-core' ); ?>"
+				data-replace-label="<?php esc_attr_e( 'Replace video', 'nice-core' ); ?>">
+				<?php echo $video_src ? esc_html__( 'Replace video', 'nice-core' ) : esc_html__( 'Select video', 'nice-core' ); ?>
+			</button>
+			<button type="button" class="button-link-delete" data-nice-video-remove<?php echo $video_src ? '' : ' hidden'; ?>><?php esc_html_e( 'Remove', 'nice-core' ); ?></button>
+		</p>
+		<p class="description"><?php esc_html_e( 'MP4 or WebM, 16:9. It plays muted and loops, so it needs no sound track. The record\'s featured image is the poster frame, so set one.', 'nice-core' ); ?></p>
+	</div>
+	<?php
+}
+
+/**
+ * Render the Feature Media panel for a Case Study.
+ *
+ * @param WP_Post $post Case Study being edited.
+ */
+function nice_render_case_study_feature_media_meta_box( $post ) {
+	nice_render_content_meta_nonce();
+
+	$type      = nice_sanitize_feature_media_type( get_post_meta( $post->ID, '_nice_feature_media_type', true ) );
+	$video_id  = nice_sanitize_video_attachment_id( get_post_meta( $post->ID, '_nice_feature_video_id', true ) );
+	$video_url = (string) get_post_meta( $post->ID, '_nice_feature_video_url', true );
+	$approved  = (bool) get_post_meta( $post->ID, '_nice_media_approved', true );
+	$problem   = nice_get_embed_video_problem( $video_url );
+	$is_studio = has_term( 'studio', 'nice_division', $post );
+	?>
+	<p class="description"><?php esc_html_e( 'The one visual that sits above the project gallery.', 'nice-core' ); ?></p>
+
+	<?php if ( ! $is_studio ) : ?>
+		<p class="notice notice-info inline" style="padding:8px 12px;">
+			<?php esc_html_e( 'Feature media publishes on Studio project pages. An Events project shows its gallery straight after the write-up, so anything chosen here waits until the record sits in Studio.', 'nice-core' ); ?>
+		</p>
+	<?php endif; ?>
+
+	<?php if ( ! $approved ) : ?>
+		<p class="notice notice-warning inline" style="padding:8px 12px;">
+			<?php esc_html_e( 'Feature media stays hidden until "Media cleared for publication" is ticked, in the Content Source & Approval panel. That one tick governs the feature media, its poster frame and the gallery together.', 'nice-core' ); ?>
+		</p>
+	<?php endif; ?>
+
+	<p>
+		<label for="nice-feature-media-type"><strong><?php esc_html_e( 'Show', 'nice-core' ); ?></strong></label><br>
+		<select class="widefat" id="nice-feature-media-type" name="nice_feature_media_type" data-nice-feature-media-type>
+			<option value="image" <?php selected( $type, 'image' ); ?>><?php esc_html_e( 'The featured image', 'nice-core' ); ?></option>
+			<option value="video-file" <?php selected( $type, 'video-file' ); ?>><?php esc_html_e( 'A video file from the Media Library', 'nice-core' ); ?></option>
+			<option value="video-link" <?php selected( $type, 'video-link' ); ?>><?php esc_html_e( 'A YouTube or Vimeo link', 'nice-core' ); ?></option>
+		</select>
+	</p>
+
+	<div class="nice-feature-media-panel" data-nice-feature-media-panel="video-file" <?php echo 'video-file' === $type ? '' : 'hidden'; ?>>
+		<?php nice_render_case_study_video_control( 'nice_feature_video_id', $video_id ); ?>
+	</div>
+
+	<div class="nice-feature-media-panel" data-nice-feature-media-panel="video-link" <?php echo 'video-link' === $type ? '' : 'hidden'; ?>>
+		<p>
+			<label for="nice-feature-video-url"><strong><?php esc_html_e( 'Video link', 'nice-core' ); ?></strong></label><br>
+			<input class="widefat" type="url" id="nice-feature-video-url" name="nice_feature_video_url" value="<?php echo esc_attr( $video_url ); ?>" placeholder="https://www.youtube.com/watch?v=">
+		</p>
+		<?php if ( $problem ) : ?>
+			<p class="description"><strong><?php echo esc_html( $problem ); ?></strong></p>
+		<?php endif; ?>
+		<p class="description"><?php esc_html_e( 'The page shows the featured image with a play button over it. Nothing is requested from YouTube or Vimeo until a reader presses it.', 'nice-core' ); ?></p>
+	</div>
+	<?php
+}
+
+/**
  * Render the Studio Home hero media panel.
  *
  * @param WP_Post $post Studio Home Page.
@@ -278,6 +379,21 @@ function nice_enqueue_case_study_gallery_assets( $hook_suffix ) {
 			'remove'      => __( 'Remove image', 'nice-core' ),
 			/* translators: 1: images chosen, 2: maximum allowed. */
 			'count'       => __( '%1$d of %2$d', 'nice-core' ),
+		)
+	);
+	/*
+	 * A second object on the same handle rather than more keys on the first.
+	 * The gallery strings are one control's vocabulary; growing them to cover a
+	 * different control is how a localisation array stops describing anything.
+	 */
+	wp_localize_script(
+		'nice-core-case-study-gallery',
+		'niceFeatureMedia',
+		array(
+			'videoFrameTitle'  => __( 'Choose a video file', 'nice-core' ),
+			'videoFrameButton' => __( 'Use this video', 'nice-core' ),
+			'videoEmpty'       => __( 'No video selected', 'nice-core' ),
+			'videoFormat'      => __( 'Use an MP4 or WebM file. Other formats do not play in every browser.', 'nice-core' ),
 		)
 	);
 }
@@ -779,6 +895,48 @@ function nice_save_content_meta( $post_id, $post ) {
 		if ( isset( $_POST['nice_gallery_ids'] ) ) {
 			update_post_meta( $post_id, '_nice_gallery_ids', nice_sanitize_gallery_ids( wp_unslash( $_POST['nice_gallery_ids'] ) ) );
 		}
+
+		/*
+		 * Guarded on the select rather than on either dependent field. The select
+		 * always posts when the panel rendered, so it is the honest signal that
+		 * this editor saw these controls at all -- and an editor pressing Remove
+		 * posts an empty id, which has to clear the stored video rather than read
+		 * as "no field submitted" and leave the old attachment in place. Same
+		 * hazard as the gallery above.
+		 */
+		if ( isset( $_POST['nice_feature_media_type'] ) ) {
+			$feature_type = nice_sanitize_feature_media_type( wp_unslash( $_POST['nice_feature_media_type'] ) );
+			$feature_id   = nice_sanitize_video_attachment_id( wp_unslash( $_POST['nice_feature_video_id'] ?? 0 ) );
+			$feature_url  = trim( (string) wp_unslash( $_POST['nice_feature_video_url'] ?? '' ) );
+
+			/*
+			 * An unusable link is dropped rather than kept, the same decision the
+			 * gateway destination makes: a stored address that render silently
+			 * ignores is a field an editor believes is set.
+			 */
+			if ( 'video-link' === $feature_type ) {
+				$video_problem = nice_get_embed_video_problem( $feature_url );
+
+				if ( $video_problem ) {
+					$feature_type = 'image';
+					$feature_url  = '';
+					set_transient( 'nice_feature_media_blocked_' . $post_id, $video_problem, 60 );
+				}
+			}
+
+			if ( 'video-file' === $feature_type && ! $feature_id ) {
+				$feature_type = 'image';
+				set_transient(
+					'nice_feature_media_blocked_' . $post_id,
+					__( 'No video file was chosen.', 'nice-core' ),
+					60
+				);
+			}
+
+			update_post_meta( $post_id, '_nice_feature_media_type', $feature_type );
+			nice_save_or_delete_meta( $post_id, '_nice_feature_video_id', $feature_id ?: '' );
+			nice_save_or_delete_meta( $post_id, '_nice_feature_video_url', nice_sanitize_embed_video_url( $feature_url ) );
+		}
 	}
 
 	if ( 'nice_client' === $post->post_type ) {
@@ -985,3 +1143,26 @@ function nice_render_source_approval_blocked_notice() {
 	);
 }
 add_action( 'admin_notices', 'nice_render_source_approval_blocked_notice' );
+
+/**
+ * Explain why a project fell back to its featured image.
+ */
+function nice_render_feature_media_blocked_notice() {
+	$post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only notice.
+	$reason  = $post_id ? get_transient( 'nice_feature_media_blocked_' . $post_id ) : '';
+
+	if ( ! $reason ) {
+		return;
+	}
+
+	delete_transient( 'nice_feature_media_blocked_' . $post_id );
+	printf(
+		'<div class="notice notice-warning is-dismissible"><p>%s</p></div>',
+		esc_html( sprintf(
+			/* translators: %s: reason the chosen feature media could not be used. */
+			__( 'This project fell back to its featured image, and nothing was saved in its place. %s', 'nice-core' ),
+			is_string( $reason ) ? $reason : ''
+		) )
+	);
+}
+add_action( 'admin_notices', 'nice_render_feature_media_blocked_notice' );

@@ -22,6 +22,7 @@ const routes = [
 	'/studio/services/corporate-videos/',
 	'/studio/case-studies/',
 	'/studio/case-studies/strata-geosystems-factory-shoot/',
+	'/studio/case-studies/krish-e/',
 	'/studio/clients/',
 	'/studio/about/',
 	'/studio/contact/',
@@ -63,6 +64,10 @@ const assert = (condition, message) => {
 				   retired name in its slug, so testing every request URL flags the page
 				   navigation itself. */
 				if (!['image', 'media', 'font'].includes(request.resourceType())) return;
+				/* The ban is on migrated deck photography, not on video an editor
+				   uploaded for a project. A film named after its client would
+				   otherwise trip the list purely because of the client's name. */
+				if (/\/wp-content\/uploads\/.+\.(mp4|webm)$/i.test(request.url())) return;
 				if (retiredMedia.test(request.url())) retiredRequests.push(request.url());
 			});
 
@@ -77,6 +82,12 @@ const assert = (condition, message) => {
 					hasMain: Boolean(document.querySelector('main#main-content')),
 					hasFooter: Boolean(document.querySelector('footer.nice-site-footer')),
 					hasForm: Boolean(document.querySelector('form')),
+					proofBands: document.querySelectorAll('.nice-events-project-proof, .nice-studio-project-proof').length,
+					caseMedia: document.querySelectorAll('.nice-case-media-wrap').length,
+					/* The write-up is the hero description now; the section that
+					   used to repeat it below the details is gone. */
+					bodySections: document.querySelectorAll('.nice-events-case-intro, .nice-studio-case-intro').length,
+					heroIntroWords: (document.querySelector('.nice-events-inner-hero__content p:not(.nice-eyebrow), .nice-studio-inner-hero__content p:not(.nice-eyebrow)')?.textContent || '').trim().split(/\s+/).filter(Boolean).length,
 				}));
 
 				assert(state.h1Count === 1, `${route} must render exactly one H1`);
@@ -85,6 +96,17 @@ const assert = (condition, message) => {
 				assert(!state.hasOverflow, `${route} overflows at ${width}px`);
 				assert(state.hasMain && state.hasFooter, `${route} is missing its main region or footer`);
 				if (route.endsWith('/contact/')) assert(!state.hasForm, `${route} must remain form-free`);
+				assert(state.proofBands === 0, `${route} still renders a project proof band`);
+				assert(state.bodySections === 0, `${route} still repeats its description below the details`);
+				if (route.match(/\/case-studies\/[^/]+\/$/)) {
+					assert(state.heroIntroWords >= 12, `${route} hero description is only ${state.heroIntroWords} words; it should carry the project write-up`);
+				}
+				if (route.startsWith('/events/case-studies/')) {
+					assert(state.caseMedia === 0, `${route} must not render feature media; Events leads with the gallery`);
+				}
+				if (route.startsWith('/studio/case-studies/')) {
+					assert(state.caseMedia <= 1, `${route} renders ${state.caseMedia} feature media blocks`);
+				}
 
 				results.push({ width, route, ...state });
 			}

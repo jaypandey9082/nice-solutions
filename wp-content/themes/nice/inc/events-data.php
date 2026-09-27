@@ -198,6 +198,12 @@ function nice_get_events_project_previews() {
 			$item['description']   = $case_study->post_excerpt ?: wp_trim_words( wp_strip_all_tags( $case_study->post_content ), 30 );
 			$item['client']        = function_exists( 'nice_get_case_study_client_name' ) ? nice_get_case_study_client_name( $case_study->ID ) : '';
 			$item['attachment_id'] = get_post_thumbnail_id( $case_study );
+			/*
+			 * Carried on the item because the template works from this array and
+			 * cannot ask the record. Same tick as everywhere else.
+			 */
+			$item['media_approved'] = function_exists( 'nice_theme_media_approved' )
+				&& nice_theme_media_approved( $case_study->ID );
 			if ( $item['attachment_id'] && ! $item['alt'] ) {
 				$item['alt'] = get_post_meta( $item['attachment_id'], '_wp_attachment_image_alt', true );
 			}

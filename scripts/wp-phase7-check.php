@@ -28,7 +28,7 @@ $studio = get_page_by_path( 'studio', OBJECT, 'page' );
 nice_phase7_assert( $studio instanceof WP_Post && 'publish' === $studio->post_status, 'Studio Home Page is missing.' );
 
 /* Phase 8 shipped these routes, so they are now expected rather than forbidden. */
-foreach ( array( 'services', 'case-studies', 'clients', 'team', 'contact' ) as $inner_slug ) {
+foreach ( array( 'services', 'case-studies', 'clients', 'about', 'contact' ) as $inner_slug ) {
 	$inner_page = get_page_by_path( 'studio/' . $inner_slug, OBJECT, 'page' );
 	nice_phase7_assert( $inner_page instanceof WP_Post && 'publish' === $inner_page->post_status, "Studio Page is missing: {$inner_slug}" );
 }

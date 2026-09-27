@@ -24,6 +24,15 @@
 		padding: 0;
 	}
 
+	/*
+	 * When nothing paints above it -- an Events project, or a Studio one whose
+	 * film has not been chosen yet -- the gallery is the page's first picture and
+	 * has to carry the top space the feature media would have held.
+	 */
+	.nice-project-gallery--lead {
+		padding-block-start: 2.5rem;
+	}
+
 	.nice-project-gallery__item {
 		background: #DAD5C8;
 		margin: 0;

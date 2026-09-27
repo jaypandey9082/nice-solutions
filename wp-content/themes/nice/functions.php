@@ -22,6 +22,7 @@ require_once get_theme_file_path( '/inc/studio-home.php' );
 require_once get_theme_file_path( '/inc/philosophy.php' );
 require_once get_theme_file_path( '/inc/about.php' );
 require_once get_theme_file_path( '/inc/gallery.php' );
+require_once get_theme_file_path( '/inc/case-study.php' );
 require_once get_theme_file_path( '/inc/events-home.php' );
 require_once get_theme_file_path( '/inc/studio-pages.php' );
 require_once get_theme_file_path( '/inc/assets.php' );

@@ -3,7 +3,7 @@
  * Plugin Name: NICE Core
  * Plugin URI: https://nicesolutions.in/
  * Description: Content types, taxonomies, metadata, settings, and query helpers for NICE Solutions.
- * Version: 1.6.0
+ * Version: 1.7.0
  * Author: NICE Solutions
  * Text Domain: nice-core
  * Requires at least: 6.6
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NICE_CORE_VERSION', '1.6.0' );
+define( 'NICE_CORE_VERSION', '1.7.0' );
 
 /*
  * How many images one Case Study gallery may hold. A cap rather than an open

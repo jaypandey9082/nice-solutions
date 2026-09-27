@@ -94,7 +94,12 @@ async (page) => {
     const result = await page.evaluate(() => {
       const root = document.documentElement;
       const images = [...document.images];
-      const headings = [...document.querySelectorAll("h1, h2, h3")];
+      // A visually hidden heading is clipped to a 1px box on purpose, so its
+      // scrollWidth always exceeds its clientWidth. Measuring one asks whether
+      // text fits in a box built to show none of it.
+      const headings = [...document.querySelectorAll("h1, h2, h3")].filter(
+        (heading) => !heading.closest(".nice-sr-only, .screen-reader-text"),
+      );
       const heroImage = document.querySelector(".nice-studio-hero__media img");
       const projectRows = [...document.querySelectorAll("[data-nice-studio-project]")];
       const serviceRows = [...document.querySelectorAll("[data-nice-studio-service]")];
@@ -128,6 +133,18 @@ async (page) => {
           item.querySelector(".nice-studio-project__media--empty, [data-nice-project-media-placeholder]"),
         ).length,
         projectImageCount: projectRows.reduce((count, item) => count + item.querySelectorAll("img").length, 0),
+        // Exactly one media treatment per card: a photograph when the record is
+        // approved, the neutral frame when it is not. Never both, never neither.
+        projectMediaCount: projectRows.filter(
+          (item) =>
+            item.querySelector(".nice-studio-project__media--empty, [data-nice-project-media-placeholder]") ||
+            item.querySelector(".nice-studio-project__media img"),
+        ).length,
+        projectDoubleMediaCount: projectRows.filter(
+          (item) =>
+            item.querySelector(".nice-studio-project__media--empty, [data-nice-project-media-placeholder]") &&
+            item.querySelector(".nice-studio-project__media img"),
+        ).length,
         clientCount: document.querySelectorAll(".nice-studio-clients__list li").length,
         contactActionCount: document.querySelectorAll(".nice-studio-contact__actions a").length,
         contactPending: Boolean(document.querySelector("[data-nice-studio-contact-pending]")),
@@ -238,7 +255,11 @@ async (page) => {
   if (viewportResults.some((result) => !result.imagesHaveDimensions || !result.imagesHaveAlt || !result.imagesStayInBounds || !result.heroStateValid)) failures.push("responsive media");
   if (viewportResults.some((result) => result.serviceNames.join(",") !== expectedServices.join(",") || result.serviceSlugs.join(",") !== expectedServiceSlugs.join(",") || result.servicePaths.join(",") !== expectedServicePaths.join(","))) failures.push("linked Studio Services");
   if (viewportResults.some((result) => result.projectSlugs.join(",") !== expectedProjects.join(",") || result.projectPaths.join(",") !== expectedProjectPaths.join(","))) failures.push("linked Studio Case Studies");
-  if (viewportResults.some((result) => result.projectPlaceholderCount !== expectedProjects.length || result.projectImageCount !== 0)) failures.push("neutral project media");
+  // Was: every card must be a placeholder and carry no image at all. That was
+  // written when no project had cleared photography, and it made a temporary
+  // content state permanent -- an approved photograph failed the suite. What
+  // actually matters is the gate: one treatment per card, and never both.
+  if (viewportResults.some((result) => result.projectMediaCount !== expectedProjects.length || result.projectDoubleMediaCount !== 0)) failures.push("project media treatment");
   if (viewportResults.some((result) => result.clientCount !== 8)) failures.push("shared Clients");
   // Studio contact is approved and published, so actions render and the pending
   // state is gone. The page must still never grow a form.
@@ -252,7 +273,9 @@ async (page) => {
   if (!reducedMotion.revealsRemainVisible || !reducedMotion.revealsDoNotTransition) failures.push("reduced motion");
   if (!landingStudioRoutes.length || landingStudioRoutes.some((path) => path !== "/studio/")) failures.push("Landing to Studio");
   if (!studioToLandingRoutes.includes("/")) failures.push("Studio to Landing");
-  if (loadedMedia.imageCount !== loadedMedia.loadedImageCount || loadedMedia.projectImageCount !== 0) failures.push("image loading");
+  // Every image that renders must actually load. The project-image count is no
+  // longer asserted at zero; that is the approval gate's job, checked above.
+  if (loadedMedia.imageCount !== loadedMedia.loadedImageCount) failures.push("image loading");
   if (loadedMedia.visibleRevealCount !== loadedMedia.revealCount) failures.push("revealed content");
   if (routeResults.some((result) => result.status !== 200 || result.location)) failures.push("Studio route behavior");
   if (retiredDeckRequests.length) failures.push("retired deck media requests");

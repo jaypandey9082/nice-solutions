@@ -77,7 +77,12 @@ async (page) => {
       const result = await page.evaluate(() => {
         const root = document.documentElement;
         const images = [...document.images];
-        const headings = [...document.querySelectorAll("h1, h2, h3")];
+        // A visually hidden heading is clipped to a 1px box on purpose, so its
+        // scrollWidth always exceeds its clientWidth. Measuring one asks whether
+        // text fits in a box built to show none of it.
+        const headings = [...document.querySelectorAll("h1, h2, h3")].filter(
+          (heading) => !heading.closest(".nice-sr-only, .screen-reader-text"),
+        );
         const h1s = [...document.querySelectorAll("main h1")];
         const heroImage = document.querySelector(".nice-events-inner-hero__media img");
 
@@ -145,7 +150,13 @@ async (page) => {
       expectedTitle,
       title: document.querySelector("main h1")?.textContent.trim(),
       canonical: document.querySelector('link[rel="canonical"]')?.getAttribute("href"),
-      hasEditorContent: Boolean(document.querySelector(".nice-events-editor-content p")),
+      // A Service still carries its write-up in a section of its own; a Case
+      // Study now leads with it as the hero description, so accept either. The
+      // question is whether the page says anything about the work, not where.
+      hasEditorContent: Boolean(
+        document.querySelector(".nice-events-editor-content p") ||
+          document.querySelector(".nice-events-inner-hero__content p:not(.nice-eyebrow)"),
+      ),
       hasRelatedContent: Boolean(document.querySelector(".nice-events-related-work, .nice-events-related-services")),
       division: [...document.querySelectorAll(".nice-events-case-meta div, .nice-case-facts div, dl div")]
         .find((item) => item.querySelector("dt")?.textContent.trim() === "Division")

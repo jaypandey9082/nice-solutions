@@ -114,6 +114,22 @@ function nice_sanitize_case_study_approval_status( $value ) {
 }
 
 /**
+ * Return a supported feature-media choice.
+ *
+ * Falls back to the featured image rather than to nothing: a record carrying a
+ * value this build does not recognise still has a picture to show, and showing
+ * it is better than showing an empty frame.
+ *
+ * @param mixed $value Candidate choice.
+ * @return string
+ */
+function nice_sanitize_feature_media_type( $value ) {
+	$type = sanitize_key( (string) $value );
+
+	return in_array( $type, array( 'image', 'video-file', 'video-link' ), true ) ? $type : 'image';
+}
+
+/**
  * Restrict private source metadata to editors of Case Study records.
  *
  * @param bool   $allowed   Existing decision.
@@ -152,7 +168,28 @@ function nice_register_content_meta() {
 	nice_register_post_meta_field( 'nice_case_study', '_nice_reference_url', 'string', 'nice_sanitize_https_url', '' );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_proof_value', 'string', 'sanitize_text_field', '' );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_proof_label', 'string', 'sanitize_text_field', '' );
+	/*
+	 * Legacy. Superseded by the three feature-media fields below and no longer
+	 * rendered anywhere. Kept registered so that anything written to it through
+	 * REST is still sanitized on the way in, and so the phase checks that assert
+	 * it keep meaning what they were written to mean.
+	 */
 	nice_register_post_meta_field( 'nice_case_study', '_nice_hero_video_url', 'string', 'nice_sanitize_https_url', '' );
+
+	/*
+	 * What the project page leads with. Three fields rather than one because the
+	 * three choices are genuinely different things -- the record's own featured
+	 * image, an attachment id, and a third-party address -- and one field holding
+	 * all three would have to mean something different depending on a value
+	 * stored somewhere else.
+	 *
+	 * All three sit behind _nice_media_approved like every other picture on the
+	 * record. One tick governs the lot.
+	 */
+	nice_register_post_meta_field( 'nice_case_study', '_nice_feature_media_type', 'string', 'nice_sanitize_feature_media_type', 'image' );
+	nice_register_post_meta_field( 'nice_case_study', '_nice_feature_video_id', 'integer', 'nice_sanitize_video_attachment_id', 0 );
+	nice_register_post_meta_field( 'nice_case_study', '_nice_feature_video_url', 'string', 'nice_sanitize_embed_video_url', '' );
+
 	nice_register_post_meta_field( 'nice_case_study', '_nice_quote_text', 'string', 'sanitize_text_field', '' );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_quote_author', 'string', 'sanitize_text_field', '' );
 	nice_register_post_meta_field( 'nice_case_study', '_nice_source_url', 'string', 'nice_sanitize_https_url', '', 'nice_authorize_case_study_source_meta', false );

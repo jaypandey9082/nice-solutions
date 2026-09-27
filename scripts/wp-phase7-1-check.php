@@ -30,6 +30,9 @@ $registered_meta = get_registered_meta_keys( 'post', 'nice_case_study' );
 nice_phase7_1_assert( isset( $registered_meta['_nice_hero_video_url'] ), 'Missing _nice_hero_video_url meta field registration.' );
 nice_phase7_1_assert( isset( $registered_meta['_nice_quote_text'] ), 'Missing _nice_quote_text meta field registration.' );
 nice_phase7_1_assert( isset( $registered_meta['_nice_quote_author'] ), 'Missing _nice_quote_author meta field registration.' );
+nice_phase7_1_assert( isset( $registered_meta['_nice_feature_media_type'] ), 'Missing _nice_feature_media_type meta field registration.' );
+nice_phase7_1_assert( isset( $registered_meta['_nice_feature_video_id'] ), 'Missing _nice_feature_video_id meta field registration.' );
+nice_phase7_1_assert( isset( $registered_meta['_nice_feature_video_url'] ), 'Missing _nice_feature_video_url meta field registration.' );
 
 // 3. Routing functions check.
 nice_phase7_1_assert( function_exists( 'nice_get_content_division' ), 'nice_get_content_division() must exist.' );

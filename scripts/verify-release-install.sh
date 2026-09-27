@@ -138,8 +138,11 @@ if [ ! -f "$wp_cli" ]; then
 	curl -sSL -o "$wp_cli" https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 fi
 
-theme_zip="$(ls "$project_root"/output/releases/nice-theme-*.zip | tail -1)"
-plugin_zip="$(ls "$project_root"/output/releases/nice-core-*.zip | tail -1)"
+# sort -V, not plain ls. Lexicographically "nice-theme-0.10.0.zip" sorts BEFORE
+# "nice-theme-0.9.5.zip", so the moment a version crossed into double digits this
+# started silently verifying the older artifact and reporting success.
+theme_zip="$(ls "$project_root"/output/releases/nice-theme-*.zip | sort -V | tail -1)"
+plugin_zip="$(ls "$project_root"/output/releases/nice-core-*.zip | sort -V | tail -1)"
 [ -f "$theme_zip" ] && [ -f "$plugin_zip" ] || { echo "Run npm run build:release first." >&2; exit 1; }
 
 verify_identity combined wp-fresh-combined-assertions.php

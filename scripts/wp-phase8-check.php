@@ -43,7 +43,8 @@ $expected_pages = array(
 	'services'     => 'page-studio-services',
 	'case-studies' => 'page-studio-case-studies',
 	'clients'      => 'page-studio-clients',
-	'team'         => 'page-studio-team',
+	/* Renamed from the Team page in theme 0.9.0; /studio/team/ now 301s here. */
+	'about'        => 'page-studio-about',
 	'contact'      => 'page-studio-contact',
 );
 
@@ -113,7 +114,7 @@ $studio_blocks = array(
 	'nice/studio-case-studies-index',
 	'nice/studio-case-study-detail',
 	'nice/studio-clients-index',
-	'nice/studio-team-index',
+	'nice/studio-about-page',
 	'nice/studio-contact-page',
 );
 
@@ -174,6 +175,28 @@ nice_phase8_assert( 2025 === (int) get_post_meta( $draft_case_id, '_nice_year', 
 nice_phase8_assert( 'https://example.com/video.mp4' === get_post_meta( $draft_case_id, '_nice_hero_video_url', true ), 'Draft case video URL mismatch.' );
 nice_phase8_assert( 'A visionary collaboration.' === get_post_meta( $draft_case_id, '_nice_quote_text', true ), 'Draft case quote text mismatch.' );
 nice_phase8_assert( 'Producer Name' === get_post_meta( $draft_case_id, '_nice_quote_author', true ), 'Draft case quote author mismatch.' );
+
+/*
+ * Feature media, through update_post_meta() so the registered sanitizers run.
+ * Each of these is a rule an editor can walk into: a link to a channel rather
+ * than a video, a plain-HTTP address, an id that points at a picture.
+ */
+update_post_meta( $draft_case_id, '_nice_feature_media_type', 'video-link' );
+nice_phase8_assert( 'video-link' === get_post_meta( $draft_case_id, '_nice_feature_media_type', true ), 'Feature media type did not round-trip.' );
+
+update_post_meta( $draft_case_id, '_nice_feature_media_type', 'nonsense' );
+nice_phase8_assert( 'image' === get_post_meta( $draft_case_id, '_nice_feature_media_type', true ), 'An unknown feature media type must fall back to the image.' );
+
+update_post_meta( $draft_case_id, '_nice_feature_video_url', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' );
+nice_phase8_assert( '' !== get_post_meta( $draft_case_id, '_nice_feature_video_url', true ), 'A YouTube watch URL must survive sanitizing.' );
+
+foreach ( array( 'https://www.youtube.com/@somechannel', 'http://www.youtube.com/watch?v=dQw4w9WgXcQ', 'https://example.com/not-a-video' ) as $nice_bad_url ) {
+	update_post_meta( $draft_case_id, '_nice_feature_video_url', $nice_bad_url );
+	nice_phase8_assert( '' === get_post_meta( $draft_case_id, '_nice_feature_video_url', true ), sprintf( 'Unusable video link was stored: %s', $nice_bad_url ) );
+}
+
+update_post_meta( $draft_case_id, '_nice_feature_video_id', 999999 );
+nice_phase8_assert( 0 === (int) get_post_meta( $draft_case_id, '_nice_feature_video_id', true ), 'A video id that names no attachment must not be stored.' );
 
 // Clean up draft case study.
 wp_delete_post( $draft_case_id, true );

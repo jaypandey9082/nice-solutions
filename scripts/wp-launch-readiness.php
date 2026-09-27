@@ -47,6 +47,47 @@ function nice_readiness_row( $area, $ready, $detail ) {
  * @param string $division  Division slug, or an empty string for any.
  * @return int
  */
+/**
+ * Report why a published Case Study has nothing publishable to show.
+ *
+ * A Studio project may now lead with a film rather than a photograph, so the old
+ * rule -- a featured image or not ready -- would fail a record that is finished.
+ * The approval tick is still asked of everything, and alt text is still asked of
+ * a thumbnail that exists, because that same thumbnail is the video's poster
+ * frame and a reader sees it before the film loads.
+ *
+ * @param WP_Post $case Published Case Study.
+ * @return string Empty when the record is ready.
+ */
+function nice_readiness_case_media_problem( $case ) {
+	if ( ! get_post_meta( $case->ID, '_nice_media_approved', true ) ) {
+		return 'media not cleared';
+	}
+
+	$thumb = (int) get_post_thumbnail_id( $case );
+	$alt   = $thumb ? trim( (string) get_post_meta( $thumb, '_wp_attachment_image_alt', true ) ) : '';
+
+	if ( $thumb && ! $alt ) {
+		return 'featured image has no alt text';
+	}
+
+	$type    = (string) get_post_meta( $case->ID, '_nice_feature_media_type', true );
+	$has_vid = ( 'video-file' === $type && get_post_meta( $case->ID, '_nice_feature_video_id', true ) )
+		|| ( 'video-link' === $type && get_post_meta( $case->ID, '_nice_feature_video_url', true ) );
+	$gallery = array_filter( (array) get_post_meta( $case->ID, '_nice_gallery_ids', true ) );
+
+	if ( ! $thumb && ! $has_vid && ! $gallery ) {
+		return 'no image, film or gallery';
+	}
+
+	/* A film with no poster opens the page on an empty frame. */
+	if ( $has_vid && ! $thumb ) {
+		return 'film has no poster image';
+	}
+
+	return '';
+}
+
 function nice_readiness_count( $post_type, $division = '' ) {
 	$args = array(
 		'post_type'      => $post_type,
@@ -159,19 +200,18 @@ foreach ( nice_get_local_division_slugs() as $nice_division ) {
 
 	$nice_without_media = array();
 	foreach ( $nice_cases as $nice_case ) {
-		$nice_thumb = (int) get_post_thumbnail_id( $nice_case );
-		$nice_alt   = $nice_thumb ? trim( (string) get_post_meta( $nice_thumb, '_wp_attachment_image_alt', true ) ) : '';
+		$nice_problem = nice_readiness_case_media_problem( $nice_case );
 
-		if ( ! $nice_thumb || ! $nice_alt || ! get_post_meta( $nice_case->ID, '_nice_media_approved', true ) ) {
-			$nice_without_media[] = $nice_case->post_title;
+		if ( $nice_problem ) {
+			$nice_without_media[] = $nice_case->post_title . ' (' . $nice_problem . ')';
 		}
 	}
 
 	nice_readiness_row(
-		sprintf( '%s project imagery', $nice_label ),
+		sprintf( '%s project media', $nice_label ),
 		! $nice_without_media,
 		$nice_without_media
-			? sprintf( '%d of %d still need an approved image with alt text: %s', count( $nice_without_media ), count( $nice_cases ), implode( '; ', array_slice( $nice_without_media, 0, 4 ) ) . ( count( $nice_without_media ) > 4 ? ' ...' : '' ) )
+			? sprintf( '%d of %d are not ready: %s', count( $nice_without_media ), count( $nice_cases ), implode( '; ', array_slice( $nice_without_media, 0, 4 ) ) . ( count( $nice_without_media ) > 4 ? ' ...' : '' ) )
 			: sprintf( 'All %d cleared.', count( $nice_cases ) )
 	);
 

@@ -56,12 +56,11 @@
 
 	.nice-events-inner-hero .nice-eyebrow,
 	.nice-events-inner-heading .nice-eyebrow,
-	.nice-events-case-intro__heading .nice-eyebrow,
 	.nice-events-inner-cta .nice-eyebrow,
 	.nice-events-empty-state .nice-eyebrow {
 		color: var(--nice-events-red);
 		font-family: var(--nice-events-label);
-		font-size: 0.75rem;
+		font-size: var(--nice-eyebrow-size);
 		font-weight: 700;
 		letter-spacing: 0;
 		line-height: 1.4;
@@ -122,7 +121,6 @@
 	}
 
 	.nice-events-inner-heading h2,
-	.nice-events-case-intro__heading h2,
 	.nice-events-empty-state h2 {
 		font-family: var(--nice-events-display);
 		font-size: 2.5rem;
@@ -138,8 +136,7 @@
 	.nice-events-related-work,
 	.nice-events-client-directory,
 	.nice-events-team-directory,
-	.nice-events-contact-page,
-	.nice-events-case-intro {
+	.nice-events-contact-page {
 		background: var(--nice-events-surface);
 	}
 
@@ -304,13 +301,38 @@
 		min-width: 0;
 	}
 
-	.nice-events-case-preview__media,
-	.nice-case-hero-media {
+	.nice-events-case-preview__media {
 		aspect-ratio: 16 / 9;
 		background: var(--nice-events-media);
 		border: 1px solid var(--nice-events-border);
 		overflow: hidden;
 		width: 100%;
+	}
+
+	/*
+	 * The only card frame on the site that never had this: it had no producer,
+	 * so nothing ever needed sizing inside it.
+	 */
+	.nice-events-case-preview__media img {
+		display: block;
+		height: 100%;
+		object-fit: cover;
+		transition: transform var(--wp--custom--motion--duration-image-hover) var(--wp--custom--motion--easing);
+		width: 100%;
+	}
+
+	.nice-events-case-preview:hover .nice-events-case-preview__media img {
+		transform: scale(1.018);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.nice-events-case-preview__media img {
+			transition: none;
+		}
+
+		.nice-events-case-preview:hover .nice-events-case-preview__media img {
+			transform: none;
+		}
 	}
 
 	.nice-events-media-placeholder {
@@ -347,7 +369,7 @@
 	.nice-events-case-preview__body .nice-eyebrow,
 	.nice-events-meta-line {
 		font-family: var(--nice-events-label);
-		font-size: 0.75rem;
+		font-size: var(--nice-eyebrow-size);
 		font-weight: 700;
 		line-height: 1.4;
 		text-transform: uppercase;
@@ -460,61 +482,6 @@
 		padding-block: 0.9rem;
 	}
 
-	.nice-case-hero-media-wrap {
-		background: var(--nice-events-surface);
-		padding-bottom: var(--nice-events-section-space);
-		padding-top: 2rem;
-	}
-
-	.nice-events-project-proof {
-		background: var(--nice-events-ink);
-		color: var(--nice-events-surface);
-		padding-block: var(--nice-events-section-space);
-	}
-
-	.nice-events-project-proof__content {
-		display: grid;
-		gap: 1.5rem;
-	}
-
-	.nice-events-project-proof__value {
-		font-family: var(--nice-events-display);
-		font-size: 4.5rem;
-		font-weight: 500;
-		letter-spacing: 0;
-		line-height: 0.9;
-		margin: 0;
-	}
-
-	.nice-events-project-proof .nice-eyebrow {
-		color: var(--nice-events-red);
-		font-family: var(--nice-events-label);
-		font-size: 0.6875rem;
-		font-weight: 700;
-		margin-bottom: 0.5rem;
-		text-transform: uppercase;
-	}
-
-	.nice-events-project-proof h2 {
-		font-family: var(--nice-events-display);
-		font-size: 2rem;
-		font-weight: 500;
-		letter-spacing: 0;
-		line-height: 1;
-		max-width: 24ch;
-		text-transform: uppercase;
-	}
-
-	.nice-events-case-intro__grid {
-		display: grid;
-		gap: 2.5rem;
-	}
-
-	.nice-events-case-intro__heading {
-		display: grid;
-		gap: 0.75rem;
-	}
-
 	.nice-events-project-navigation {
 		display: grid;
 		gap: 1px;
@@ -551,7 +518,7 @@
 
 	.nice-events-nav-card__body .nice-eyebrow {
 		font-family: var(--nice-events-label);
-		font-size: 0.6875rem;
+		font-size: var(--nice-eyebrow-size);
 		font-weight: 700;
 		text-transform: uppercase;
 	}
@@ -811,22 +778,22 @@
 			grid-template-columns: repeat(5, minmax(0, 1fr));
 		}
 
-		.nice-events-project-proof__content,
 		.nice-events-inner-cta__content {
 			align-items: end;
 			grid-template-columns: minmax(0, 1fr) auto;
 		}
 
-		.nice-events-project-proof__value {
-			font-size: 6.5rem;
-		}
-
-		.nice-events-case-intro__grid {
-			grid-template-columns: minmax(14rem, 0.6fr) minmax(0, 1.4fr);
-		}
-
 		.nice-events-project-navigation {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		/*
+		 * Placed rather than auto-placed. The empty slot is display:none, so on
+		 * the first project of a division the lone Next card would fall into
+		 * column one and sit there right-aligned against nothing.
+		 */
+		.nice-events-nav-card--next {
+			grid-column: 2;
 		}
 
 		.nice-events-client-directory__list,

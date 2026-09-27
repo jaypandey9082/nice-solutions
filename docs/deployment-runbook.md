@@ -38,13 +38,43 @@ npm run build:release
 
 Produces in `output/releases/`:
 
-- `nice-theme-0.9.0.zip`
-- `nice-core-1.5.0.zip`
+- `nice-theme-0.10.0.zip`
+- `nice-core-1.7.0.zip`
 - `SHA256SUMS.txt` — verify with `shasum -a 256 -c SHA256SUMS.txt`
 - `RELEASE-CHECKLIST.md`
 
 The same commit always builds identical archives, so the checksum is worth
 checking after upload.
+
+## Updating an installation that is already live
+
+`nicesolutions.in` is live, so an update is an upload rather than a fresh run.
+
+1. **Pre-flight, once.** The legacy `_nice_hero_video_url` field was REST-only and
+   is no longer rendered. Confirm nothing ever wrote it:
+
+   ```bash
+   wp db query "SELECT post_id, meta_value FROM $(wp db prefix)postmeta WHERE meta_key = '_nice_hero_video_url' AND meta_value <> ''"
+   ```
+
+   Zero rows is the expected answer, and was the answer on the development site.
+   If a row comes back, set that project's Feature Media by hand after the
+   upload rather than expecting it to carry over.
+
+2. **Back up first**, as below. An upload replaces files; the database is what
+   holds the content.
+
+3. **Plugins → Add New → Upload** `nice-core-1.7.0.zip`, tick *Replace current
+   with uploaded*. Then **Appearance → Themes → Add New → Upload**
+   `nice-theme-0.10.0.zip`, same. The theme is already active, so this one is
+   safe to do second without the page going dark.
+
+4. **Clear the cache** (SpeedyCache) afterwards. The plugin's admin scripts are
+   cache-busted on its version so they update themselves, but the front-end
+   cache will still be serving the old markup.
+
+5. Walk `/events/case-studies/<any>/` and `/studio/case-studies/<any>/` on a
+   phone and a laptop before telling anyone.
 
 ## Deploy to nicesolutions.in
 
@@ -74,9 +104,9 @@ if it finds them still set that way.
 
 **4. Turn off page caching** (SpeedyCache) for the duration.
 
-**5. Plugins → Add New → Upload** → `nice-core-1.5.0.zip` → activate.
+**5. Plugins → Add New → Upload** → `nice-core-1.7.0.zip` → activate.
 
-**6. Appearance → Themes → Add New → Upload** → `nice-theme-0.9.0.zip` —
+**6. Appearance → Themes → Add New → Upload** → `nice-theme-0.10.0.zip` —
 **upload only, do not activate yet.**
 
 **7. Tools → NICE Setup.** Confirm it reports:
