@@ -78,10 +78,17 @@
 	.nice-events-home .nice-events-proof__number { font: 500 40px/1 var(--nice-font-heading); }
 	.nice-events-home .nice-events-proof__grid h3 { font: 600 14px/1.5 var(--nice-font-label); text-transform: none; }
 	.nice-events-home .nice-events-proof__grid article > p:last-child { color: var(--nice-muted); font-size: 15px; }
-	.nice-events-home .nice-events-contact { background: var(--nice-black); color: var(--nice-surface-container-low); }
+	/*
+	 * Sized as a pair with the Studio band: same padding, same heading scale,
+	 * same button row. The heading sizes carry !important because the blanket
+	 * .nice-events-home h2 rule above does, and without it the 40px and 56px
+	 * written here never applied. Square buttons, as on every Events inner page.
+	 */
+	.nice-events-home .nice-events-contact { background: var(--nice-black); color: var(--nice-surface-container-low); padding-block: 64px; }
 	.nice-events-home .nice-events-contact__inner { display: grid; gap: 32px; }
-	.nice-events-home .nice-events-contact h2 { color: inherit; font-size: 40px; margin-top: 24px; }
-	.nice-events-home .nice-events-contact__actions { display: grid; align-content: end; gap: 16px; }
+	.nice-events-home .nice-events-contact h2 { color: inherit; font-size: 36px !important; line-height: 1 !important; margin-top: 20px; }
+	.nice-events-home .nice-events-contact__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+	.nice-events-home .nice-events-contact .nice-button { border-radius: 0; }
 	.nice-events-home .nice-events-contact__actions p { font-size: 15px; max-width: 30ch; }
 	@media (min-width: 768px) {
 		.nice-events-home .nice-wide { padding-inline: 40px; }
@@ -97,14 +104,20 @@
 		.nice-events-home .nice-events-work__grid, .nice-events-home .nice-events-proof__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 		.nice-events-home .nice-events-method__steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 		.nice-events-home .nice-events-clients__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-		.nice-events-home .nice-events-contact__inner { grid-template-columns: 2fr 1fr; }
-		.nice-events-home .nice-events-contact h2 { font-size: 56px; }
+		.nice-events-home .nice-events-contact { padding-block: 96px; }
+		.nice-events-home .nice-events-contact h2 { font-size: 56px !important; }
 	}
 	@media (min-width: 1024px) {
 		.nice-events-home .nice-events-service { grid-template-columns: 32px minmax(0, 1fr) minmax(0, 1.3fr) auto; align-items: start; gap: 24px; }
 		.nice-events-home .nice-events-service > h3, .nice-events-home .nice-events-service > p, .nice-events-home .nice-events-service > a { grid-column: auto; }
 		.nice-events-home .nice-events-section-heading { grid-template-columns: 1fr 2fr auto; }
 		.nice-events-home .nice-events-section-heading > a { grid-column: auto; align-self: end; }
+	}
+	/* Side by side only once the heading has room. The actions column sizes to its
+	   buttons unwrapped; below this the heading was squeezed to four and six lines. */
+	@media (min-width: 1200px) {
+		.nice-events-home .nice-events-contact__inner { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+		.nice-events-home .nice-events-contact__actions { justify-content: flex-end; }
 	}
 }
 

@@ -110,6 +110,37 @@ const assert = (condition, message) => {
 							);
 						})
 						.map((frame) => frame.className.toString().slice(0, 40)),
+					/*
+					 * No link or button may disappear into what is behind it. Every
+					 * contact link on the Events home shipped #121213 on #121213,
+					 * readable only while hovered, because theme.json's unlayered
+					 * link colour beat every layered rule that set another.
+					 */
+					invisibleLinks: (() => {
+						const rgb = (value) => (value.match(/[\d.]+/g) || []).map(Number);
+						const luminance = ([r, g, b]) => {
+							const channel = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+							return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+						};
+						const opaque = (value) => { const c = rgb(value); return c.length >= 3 && (c.length === 3 || c[3] > 0.5); };
+						const backgroundOf = (element) => {
+							for (let node = element; node; node = node.parentElement) {
+								const bg = getComputedStyle(node).backgroundColor;
+								if (opaque(bg)) return rgb(bg).slice(0, 3);
+							}
+							return [255, 255, 255];
+						};
+						return [...document.querySelectorAll('main a, main .nice-button, footer a')]
+							.filter((link) => {
+								const box = link.getBoundingClientRect();
+								const style = getComputedStyle(link);
+								if (!box.width || !box.height || style.visibility === 'hidden' || Number(style.opacity) === 0) return false;
+								const fg = luminance(rgb(style.color).slice(0, 3));
+								const bg = luminance(opaque(style.backgroundColor) ? rgb(style.backgroundColor).slice(0, 3) : backgroundOf(link.parentElement));
+								return (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05) < 3;
+							})
+							.map((link) => link.textContent.trim().replace(/\s+/g, ' ').slice(0, 24));
+					})(),
 					heroIntroWords: (document.querySelector('.nice-events-inner-hero__content p:not(.nice-eyebrow), .nice-studio-inner-hero__content p:not(.nice-eyebrow)')?.textContent || '').trim().split(/\s+/).filter(Boolean).length,
 				}));
 
@@ -121,6 +152,7 @@ const assert = (condition, message) => {
 				if (route.endsWith('/contact/')) assert(!state.hasForm, `${route} must remain form-free`);
 				assert(state.proofBands === 0, `${route} still renders a project proof band`);
 				assert(state.bodySections === 0, `${route} still repeats its description below the details`);
+				assert(state.invisibleLinks.length === 0, `${route} has links that vanish into their background at ${width}px: ${state.invisibleLinks.join(', ')}`);
 				assert(state.unheldMedia.length === 0, `${route} lets a picture size its own frame at ${width}px: ${state.unheldMedia.join(', ')}`);
 				if (route.match(/\/case-studies\/[^/]+\/$/)) {
 					assert(state.heroIntroWords >= 12, `${route} hero description is only ${state.heroIntroWords} words; it should carry the project write-up`);

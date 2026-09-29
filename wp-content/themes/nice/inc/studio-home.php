@@ -255,9 +255,17 @@ function nice_render_studio_home() {
 					<h2 id="nice-studio-contact-title">Have a story to tell?</h2>
 				</div>
 				<?php if ( $actions ) : ?>
+					<?php
+					/*
+					 * One primary, then the channels. Three red pills of equal weight
+					 * gave a reader three answers to one question; this is the order
+					 * the Events band and every inner-page band already use.
+					 */
+					?>
 					<div class="nice-studio-contact__actions" aria-label="Approved contact options" data-nice-reveal>
+						<a class="nice-button nice-button--primary" href="<?php echo esc_url( nice_theme_division_url( 'studio', 'contact/' ) ); ?>">Studio contact</a>
 						<?php foreach ( $actions as $action ) : ?>
-							<a class="nice-button nice-button--primary" href="<?php echo esc_url( $action['url'] ); ?>" data-nice-contact-channel="<?php echo esc_attr( $action['channel'] ); ?>"><?php echo esc_html( $action['label'] ); ?></a>
+							<a class="nice-button nice-button--secondary" href="<?php echo esc_url( $action['url'] ); ?>" data-nice-contact-channel="<?php echo esc_attr( $action['channel'] ); ?>"><?php echo esc_html( $action['label'] ); ?></a>
 						<?php endforeach; ?>
 					</div>
 				<?php else : ?>

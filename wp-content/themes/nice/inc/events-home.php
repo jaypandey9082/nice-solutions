@@ -154,8 +154,8 @@ function nice_render_events_home() {
 			<div class="nice-wide nice-events-contact__inner">
 				<div data-nice-reveal><p class="nice-eyebrow">Start a conversation</p><h2 id="nice-events-contact-title">Planning an event?<br>Let's make it NICE.</h2></div>
 				<div class="nice-events-contact__actions" data-nice-reveal>
-					<a class="nice-link" href="<?php echo esc_url( nice_theme_division_url( 'events', 'contact/' ) ); ?>">Events contact <span aria-hidden="true">&#8599;</span></a>
-					<?php foreach ( $actions as $action ) : ?><a class="nice-link" href="<?php echo esc_url( $action['url'] ); ?>"><?php echo esc_html( $action['label'] ); ?> <span aria-hidden="true">&#8599;</span></a><?php endforeach; ?>
+					<a class="nice-button nice-button--primary" href="<?php echo esc_url( nice_theme_division_url( 'events', 'contact/' ) ); ?>">Events contact</a>
+					<?php foreach ( $actions as $action ) : ?><a class="nice-button nice-button--secondary" href="<?php echo esc_url( $action['url'] ); ?>"><?php echo esc_html( $action['label'] ); ?></a><?php endforeach; ?>
 					<?php if ( ! $actions ) : ?><p id="events-contact-details-pending">Contact details pending publication approval.</p><?php endif; ?>
 				</div>
 			</div>

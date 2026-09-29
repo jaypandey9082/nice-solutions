@@ -298,16 +298,8 @@
         }
       },
       "link": {
-        "color": {
-          "text": "var:preset|color|text"
-        },
         "typography": {
           "textDecoration": "none"
-        },
-        ":hover": {
-          "color": {
-            "text": "var:preset|color|action-red"
-          }
         }
       }
     }

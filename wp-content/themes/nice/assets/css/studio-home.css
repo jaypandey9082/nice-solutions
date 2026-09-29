@@ -450,31 +450,38 @@
 		text-decoration-color: currentColor;
 	}
 
+	/*
+	 * Sized as a pair with the Events band. This one was 701px tall on a desktop:
+	 * the section carried 6rem of padding and studio.css gave the inner another
+	 * --nice-section-space (8rem), so the two stacked to 224px above and below an
+	 * 80px heading squeezed onto three lines by an 11ch measure.
+	 */
 	.nice-studio-contact {
 		background: var(--nice-black);
 		color: var(--nice-surface-container-low);
-		padding-block: 4.5rem;
+		padding-block: 4rem;
 	}
 
 	.nice-studio-contact__inner {
 		display: grid;
-		gap: 2.5rem;
+		gap: 2rem;
+		padding-block: 0;
 	}
 
 	.nice-studio-contact h2 {
 		color: inherit !important;
 		font-family: var(--nice-font-heading) !important;
-		font-size: 3.25rem !important;
+		font-size: 2.25rem !important;
 		font-weight: 500 !important;
 		letter-spacing: 0 !important;
-		line-height: 0.9 !important;
+		line-height: 1 !important;
 		margin-top: 1.25rem;
-		max-width: 11ch;
+		max-width: 14ch;
 		text-transform: uppercase;
 	}
 
 	.nice-studio-contact__actions {
-		align-items: flex-start;
+		align-items: center;
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.75rem;
@@ -583,13 +590,24 @@
 			padding-block: 6rem;
 		}
 
+		/*
+		 * studio.css lays this out on twelve columns from here and pins the
+		 * children to 1/6 and 7/13. Reset at the same specificity -- this sheet
+		 * loads after -- and stay one column until 64rem: an auto column sizes to
+		 * its buttons unwrapped, and at tablet widths that crushed the heading.
+		 */
 		.nice-studio-contact__inner {
-			align-items: end;
-			grid-template-columns: 8fr 4fr;
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.nice-studio-contact__inner > div:first-child,
+		.nice-studio-contact__inner > .nice-studio-contact__actions,
+		.nice-studio-contact__inner > .nice-studio-contact__pending {
+			grid-column: auto;
 		}
 
 		.nice-studio-contact h2 {
-			font-size: 5rem !important;
+			font-size: 3.5rem !important;
 		}
 	}
 
@@ -616,6 +634,17 @@
 
 		.nice-studio-method__intro h2 {
 			font-size: 5rem;
+		}
+	}
+	/* Side by side from the same width as the Events band, so the pair changes together. */
+	@media (min-width: 75rem) {
+		.nice-studio-contact__inner {
+			align-items: end;
+			grid-template-columns: minmax(0, 1fr) auto;
+		}
+
+		.nice-studio-contact__actions {
+			justify-content: flex-end;
 		}
 	}
 }

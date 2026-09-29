@@ -38,7 +38,7 @@ npm run build:release
 
 Produces in `output/releases/`:
 
-- `nice-theme-0.10.0.zip`
+- `nice-theme-0.10.1.zip`
 - `nice-core-1.7.0.zip`
 - `SHA256SUMS.txt` — verify with `shasum -a 256 -c SHA256SUMS.txt`
 - `RELEASE-CHECKLIST.md`
@@ -66,7 +66,7 @@ checking after upload.
 
 3. **Plugins → Add New → Upload** `nice-core-1.7.0.zip`, tick *Replace current
    with uploaded*. Then **Appearance → Themes → Add New → Upload**
-   `nice-theme-0.10.0.zip`, same. The theme is already active, so this one is
+   `nice-theme-0.10.1.zip`, same. The theme is already active, so this one is
    safe to do second without the page going dark.
 
 4. **Clear the cache** (SpeedyCache) afterwards. The plugin's admin scripts are
@@ -106,7 +106,7 @@ if it finds them still set that way.
 
 **5. Plugins → Add New → Upload** → `nice-core-1.7.0.zip` → activate.
 
-**6. Appearance → Themes → Add New → Upload** → `nice-theme-0.10.0.zip` —
+**6. Appearance → Themes → Add New → Upload** → `nice-theme-0.10.1.zip` —
 **upload only, do not activate yet.**
 
 **7. Tools → NICE Setup.** Confirm it reports:

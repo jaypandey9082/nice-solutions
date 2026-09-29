@@ -108,10 +108,22 @@
 		color: var(--wp--preset--color--text);
 	}
 
+	/*
+	 * Link colour lives here and not in theme.json. theme.json emits its element
+	 * styles unlayered, and unlayered CSS beats every @layer rule whatever its
+	 * specificity -- so its near-black link colour won over this inherit and over
+	 * every component that set its own. On the black contact sections that made
+	 * every link #121213 on #121213: invisible until hovered, when the theme.json
+	 * hover turned one red.
+	 */
 	a {
 		color: inherit;
 		text-decoration-thickness: 0.08em;
 		text-underline-offset: 0.18em;
+	}
+
+	a:hover {
+		color: var(--wp--preset--color--action-red);
 	}
 
 	h1,
@@ -414,6 +426,32 @@
 		color: var(--wp--preset--color--text);
 		min-height: 2.75rem;
 		padding-inline: 0;
+	}
+
+	/*
+	 * Buttons on the four black contact bands. The defaults above are written for
+	 * a light page: the secondary is an ink outline with ink text, and the
+	 * primary's hover turns it ink. On a black band both of those are black on
+	 * black -- the secondaries were invisible outright, and the primary vanished
+	 * the moment a reader pointed at it. One rule for all four bands, so the
+	 * Events and Studio sections behave as a pair.
+	 */
+	:is(.nice-events-contact, .nice-studio-contact, .nice-events-inner-cta, .nice-studio-inner-cta) .nice-button--primary {
+		background: var(--wp--preset--color--action-red);
+		border-color: var(--wp--preset--color--action-red);
+		color: var(--wp--preset--color--surface);
+	}
+
+	:is(.nice-events-contact, .nice-studio-contact, .nice-events-inner-cta, .nice-studio-inner-cta) .nice-button--secondary {
+		background: transparent;
+		border-color: color-mix(in srgb, var(--wp--preset--color--surface) 45%, transparent);
+		color: var(--wp--preset--color--surface);
+	}
+
+	:is(.nice-events-contact, .nice-studio-contact, .nice-events-inner-cta, .nice-studio-inner-cta) :is(.nice-button--primary, .nice-button--secondary):is(:hover, :focus-visible) {
+		background: var(--wp--preset--color--surface);
+		border-color: var(--wp--preset--color--surface);
+		color: var(--wp--preset--color--text);
 	}
 
 	.nice-site-header {
